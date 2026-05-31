@@ -8,7 +8,7 @@ public class TitleManager : SceneManagerBase
     [SerializeField] private int minPlayersToStart = 1;
     [SerializeField] private bool requireAllReady = true;
 
-    public bool IsCloudConnected => App.Game.Network.IsCloudConnected;
+    public bool IsCloudConnected => App.SystemManager.Network.IsCloudConnected;
 
     protected override void Awake()
     {
@@ -19,7 +19,7 @@ public class TitleManager : SceneManagerBase
 
     public void Connect(string displayName, Action<LobbyRequestResult> onComplete = null)
     {
-        NetworkManager network = App.Game.Network;
+        NetworkManager network = App.SystemManager.Network;
 
         if (string.IsNullOrWhiteSpace(displayName))
         {

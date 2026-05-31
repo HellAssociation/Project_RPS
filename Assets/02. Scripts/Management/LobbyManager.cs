@@ -4,7 +4,7 @@ using SystemEnums;
 using UnityEngine;
 
 /// <summary>
-/// 로비 API. 세션 코드로만 방 생성·참가·시작을 담당합니다.
+/// 로비 UI·API. Fusion 튜토리얼 흐름: Host StartGame(생성) → Client StartGame(코드 참가) → Host LoadScene(인게임).
 /// </summary>
 public class LobbyManager : SceneManagerBase
 {
@@ -14,16 +14,14 @@ public class LobbyManager : SceneManagerBase
     [SerializeField] private int minPlayersToStart = 1;
     [SerializeField] private bool requireAllReady = true;
 
-    LobbySession _session = new();
+    NetworkManager Network => App.SystemManager.Network;
 
-    NetworkManager Network => App.Game.Network;
-
-    public LobbySession Session => _session;
-    public ELobbyState State => _session.State;
+    public LobbySession Session => Network.Session;
+    public ELobbyState State => Session.State;
     public bool IsInLobby => State == ELobbyState.InLobby;
-    public bool IsHost => _session.IsHost;
-    public string SessionCode => _session.SessionCode;
-    public IReadOnlyList<LobbyPlayer> Players => _session.Players;
+    public bool IsHost => Session.IsHost;
+    public string SessionCode => Session.SessionCode;
+    public IReadOnlyList<LobbyPlayer> Players => Session.Players;
     public string LocalDisplayName => localDisplayName;
     public bool IsLocalReady => Network.IsLocalReady;
 
@@ -40,8 +38,6 @@ public class LobbyManager : SceneManagerBase
         }
     }
 
-    public event Action<LobbySession> OnSessionUpdated;
-    public event Action OnPlayersChanged;
     public event Action<string> OnLobbyError;
 
     protected override void Awake()
@@ -55,7 +51,6 @@ public class LobbyManager : SceneManagerBase
         }
 
         Network.OnSessionUpdated += HandleLobbySessionUpdated;
-        Network.OnPlayersChanged += HandleLobbyPlayersChanged;
         Network.OnError += HandleLobbyError;
     }
 
@@ -67,7 +62,6 @@ public class LobbyManager : SceneManagerBase
     void OnDestroy()
     {
         Network.OnSessionUpdated -= HandleLobbySessionUpdated;
-        Network.OnPlayersChanged -= HandleLobbyPlayersChanged;
         Network.OnError -= HandleLobbyError;
     }
 
@@ -98,6 +92,17 @@ public class LobbyManager : SceneManagerBase
         Network.JoinSession(sessionCode, result => Complete(result, onComplete));
     }
 
+    public void QuickJoinSession(Action<LobbyRequestResult> onComplete = null)
+    {
+        if (IsInLobby)
+        {
+            Complete(LobbyRequestResult.Fail("이미 로비에 있습니다."), onComplete);
+            return;
+        }
+
+        Network.QuickJoinSession(result => Complete(result, onComplete));
+    }
+
     public void LeaveSession()
     {
         Network.LeaveSession();
@@ -116,11 +121,6 @@ public class LobbyManager : SceneManagerBase
     public void SetLocalReady(bool isReady)
     {
         Network.SetLocalReady(isReady);
-    }
-
-    public bool TrySetPlayerReady(string playerId, bool isReady)
-    {
-        return Network.TrySetPlayerReady(playerId, isReady);
     }
 
     public void StartGame(Action<LobbyRequestResult> onComplete = null)
@@ -147,24 +147,7 @@ public class LobbyManager : SceneManagerBase
 
     void HandleLobbySessionUpdated(LobbySession session)
     {
-        _session = session;
-        OnSessionUpdated?.Invoke(_session);
         RefreshLobbyUI();
-    }
-
-    void HandleLobbyPlayersChanged()
-    {
-        OnPlayersChanged?.Invoke();
-
-        if (!IsInLobby || App.UI.Lobby == null)
-        {
-            return;
-        }
-
-        if (App.UI.Lobby.TryGetPanel(out LobbyRoomPanel roomPanel))
-        {
-            roomPanel.RefreshContent();
-        }
     }
 
     public void RefreshLobbyUI()

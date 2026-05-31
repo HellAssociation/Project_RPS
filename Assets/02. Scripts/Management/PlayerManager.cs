@@ -1,183 +1,297 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using Fusion;
 using SystemEnums;
 using UnityEngine;
 
 /// <summary>
-/// 인게임 플레이어 목록 및 손가락 배정/입력 상태를 관리합니다.
+/// 세션 플레이어의 <see cref="PlayerNetworkObject"/> 조회·스폰·로비 스냅샷 빌드를 담당합니다.
+/// [Networked] 원본은 <see cref="PlayerNetworkObject"/>이며, 여기서는 게임/UI가 쓰는 플레이어 진입점입니다.
 /// </summary>
 [DefaultExecutionOrder((int)EExecutionOrder.SystemManagement)]
 public class PlayerManager : CommonManagerBase
 {
-    readonly Dictionary<string, GamePlayer> _gamePlayersById = new();
-    readonly List<GamePlayer> _gamePlayers = new();
+    const string PlayerPrefabResource = "PlayerNetworkObject";
 
-    GamePlayer _localGamePlayer;
-    string _localPlayerId = string.Empty;
+    NetworkObject _playerPrefab;
 
-    public event Action OnGamePlayersChanged;
-    public event Action OnFingerAssignmentsChanged;
+    NetworkManager Network => App.SystemManager.Network;
 
-    public string LocalPlayerId => _localPlayerId;
-    public bool HasGameRoster => _gamePlayers.Count > 0;
-    public GamePlayer LocalGamePlayer => _localGamePlayer;
-    public IReadOnlyList<GamePlayer> GamePlayers => _gamePlayers;
-    public EFingerType LocalAssignedFinger => _localGamePlayer?.CurrFinger ?? EFingerType.None;
+    /// <summary><see cref="PlayerNetworkObject"/>의 로비/인게임 [Networked] 값이 바뀔 때 호출됩니다.</summary>
+    public event Action OnPlayersChanged;
 
-    /// <summary>
-    /// 인게임 진입 시 NetworkRunner 활성 플레이어로 GamePlayer 목록을 구성합니다.
-    /// </summary>
-    public void SyncGamePlayersFromNetwork()
+    public EFingerType LocalAssignedFinger =>
+        TryGetLocal(out PlayerNetworkObject local) ? local.AssignedFinger : EFingerType.None;
+
+    public string LocalDisplayName
     {
-        _gamePlayersById.Clear();
-        _gamePlayers.Clear();
-        _localGamePlayer = null;
-
-        NetworkManager network = App.Game.Network;
-        if (!network.IsRunning)
+        get
         {
-            OnGamePlayersChanged?.Invoke();
-            return;
-        }
-
-        _localPlayerId = network.GetLocalPlayerId();
-        IReadOnlyList<NetworkPlayerInfo> infos = network.GetActivePlayerInfos();
-
-        for (int i = 0; i < infos.Count; i++)
-        {
-            NetworkPlayerInfo info = infos[i];
-            var player = new GamePlayer(info.PlayerId, info.DisplayName, info.IsHost, info.IsLocal);
-            _gamePlayers.Add(player);
-            _gamePlayersById[info.PlayerId] = player;
-
-            if (info.IsLocal)
+            if (TryGetLocal(out PlayerNetworkObject local))
             {
-                _localGamePlayer = player;
+                string networkName = local.DisplayName.Value;
+                if (!string.IsNullOrEmpty(networkName))
+                {
+                    return networkName;
+                }
             }
-        }
 
-        OnGamePlayersChanged?.Invoke();
+            return Network != null ? Network.LocalDisplayName : "Player";
+        }
     }
 
-    public void ClearGameRoster()
-    {
-        _gamePlayersById.Clear();
-        _gamePlayers.Clear();
-        _localGamePlayer = null;
-        _localPlayerId = string.Empty;
-        OnGamePlayersChanged?.Invoke();
-    }
+    public bool IsLocalReady =>
+        TryGetLocal(out PlayerNetworkObject local) && local.IsReady;
 
-    public void ResetInGameState()
+    protected override void Awake()
     {
-        for (int i = 0; i < _gamePlayers.Count; i++)
+        base.Awake();
+
+        if (_playerPrefab == null)
         {
-            _gamePlayers[i].CurrFinger = EFingerType.None;
-            _gamePlayers[i].IsFingerExtended = false;
+            _playerPrefab = Resources.Load<NetworkObject>(PlayerPrefabResource);
         }
 
-        OnGamePlayersChanged?.Invoke();
+        PlayerNetworkObject.LobbyDataChanged += HandlePlayerDataChanged;
+        PlayerNetworkObject.InGameDataChanged += HandlePlayerDataChanged;
     }
 
-    public void ResetAllFingerExtended()
+    void OnDestroy()
     {
-        for (int i = 0; i < _gamePlayers.Count; i++)
-        {
-            _gamePlayers[i].IsFingerExtended = false;
-        }
-
-        OnGamePlayersChanged?.Invoke();
+        PlayerNetworkObject.LobbyDataChanged -= HandlePlayerDataChanged;
+        PlayerNetworkObject.InGameDataChanged -= HandlePlayerDataChanged;
     }
 
-    /// <summary>
-    /// 방장이 무작위 배분한 손가락 정보를 모든 클라이언트에 적용합니다.
-    /// </summary>
-    public void ApplyFingerAssignments(IReadOnlyDictionary<string, EFingerType> assignments)
+    void HandlePlayerDataChanged()
     {
-        if (assignments == null)
+        OnPlayersChanged?.Invoke();
+    }
+
+    public bool TryGetLocal(out PlayerNetworkObject player)
+    {
+        player = null;
+
+        if (Network == null || !Network.TryGetAliveRunner(out NetworkRunner runner) || !runner.IsRunning)
         {
-            return;
+            return false;
         }
 
-        foreach (KeyValuePair<string, EFingerType> entry in assignments)
+        return TryGet(runner.LocalPlayer, out player);
+    }
+
+    public bool TryGet(PlayerRef playerRef, out PlayerNetworkObject player)
+    {
+        player = null;
+
+        if (Network == null || !Network.TryGetAliveRunner(out NetworkRunner runner) || !runner.IsRunning)
         {
-            if (!_gamePlayersById.TryGetValue(entry.Key, out GamePlayer player))
+            return false;
+        }
+
+        NetworkObject playerObject = runner.GetPlayerObject(playerRef);
+        return playerObject != null && playerObject.TryGetComponent(out player);
+    }
+
+    /// <summary>게임 씬 진입 후 despawn된 player object를 호스트가 다시 스폰합니다.</summary>
+    public IEnumerator ServerEnsurePlayerObjectsCoroutine()
+    {
+        if (Network == null || !Network.TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
+        {
+            yield break;
+        }
+
+        if (_playerPrefab == null)
+        {
+            Debug.LogError($"[PlayerManager] Player prefab not found: {PlayerPrefabResource}");
+            yield break;
+        }
+
+        INetworkSceneManager sceneManager = runner.SceneManager;
+        while (sceneManager != null && sceneManager.IsBusy)
+        {
+            yield return null;
+        }
+
+        yield return null;
+
+        foreach (PlayerRef player in Network.GetActivePlayers())
+        {
+            if (runner.GetPlayerObject(player) != null)
             {
                 continue;
             }
 
-            player.CurrFinger = entry.Value;
-            player.IsFingerExtended = false;
+            yield return SpawnAsyncCoroutine(runner, player);
         }
-
-        OnGamePlayersChanged?.Invoke();
-        OnFingerAssignmentsChanged?.Invoke();
     }
 
-    public void SetFingerExtended(string playerId, bool isExtended)
+    IEnumerator SpawnAsyncCoroutine(NetworkRunner runner, PlayerRef player)
     {
-        if (!_gamePlayersById.TryGetValue(playerId, out GamePlayer player))
+        if (_playerPrefab == null || runner == null || !runner.IsServer || runner.GetPlayerObject(player) != null)
         {
-            return;
+            yield break;
         }
 
-        if (player.IsFingerExtended == isExtended)
-        {
-            return;
-        }
+        bool isLocalPlayer = player == runner.LocalPlayer;
+        string localName = Network != null ? Network.LocalDisplayName : string.Empty;
 
-        player.IsFingerExtended = isExtended;
-        LogFingerManipulation(player);
-        OnGamePlayersChanged?.Invoke();
-    }
-
-    void LogFingerManipulation(GamePlayer player)
-    {
-        string who = player.IsLocal ? $"[로컬] {player.DisplayName}" : player.DisplayName;
-        string action = player.IsFingerExtended ? "펼침" : "접음";
-        EFingerType handMask = GetExtendedFingersMask();
-
-        Debug.Log($"[PlayerManager] {who} — {player.CurrFinger} {action} | 손 마스크: {handMask}");
-    }
-
-    public void SetLocalFingerExtended(bool isExtended)
-    {
-        if (_localGamePlayer == null)
-        {
-            return;
-        }
-
-        SetFingerExtended(_localGamePlayer.PlayerId, isExtended);
-    }
-
-    public EFingerType GetExtendedFingersMask()
-    {
-        EFingerType mask = EFingerType.None;
-
-        for (int i = 0; i < _gamePlayers.Count; i++)
-        {
-            GamePlayer player = _gamePlayers[i];
-            if (player.CurrFinger != EFingerType.None && player.IsFingerExtended)
+        NetworkSpawnOp spawnOp = runner.SpawnAsync(
+            _playerPrefab,
+            inputAuthority: player,
+            onBeforeSpawned: (_, obj) =>
             {
-                mask |= player.CurrFinger;
+                if (isLocalPlayer && obj.TryGetComponent(out PlayerNetworkObject playerObject))
+                {
+                    playerObject.DisplayName = localName;
+                }
+            });
+
+        while (!spawnOp.IsSpawned && !spawnOp.IsFailed)
+        {
+            yield return null;
+        }
+
+        if (spawnOp.IsFailed)
+        {
+            Debug.LogError($"[PlayerManager] Failed to spawn player object for {player}.");
+            yield break;
+        }
+
+        if (spawnOp.Object != null)
+        {
+            runner.SetPlayerObject(player, spawnOp.Object);
+        }
+    }
+
+    public void Spawn(NetworkRunner runner, PlayerRef player)
+    {
+        if (_playerPrefab == null || runner == null || !runner.IsServer || runner.GetPlayerObject(player) != null)
+        {
+            return;
+        }
+
+        bool isLocalPlayer = player == runner.LocalPlayer;
+        string localName = Network != null ? Network.LocalDisplayName : string.Empty;
+
+        NetworkObject spawned = runner.Spawn(
+            _playerPrefab,
+            inputAuthority: player,
+            onBeforeSpawned: (_, obj) =>
+            {
+                if (isLocalPlayer && obj.TryGetComponent(out PlayerNetworkObject playerObject))
+                {
+                    playerObject.DisplayName = localName;
+                }
+            });
+
+        runner.SetPlayerObject(player, spawned);
+    }
+
+    public void Despawn(NetworkRunner runner, PlayerRef player)
+    {
+        if (runner == null || !runner.IsServer)
+        {
+            return;
+        }
+
+        NetworkObject playerObject = runner.GetPlayerObject(player);
+        if (playerObject != null)
+        {
+            runner.Despawn(playerObject);
+        }
+    }
+
+    /// <summary>로비 UI용 플레이어 목록을 <see cref="PlayerNetworkObject"/>에서 빌드합니다.</summary>
+    public List<LobbyPlayer> BuildLobbyPlayers()
+    {
+        var players = new List<LobbyPlayer>();
+
+        if (Network == null || !Network.IsRunning)
+        {
+            return players;
+        }
+
+        IReadOnlyList<PlayerRef> activePlayers = Network.GetActivePlayers();
+        if (activePlayers.Count == 0)
+        {
+            AddLocalLobbyFallback(players);
+            return players;
+        }
+
+        if (!Network.TryGetAliveRunner(out NetworkRunner runner))
+        {
+            return players;
+        }
+
+        PlayerRef hostPlayer = ResolveHostPlayer(runner, activePlayers);
+        string localId = Network.GetLocalPlayerId();
+
+        foreach (PlayerRef playerRef in activePlayers)
+        {
+            string playerId = playerRef.PlayerId.ToString();
+            bool isLocal = playerId == localId;
+            bool isHost = playerRef == hostPlayer;
+            string displayName = ResolveDisplayName(playerRef, playerId, isLocal);
+            bool isReady = !isHost && TryGet(playerRef, out PlayerNetworkObject lobbyPlayer) && lobbyPlayer.IsReady;
+
+            players.Add(new LobbyPlayer(playerId, displayName, isHost, isLocal) { IsReady = isReady });
+        }
+
+        return players;
+    }
+
+    void AddLocalLobbyFallback(List<LobbyPlayer> players)
+    {
+        if (Network == null || !Network.IsRunning || players == null)
+        {
+            return;
+        }
+
+        string localId = Network.GetLocalPlayerId();
+        if (string.IsNullOrEmpty(localId))
+        {
+            return;
+        }
+
+        bool isHost = Network.Session.IsHost;
+        bool isReady = !isHost && IsLocalReady;
+        players.Add(new LobbyPlayer(localId, LocalDisplayName, isHost, true) { IsReady = isReady });
+    }
+
+    string ResolveDisplayName(PlayerRef playerRef, string playerId, bool isLocal)
+    {
+        if (TryGet(playerRef, out PlayerNetworkObject player))
+        {
+            string networkName = player.DisplayName.Value;
+            if (!string.IsNullOrEmpty(networkName))
+            {
+                return networkName;
             }
         }
 
-        return mask;
+        return isLocal ? LocalDisplayName : $"Player {playerId}";
     }
 
-    public bool TryGetGamePlayer(string playerId, out GamePlayer player)
+    static PlayerRef ResolveHostPlayer(NetworkRunner runner, IReadOnlyList<PlayerRef> activePlayers)
     {
-        return _gamePlayersById.TryGetValue(playerId, out player);
-    }
+        if (runner.IsServer)
+        {
+            return runner.LocalPlayer;
+        }
 
-    public bool TryGetGamePlayer(int playerId, out GamePlayer player)
-    {
-        return TryGetGamePlayer(playerId.ToString(), out player);
-    }
+        PlayerRef host = default;
+        int minId = int.MaxValue;
 
-    public bool IsLocal(string playerId)
-    {
-        return playerId == _localPlayerId;
+        foreach (PlayerRef playerRef in activePlayers)
+        {
+            if (playerRef.PlayerId < minId)
+            {
+                minId = playerRef.PlayerId;
+                host = playerRef;
+            }
+        }
+
+        return host;
     }
 }

@@ -10,13 +10,13 @@ using UnityEngine;
 public class InGameManager : SceneManagerBase
 {
     public const float RoundDurationSeconds = 3f;
-    const float SetupDelaySeconds = 0.5f;
 
-    NetworkManager Network => App.Game.Network;
-    PlayerManager Players => App.Game.Manager;
+    NetworkManager Network => App.SystemManager.Network;
+    PlayerManager Players => App.Game.Players;
     InputManager Input => App.SystemManager.Input;
 
     Coroutine _roundCoroutine;
+    Coroutine _hostSetupCoroutine;
     bool _hostSetupStarted;
 
     public EInGamePhase Phase { get; private set; } = EInGamePhase.WaitingForSetup;
@@ -38,7 +38,6 @@ public class InGameManager : SceneManagerBase
         Network.OnFingerAssignmentsReceived += HandleFingerAssignmentsReceived;
         Network.OnRoundStarted += HandleRoundStarted;
         Network.OnRoundResultReceived += HandleRoundResultReceived;
-        App.OnSceneLoaded += HandleSceneLoaded;
     }
 
     void OnDisable()
@@ -48,71 +47,76 @@ public class InGameManager : SceneManagerBase
         Network.OnFingerAssignmentsReceived -= HandleFingerAssignmentsReceived;
         Network.OnRoundStarted -= HandleRoundStarted;
         Network.OnRoundResultReceived -= HandleRoundResultReceived;
-        App.OnSceneLoaded -= HandleSceneLoaded;
     }
 
-    void HandleSceneLoaded(EScene scene)
+    void Start()
     {
-        if (scene != EScene.InGame)
-        {
-            return;
-        }
-
         BeginInGameSetup();
-        StartCoroutine(BeginAsHostCoroutine());
-    }
-
-    void HandleInGameSceneReady()
-    {
-        if (!Network.IsServerHost)
-        {
-            return;
-        }
-
-        StartCoroutine(BeginAsHostCoroutine());
     }
 
     void BeginInGameSetup()
     {
+        if (_hostSetupCoroutine != null)
+        {
+            StopCoroutine(_hostSetupCoroutine);
+            _hostSetupCoroutine = null;
+        }
+
         _hostSetupStarted = false;
         Phase = EInGamePhase.WaitingForSetup;
         LastHandPosition = EHandPosition.Invalid;
         RoundTimeRemaining = 0f;
         Input.SetEnabled(false);
         Input.ResetFingerState();
-        Players.SyncGamePlayersFromNetwork();
-        Players.ResetInGameState();
+        Network.ResetInGameRoundNotification();
     }
 
-    IEnumerator BeginAsHostCoroutine()
+    void HandleInGameSceneReady()
     {
-        if (_hostSetupStarted || Phase != EInGamePhase.WaitingForSetup)
+        TryBeginHostSetup();
+    }
+
+    void TryBeginHostSetup()
+    {
+        if (_hostSetupStarted || !Network.IsServerHost || Phase != EInGamePhase.WaitingForSetup)
         {
-            yield break;
+            return;
         }
 
         _hostSetupStarted = true;
-        yield return new WaitForSeconds(SetupDelaySeconds);
-
-        if (!Network.IsServerHost || Phase != EInGamePhase.WaitingForSetup)
-        {
-            yield break;
-        }
-
-        Network.ServerInitializeFingerAssignments();
+        _hostSetupCoroutine = StartCoroutine(HostSetupCoroutine());
     }
 
-    void HandleFingerAssignmentsReceived(System.Collections.Generic.IReadOnlyDictionary<int, EFingerType> assignments)
+    /// <summary>
+    /// 호스트: player object 재확보 → 손가락 배정 → 라운드 시작.
+    /// 클라이언트: <see cref="HandleFingerAssignmentsReceived"/> 경로로 진행.
+    /// </summary>
+    IEnumerator HostSetupCoroutine()
     {
+        yield return Players.ServerEnsurePlayerObjectsCoroutine();
+
+        Network.ServerInitializeFingerAssignments();
+        yield return null;
+
+        ApplyAssignmentsReady();
+        Network.ServerStartRound(RoundDurationSeconds);
+        _hostSetupCoroutine = null;
+    }
+
+    void HandleFingerAssignmentsReceived()
+    {
+        ApplyAssignmentsReady();
+    }
+
+    void ApplyAssignmentsReady()
+    {
+        if (Phase != EInGamePhase.WaitingForSetup || LocalAssignedFinger == EFingerType.None)
+        {
+            return;
+        }
+
         Phase = EInGamePhase.AssignmentsReady;
         OnLocalAssignedFingerChanged?.Invoke(LocalAssignedFinger);
-
-        Debug.Log($"[InGameManager] 손가락 배정 완료 — 로컬: {LocalAssignedFinger}");
-
-        if (Network.IsServerHost)
-        {
-            Network.ServerStartRound(RoundDurationSeconds);
-        }
     }
 
     void HandleFingerToggled(bool isExtended)
@@ -122,13 +126,22 @@ public class InGameManager : SceneManagerBase
             return;
         }
 
-        Players.SetLocalFingerExtended(isExtended);
         Network.ClientSendFingerState(isExtended);
         OnLocalFingerExtendedChanged?.Invoke(isExtended);
+
+#if UNITY_EDITOR
+        Debug.Log($"[InGameManager] 손가락 입력 — {Players.LocalDisplayName}, {LocalAssignedFinger}, {(isExtended ? "펴기" : "접기")}");
+#endif
     }
 
     void HandleRoundStarted(float durationSeconds)
     {
+        if (_hostSetupCoroutine != null)
+        {
+            StopCoroutine(_hostSetupCoroutine);
+            _hostSetupCoroutine = null;
+        }
+
         if (_roundCoroutine != null)
         {
             StopCoroutine(_roundCoroutine);
@@ -143,10 +156,7 @@ public class InGameManager : SceneManagerBase
         RoundTimeRemaining = durationSeconds;
         Input.ResetFingerState();
         Input.SetEnabled(true);
-        Players.SetLocalFingerExtended(false);
         OnRoundTimerUpdated?.Invoke(RoundTimeRemaining);
-
-        Debug.Log($"[InGameManager] 라운드 시작 — {durationSeconds:0.#}초");
 
         while (RoundTimeRemaining > 0f)
         {
@@ -160,8 +170,6 @@ public class InGameManager : SceneManagerBase
         Input.SetEnabled(false);
         Phase = EInGamePhase.RoundJudging;
 
-        Debug.Log("[InGameManager] 입력 종료 — 판정 중");
-
         if (Network.IsServerHost)
         {
             Network.ServerJudgeAndBroadcastRoundResult();
@@ -172,9 +180,6 @@ public class InGameManager : SceneManagerBase
     {
         LastHandPosition = handPosition;
         Phase = EInGamePhase.RoundComplete;
-
         OnRoundJudged?.Invoke(handPosition);
-
-        Debug.Log($"[InGameManager] 판정 — {handPosition}");
     }
 }
