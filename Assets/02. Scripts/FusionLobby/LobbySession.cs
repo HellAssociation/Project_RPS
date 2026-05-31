@@ -75,34 +75,4 @@ public class LobbySession
         _players.Clear();
         _players.AddRange(players);
     }
-
-    public bool TryGetLocalPlayer(out LobbyPlayer player)
-    {
-        for (int i = 0; i < _players.Count; i++)
-        {
-            if (_players[i].IsLocal)
-            {
-                player = _players[i];
-                return true;
-            }
-        }
-
-        player = null;
-        return false;
-    }
-
-    public bool TryGetPlayer(string playerId, out LobbyPlayer player)
-    {
-        for (int i = 0; i < _players.Count; i++)
-        {
-            if (_players[i].PlayerId == playerId)
-            {
-                player = _players[i];
-                return true;
-            }
-        }
-
-        player = null;
-        return false;
-    }
 }

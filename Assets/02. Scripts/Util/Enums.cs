@@ -78,18 +78,9 @@ namespace SystemEnums
         BGM_NEWS,
     }
 
-    public enum ELobbyReadyMessage : byte
-    {
-        SetReady = 1,
-        FullSync = 2,
-    }
-
     public enum EInGameRpsMessage : byte
     {
-        AssignFingers = 1,
-        FingerState = 2,
-        StartRound = 3,
-        RoundResult = 4,
-        FingerStateSync = 5,
+        StartRound = 1,
+        RoundResult = 2,
     }
 }

@@ -6,397 +6,80 @@ using Fusion.Photon.Realtime;
 using Fusion.Sockets;
 using SystemEnums;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Photon Fusion 네트워크 매니저. Title부터 InGame까지 유지(DDOL).
-/// 클라우드 로비·방 세션·준비 동기화·씬 로드 및 인게임 ReliableData를 담당합니다.
+/// Photon Fusion 세션 흐름(튜토리얼 스타일).
+/// 1) Host <see cref="StartGame"/> + <see cref="SessionName"/> — 방 생성
+/// 2) Client <see cref="StartGame"/> + 동일 <see cref="SessionName"/> — 방 참가
+/// 3) Host <see cref="NetworkRunner.LoadScene"/> — 세션 플레이어 전원 인게임 씬 이동
+///
+/// 인게임 RPS 동기화:
+/// 손가락 배정/입력 상태는 <see cref="PlayerNetworkObject"/>의 [Networked] 값으로 동기화하고,
+/// 라운드 시작/판정 결과 신호만 ReliableData(<see cref="InGameRpsKey"/>)로 브로드캐스트합니다.
 /// </summary>
 [DefaultExecutionOrder((int)EExecutionOrder.GameManagement)]
 public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
 {
     public const int MaxPlayers = 5;
-    public const int MaxRemotePlayers = MaxPlayers - 1;
-    public static readonly ReliableKey CanvasSyncKey = ReliableKey.FromInts(0x434E5653, 0, 0, 0);
     public const string SessionNotFoundMessage = "해당하는 대기실이 없습니다.";
-    const float SessionListLookupTimeoutSeconds = 5f;
-    static readonly ReliableKey LobbyReadyKey = ReliableKey.FromInts(0x4C424452, 0, 0, 0);
-    static readonly ReliableKey InGameRpsKey = ReliableKey.FromInts(0x52475053, 0, 0, 0);
 
     [SerializeField] NetworkRunner _runner;
     LobbySession _session = new();
 
     string _localDisplayName = "Player";
-    bool _localReady;
     int _defaultMaxPlayers = 5;
     int _minPlayersToStart = 1;
     bool _requireAllReady = true;
     bool _isRestoringCloudLobby;
-    string _pendingSessionLookupName;
-    bool _pendingSessionLookupComplete;
-    bool _pendingSessionLookupFound;
     string _lastCloudConnectError = "클라우드 로비에 연결할 수 없습니다.";
-    readonly Dictionary<int, bool> _readyByPlayerId = new();
-
-    public event Action OnInGameSceneReady;
-    public event Action<IReadOnlyDictionary<int, EFingerType>> OnFingerAssignmentsReceived;
-    public event Action<int, bool> OnRemoteFingerStateChanged;
-    public event Action<float> OnRoundStarted;
-    public event Action<EHandPosition> OnRoundResultReceived;
 
     public NetworkRunner Runner => TryGetAliveRunner(out NetworkRunner runner) ? runner : null;
     public bool IsRunning => TryGetAliveRunner(out NetworkRunner runner) && runner.IsRunning;
     public bool IsCloudConnected { get; private set; }
     public LobbySession Session => _session;
-    public bool IsLocalReady => _localReady;
+    public bool IsLocalReady => App.Game.Players.IsLocalReady;
+    public string LocalDisplayName => _localDisplayName;
 
     public event Action<LobbySession> OnSessionUpdated;
     public event Action<string> OnError;
-    public event Action OnPlayersChanged;
 
     protected override void Awake()
     {
         base.Awake();
+        EnsureRunnerComponents();
         _runner.AddCallbacks(this);
+    }
+
+    void OnEnable()
+    {
+        PlayerNetworkObject.InGameDataChanged += HandleInGameDataChanged;
+
+        if (App.Game.Players != null)
+        {
+            App.Game.Players.OnPlayersChanged += RefreshSessionPlayers;
+        }
+    }
+
+    void OnDisable()
+    {
+        PlayerNetworkObject.InGameDataChanged -= HandleInGameDataChanged;
+
+        if (App.Game.Players != null)
+        {
+            App.Game.Players.OnPlayersChanged -= RefreshSessionPlayers;
+        }
     }
 
     void OnDestroy()
     {
-        ClearPendingSessionLookup();
-    }
-
-    public void HandleReliableData(NetworkRunner runner, PlayerRef from, ArraySegment<byte> data)
-    {
-        HandleInGameRpsData(runner, from, data);
+        if (_runner != null)
+        {
+            _runner.RemoveCallbacks(this);
+        }
     }
 
     public bool IsServerHost => TryGetAliveRunner(out NetworkRunner runner) && runner.IsServer;
-
-    public void ServerInitializeFingerAssignments()
-    {
-        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
-        {
-            return;
-        }
-
-        IReadOnlyList<PlayerRef> activePlayers = GetActivePlayers();
-        var playerIds = new List<int>(activePlayers.Count);
-
-        for (int i = 0; i < activePlayers.Count; i++)
-        {
-            playerIds.Add(activePlayers[i].PlayerId);
-        }
-
-        playerIds.Sort();
-
-        Dictionary<int, EFingerType> assignments = RpsHandUtility.CreateRandomAssignments(playerIds);
-        ApplyFingerAssignmentsToPlayers(assignments);
-        BroadcastAssignFingers(assignments);
-    }
-
-    public void ClientSendFingerState(bool isExtended)
-    {
-        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsRunning)
-        {
-            return;
-        }
-
-        byte[] payload =
-        {
-            (byte)EInGameRpsMessage.FingerState,
-            (byte)(isExtended ? 1 : 0),
-        };
-
-        if (runner.IsServer)
-        {
-            ServerSetFingerState(runner.LocalPlayer.PlayerId, isExtended);
-            return;
-        }
-
-        runner.SendReliableDataToServer(InGameRpsKey, payload);
-    }
-
-    public void ServerStartRound(float durationSeconds)
-    {
-        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
-        {
-            return;
-        }
-
-        ResetFingerExtendedStates();
-
-        byte[] payload =
-        {
-            (byte)EInGameRpsMessage.StartRound,
-        };
-        payload = AppendFloat(payload, durationSeconds);
-
-        BroadcastInGamePayload(payload);
-        OnRoundStarted?.Invoke(durationSeconds);
-    }
-
-    public void ServerJudgeAndBroadcastRoundResult()
-    {
-        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
-        {
-            return;
-        }
-
-        EHandPosition handPosition = RpsHandUtility.Judge(App.Game.Manager.GetExtendedFingersMask());
-        BroadcastRoundResult(handPosition);
-    }
-
-    void ResetFingerExtendedStates()
-    {
-        App.Game.Manager.ResetAllFingerExtended();
-    }
-
-    void ServerSetFingerState(int playerId, bool isExtended)
-    {
-        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
-        {
-            return;
-        }
-
-        if (!App.Game.Manager.TryGetGamePlayer(playerId, out GamePlayer player) || player.CurrFinger == EFingerType.None)
-        {
-            return;
-        }
-
-        App.Game.Manager.SetFingerExtended(playerId.ToString(), isExtended);
-        OnRemoteFingerStateChanged?.Invoke(playerId, isExtended);
-        BroadcastFingerStateSync(playerId, isExtended);
-    }
-
-    void BroadcastFingerStateSync(int playerId, bool isExtended)
-    {
-        var buffer = new List<byte>(6)
-        {
-            (byte)EInGameRpsMessage.FingerStateSync,
-        };
-        buffer.AddRange(BitConverter.GetBytes(playerId));
-        buffer.Add((byte)(isExtended ? 1 : 0));
-        BroadcastInGamePayload(buffer.ToArray());
-    }
-
-    void ApplyFingerStateSync(int playerId, bool isExtended)
-    {
-        if (!App.Game.Manager.TryGetGamePlayer(playerId, out GamePlayer player))
-        {
-            return;
-        }
-
-        if (player.IsFingerExtended == isExtended)
-        {
-            return;
-        }
-
-        App.Game.Manager.SetFingerExtended(playerId.ToString(), isExtended);
-        OnRemoteFingerStateChanged?.Invoke(playerId, isExtended);
-    }
-
-    void BroadcastAssignFingers(IReadOnlyDictionary<int, EFingerType> assignments)
-    {
-        byte[] payload = BuildAssignFingersPayload(assignments);
-        BroadcastInGamePayload(payload);
-    }
-
-    void BroadcastRoundResult(EHandPosition handPosition)
-    {
-        byte[] payload =
-        {
-            (byte)EInGameRpsMessage.RoundResult,
-            (byte)handPosition,
-        };
-
-        BroadcastInGamePayload(payload);
-        OnRoundResultReceived?.Invoke(handPosition);
-    }
-
-    void BroadcastInGamePayload(byte[] payload)
-    {
-        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
-        {
-            return;
-        }
-
-        foreach (PlayerRef player in runner.ActivePlayers)
-        {
-            if (player == runner.LocalPlayer)
-            {
-                continue;
-            }
-
-            runner.SendReliableDataToPlayer(player, InGameRpsKey, payload);
-        }
-    }
-
-    static byte[] BuildAssignFingersPayload(IReadOnlyDictionary<int, EFingerType> assignments)
-    {
-        var buffer = new List<byte>(assignments.Count * 5 + 2)
-        {
-            (byte)EInGameRpsMessage.AssignFingers,
-            (byte)assignments.Count,
-        };
-
-        foreach (KeyValuePair<int, EFingerType> entry in assignments)
-        {
-            buffer.AddRange(BitConverter.GetBytes(entry.Key));
-            buffer.Add((byte)entry.Value);
-        }
-
-        return buffer.ToArray();
-    }
-
-    static byte[] AppendFloat(byte[] payload, float value)
-    {
-        var buffer = new List<byte>(payload.Length + 4);
-        buffer.AddRange(payload);
-        buffer.AddRange(BitConverter.GetBytes(value));
-        return buffer.ToArray();
-    }
-
-    void ApplyFingerAssignmentsToPlayers(IReadOnlyDictionary<int, EFingerType> assignments)
-    {
-        PlayerManager players = App.Game.Manager;
-
-        if (!players.HasGameRoster)
-        {
-            players.SyncGamePlayersFromNetwork();
-        }
-
-        var byStringId = new Dictionary<string, EFingerType>(assignments.Count);
-
-        foreach (KeyValuePair<int, EFingerType> entry in assignments)
-        {
-            byStringId[entry.Key.ToString()] = entry.Value;
-        }
-
-        players.ApplyFingerAssignments(byStringId);
-        OnFingerAssignmentsReceived?.Invoke(assignments);
-    }
-
-    void HandleInGameRpsData(NetworkRunner runner, PlayerRef from, ArraySegment<byte> data)
-    {
-        if (data.Count < 1 || data.Array == null)
-        {
-            return;
-        }
-
-        var messageType = (EInGameRpsMessage)data.Array[data.Offset];
-
-        switch (messageType)
-        {
-            case EInGameRpsMessage.AssignFingers:
-                ApplyAssignFingersPayload(data);
-                break;
-
-            case EInGameRpsMessage.FingerState:
-                if (!runner.IsServer || data.Count < 2)
-                {
-                    return;
-                }
-
-                bool isExtended = data.Array[data.Offset + 1] != 0;
-                ServerSetFingerState(from.PlayerId, isExtended);
-                break;
-
-            case EInGameRpsMessage.FingerStateSync:
-                if (data.Count < 6)
-                {
-                    return;
-                }
-
-                int syncedPlayerId = BitConverter.ToInt32(data.Array, data.Offset + 1);
-                bool syncedExtended = data.Array[data.Offset + 5] != 0;
-                ApplyFingerStateSync(syncedPlayerId, syncedExtended);
-                break;
-
-            case EInGameRpsMessage.StartRound:
-                if (data.Count < 5)
-                {
-                    return;
-                }
-
-                float duration = BitConverter.ToSingle(data.Array, data.Offset + 1);
-                ResetFingerExtendedStates();
-                OnRoundStarted?.Invoke(duration);
-                break;
-
-            case EInGameRpsMessage.RoundResult:
-                if (data.Count < 2)
-                {
-                    return;
-                }
-
-                var handPosition = (EHandPosition)data.Array[data.Offset + 1];
-                OnRoundResultReceived?.Invoke(handPosition);
-                break;
-        }
-    }
-
-    void ApplyAssignFingersPayload(ArraySegment<byte> data)
-    {
-        if (data.Count < 2 || data.Array == null)
-        {
-            return;
-        }
-
-        int offset = data.Offset + 1;
-        int count = data.Array[offset++];
-
-        var assignments = new Dictionary<int, EFingerType>(count);
-
-        for (int i = 0; i < count; i++)
-        {
-            if (offset + 5 > data.Offset + data.Count)
-            {
-                break;
-            }
-
-            int playerId = BitConverter.ToInt32(data.Array, offset);
-            offset += 4;
-            var finger = (EFingerType)data.Array[offset++];
-            assignments[playerId] = finger;
-        }
-
-        ApplyFingerAssignmentsToPlayers(assignments);
-    }
-
-    public IReadOnlyList<NetworkPlayerInfo> GetActivePlayerInfos()
-    {
-        var infos = new List<NetworkPlayerInfo>();
-
-        if (!IsRunning)
-        {
-            return infos;
-        }
-
-        IReadOnlyList<PlayerRef> activePlayers = GetActivePlayers();
-        if (activePlayers.Count == 0)
-        {
-            string localId = GetLocalPlayerId();
-            if (!string.IsNullOrEmpty(localId))
-            {
-                infos.Add(new NetworkPlayerInfo(localId, _localDisplayName, _session.IsHost, true));
-            }
-
-            return infos;
-        }
-
-        PlayerRef hostPlayer = ResolveHostPlayer(_runner, activePlayers);
-        string localPlayerId = GetLocalPlayerId();
-
-        foreach (PlayerRef playerRef in activePlayers)
-        {
-            string playerId = playerRef.PlayerId.ToString();
-            bool isLocal = playerId == localPlayerId;
-            bool isHost = playerRef == hostPlayer;
-            string displayName = isLocal ? _localDisplayName : $"Player {playerId}";
-            infos.Add(new NetworkPlayerInfo(playerId, displayName, isHost, isLocal));
-        }
-
-        return infos;
-    }
 
     public void ConnectToCloud(Action<LobbyRequestResult> onComplete)
     {
@@ -443,13 +126,20 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
         StartCoroutine(StartSessionCoroutine(GameMode.Client, code, 0, isHost: false, onComplete));
     }
 
+    /// <summary>
+    /// Fusion 기본 랜덤 매칭: Client + <c>SessionName == null</c> (내부 OpJoinRandomRoom).
+    /// </summary>
+    public void QuickJoinSession(Action<LobbyRequestResult> onComplete)
+    {
+        StartCoroutine(StartSessionCoroutine(GameMode.Client, sessionName: null, maxPlayers: 0, isHost: false, onComplete));
+    }
+
     public void LeaveSession()
     {
-        ResetLocalRoomState();
         _session.Reset();
         OnSessionUpdated?.Invoke(_session);
 
-        if (IsRunning)
+        if (IsRunning || TryGetAliveRunner(out NetworkRunner runner) && runner.IsCloudReady)
         {
             StartCoroutine(LeaveSessionCoroutine());
         }
@@ -462,27 +152,18 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
             return;
         }
 
-        if (_localReady == isReady)
+        if (!App.Game.Players.TryGetLocal(out PlayerNetworkObject lobbyPlayer))
         {
             return;
         }
 
-        _localReady = isReady;
-
-        if (TryGetAliveRunner(out NetworkRunner runner) && runner.IsServer)
+        if (lobbyPlayer.IsReady == isReady)
         {
-            ServerSetPlayerReady(runner.LocalPlayer, isReady);
             return;
         }
 
-        if (TryGetAliveRunner(out NetworkRunner clientRunner))
-        {
-            _readyByPlayerId[clientRunner.LocalPlayer.PlayerId] = isReady;
-        }
-
-        SendReadyStateToServer(isReady);
-        RefreshSessionPlayers();
-        OnPlayersChanged?.Invoke();
+        // Host 모드: StateAuthority(호스트)에게 변경을 요청하고, [Networked] 복제로 전체에 반영된다.
+        lobbyPlayer.RPC_SetReady(isReady);
     }
 
     public void SetLocalDisplayName(string displayName)
@@ -523,25 +204,8 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
 
     public void Shutdown()
     {
-        ResetLocalRoomState();
         _session.Reset();
-        StartCoroutine(ShutdownGameSessionCoroutine(disconnectCloud: true));
-    }
-
-    public bool TrySetPlayerReady(string playerId, bool isReady)
-    {
-        if (string.IsNullOrEmpty(playerId))
-        {
-            return false;
-        }
-
-        if (playerId == GetLocalPlayerId())
-        {
-            SetLocalReady(isReady);
-            return true;
-        }
-
-        return false;
+        StartCoroutine(ShutdownSessionCoroutine(disconnectCloud: true));
     }
 
     public IReadOnlyList<PlayerRef> GetActivePlayers()
@@ -581,13 +245,13 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
 
     IEnumerator ConnectToCloudCoroutine(Action<LobbyRequestResult> onComplete)
     {
-        if (IsCloudConnected && TryGetAliveRunner(out NetworkRunner cloudRunner) && cloudRunner.IsCloudReady)
+        if (IsCloudConnected && TryGetAliveRunner(out NetworkRunner cloudRunner) && cloudRunner.IsCloudReady && !cloudRunner.IsRunning)
         {
             onComplete?.Invoke(LobbyRequestResult.Success());
             yield break;
         }
 
-        yield return ConnectCloudLobbyCoroutine();
+        yield return EnsureCloudLobbyCoroutine();
 
         if (IsCloudConnected)
         {
@@ -607,26 +271,14 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
     {
         if (IsRunning)
         {
-            yield return ShutdownGameSessionCoroutine(disconnectCloud: false);
+            yield return ShutdownSessionCoroutine(disconnectCloud: false);
         }
 
-        yield return ConnectCloudLobbyCoroutine();
+        yield return EnsureCloudLobbyCoroutine();
         if (!IsCloudConnected)
         {
             onComplete?.Invoke(LobbyRequestResult.Fail(_lastCloudConnectError));
             yield break;
-        }
-
-        if (gameMode == GameMode.Client)
-        {
-            bool sessionAvailable = false;
-            yield return WaitForJoinableSessionCoroutine(sessionName, found => sessionAvailable = found);
-
-            if (!sessionAvailable)
-            {
-                onComplete?.Invoke(LobbyRequestResult.Fail(SessionNotFoundMessage));
-                yield break;
-            }
         }
 
         int playerCount = maxPlayers > 0 ? Mathf.Clamp(maxPlayers, 2, MaxPlayers) : MaxPlayers;
@@ -635,7 +287,7 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
         {
             GameMode = gameMode,
             SessionName = sessionName,
-            PlayerCount = playerCount,
+            PlayerCount = gameMode == GameMode.Host ? playerCount : 0,
             SceneManager = _runner.GetComponent<INetworkSceneManager>(),
             ObjectProvider = _runner.GetComponent<INetworkObjectProvider>(),
         });
@@ -645,13 +297,28 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
         if (!startTask.Result.Ok)
         {
             onComplete?.Invoke(LobbyRequestResult.Fail(GetStartGameErrorMessage(startTask.Result.ShutdownReason)));
-            yield return ConnectCloudLobbyCoroutine();
+            yield return EnsureCloudLobbyCoroutine(rejoinAfterFailedStart: true);
             yield break;
         }
 
+        string resolvedCode = ResolveSessionCode(sessionName);
         int sessionMaxPlayers = gameMode == GameMode.Host ? playerCount : _defaultMaxPlayers;
-        ApplyConnectedSession(sessionName, sessionMaxPlayers, isHost);
+        ApplyConnectedSession(resolvedCode, sessionMaxPlayers, isHost);
         onComplete?.Invoke(LobbyRequestResult.Success());
+    }
+
+    string ResolveSessionCode(string requestedCode)
+    {
+        if (TryGetAliveRunner(out NetworkRunner runner) &&
+            runner.SessionInfo.IsValid &&
+            !string.IsNullOrEmpty(runner.SessionInfo.Name))
+        {
+            return LobbyCodeUtility.NormalizeCode(runner.SessionInfo.Name);
+        }
+
+        return string.IsNullOrEmpty(requestedCode)
+            ? string.Empty
+            : LobbyCodeUtility.NormalizeCode(requestedCode);
     }
 
     IEnumerator LoadInGameSceneCoroutine(Action<LobbyRequestResult> onComplete)
@@ -680,14 +347,18 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
 
     IEnumerator LeaveSessionCoroutine()
     {
-        yield return ShutdownGameSessionCoroutine(disconnectCloud: false);
-        yield return ConnectCloudLobbyCoroutine();
+        yield return ShutdownSessionCoroutine(disconnectCloud: false);
+        yield return EnsureCloudLobbyCoroutine();
     }
 
-    IEnumerator ShutdownGameSessionCoroutine(bool disconnectCloud)
+    IEnumerator ShutdownSessionCoroutine(bool disconnectCloud)
     {
-        if (TryGetAliveRunner(out NetworkRunner runner) &&
-            (runner.IsRunning || (IsCloudConnected && runner.IsCloudReady)))
+        if (!TryGetAliveRunner(out NetworkRunner runner))
+        {
+            yield break;
+        }
+
+        if (runner.IsRunning || (IsCloudConnected && runner.IsCloudReady))
         {
             var shutdownTask = runner.Shutdown(false, ShutdownReason.Ok);
             yield return new WaitUntil(() => shutdownTask.IsCompleted);
@@ -699,26 +370,32 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
         }
     }
 
-    IEnumerator ConnectCloudLobbyCoroutine()
+    IEnumerator EnsureCloudLobbyCoroutine(bool rejoinAfterFailedStart = false)
     {
         _isRestoringCloudLobby = true;
         _lastCloudConnectError = "클라우드 로비에 연결할 수 없습니다.";
 
-        if (_runner.IsRunning)
+        if (rejoinAfterFailedStart && _runner.IsRunning)
         {
-            yield return ShutdownGameSessionCoroutine(disconnectCloud: false);
+            yield return ShutdownSessionCoroutine(disconnectCloud: false);
         }
 
-        if (_runner.IsCloudReady)
+        if (_runner.IsCloudReady && !_runner.IsRunning)
         {
             IsCloudConnected = true;
             _isRestoringCloudLobby = false;
             yield break;
         }
 
+        if (_runner.IsRunning)
+        {
+            _isRestoringCloudLobby = false;
+            yield break;
+        }
+
         string nickname = PlayerProfile.NormalizeDisplayName(_localDisplayName);
         PlayerProfile.SaveDisplayName(nickname);
-        string userId = PlayerProfile.GetOrCreateUserId();
+        string userId = nickname;
         var auth = new AuthenticationValues(userId) { UserId = userId };
 
         var lobbyTask = _runner.JoinSessionLobby(SessionLobby.ClientServer, authentication: auth);
@@ -735,6 +412,19 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
         _lastCloudConnectError = FormatStartGameError(lobbyTask.Result, "클라우드 로비 연결");
         Debug.LogError($"[NetworkManager] {_lastCloudConnectError}", this);
         _isRestoringCloudLobby = false;
+    }
+
+    void EnsureRunnerComponents()
+    {
+        if (_runner.GetComponent<INetworkSceneManager>() == null)
+        {
+            _runner.gameObject.AddComponent<NetworkSceneManagerDefault>();
+        }
+
+        if (_runner.GetComponent<INetworkObjectProvider>() == null)
+        {
+            _runner.gameObject.AddComponent<NetworkObjectProviderDefault>();
+        }
     }
 
     static string FormatStartGameError(StartGameResult result, string context)
@@ -764,72 +454,7 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
             : "Fusion 세션 시작에 실패했습니다.";
     }
 
-    IEnumerator WaitForJoinableSessionCoroutine(string sessionName, Action<bool> onComplete)
-    {
-        ClearPendingSessionLookup();
-
-        string normalizedName = LobbyCodeUtility.NormalizeCode(sessionName);
-        _pendingSessionLookupName = normalizedName;
-        _pendingSessionLookupComplete = false;
-        _pendingSessionLookupFound = false;
-
-        float deadline = Time.realtimeSinceStartup + SessionListLookupTimeoutSeconds;
-        while (!_pendingSessionLookupComplete && Time.realtimeSinceStartup < deadline)
-        {
-            yield return null;
-        }
-
-        bool found = _pendingSessionLookupFound;
-        ClearPendingSessionLookup();
-        onComplete?.Invoke(found);
-    }
-
-    void ClearPendingSessionLookup()
-    {
-        _pendingSessionLookupName = null;
-        _pendingSessionLookupComplete = false;
-        _pendingSessionLookupFound = false;
-    }
-
-    static bool IsJoinableSession(SessionInfo session, string normalizedSessionName)
-    {
-        if (!session.IsValid || !session.IsOpen)
-        {
-            return false;
-        }
-
-        if (!string.Equals(LobbyCodeUtility.NormalizeCode(session.Name), normalizedSessionName, StringComparison.Ordinal))
-        {
-            return false;
-        }
-
-        if (session.MaxPlayers > 0 && session.PlayerCount >= session.MaxPlayers)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    static bool TryFindJoinableSession(IReadOnlyList<SessionInfo> sessionList, string normalizedSessionName)
-    {
-        if (sessionList == null || sessionList.Count == 0)
-        {
-            return false;
-        }
-
-        for (int i = 0; i < sessionList.Count; i++)
-        {
-            if (IsJoinableSession(sessionList[i], normalizedSessionName))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool TryGetAliveRunner(out NetworkRunner runner)
+    public bool TryGetAliveRunner(out NetworkRunner runner)
     {
         runner = _runner;
         return runner != null;
@@ -837,8 +462,6 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
 
     void ApplyConnectedSession(string sessionCode, int maxPlayers, bool isHost)
     {
-        _localReady = false;
-        _readyByPlayerId.Clear();
         _session.Reset();
         _session.ApplyConnected(sessionCode, maxPlayers, isHost, GetLocalPlayerId());
         RefreshSessionPlayers();
@@ -851,225 +474,8 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
             return;
         }
 
-        _session.ReplacePlayers(BuildPlayersFromRunner());
+        _session.ReplacePlayers(App.Game.Players.BuildLobbyPlayers());
         OnSessionUpdated?.Invoke(_session);
-    }
-
-    void ResetLocalRoomState()
-    {
-        _localReady = false;
-        _readyByPlayerId.Clear();
-        App.Game.Manager.ClearGameRoster();
-        App.Game.Manager.ResetInGameState();
-    }
-
-    List<LobbyPlayer> BuildPlayersFromRunner()
-    {
-        var players = new List<LobbyPlayer>();
-
-        if (!IsRunning)
-        {
-            return players;
-        }
-
-        IReadOnlyList<PlayerRef> activePlayers = GetActivePlayers();
-        if (activePlayers.Count == 0)
-        {
-            AddLocalPlayerFallback(players);
-            return players;
-        }
-
-        PlayerRef hostPlayer = ResolveHostPlayer(_runner, activePlayers);
-        string localId = GetLocalPlayerId();
-
-        foreach (PlayerRef playerRef in activePlayers)
-        {
-            string playerId = playerRef.PlayerId.ToString();
-            bool isLocal = playerId == localId;
-            bool isHost = playerRef == hostPlayer;
-            string displayName = isLocal ? _localDisplayName : $"Player {playerId}";
-            bool isReady = !isHost && TryGetReadyState(playerRef.PlayerId, out bool ready) && ready;
-
-            players.Add(new LobbyPlayer(playerId, displayName, isHost, isLocal) { IsReady = isReady });
-        }
-
-        return players;
-    }
-
-    void AddLocalPlayerFallback(List<LobbyPlayer> players)
-    {
-        if (!IsRunning || players == null)
-        {
-            return;
-        }
-
-        string localId = GetLocalPlayerId();
-        if (string.IsNullOrEmpty(localId))
-        {
-            return;
-        }
-
-        bool isHost = _session.IsHost;
-        bool isReady = !isHost && _localReady;
-        players.Add(new LobbyPlayer(localId, _localDisplayName, isHost, true) { IsReady = isReady });
-    }
-
-    bool TryGetReadyState(int playerId, out bool isReady)
-    {
-        return _readyByPlayerId.TryGetValue(playerId, out isReady) && isReady;
-    }
-
-    void SendReadyStateToServer(bool isReady)
-    {
-        if (!TryGetAliveRunner(out NetworkRunner runner))
-        {
-            return;
-        }
-
-        byte[] payload = { (byte)ELobbyReadyMessage.SetReady, (byte)(isReady ? 1 : 0) };
-        runner.SendReliableDataToServer(LobbyReadyKey, payload);
-    }
-
-    void ServerSetPlayerReady(PlayerRef player, bool isReady)
-    {
-        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
-        {
-            return;
-        }
-
-        _readyByPlayerId[player.PlayerId] = isReady;
-        if (player == runner.LocalPlayer)
-        {
-            _localReady = isReady;
-        }
-
-        RefreshSessionPlayers();
-        OnPlayersChanged?.Invoke();
-        BroadcastReadyState();
-    }
-
-    void BroadcastReadyState()
-    {
-        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
-        {
-            return;
-        }
-
-        byte[] payload = BuildFullSyncPayload();
-        foreach (PlayerRef player in runner.ActivePlayers)
-        {
-            if (player == runner.LocalPlayer)
-            {
-                continue;
-            }
-
-            runner.SendReliableDataToPlayer(player, LobbyReadyKey, payload);
-        }
-    }
-
-    byte[] BuildFullSyncPayload()
-    {
-        var buffer = new List<byte>(_readyByPlayerId.Count * 5 + 2)
-        {
-            (byte)ELobbyReadyMessage.FullSync,
-            (byte)_readyByPlayerId.Count,
-        };
-
-        foreach (KeyValuePair<int, bool> entry in _readyByPlayerId)
-        {
-            buffer.AddRange(BitConverter.GetBytes(entry.Key));
-            buffer.Add((byte)(entry.Value ? 1 : 0));
-        }
-
-        return buffer.ToArray();
-    }
-
-    void ApplyFullSyncPayload(ArraySegment<byte> data)
-    {
-        if (data.Count < 2 || data.Array == null)
-        {
-            return;
-        }
-
-        int offset = data.Offset;
-        if ((ELobbyReadyMessage)data.Array[offset] != ELobbyReadyMessage.FullSync)
-        {
-            return;
-        }
-
-        offset++;
-        int count = data.Array[offset++];
-        _readyByPlayerId.Clear();
-
-        for (int i = 0; i < count; i++)
-        {
-            if (offset + 5 > data.Offset + data.Count)
-            {
-                break;
-            }
-
-            int playerId = BitConverter.ToInt32(data.Array, offset);
-            offset += 4;
-            bool isReady = data.Array[offset++] != 0;
-            _readyByPlayerId[playerId] = isReady;
-        }
-
-        string localId = GetLocalPlayerId();
-        if (!string.IsNullOrEmpty(localId) && int.TryParse(localId, out int localPlayerId))
-        {
-            _localReady = _readyByPlayerId.TryGetValue(localPlayerId, out bool ready) && ready;
-        }
-
-        RefreshSessionPlayers();
-        OnPlayersChanged?.Invoke();
-    }
-
-    void HandleLobbyReadyData(NetworkRunner runner, PlayerRef from, ArraySegment<byte> data)
-    {
-        if (data.Count < 1 || data.Array == null)
-        {
-            return;
-        }
-
-        var messageType = (ELobbyReadyMessage)data.Array[data.Offset];
-        switch (messageType)
-        {
-            case ELobbyReadyMessage.SetReady:
-                if (!runner.IsServer || data.Count < 2)
-                {
-                    return;
-                }
-
-                bool isReady = data.Array[data.Offset + 1] != 0;
-                ServerSetPlayerReady(from, isReady);
-                break;
-
-            case ELobbyReadyMessage.FullSync:
-                ApplyFullSyncPayload(data);
-                break;
-        }
-    }
-
-    static PlayerRef ResolveHostPlayer(NetworkRunner runner, IReadOnlyList<PlayerRef> activePlayers)
-    {
-        if (runner.IsServer)
-        {
-            return runner.LocalPlayer;
-        }
-
-        PlayerRef host = default;
-        int minId = int.MaxValue;
-
-        foreach (PlayerRef playerRef in activePlayers)
-        {
-            if (playerRef.PlayerId < minId)
-            {
-                minId = playerRef.PlayerId;
-                host = playerRef;
-            }
-        }
-
-        return host;
     }
 
     #region INetworkRunnerCallbacks
@@ -1078,45 +484,35 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
     {
         if (runner.IsServer)
         {
-            _readyByPlayerId[player.PlayerId] = false;
-            BroadcastReadyState();
+            App.Game.Players.Spawn(runner, player);
         }
 
         RefreshSessionPlayers();
-        OnPlayersChanged?.Invoke();
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
         if (runner.IsServer)
         {
-            _readyByPlayerId.Remove(player.PlayerId);
-            BroadcastReadyState();
-        }
-        else
-        {
-            _readyByPlayerId.Remove(player.PlayerId);
+            App.Game.Players.Despawn(runner, player);
         }
 
         RefreshSessionPlayers();
-        OnPlayersChanged?.Invoke();
     }
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
         if (shutdownReason == ShutdownReason.GameNotFound)
         {
-            ResetLocalRoomState();
             _session.Reset();
             OnSessionUpdated?.Invoke(_session);
-            StartCoroutine(ConnectCloudLobbyCoroutine());
+            StartCoroutine(EnsureCloudLobbyCoroutine(rejoinAfterFailedStart: false));
             return;
         }
 
         if (shutdownReason != ShutdownReason.Ok)
         {
             IsCloudConnected = false;
-            ResetLocalRoomState();
             _session.Reset();
             OnSessionUpdated?.Invoke(_session);
             OnError?.Invoke($"네트워크 연결이 종료되었습니다. ({shutdownReason})");
@@ -1135,21 +531,9 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
 
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data)
     {
-        if (key.Equals(LobbyReadyKey))
-        {
-            HandleLobbyReadyData(runner, player, data);
-            return;
-        }
-
         if (key.Equals(InGameRpsKey))
         {
             HandleInGameRpsData(runner, player, data);
-            return;
-        }
-
-        if (key.Equals(CanvasSyncKey))
-        {
-            HandleReliableData(runner, player, data);
         }
     }
 
@@ -1157,35 +541,257 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
     public void OnInput(NetworkRunner runner, NetworkInput input) { }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
-    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
-    {
-        if (string.IsNullOrEmpty(_pendingSessionLookupName) || _pendingSessionLookupComplete)
-        {
-            return;
-        }
-
-        if (TryFindJoinableSession(sessionList, _pendingSessionLookupName))
-        {
-            _pendingSessionLookupFound = true;
-            _pendingSessionLookupComplete = true;
-        }
-    }
+    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
     public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
     public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
+
     public void OnSceneLoadDone(NetworkRunner runner)
     {
-        if (!runner.IsServer)
+        if (runner.IsServer && SceneManager.GetActiveScene().buildIndex == (int)EScene.InGame)
         {
-            return;
+            OnInGameSceneReady?.Invoke();
         }
-
-        OnInGameSceneReady?.Invoke();
     }
+
     public void OnSceneLoadStart(NetworkRunner runner) { }
     public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
+
+    #endregion
+
+    #region InGame RPS
+
+    static readonly ReliableKey InGameRpsKey = ReliableKey.FromInts(0x52475053, 0, 0, 0);
+
+    bool _localAssignmentNotified;
+
+    public event Action OnInGameSceneReady;
+    public event Action OnFingerAssignmentsReceived;
+    public event Action<float> OnRoundStarted;
+    public event Action<EHandPosition> OnRoundResultReceived;
+
+    /// <summary>호스트가 각 플레이어의 손가락 배정을 [Networked] 값으로 기록합니다.</summary>
+    public void ServerInitializeFingerAssignments()
+    {
+        if (!App.IsGameScene || !TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
+        {
+            return;
+        }
+
+        PlayerManager players = App.Game.Players;
+        IReadOnlyList<PlayerRef> activePlayers = GetActivePlayers();
+        var playerIds = new List<int>(activePlayers.Count);
+        foreach (PlayerRef player in activePlayers)
+        {
+            playerIds.Add(player.PlayerId);
+        }
+
+        playerIds.Sort();
+
+        Dictionary<int, EFingerType> assignments = RpsHandUtility.CreateRandomAssignments(playerIds);
+
+        foreach (PlayerRef player in activePlayers)
+        {
+            if (players.TryGet(player, out PlayerNetworkObject playerObject))
+            {
+                playerObject.AssignedFinger = assignments.TryGetValue(player.PlayerId, out EFingerType finger)
+                    ? finger
+                    : EFingerType.None;
+                playerObject.IsFingerExtended = false;
+            }
+        }
+    }
+
+    /// <summary>로컬 플레이어의 손가락 입력을 [Networked] 값으로 반영합니다.</summary>
+    public void ClientSendFingerState(bool isExtended)
+    {
+        if (!App.IsGameScene || !TryGetAliveRunner(out NetworkRunner runner) || !runner.IsRunning)
+        {
+            return;
+        }
+
+        if (!App.Game.Players.TryGetLocal(out PlayerNetworkObject playerObject))
+        {
+            return;
+        }
+
+        if (runner.IsServer)
+        {
+            playerObject.IsFingerExtended = isExtended;
+        }
+        else
+        {
+            playerObject.RPC_SetFingerExtended(isExtended);
+        }
+    }
+
+    public void ServerStartRound(float durationSeconds)
+    {
+        if (!App.IsGameScene || !TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
+        {
+            return;
+        }
+
+        ResetServerFingerExtendedStates();
+
+        byte[] payload =
+        {
+            (byte)EInGameRpsMessage.StartRound,
+        };
+        payload = AppendFloat(payload, durationSeconds);
+
+        BroadcastInGamePayload(payload);
+        OnRoundStarted?.Invoke(durationSeconds);
+    }
+
+    public void ServerJudgeAndBroadcastRoundResult()
+    {
+        if (!App.IsGameScene || !TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
+        {
+            return;
+        }
+
+        EHandPosition handPosition = RpsHandUtility.Judge(GetServerExtendedFingersMask());
+        BroadcastRoundResult(handPosition);
+    }
+
+    /// <summary>호스트 기준으로 모든 player object의 손가락 상태를 모아 RPS 마스크를 계산합니다.</summary>
+    EFingerType GetServerExtendedFingersMask()
+    {
+        EFingerType mask = EFingerType.None;
+
+        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
+        {
+            return mask;
+        }
+
+        PlayerManager players = App.Game.Players;
+
+        foreach (PlayerRef player in GetActivePlayers())
+        {
+            if (players.TryGet(player, out PlayerNetworkObject playerObject) &&
+                playerObject.AssignedFinger != EFingerType.None &&
+                playerObject.IsFingerExtended)
+            {
+                mask |= playerObject.AssignedFinger;
+            }
+        }
+
+        return mask;
+    }
+
+    void ResetServerFingerExtendedStates()
+    {
+        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
+        {
+            return;
+        }
+
+        PlayerManager players = App.Game.Players;
+
+        foreach (PlayerRef player in GetActivePlayers())
+        {
+            if (players.TryGet(player, out PlayerNetworkObject playerObject))
+            {
+                playerObject.IsFingerExtended = false;
+            }
+        }
+    }
+
+    void BroadcastRoundResult(EHandPosition handPosition)
+    {
+        byte[] payload =
+        {
+            (byte)EInGameRpsMessage.RoundResult,
+            (byte)handPosition,
+        };
+
+        BroadcastInGamePayload(payload);
+        OnRoundResultReceived?.Invoke(handPosition);
+    }
+
+    void BroadcastInGamePayload(byte[] payload)
+    {
+        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
+        {
+            return;
+        }
+
+        foreach (PlayerRef player in runner.ActivePlayers)
+        {
+            if (player == runner.LocalPlayer)
+            {
+                continue;
+            }
+
+            runner.SendReliableDataToPlayer(player, InGameRpsKey, payload);
+        }
+    }
+
+    static byte[] AppendFloat(byte[] payload, float value)
+    {
+        var buffer = new List<byte>(payload.Length + 4);
+        buffer.AddRange(payload);
+        buffer.AddRange(BitConverter.GetBytes(value));
+        return buffer.ToArray();
+    }
+
+    /// <summary>씬 재진입 시 로컬 배정 알림 상태를 초기화합니다.</summary>
+    public void ResetInGameRoundNotification()
+    {
+        _localAssignmentNotified = false;
+    }
+
+    void HandleInGameDataChanged()
+    {
+        if (!App.IsGameScene)
+        {
+            return;
+        }
+
+        if (!_localAssignmentNotified &&
+            App.Game.Players.TryGetLocal(out PlayerNetworkObject playerObject) &&
+            playerObject.AssignedFinger != EFingerType.None)
+        {
+            _localAssignmentNotified = true;
+            OnFingerAssignmentsReceived?.Invoke();
+        }
+    }
+
+    void HandleInGameRpsData(NetworkRunner runner, PlayerRef from, ArraySegment<byte> data)
+    {
+        if (!App.IsGameScene || data.Count < 1 || data.Array == null)
+        {
+            return;
+        }
+
+        var messageType = (EInGameRpsMessage)data.Array[data.Offset];
+
+        switch (messageType)
+        {
+            case EInGameRpsMessage.StartRound:
+                if (data.Count < 5)
+                {
+                    return;
+                }
+
+                float duration = BitConverter.ToSingle(data.Array, data.Offset + 1);
+                OnRoundStarted?.Invoke(duration);
+                break;
+
+            case EInGameRpsMessage.RoundResult:
+                if (data.Count < 2)
+                {
+                    return;
+                }
+
+                var handPosition = (EHandPosition)data.Array[data.Offset + 1];
+                OnRoundResultReceived?.Invoke(handPosition);
+                break;
+        }
+    }
 
     #endregion
 }

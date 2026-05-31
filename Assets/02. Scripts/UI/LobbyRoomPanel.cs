@@ -38,7 +38,6 @@ public class LobbyRoomPanel : PanelBase
     void Start()
     {
         _lobbyManager = App.SceneManager.Lobby;
-        _lobbyManager.OnPlayersChanged += HandlePlayersChanged;
         _lobbyManager.OnLobbyError += HandleLobbyError;
     }
 
@@ -46,20 +45,11 @@ public class LobbyRoomPanel : PanelBase
     {
         if (_lobbyManager != null)
         {
-            _lobbyManager.OnPlayersChanged -= HandlePlayersChanged;
             _lobbyManager.OnLobbyError -= HandleLobbyError;
         }
 
         leaveRoomButton.onClick.RemoveListener(OnLeaveRoomClicked);
         readyOrStartButton.onClick.RemoveListener(OnReadyOrStartClicked);
-    }
-
-    void HandlePlayersChanged()
-    {
-        if (_lobbyManager.IsInLobby && IsOpened)
-        {
-            RefreshContent();
-        }
     }
 
     void HandleLobbyError(string message)

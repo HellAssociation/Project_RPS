@@ -98,6 +98,7 @@ public class App : Singleton<App>
         public static SoundManager Sound => Instance._soundManager;
         public static AssetManager Asset => Instance._assetManager;
         public static InputManager Input => Instance._inputManager;
+        public static NetworkManager Network => Instance._networkManager;
     }
 
 
@@ -111,8 +112,7 @@ public class App : Singleton<App>
 
     public static class Game
     {
-        public static PlayerManager Manager => Instance._playerManager;
-        public static NetworkManager Network => Instance._networkManager;
+        public static PlayerManager Players => Instance._playerManager;
     }
 
     public static class UI

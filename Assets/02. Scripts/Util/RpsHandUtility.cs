@@ -48,23 +48,6 @@ public static class RpsHandUtility
         return assignments;
     }
 
-    public static EFingerType BuildExtendedMask(
-        IReadOnlyDictionary<int, EFingerType> fingerByPlayer,
-        IReadOnlyDictionary<int, bool> extendedByPlayer)
-    {
-        EFingerType mask = EFingerType.None;
-
-        foreach (KeyValuePair<int, EFingerType> entry in fingerByPlayer)
-        {
-            if (extendedByPlayer.TryGetValue(entry.Key, out bool isExtended) && isExtended)
-            {
-                mask |= entry.Value;
-            }
-        }
-
-        return mask;
-    }
-
     static void Shuffle(EFingerType[] array, Random random)
     {
         for (int i = array.Length - 1; i > 0; i--)
