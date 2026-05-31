@@ -28,9 +28,17 @@ namespace SystemEnums
     public enum EHandPosition
     {
         Invalid = 255,
+        Random = 254,
         Rock = EFingerType.None,
         Paper = EFingerType.All,
         Scissors = EFingerType.Index | EFingerType.Middle,
+    }
+
+    public enum EOutcome
+    {
+        Win,
+        Lose,
+        Draw,
     }
 
     public enum EInGamePhase
@@ -40,6 +48,8 @@ namespace SystemEnums
         RoundInput,
         RoundJudging,
         RoundComplete,
+        GameOver,
+        StageClear,
     }
 
     public enum ELobbyState
@@ -66,6 +76,12 @@ namespace SystemEnums
         Title,
         LobbyEntry,
         LobbyRoom,
+
+        // Game
+        Timer,
+        NextIcon,
+        OutCome,
+        Stage,
     }
 
     /// <summary>
