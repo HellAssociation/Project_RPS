@@ -10,7 +10,7 @@ public class LobbyManager : SceneManagerBase
 {
     [Header("Session")]
     [SerializeField] private string localDisplayName = "Player";
-    [SerializeField] private int defaultMaxPlayers = 4;
+    [SerializeField] private int defaultMaxPlayers = 5;
     [SerializeField] private int minPlayersToStart = 1;
     [SerializeField] private bool requireAllReady = true;
 

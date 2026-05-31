@@ -9,6 +9,39 @@ namespace SystemEnums
         InGame,
     }
 
+    [Flags]
+    public enum EFingerType
+    {
+        None = 0,
+        Thumb = 1 << 0,
+        Index = 1 << 1,
+        Middle = 1 << 2,
+        Ring = 1 << 3,
+        Pinky = 1 << 4,
+
+        All = Thumb | Index | Middle | Ring | Pinky,
+    }
+
+    /// <summary>
+    /// RPS 판정 결과. Rock/Paper/Scissors 값은 EFingerType 비트 마스크와 동일합니다.
+    /// </summary>
+    public enum EHandPosition
+    {
+        Invalid = 255,
+        Rock = EFingerType.None,
+        Paper = EFingerType.All,
+        Scissors = EFingerType.Index | EFingerType.Middle,
+    }
+
+    public enum EInGamePhase
+    {
+        WaitingForSetup,
+        AssignmentsReady,
+        RoundInput,
+        RoundJudging,
+        RoundComplete,
+    }
+
     public enum ELobbyState
     {
         Disconnected,
@@ -43,5 +76,20 @@ namespace SystemEnums
         None,
         BGM_MAIN,
         BGM_NEWS,
+    }
+
+    public enum ELobbyReadyMessage : byte
+    {
+        SetReady = 1,
+        FullSync = 2,
+    }
+
+    public enum EInGameRpsMessage : byte
+    {
+        AssignFingers = 1,
+        FingerState = 2,
+        StartRound = 3,
+        RoundResult = 4,
+        FingerStateSync = 5,
     }
 }

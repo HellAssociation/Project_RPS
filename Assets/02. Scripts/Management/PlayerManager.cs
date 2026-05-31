@@ -4,150 +4,180 @@ using SystemEnums;
 using UnityEngine;
 
 /// <summary>
-/// 현재 세션에 참가한 플레이어 목록을 중앙에서 관리합니다.
-/// LobbyManager 세션 갱신과 동기화되며, GetPlayer 등으로 개별 플레이어를 조회·조작합니다.
+/// 인게임 플레이어 목록 및 손가락 배정/입력 상태를 관리합니다.
 /// </summary>
 [DefaultExecutionOrder((int)EExecutionOrder.SystemManagement)]
 public class PlayerManager : CommonManagerBase
 {
-    readonly Dictionary<string, LobbyPlayer> _playersById = new();
-    readonly List<LobbyPlayer> _players = new();
+    readonly Dictionary<string, GamePlayer> _gamePlayersById = new();
+    readonly List<GamePlayer> _gamePlayers = new();
 
-    LobbyPlayer _localPlayer;
+    GamePlayer _localGamePlayer;
     string _localPlayerId = string.Empty;
 
-    public event Action OnPlayersChanged;
-    public event Action<LobbyPlayer> OnLocalPlayerChanged;
+    public event Action OnGamePlayersChanged;
+    public event Action OnFingerAssignmentsChanged;
 
-    public bool HasSession => App.SceneManager.Lobby.IsInLobby;
-    public int Count => _players.Count;
     public string LocalPlayerId => _localPlayerId;
-    public LobbyPlayer LocalPlayer => _localPlayer;
-    public IReadOnlyList<LobbyPlayer> AllPlayers => _players;
+    public bool HasGameRoster => _gamePlayers.Count > 0;
+    public GamePlayer LocalGamePlayer => _localGamePlayer;
+    public IReadOnlyList<GamePlayer> GamePlayers => _gamePlayers;
+    public EFingerType LocalAssignedFinger => _localGamePlayer?.CurrFinger ?? EFingerType.None;
 
-    public bool AllReady => _players.Count > 0 && _players.TrueForAll(player => player.IsReady);
-
-    protected override void Awake()
+    /// <summary>
+    /// 인게임 진입 시 NetworkRunner 활성 플레이어로 GamePlayer 목록을 구성합니다.
+    /// </summary>
+    public void SyncGamePlayersFromNetwork()
     {
-        base.Awake();
-    }
+        _gamePlayersById.Clear();
+        _gamePlayers.Clear();
+        _localGamePlayer = null;
 
-    void Start()
-    {
-        SubscribeLobby();
-    }
-
-    void OnDestroy()
-    {
-        UnsubscribeLobby();
-    }
-
-    void SubscribeLobby()
-    {
-        App.SceneManager.Lobby.OnSessionUpdated -= HandleSessionUpdated;
-        App.SceneManager.Lobby.OnSessionUpdated += HandleSessionUpdated;
-        SyncFromSession(App.SceneManager.Lobby.Session);
-    }
-
-    void UnsubscribeLobby()
-    {
-        App.SceneManager.Lobby.OnSessionUpdated -= HandleSessionUpdated;
-    }
-
-    void HandleSessionUpdated(LobbySession session)
-    {
-        SyncFromSession(session);
-    }
-
-    void SyncFromSession(LobbySession session)
-    {
-        var previousLocalId = _localPlayerId;
-
-        _playersById.Clear();
-        _players.Clear();
-        _localPlayer = null;
-        _localPlayerId = session.LocalPlayerId;
-
-        IReadOnlyList<LobbyPlayer> source = session.Players;
-        for (int i = 0; i < source.Count; i++)
+        NetworkManager network = App.Game.Network;
+        if (!network.IsRunning)
         {
-            LobbyPlayer player = source[i];
-            _players.Add(player);
-            _playersById[player.PlayerId] = player;
+            OnGamePlayersChanged?.Invoke();
+            return;
+        }
 
-            if (player.IsLocal)
+        _localPlayerId = network.GetLocalPlayerId();
+        IReadOnlyList<NetworkPlayerInfo> infos = network.GetActivePlayerInfos();
+
+        for (int i = 0; i < infos.Count; i++)
+        {
+            NetworkPlayerInfo info = infos[i];
+            var player = new GamePlayer(info.PlayerId, info.DisplayName, info.IsHost, info.IsLocal);
+            _gamePlayers.Add(player);
+            _gamePlayersById[info.PlayerId] = player;
+
+            if (info.IsLocal)
             {
-                _localPlayer = player;
+                _localGamePlayer = player;
             }
         }
 
-        OnPlayersChanged?.Invoke();
+        OnGamePlayersChanged?.Invoke();
+    }
 
-        if (_localPlayer != null && previousLocalId != _localPlayerId)
+    public void ClearGameRoster()
+    {
+        _gamePlayersById.Clear();
+        _gamePlayers.Clear();
+        _localGamePlayer = null;
+        _localPlayerId = string.Empty;
+        OnGamePlayersChanged?.Invoke();
+    }
+
+    public void ResetInGameState()
+    {
+        for (int i = 0; i < _gamePlayers.Count; i++)
         {
-            OnLocalPlayerChanged?.Invoke(_localPlayer);
+            _gamePlayers[i].CurrFinger = EFingerType.None;
+            _gamePlayers[i].IsFingerExtended = false;
         }
+
+        OnGamePlayersChanged?.Invoke();
     }
 
-    public LobbyPlayer GetPlayer(string playerId)
+    public void ResetAllFingerExtended()
     {
-        return _playersById[playerId];
+        for (int i = 0; i < _gamePlayers.Count; i++)
+        {
+            _gamePlayers[i].IsFingerExtended = false;
+        }
+
+        OnGamePlayersChanged?.Invoke();
     }
 
-    public bool TryGetPlayer(string playerId, out LobbyPlayer player)
+    /// <summary>
+    /// 방장이 무작위 배분한 손가락 정보를 모든 클라이언트에 적용합니다.
+    /// </summary>
+    public void ApplyFingerAssignments(IReadOnlyDictionary<string, EFingerType> assignments)
     {
-        return _playersById.TryGetValue(playerId, out player);
+        if (assignments == null)
+        {
+            return;
+        }
+
+        foreach (KeyValuePair<string, EFingerType> entry in assignments)
+        {
+            if (!_gamePlayersById.TryGetValue(entry.Key, out GamePlayer player))
+            {
+                continue;
+            }
+
+            player.CurrFinger = entry.Value;
+            player.IsFingerExtended = false;
+        }
+
+        OnGamePlayersChanged?.Invoke();
+        OnFingerAssignmentsChanged?.Invoke();
     }
 
-    public bool TryGetPlayer(int playerId, out LobbyPlayer player)
+    public void SetFingerExtended(string playerId, bool isExtended)
     {
-        return TryGetPlayer(playerId.ToString(), out player);
+        if (!_gamePlayersById.TryGetValue(playerId, out GamePlayer player))
+        {
+            return;
+        }
+
+        if (player.IsFingerExtended == isExtended)
+        {
+            return;
+        }
+
+        player.IsFingerExtended = isExtended;
+        LogFingerManipulation(player);
+        OnGamePlayersChanged?.Invoke();
     }
 
-    public bool TryGetLocalPlayer(out LobbyPlayer player)
+    void LogFingerManipulation(GamePlayer player)
     {
-        player = _localPlayer;
-        return player != null;
+        string who = player.IsLocal ? $"[로컬] {player.DisplayName}" : player.DisplayName;
+        string action = player.IsFingerExtended ? "펼침" : "접음";
+        EFingerType handMask = GetExtendedFingersMask();
+
+        Debug.Log($"[PlayerManager] {who} — {player.CurrFinger} {action} | 손 마스크: {handMask}");
     }
 
-    public bool Contains(string playerId)
+    public void SetLocalFingerExtended(bool isExtended)
     {
-        return _playersById.ContainsKey(playerId);
+        if (_localGamePlayer == null)
+        {
+            return;
+        }
+
+        SetFingerExtended(_localGamePlayer.PlayerId, isExtended);
+    }
+
+    public EFingerType GetExtendedFingersMask()
+    {
+        EFingerType mask = EFingerType.None;
+
+        for (int i = 0; i < _gamePlayers.Count; i++)
+        {
+            GamePlayer player = _gamePlayers[i];
+            if (player.CurrFinger != EFingerType.None && player.IsFingerExtended)
+            {
+                mask |= player.CurrFinger;
+            }
+        }
+
+        return mask;
+    }
+
+    public bool TryGetGamePlayer(string playerId, out GamePlayer player)
+    {
+        return _gamePlayersById.TryGetValue(playerId, out player);
+    }
+
+    public bool TryGetGamePlayer(int playerId, out GamePlayer player)
+    {
+        return TryGetGamePlayer(playerId.ToString(), out player);
     }
 
     public bool IsLocal(string playerId)
     {
         return playerId == _localPlayerId;
-    }
-
-    public void SetLocalDisplayName(string displayName)
-    {
-        App.SceneManager.Lobby.SetLocalDisplayName(displayName);
-    }
-
-    public void SetLocalReady(bool isReady)
-    {
-        App.SceneManager.Lobby.SetLocalReady(isReady);
-    }
-
-    /// <summary>
-    /// 준비 상태 변경. 현재는 로컬 플레이어만 지원합니다.
-    /// </summary>
-    public bool TrySetReady(string playerId, bool isReady)
-    {
-        LobbyPlayer player = GetPlayer(playerId);
-
-        if (player.IsLocal)
-        {
-            SetLocalReady(isReady);
-            return true;
-        }
-
-        if (!App.SceneManager.Lobby.IsHost)
-        {
-            return false;
-        }
-
-        return App.SceneManager.Lobby.TrySetPlayerReady(playerId, isReady);
     }
 }

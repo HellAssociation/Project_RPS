@@ -12,6 +12,7 @@ public class App : Singleton<App>
     private readonly TitleManager _titleManager;
     private readonly SoundManager _soundManager;
     private readonly AssetManager _assetManager;
+    private readonly InputManager _inputManager;
     private readonly LobbyManager _lobbyManager;
     private readonly PlayerManager _playerManager;
     private readonly InGameManager _inGameManager;
@@ -96,6 +97,7 @@ public class App : Singleton<App>
     {
         public static SoundManager Sound => Instance._soundManager;
         public static AssetManager Asset => Instance._assetManager;
+        public static InputManager Input => Instance._inputManager;
     }
 
 
