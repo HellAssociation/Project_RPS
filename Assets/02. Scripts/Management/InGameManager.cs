@@ -33,8 +33,9 @@ public class InGameManager : SceneManagerBase
     int _wonRoundsInStage;
     int _lives;
     EHandPosition _enemyHandPosition;
+    StagePanel _stagePanel;
 
-    public EInGamePhase Phase { get; private set; } = EInGamePhase.WaitingForSetup;
+    public EInGamePhase Phase { get; private set; } = EInGamePhase.WaitingForStageSelect;
     public bool IsRoundActive => Phase == EInGamePhase.RoundInput;
     public float RoundTimeRemaining { get; private set; }
     public EFingerType LocalAssignedFinger => Players.LocalAssignedFinger;
@@ -62,6 +63,7 @@ public class InGameManager : SceneManagerBase
         Network.OnFingerAssignmentsReceived += HandleFingerAssignmentsReceived;
         Network.OnRoundStarted += HandleRoundStarted;
         Network.OnRoundResultReceived += HandleRoundResultReceived;
+        Network.OnStageSelected += HandleStageSelected;
     }
 
     void OnDisable()
@@ -71,11 +73,23 @@ public class InGameManager : SceneManagerBase
         Network.OnFingerAssignmentsReceived -= HandleFingerAssignmentsReceived;
         Network.OnRoundStarted -= HandleRoundStarted;
         Network.OnRoundResultReceived -= HandleRoundResultReceived;
+        Network.OnStageSelected -= HandleStageSelected;
     }
 
     void Start()
     {
+        CacheStagePanel();
         BeginInGameSetup();
+    }
+
+    void CacheStagePanel()
+    {
+        if (!App.UI.InGame.TryGetPanel(out _stagePanel))
+        {
+#if UNITY_EDITOR
+            Debug.LogError("[Error] Can't find stage panel!");
+#endif
+        }
     }
 
     void BeginInGameSetup()
@@ -91,7 +105,7 @@ public class InGameManager : SceneManagerBase
         _wonRoundsInStage = 0;
         _lives = MAX_LIVES;
         _enemyHandPosition = EHandPosition.Invalid;
-        Phase = EInGamePhase.WaitingForSetup;
+        Phase = EInGamePhase.WaitingForStageSelect;
         LastHandPosition = EHandPosition.Invalid;
         RoundTimeRemaining = 0f;
         Input.SetEnabled(false);
@@ -101,6 +115,22 @@ public class InGameManager : SceneManagerBase
 
     void HandleInGameSceneReady()
     {
+        if (Network.IsServerHost)
+            StartCoroutine(EarlySpawnPlayerObjectsCoroutine());
+    }
+
+    // Spawn player objects immediately so cursor sync works during stage selection.
+    // Finger assignment happens later in HostSetupCoroutine (after stage selected).
+    IEnumerator EarlySpawnPlayerObjectsCoroutine()
+    {
+        yield return Players.ServerEnsurePlayerObjectsCoroutine();
+    }
+
+    void HandleStageSelected()
+    {
+        if (_stagePanel != null) _stagePanel.ClosePanel();
+        if (Phase == EInGamePhase.WaitingForStageSelect)
+            Phase = EInGamePhase.WaitingForSetup;
         TryBeginHostSetup();
     }
 
@@ -211,6 +241,7 @@ public class InGameManager : SceneManagerBase
         OnRoundJudged?.Invoke(handPosition);
 
         bool isStageClear = false;
+        bool isStageFailed = false;
 
         switch (outcome)
         {
@@ -229,6 +260,7 @@ public class InGameManager : SceneManagerBase
                     OnGameOver?.Invoke();
                     return;
                 }
+                isStageFailed = true;
                 break;
 
             // Draw: 상태 변경 없음, 다음 라운드로 진행
@@ -236,13 +268,23 @@ public class InGameManager : SceneManagerBase
 
         if (_betweenRoundCoroutine != null)
             StopCoroutine(_betweenRoundCoroutine);
-        _betweenRoundCoroutine = StartCoroutine(BetweenRoundsCoroutine(isStageClear));
+        _betweenRoundCoroutine = StartCoroutine(BetweenRoundsCoroutine(isStageClear, isStageFailed));
     }
 
-    IEnumerator BetweenRoundsCoroutine(bool isStageClear)
+    IEnumerator BetweenRoundsCoroutine(bool isStageClear, bool isStageFailed)
     {
         yield return WAIT_OUTCOME;
         OnRoundResultShown?.Invoke();
+
+        if (isStageFailed)
+        {
+            _wonRoundsInStage = 0;
+            _hostSetupStarted = false;
+            Phase = EInGamePhase.WaitingForStageSelect;
+            if (_stagePanel != null) _stagePanel.OpenPanel();
+            _betweenRoundCoroutine = null;
+            yield break;
+        }
 
         // 스테이지 상태 갱신은 모든 클라이언트에서 수행
         if (isStageClear)

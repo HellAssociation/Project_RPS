@@ -23,6 +23,7 @@ public class PlayerNetworkObject : NetworkBehaviour
     [Networked] public NetworkBool IsReady { get; set; }
     [Networked] public EFingerType AssignedFinger { get; set; }
     [Networked] public NetworkBool IsFingerExtended { get; set; }
+    [Networked] public Vector2 CursorScreenPos { get; set; }
 
     ChangeDetector _changeDetector;
 

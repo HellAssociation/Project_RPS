@@ -571,6 +571,7 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
     public event Action OnFingerAssignmentsReceived;
     public event Action<float> OnRoundStarted;
     public event Action<EHandPosition> OnRoundResultReceived;
+    public event Action OnStageSelected;
 
     /// <summary>호스트가 각 플레이어의 손가락 배정을 [Networked] 값으로 기록합니다.</summary>
     public void ServerInitializeFingerAssignments()
@@ -625,6 +626,13 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
         {
             playerObject.RPC_SetFingerExtended(isExtended);
         }
+    }
+
+    public void ServerBroadcastStageSelected()
+    {
+        if (!IsServerHost) return;
+        BroadcastInGamePayload(new byte[] { (byte)EInGameRpsMessage.StageSelected });
+        OnStageSelected?.Invoke();
     }
 
     public void ServerStartRound(float durationSeconds)
@@ -789,6 +797,10 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
 
                 var handPosition = (EHandPosition)data.Array[data.Offset + 1];
                 OnRoundResultReceived?.Invoke(handPosition);
+                break;
+
+            case EInGameRpsMessage.StageSelected:
+                OnStageSelected?.Invoke();
                 break;
         }
     }

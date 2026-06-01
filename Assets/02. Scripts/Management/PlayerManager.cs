@@ -202,6 +202,29 @@ public class PlayerManager : CommonManagerBase
         }
     }
 
+    public bool TryGetHost(out PlayerNetworkObject host)
+    {
+        host = null;
+        if (Network == null || !Network.TryGetAliveRunner(out NetworkRunner runner) || !runner.IsRunning)
+            return false;
+
+        if (runner.IsServer)
+            return TryGet(runner.LocalPlayer, out host);
+
+        int minId = int.MaxValue;
+        PlayerRef hostRef = default;
+        foreach (PlayerRef p in Network.GetActivePlayers())
+        {
+            if (p.PlayerId < minId)
+            {
+                minId = p.PlayerId;
+                hostRef = p;
+            }
+        }
+
+        return hostRef.IsRealPlayer && TryGet(hostRef, out host);
+    }
+
     /// <summary>로비 UI용 플레이어 목록을 <see cref="PlayerNetworkObject"/>에서 빌드합니다.</summary>
     public List<LobbyPlayer> BuildLobbyPlayers()
     {

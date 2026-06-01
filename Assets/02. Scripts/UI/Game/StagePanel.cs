@@ -1,18 +1,15 @@
-using TMPro;
 using SystemEnums;
+using TMPro;
 using UnityEngine;
-using System.Text;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class StagePanel : PanelBase
 {
     #region [Function] Inheritance
     public override bool IsOpened => _panelGameObject.activeSelf;
-
     public override bool CanCloseWithESC => false;
-
     public override bool IsStackable => false;
-
     public override EUIType UIType => EUIType.Stage;
     #endregion
 
@@ -21,11 +18,79 @@ public class StagePanel : PanelBase
 
     [Header("HP")]
     [SerializeField] Image hpImage;
+    [SerializeField] Sprite[] hpSprites;
+
+    [Header("Cursor")]
+    [SerializeField] RectTransform cursorRect;
+    [SerializeField] TextMeshProUGUI hostNameTMP;
+
+    Canvas _canvas;
+
+    NetworkManager Network => App.SystemManager.Network;
+    PlayerManager Players => App.Game.Players;
 
     protected override void Awake()
     {
         base.Awake();
         CacheStageSlots();
+        _canvas = GetComponentInParent<Canvas>();
+    }
+
+    void Start()
+    {
+        RefreshHostName();
+        RefreshHP();
+    }
+
+    public override void OpenPanel()
+    {
+        base.OpenPanel();
+        RefreshHostName();
+        RefreshHP();
+    }
+
+    void Update()
+    {
+        if (!_panelGameObject.activeSelf || _canvas == null) return;
+
+        // Host: write mouse position to networked property
+        if (Network.IsServerHost && Players.TryGetLocal(out PlayerNetworkObject localObj))
+        {
+            Vector2 mousePos = Mouse.current != null ? Mouse.current.position.ReadValue() : Vector2.zero;
+            localObj.CursorScreenPos = new Vector2(mousePos.x / Screen.width, mousePos.y / Screen.height);
+        }
+
+        // All players: update cursorRect from host's networked position
+        if (cursorRect != null && Players.TryGetHost(out PlayerNetworkObject hostObj))
+        {
+            Vector2 n = hostObj.CursorScreenPos;
+            Vector2 screenPos = new(n.x * Screen.width, n.y * Screen.height);
+            Camera cam = _canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _canvas.worldCamera;
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                (RectTransform)_canvas.transform, screenPos, cam, out Vector2 localPos))
+            {
+                cursorRect.position = _canvas.transform.TransformPoint(localPos);
+            }
+        }
+    }
+
+    void RefreshHostName()
+    {
+        if (hostNameTMP == null) return;
+        string name = string.Empty;
+        if (Players.TryGetHost(out PlayerNetworkObject hostObj))
+            name = hostObj.DisplayName.Value;
+        if (string.IsNullOrEmpty(name) && Network != null)
+            name = Network.LocalDisplayName;
+        hostNameTMP.text = name;
+    }
+
+    void RefreshHP()
+    {
+        if (hpImage == null || hpSprites == null || hpSprites.Length == 0) return;
+        int lives = App.SceneManager.InGame != null ? App.SceneManager.InGame.Lives : InGameManager.MAX_LIVES;
+        int index = Mathf.Clamp(InGameManager.MAX_LIVES - lives, 0, hpSprites.Length - 1);
+        hpImage.sprite = hpSprites[index];
     }
 
     private void CacheStageSlots()
@@ -34,7 +99,7 @@ public class StagePanel : PanelBase
             stageSlots = GetComponentsInChildren<StageSlot>(true);
 
         int stageCount = stageSlots.Length;
-        for(int index=0; index<stageCount; index++)
+        for (int index = 0; index < stageCount; index++)
             stageSlots[index].Init(index);
     }
 }

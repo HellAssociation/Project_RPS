@@ -43,6 +43,7 @@ namespace SystemEnums
 
     public enum EInGamePhase
     {
+        WaitingForStageSelect,
         WaitingForSetup,
         AssignmentsReady,
         RoundInput,
@@ -98,5 +99,6 @@ namespace SystemEnums
     {
         StartRound = 1,
         RoundResult = 2,
+        StageSelected = 3,
     }
 }
