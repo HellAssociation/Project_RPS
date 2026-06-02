@@ -83,6 +83,7 @@ namespace SystemEnums
         NextIcon,
         OutCome,
         Stage,
+        Versus,
     }
 
     /// <summary>

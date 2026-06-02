@@ -34,6 +34,7 @@ public class InGameManager : SceneManagerBase
     int _lives;
     EHandPosition _enemyHandPosition;
     StagePanel _stagePanel;
+    VersusPanel _versusPanel;
 
     public EInGamePhase Phase { get; private set; } = EInGamePhase.WaitingForStageSelect;
     public bool IsRoundActive => Phase == EInGamePhase.RoundInput;
@@ -88,6 +89,13 @@ public class InGameManager : SceneManagerBase
         {
 #if UNITY_EDITOR
             Debug.LogError("[Error] Can't find stage panel!");
+#endif
+        }
+
+        if (!App.UI.InGame.TryGetPanel(out _versusPanel))
+        {
+#if UNITY_EDITOR
+            Debug.LogError("[Error] Can't find versus panel!");
 #endif
         }
     }
@@ -155,6 +163,10 @@ public class InGameManager : SceneManagerBase
         yield return null;
 
         ApplyAssignmentsReady();
+
+        if (_versusPanel != null)
+            yield return new WaitWhile(() => _versusPanel.IsAnimating);
+
         Network.ServerStartRound(RoundDurationSeconds);
         _hostSetupCoroutine = null;
     }
@@ -175,6 +187,7 @@ public class InGameManager : SceneManagerBase
 
         Phase = EInGamePhase.AssignmentsReady;
         OnLocalAssignedFingerChanged?.Invoke(LocalAssignedFinger);
+        if (_versusPanel != null) _versusPanel.OpenPanel();
     }
 
     void HandleFingerToggled(bool isExtended)
@@ -242,6 +255,7 @@ public class InGameManager : SceneManagerBase
 
         bool isStageClear = false;
         bool isStageFailed = false;
+        bool isGameOver = false;
 
         switch (outcome)
         {
@@ -257,10 +271,10 @@ public class InGameManager : SceneManagerBase
                 if (_lives <= 0)
                 {
                     Phase = EInGamePhase.GameOver;
-                    OnGameOver?.Invoke();
-                    return;
+                    isGameOver = true;
                 }
-                isStageFailed = true;
+                else
+                    isStageFailed = true;
                 break;
 
             // Draw: 상태 변경 없음, 다음 라운드로 진행
@@ -268,16 +282,27 @@ public class InGameManager : SceneManagerBase
 
         if (_betweenRoundCoroutine != null)
             StopCoroutine(_betweenRoundCoroutine);
-        _betweenRoundCoroutine = StartCoroutine(BetweenRoundsCoroutine(isStageClear, isStageFailed));
+        _betweenRoundCoroutine = StartCoroutine(BetweenRoundsCoroutine(isStageClear, isStageFailed, isGameOver));
     }
 
-    IEnumerator BetweenRoundsCoroutine(bool isStageClear, bool isStageFailed)
+    IEnumerator BetweenRoundsCoroutine(bool isStageClear, bool isStageFailed, bool isGameOver)
     {
         yield return WAIT_OUTCOME;
         OnRoundResultShown?.Invoke();
 
+        if (isGameOver)
+        {
+            Input.ResetFingerState();
+            OnLocalFingerExtendedChanged?.Invoke(false);
+            OnGameOver?.Invoke();
+            _betweenRoundCoroutine = null;
+            yield break;
+        }
+
         if (isStageFailed)
         {
+            Input.ResetFingerState();
+            OnLocalFingerExtendedChanged?.Invoke(false);
             _wonRoundsInStage = 0;
             _hostSetupStarted = false;
             Phase = EInGamePhase.WaitingForStageSelect;
@@ -317,6 +342,9 @@ public class InGameManager : SceneManagerBase
             yield return null;
             ApplyAssignmentsReady();
         }
+
+        if (_versusPanel != null && _versusPanel.IsAnimating)
+            yield return new WaitWhile(() => _versusPanel.IsAnimating);
 
         Network.ServerStartRound(RoundDurationSeconds);
         _betweenRoundCoroutine = null;
