@@ -12,8 +12,8 @@ public class VersusPanel : PanelBase
     public override EUIType UIType => EUIType.Versus;
     #endregion
 
-    [SerializeField] Image divideLineImage;
-    [SerializeField] Image versusImage;
+    [SerializeField] Image readyImage;
+    [SerializeField] Image fightImage;
 
     bool _isAnimating;
     public bool IsAnimating => _isAnimating;
@@ -28,35 +28,44 @@ public class VersusPanel : PanelBase
     {
         _isAnimating = true;
 
-        divideLineImage.DOKill();
-        versusImage.transform.DOKill();
+        readyImage.DOKill();
+        fightImage.DOKill();
+        readyImage.transform.DOKill();
+        fightImage.transform.DOKill();
 
-        // Line: hidden at full scale, punches in
-        divideLineImage.color = new Color(divideLineImage.color.r, divideLineImage.color.g, divideLineImage.color.b, 0f);
-        divideLineImage.rectTransform.localScale = Vector3.one;
-        versusImage.transform.localScale = Vector3.zero;
+        SetHidden(readyImage);
+        SetHidden(fightImage);
 
-        Sequence sequence = DOTween.Sequence();
+        Sequence seq = DOTween.Sequence();
 
-        // Line flashes in instantly, then punches — preserves zigzag shape
-        sequence.Append(divideLineImage.DOFade(1f, 0.08f));
-        sequence.AppendCallback(() => divideLineImage.rectTransform.DOPunchScale(new Vector3(0.08f, 0.2f, 0f), 0.45f, 7, 0.4f));
+        seq.AppendCallback(() => Stamp(readyImage));
+        seq.AppendInterval(0.75f);
+        seq.Append(readyImage.DOFade(0f, 0.1f));
 
-        // VS image pops in with overshoot bounce
-        sequence.Append(versusImage.transform.DOScale(1.25f, 0.3f).SetEase(Ease.OutBack));
-        sequence.Append(versusImage.transform.DOScale(1f, 0.12f).SetEase(Ease.OutSine));
+        seq.AppendCallback(() => Stamp(fightImage));
+        seq.AppendInterval(0.75f);
+        seq.Append(fightImage.DOFade(0f, 0.1f));
 
-        // Hold
-        sequence.AppendInterval(0.9f);
-
-        // Outro: both fade out together
-        sequence.Append(versusImage.transform.DOScale(0f, 0.2f).SetEase(Ease.InBack));
-        sequence.Join(divideLineImage.DOFade(0f, 0.25f));
-
-        sequence.OnComplete(() =>
+        seq.OnComplete(() =>
         {
             _isAnimating = false;
             ClosePanel();
         });
+    }
+
+    static void SetHidden(Image img)
+    {
+        img.color = new Color(img.color.r, img.color.g, img.color.b, 0f);
+        img.transform.localScale = Vector3.one;
+    }
+
+    static void Stamp(Image img)
+    {
+        img.transform.localScale = Vector3.one * 1.35f;
+        img.color = new Color(img.color.r, img.color.g, img.color.b, 1f);
+
+        img.transform.DOScale(1f, 0.08f).SetEase(Ease.OutExpo)
+            .OnComplete(() =>
+                img.transform.DOPunchScale(Vector3.one * 0.05f, 0.3f, 6, 0.3f));
     }
 }

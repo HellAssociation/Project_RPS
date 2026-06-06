@@ -1,8 +1,8 @@
-using SystemEnums;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using SystemEnums;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class StagePanel : PanelBase
 {
@@ -38,8 +38,14 @@ public class StagePanel : PanelBase
 
     void Start()
     {
+        Players.OnPlayersChanged += RefreshHostName;
         RefreshHostName();
         RefreshHP();
+    }
+
+    void OnDestroy()
+    {
+        Players.OnPlayersChanged -= RefreshHostName;
     }
 
     public override void OpenPanel()
@@ -74,18 +80,19 @@ public class StagePanel : PanelBase
         }
     }
 
-    void RefreshHostName()
+    private void RefreshHostName()
     {
-        if (hostNameTMP == null) return;
+        if (hostNameTMP == null) 
+            return;
+        
         string name = string.Empty;
         if (Players.TryGetHost(out PlayerNetworkObject hostObj))
             name = hostObj.DisplayName.Value;
-        if (string.IsNullOrEmpty(name) && Network != null)
-            name = Network.LocalDisplayName;
+
         hostNameTMP.text = name;
     }
 
-    void RefreshHP()
+    private void RefreshHP()
     {
         if (hpImage == null || hpSprites == null || hpSprites.Length == 0) return;
         int lives = App.SceneManager.InGame != null ? App.SceneManager.InGame.Lives : InGameManager.MAX_LIVES;

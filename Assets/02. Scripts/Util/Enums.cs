@@ -43,14 +43,14 @@ namespace SystemEnums
 
     public enum EInGamePhase
     {
-        WaitingForStageSelect,
+        WaitingForRoundSelect,
         WaitingForSetup,
         AssignmentsReady,
-        RoundInput,
-        RoundJudging,
-        RoundComplete,
+        WaveInput,
+        WaveJudging,
+        WaveComplete,
         GameOver,
-        StageClear,
+        RoundClear,
     }
 
     public enum ELobbyState
@@ -84,6 +84,7 @@ namespace SystemEnums
         OutCome,
         Stage,
         Versus,
+        HUD,
     }
 
     /// <summary>

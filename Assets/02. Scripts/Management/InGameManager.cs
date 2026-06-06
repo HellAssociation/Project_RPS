@@ -3,87 +3,85 @@ using System.Collections;
 using SystemEnums;
 using UnityEngine;
 
-/// <summary>
-/// 인게임 씬 매니저. 손가락 배정, 라운드 타이머, RPS 판정, 스테이지/목숨 관리를 담당합니다.
-/// </summary>
 [DefaultExecutionOrder((int)EExecutionOrder.BaseManagement)]
 public class InGameManager : SceneManagerBase
 {
-    public const float RoundDurationSeconds = 3f;
-    public const int ROUNDS_PER_STAGE = 10;
-    public const int MAX_STAGES = 10;
-    public const int MAX_LIVES = 3;
+    public const float WaveDurationSeconds = 3f;
+    public const int WAVES_PER_ROUND = 10;
+    public const int MAX_ROUNDS = 10;
+    public const int MAX_LIVES = PlayerManager.MAX_HP;
 
-    const float BETWEEN_ROUND_DELAY = 1f;
+    const float BETWEEN_WAVE_DELAY = 1f;
     const float SLIDE_DURATION = 0.5f;
 
-    static readonly WaitForSeconds WAIT_OUTCOME = new(BETWEEN_ROUND_DELAY);
-    static readonly WaitForSeconds WAIT_SLIDE = new(SLIDE_DURATION);
+    static readonly WaitForSeconds WAIT_OUTCOME = new(BETWEEN_WAVE_DELAY);
+    static readonly WaitForSeconds WAIT_SLIDE   = new(SLIDE_DURATION);
 
     NetworkManager Network => App.SystemManager.Network;
-    PlayerManager Players => App.Game.Players;
-    InputManager Input => App.SystemManager.Input;
+    PlayerManager Players  => App.Game.Players;
+    InputManager Input     => App.SystemManager.Input;
 
-    Coroutine _roundCoroutine;
+    Coroutine _waveCoroutine;
     Coroutine _hostSetupCoroutine;
-    Coroutine _betweenRoundCoroutine;
+    Coroutine _betweenWaveCoroutine;
     bool _hostSetupStarted;
 
-    int _currentStage;
-    int _wonRoundsInStage;
+    int _currentRound;
+    int _wonWavesInRound;
     int _lives;
     EHandPosition _enemyHandPosition;
     StagePanel _stagePanel;
     VersusPanel _versusPanel;
 
-    public EInGamePhase Phase { get; private set; } = EInGamePhase.WaitingForStageSelect;
-    public bool IsRoundActive => Phase == EInGamePhase.RoundInput;
-    public float RoundTimeRemaining { get; private set; }
+    public EInGamePhase Phase { get; private set; } = EInGamePhase.WaitingForRoundSelect;
+    public bool IsWaveActive => Phase == EInGamePhase.WaveInput;
+    public float WaveTimeRemaining { get; private set; }
     public EFingerType LocalAssignedFinger => Players.LocalAssignedFinger;
     public bool LocalFingerExtended => Input.IsFingerExtended;
     public EHandPosition LastHandPosition { get; private set; } = EHandPosition.Invalid;
-    public int CurrentStage => _currentStage;
-    public int WonRoundsInStage => _wonRoundsInStage;
+    public int CurrentRound => _currentRound;
+    public int WonWavesInRound => _wonWavesInRound;
     public int Lives => _lives;
 
     public event Action<EFingerType> OnLocalAssignedFingerChanged;
-    public event Action<bool> OnLocalFingerExtendedChanged;
-    public event Action<float> OnRoundTimerUpdated;
-    public event Action<float> OnRoundStarted;
-    public event Action<EHandPosition> OnRoundJudged;
-    public event Action<EOutcome> OnOutcomeDetermined;
-    public event Action OnRoundResultShown;
-    public event Action<int> OnLivesChanged;
-    public event Action<int> OnStageClear;
-    public event Action OnGameOver;
+    public event Action<bool>        OnLocalFingerExtendedChanged;
+    public event Action<float>       OnWaveTimerUpdated;
+    public event Action<float>       OnWaveStarted;
+    public event Action<EHandPosition> OnWaveJudged;
+    public event Action<EOutcome>    OnOutcomeDetermined;
+    public event Action              OnWaveResultShown;
+    public event Action<int>         OnLivesChanged;
+    public event Action<int>         OnCurrentRoundChanged;
+    public event Action<int>         OnRoundClear;
+    public event Action              OnGameOver;
 
     void OnEnable()
     {
-        Input.OnFingerToggled += HandleFingerToggled;
-        Network.OnInGameSceneReady += HandleInGameSceneReady;
+        Input.OnFingerToggled              += HandleFingerToggled;
+        Network.OnInGameSceneReady         += HandleInGameSceneReady;
         Network.OnFingerAssignmentsReceived += HandleFingerAssignmentsReceived;
-        Network.OnRoundStarted += HandleRoundStarted;
-        Network.OnRoundResultReceived += HandleRoundResultReceived;
-        Network.OnStageSelected += HandleStageSelected;
+        Network.OnRoundStarted             += HandleWaveStarted;
+        Network.OnRoundResultReceived      += HandleWaveResultReceived;
+        Network.OnStageSelected            += HandleRoundSelected;
     }
 
     void OnDisable()
     {
-        Input.OnFingerToggled -= HandleFingerToggled;
-        Network.OnInGameSceneReady -= HandleInGameSceneReady;
+        Input.OnFingerToggled              -= HandleFingerToggled;
+        Network.OnInGameSceneReady         -= HandleInGameSceneReady;
         Network.OnFingerAssignmentsReceived -= HandleFingerAssignmentsReceived;
-        Network.OnRoundStarted -= HandleRoundStarted;
-        Network.OnRoundResultReceived -= HandleRoundResultReceived;
-        Network.OnStageSelected -= HandleStageSelected;
+        Network.OnRoundStarted             -= HandleWaveStarted;
+        Network.OnRoundResultReceived      -= HandleWaveResultReceived;
+        Network.OnStageSelected            -= HandleRoundSelected;
     }
 
     void Start()
     {
-        CacheStagePanel();
+        CachePanels();
         BeginInGameSetup();
     }
 
-    void CacheStagePanel()
+    void CachePanels()
     {
         if (!App.UI.InGame.TryGetPanel(out _stagePanel))
         {
@@ -108,14 +106,14 @@ public class InGameManager : SceneManagerBase
             _hostSetupCoroutine = null;
         }
 
-        _hostSetupStarted = false;
-        _currentStage = 1;
-        _wonRoundsInStage = 0;
-        _lives = MAX_LIVES;
+        _hostSetupStarted  = false;
+        _currentRound      = 1;
+        _wonWavesInRound   = 0;
+        _lives             = MAX_LIVES;
         _enemyHandPosition = EHandPosition.Invalid;
-        Phase = EInGamePhase.WaitingForStageSelect;
-        LastHandPosition = EHandPosition.Invalid;
-        RoundTimeRemaining = 0f;
+        Phase              = EInGamePhase.WaitingForRoundSelect;
+        LastHandPosition   = EHandPosition.Invalid;
+        WaveTimeRemaining  = 0f;
         Input.SetEnabled(false);
         Input.ResetFingerState();
         Network.ResetInGameRoundNotification();
@@ -127,17 +125,15 @@ public class InGameManager : SceneManagerBase
             StartCoroutine(EarlySpawnPlayerObjectsCoroutine());
     }
 
-    // Spawn player objects immediately so cursor sync works during stage selection.
-    // Finger assignment happens later in HostSetupCoroutine (after stage selected).
     IEnumerator EarlySpawnPlayerObjectsCoroutine()
     {
         yield return Players.ServerEnsurePlayerObjectsCoroutine();
     }
 
-    void HandleStageSelected()
+    void HandleRoundSelected()
     {
         if (_stagePanel != null) _stagePanel.ClosePanel();
-        if (Phase == EInGamePhase.WaitingForStageSelect)
+        if (Phase == EInGamePhase.WaitingForRoundSelect)
             Phase = EInGamePhase.WaitingForSetup;
         TryBeginHostSetup();
     }
@@ -147,14 +143,10 @@ public class InGameManager : SceneManagerBase
         if (_hostSetupStarted || !Network.IsServerHost || Phase != EInGamePhase.WaitingForSetup)
             return;
 
-        _hostSetupStarted = true;
+        _hostSetupStarted   = true;
         _hostSetupCoroutine = StartCoroutine(HostSetupCoroutine());
     }
 
-    /// <summary>
-    /// 호스트: player object 재확보 → 손가락 배정 → 라운드 시작.
-    /// 클라이언트: HandleFingerAssignmentsReceived 경로로 진행.
-    /// </summary>
     IEnumerator HostSetupCoroutine()
     {
         yield return Players.ServerEnsurePlayerObjectsCoroutine();
@@ -167,13 +159,12 @@ public class InGameManager : SceneManagerBase
         if (_versusPanel != null)
             yield return new WaitWhile(() => _versusPanel.IsAnimating);
 
-        Network.ServerStartRound(RoundDurationSeconds);
+        Network.ServerStartRound(WaveDurationSeconds);
         _hostSetupCoroutine = null;
     }
 
     void HandleFingerAssignmentsReceived()
     {
-        // 스테이지 전환 시 클라이언트가 새 배정을 받을 수 있도록 phase 초기화
         if (Phase != EInGamePhase.WaitingForSetup)
             Phase = EInGamePhase.WaitingForSetup;
 
@@ -192,7 +183,7 @@ public class InGameManager : SceneManagerBase
 
     void HandleFingerToggled(bool isExtended)
     {
-        if (!IsRoundActive || LocalAssignedFinger == EFingerType.None)
+        if (!IsWaveActive || LocalAssignedFinger == EFingerType.None)
             return;
 
         Network.ClientSendFingerState(isExtended);
@@ -203,7 +194,7 @@ public class InGameManager : SceneManagerBase
 #endif
     }
 
-    void HandleRoundStarted(float durationSeconds)
+    void HandleWaveStarted(float durationSeconds)
     {
         if (_hostSetupCoroutine != null)
         {
@@ -211,58 +202,57 @@ public class InGameManager : SceneManagerBase
             _hostSetupCoroutine = null;
         }
 
-        if (_roundCoroutine != null)
-            StopCoroutine(_roundCoroutine);
+        if (_waveCoroutine != null)
+            StopCoroutine(_waveCoroutine);
 
-        _roundCoroutine = StartCoroutine(RoundTimerCoroutine(durationSeconds));
+        _waveCoroutine = StartCoroutine(WaveTimerCoroutine(durationSeconds));
     }
 
-    IEnumerator RoundTimerCoroutine(float durationSeconds)
+    IEnumerator WaveTimerCoroutine(float durationSeconds)
     {
-        Phase = EInGamePhase.RoundInput;
-        RoundTimeRemaining = durationSeconds;
+        Phase             = EInGamePhase.WaveInput;
+        WaveTimeRemaining = durationSeconds;
         _enemyHandPosition = EHandPosition.Invalid;
         Input.ResetFingerState();
         Input.SetEnabled(true);
         OnLocalFingerExtendedChanged?.Invoke(false);
-        OnRoundStarted?.Invoke(durationSeconds);
-        OnRoundTimerUpdated?.Invoke(RoundTimeRemaining);
+        OnWaveStarted?.Invoke(durationSeconds);
+        OnWaveTimerUpdated?.Invoke(WaveTimeRemaining);
 
-        while (RoundTimeRemaining > 0f)
+        while (WaveTimeRemaining > 0f)
         {
-            RoundTimeRemaining -= Time.deltaTime;
-            OnRoundTimerUpdated?.Invoke(Mathf.Max(0f, RoundTimeRemaining));
+            WaveTimeRemaining -= Time.deltaTime;
+            OnWaveTimerUpdated?.Invoke(Mathf.Max(0f, WaveTimeRemaining));
             yield return null;
         }
 
-        RoundTimeRemaining = 0f;
-        OnRoundTimerUpdated?.Invoke(0f);
+        WaveTimeRemaining = 0f;
+        OnWaveTimerUpdated?.Invoke(0f);
         Input.SetEnabled(false);
-        Phase = EInGamePhase.RoundJudging;
+        Phase = EInGamePhase.WaveJudging;
 
         if (Network.IsServerHost)
             Network.ServerJudgeAndBroadcastRoundResult();
     }
 
-    void HandleRoundResultReceived(EHandPosition handPosition)
+    void HandleWaveResultReceived(EHandPosition handPosition)
     {
         LastHandPosition = handPosition;
 
         EOutcome outcome = DetermineOutcome(handPosition, _enemyHandPosition);
-        Phase = EInGamePhase.RoundComplete;
+        Phase = EInGamePhase.WaveComplete;
         OnOutcomeDetermined?.Invoke(outcome);
-        OnRoundJudged?.Invoke(handPosition);
+        OnWaveJudged?.Invoke(handPosition);
 
-        bool isStageClear = false;
-        bool isStageFailed = false;
-        bool isGameOver = false;
+        bool isRoundClear = false;
+        bool isGameOver   = false;
 
         switch (outcome)
         {
             case EOutcome.Win:
-                _wonRoundsInStage++;
-                if (_wonRoundsInStage >= ROUNDS_PER_STAGE)
-                    isStageClear = true;
+                _wonWavesInRound++;
+                if (_wonWavesInRound >= WAVES_PER_ROUND)
+                    isRoundClear = true;
                 break;
 
             case EOutcome.Lose:
@@ -270,72 +260,64 @@ public class InGameManager : SceneManagerBase
                 OnLivesChanged?.Invoke(_lives);
                 if (_lives <= 0)
                 {
-                    Phase = EInGamePhase.GameOver;
-                    isGameOver = true;
+                    Phase       = EInGamePhase.GameOver;
+                    isGameOver  = true;
                 }
-                else
-                    isStageFailed = true;
                 break;
-
-            // Draw: 상태 변경 없음, 다음 라운드로 진행
         }
 
-        if (_betweenRoundCoroutine != null)
-            StopCoroutine(_betweenRoundCoroutine);
-        _betweenRoundCoroutine = StartCoroutine(BetweenRoundsCoroutine(isStageClear, isStageFailed, isGameOver));
+        if (_betweenWaveCoroutine != null)
+            StopCoroutine(_betweenWaveCoroutine);
+        _betweenWaveCoroutine = StartCoroutine(BetweenWavesCoroutine(isRoundClear, isGameOver));
     }
 
-    IEnumerator BetweenRoundsCoroutine(bool isStageClear, bool isStageFailed, bool isGameOver)
+    IEnumerator BetweenWavesCoroutine(bool isRoundClear, bool isGameOver)
     {
         yield return WAIT_OUTCOME;
-        OnRoundResultShown?.Invoke();
+        OnWaveResultShown?.Invoke();
 
         if (isGameOver)
         {
             Input.ResetFingerState();
             OnLocalFingerExtendedChanged?.Invoke(false);
             OnGameOver?.Invoke();
-            _betweenRoundCoroutine = null;
-            yield break;
-        }
 
-        if (isStageFailed)
-        {
-            Input.ResetFingerState();
-            OnLocalFingerExtendedChanged?.Invoke(false);
-            _wonRoundsInStage = 0;
+            _lives           = MAX_LIVES;
+            _wonWavesInRound = 0;
+            _currentRound    = 1;
             _hostSetupStarted = false;
-            Phase = EInGamePhase.WaitingForStageSelect;
+            Phase            = EInGamePhase.WaitingForRoundSelect;
+            OnLivesChanged?.Invoke(_lives);
+            OnCurrentRoundChanged?.Invoke(_currentRound);
+
             if (_stagePanel != null) _stagePanel.OpenPanel();
-            _betweenRoundCoroutine = null;
+            _betweenWaveCoroutine = null;
             yield break;
         }
 
-        // 스테이지 상태 갱신은 모든 클라이언트에서 수행
-        if (isStageClear)
+        if (isRoundClear)
         {
-            int clearedStage = _currentStage;
-            _currentStage++;
-            _wonRoundsInStage = 0;
-            OnStageClear?.Invoke(clearedStage);
+            int clearedRound = _currentRound;
+            _currentRound++;
+            _wonWavesInRound = 0;
+            OnCurrentRoundChanged?.Invoke(_currentRound);
+            OnRoundClear?.Invoke(clearedRound);
         }
 
         if (!Network.IsServerHost) yield break;
 
         yield return WAIT_SLIDE;
 
-        if (isStageClear)
+        if (isRoundClear)
         {
-            if (_currentStage > MAX_STAGES)
+            if (_currentRound > MAX_ROUNDS)
             {
-                // 전 스테이지 클리어 — 추후 구현
-                Phase = EInGamePhase.StageClear;
-                _betweenRoundCoroutine = null;
+                Phase = EInGamePhase.RoundClear;
+                _betweenWaveCoroutine = null;
                 yield break;
             }
 
-            // 새 스테이지: 손가락 재배정
-            Phase = EInGamePhase.WaitingForSetup;
+            Phase             = EInGamePhase.WaitingForSetup;
             _hostSetupStarted = false;
             yield return Players.ServerEnsurePlayerObjectsCoroutine();
             Network.ServerInitializeFingerAssignments();
@@ -346,8 +328,8 @@ public class InGameManager : SceneManagerBase
         if (_versusPanel != null && _versusPanel.IsAnimating)
             yield return new WaitWhile(() => _versusPanel.IsAnimating);
 
-        Network.ServerStartRound(RoundDurationSeconds);
-        _betweenRoundCoroutine = null;
+        Network.ServerStartRound(WaveDurationSeconds);
+        _betweenWaveCoroutine = null;
     }
 
     public void SetEnemyHandPosition(EHandPosition position)
@@ -355,18 +337,14 @@ public class InGameManager : SceneManagerBase
         _enemyHandPosition = position;
     }
 
-    /// <summary>
-    /// 플레이어(합산 손 모양) vs 적 손 모양으로 승/패/무승부를 판정합니다.
-    /// Invalid(유효하지 않은 손 모양)는 상대가 Invalid가 아닌 이상 패배 처리됩니다.
-    /// </summary>
     static EOutcome DetermineOutcome(EHandPosition player, EHandPosition enemy)
     {
         bool playerInvalid = player == EHandPosition.Invalid;
-        bool enemyInvalid = enemy == EHandPosition.Invalid || enemy == EHandPosition.Random;
+        bool enemyInvalid  = enemy == EHandPosition.Invalid || enemy == EHandPosition.Random;
 
         if (playerInvalid && enemyInvalid) return EOutcome.Draw;
         if (playerInvalid) return EOutcome.Lose;
-        if (enemyInvalid) return EOutcome.Win;
+        if (enemyInvalid)  return EOutcome.Win;
 
         if (player == enemy) return EOutcome.Draw;
 

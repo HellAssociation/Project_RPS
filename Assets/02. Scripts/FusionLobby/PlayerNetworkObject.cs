@@ -83,7 +83,7 @@ public class PlayerNetworkObject : NetworkBehaviour
             !Object.HasInputAuthority &&
             App.IsGameScene &&
             App.SceneManager.InGame != null &&
-            App.SceneManager.InGame.IsRoundActive &&
+            App.SceneManager.InGame.IsWaveActive &&
             AssignedFinger != EFingerType.None)
         {
             string displayName = DisplayName.Value;

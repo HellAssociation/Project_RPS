@@ -12,6 +12,8 @@ using UnityEngine;
 [DefaultExecutionOrder((int)EExecutionOrder.SystemManagement)]
 public class PlayerManager : CommonManagerBase
 {
+    public const int MAX_HP = 3;
+
     const string PlayerPrefabResource = "PlayerNetworkObject";
 
     NetworkObject _playerPrefab;

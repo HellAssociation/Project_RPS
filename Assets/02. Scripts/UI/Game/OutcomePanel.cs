@@ -29,8 +29,8 @@ public class OutcomePanel : PanelBase
         InGameManager inGame = App.SceneManager.InGame;
         if (inGame == null) return;
         inGame.OnOutcomeDetermined += ShowOutcome;
-        inGame.OnRoundResultShown += HideOutcome;
-        inGame.OnRoundStarted += HideOutcomeOnRoundStart;
+        inGame.OnWaveResultShown += HideOutcome;
+        inGame.OnWaveStarted += HideOutcomeOnRoundStart;
         inGame.OnGameOver += HideOutcome;
     }
 
@@ -39,8 +39,8 @@ public class OutcomePanel : PanelBase
         InGameManager inGame = App.SceneManager.InGame;
         if (inGame == null) return;
         inGame.OnOutcomeDetermined -= ShowOutcome;
-        inGame.OnRoundResultShown -= HideOutcome;
-        inGame.OnRoundStarted -= HideOutcomeOnRoundStart;
+        inGame.OnWaveResultShown -= HideOutcome;
+        inGame.OnWaveStarted -= HideOutcomeOnRoundStart;
         inGame.OnGameOver -= HideOutcome;
     }
 

@@ -18,16 +18,18 @@ public class EnemyHand : Hand
 
     void Start()
     {
+        CloseAll();
+
         InGameManager inGame = App.SceneManager.InGame;
         if (inGame == null) return;
-        inGame.OnRoundStarted += HandleRoundStarted;
+        inGame.OnWaveStarted += HandleRoundStarted;
     }
 
     void OnDestroy()
     {
         InGameManager inGame = App.SceneManager.InGame;
         if (inGame == null) return;
-        inGame.OnRoundStarted -= HandleRoundStarted;
+        inGame.OnWaveStarted -= HandleRoundStarted;
     }
 
     void HandleRoundStarted(float duration)

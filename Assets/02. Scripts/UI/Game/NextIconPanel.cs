@@ -15,18 +15,18 @@ public class NextIconPanel : PanelBase
     [Header("Rock / Paper / Scissors / Random")]
     [SerializeField] Sprite[] handPositionSprites;
 
-    [Header("Slots — left to right, index 0 is front (visible), index 3 is off-screen right")]
     [SerializeField] NextIconSlot[] _slots;
-
-    [Tooltip("Width of one slot in pixels (matches RectTransform width)")]
-    [SerializeField] float _slotWidth = 200f;
 
     [SerializeField] float _tweenDuration = 0.35f;
 
     readonly Queue<EHandPosition> _queue = new();
 
-    // ordered list: index 0 = leftmost (front), index 3 = rightmost (off-screen right)
-    readonly List<NextIconSlot> _orderedSlots = new();
+    NextIconSlot currentSlot;
+    NextIconSlot nextSlot;
+
+    readonly Vector3 leftPosition    = new(-248f, 0f, 0f);
+    readonly Vector3 currentPosition = new(  48f, 0f, 0f);
+    readonly Vector3 rightPosition   = new( 248f, 0f, 0f);
 
     EHandPosition _currentHandPosition;
     public EHandPosition CurrentHandPosition => _currentHandPosition;
@@ -34,42 +34,33 @@ public class NextIconPanel : PanelBase
     protected override void Awake()
     {
         base.Awake();
-
         foreach (var slot in _slots)
             slot.Init();
     }
 
     void Start()
     {
-        BuildOrderedSlots();
         GenerateQueue();
         LoadInitialSlots();
 
         InGameManager inGame = App.SceneManager.InGame;
         if (inGame == null) return;
-        inGame.OnRoundResultShown += ConsumeAndAnimate;
+        inGame.OnWaveStarted     += HandleWaveStarted;
+        inGame.OnWaveResultShown += HandleWaveResultShown;
     }
 
     void OnDestroy()
     {
         InGameManager inGame = App.SceneManager.InGame;
         if (inGame == null) return;
-        inGame.OnRoundResultShown -= ConsumeAndAnimate;
-    }
-
-    // Sort slots by their initial anchoredPosition.x so order matches left-to-right
-    void BuildOrderedSlots()
-    {
-        _orderedSlots.Clear();
-        _orderedSlots.AddRange(_slots);
-        _orderedSlots.Sort((a, b) => a.Rect.anchoredPosition.x.CompareTo(b.Rect.anchoredPosition.x));
+        inGame.OnWaveStarted     -= HandleWaveStarted;
+        inGame.OnWaveResultShown -= HandleWaveResultShown;
     }
 
     void GenerateQueue()
     {
         _queue.Clear();
 
-        // Fixed pool for a stage: mix of Rock/Paper/Scissors/Random
         EHandPosition[] pool =
         {
             EHandPosition.Rock,
@@ -86,7 +77,6 @@ public class NextIconPanel : PanelBase
             EHandPosition.Rock,
         };
 
-        // Fisher-Yates shuffle
         for (int i = pool.Length - 1; i > 0; i--)
         {
             int j = Random.Range(0, i + 1);
@@ -99,10 +89,40 @@ public class NextIconPanel : PanelBase
 
     void LoadInitialSlots()
     {
-        for (int i = 0; i < _orderedSlots.Count; i++)
-            LoadSlot(_orderedSlots[i], Dequeue());
+        currentSlot = _slots[0];
+        nextSlot    = _slots[1];
 
-        _currentHandPosition = _orderedSlots[0].HandPosition;
+        LoadSlot(currentSlot, Dequeue());
+        LoadSlot(nextSlot,    Dequeue());
+
+        currentSlot.Rect.localPosition = rightPosition;
+        nextSlot.Rect.localPosition    = rightPosition;
+
+        _currentHandPosition = currentSlot.HandPosition;
+    }
+
+    void HandleWaveStarted(float _)
+    {
+        currentSlot.Rect.DOKill();
+        currentSlot.Rect.DOLocalMove(currentPosition, _tweenDuration).SetEase(Ease.OutBack);
+    }
+
+    void HandleWaveResultShown()
+    {
+        currentSlot.Rect.DOKill();
+        currentSlot.Rect.DOLocalMove(leftPosition, _tweenDuration).SetEase(Ease.InBack)
+            .OnComplete(RecycleAndSwap);
+    }
+
+    void RecycleAndSwap()
+    {
+        NextIconSlot recycled = currentSlot;
+        LoadSlot(recycled, Dequeue());
+        recycled.Rect.localPosition = rightPosition;
+
+        currentSlot          = nextSlot;
+        nextSlot             = recycled;
+        _currentHandPosition = currentSlot.HandPosition;
     }
 
     void LoadSlot(NextIconSlot slot, EHandPosition position)
@@ -112,45 +132,10 @@ public class NextIconPanel : PanelBase
 
     EHandPosition Dequeue()
     {
-        if (_queue.Count > 0)
-            return _queue.Dequeue();
+        if (_queue.Count > 0) return _queue.Dequeue();
 
-        // Fallback: random when queue is exhausted
         EHandPosition[] options = { EHandPosition.Rock, EHandPosition.Paper, EHandPosition.Scissors, EHandPosition.Random };
         return options[Random.Range(0, options.Length)];
-    }
-
-    // Slides all slots left by _slotWidth, then recycles the front slot to the right
-    void ConsumeAndAnimate()
-    {
-        // Update current to the slot that will be front after animation
-        if (_orderedSlots.Count > 1)
-            _currentHandPosition = _orderedSlots[1].HandPosition;
-
-        Sequence seq = DOTween.Sequence();
-
-        for (int i = 0; i < _orderedSlots.Count; i++)
-        {
-            Vector2 target = _orderedSlots[i].Rect.anchoredPosition + new Vector2(-_slotWidth, 0f);
-            seq.Join(_orderedSlots[i].Rect.DOAnchorPos(target, _tweenDuration).SetEase(Ease.OutBack));
-        }
-
-        seq.OnComplete(RecycleFrontSlot);
-    }
-
-    void RecycleFrontSlot()
-    {
-        NextIconSlot front = _orderedSlots[0];
-
-        // Move it to the right of the last slot
-        float rightX = _orderedSlots[^1].Rect.anchoredPosition.x + _slotWidth;
-        front.Rect.anchoredPosition = new Vector2(rightX, front.Rect.anchoredPosition.y);
-
-        LoadSlot(front, Dequeue());
-
-        // Rotate ordered list: front becomes back
-        _orderedSlots.RemoveAt(0);
-        _orderedSlots.Add(front);
     }
 
     public Sprite GetSprite(EHandPosition handPosition)
