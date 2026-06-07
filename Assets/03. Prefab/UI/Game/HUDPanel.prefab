@@ -286,6 +286,11 @@ MonoBehaviour:
   fillDuration: 0.8
   delaySeconds: 0.4
   ghostSpeed: 2.5
+  playerHudShakeRect: {fileID: 3214750646444300075}
+  enemyShakeRect: {fileID: 5512513661987006896}
+  shakeDuration: 0.3
+  shakeStrength: 16
+  shakeVibrato: 28
 --- !u!1 &3707610205569731626
 GameObject:
   m_ObjectHideFlags: 0
