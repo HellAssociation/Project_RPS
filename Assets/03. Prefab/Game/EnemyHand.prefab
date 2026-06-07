@@ -105,12 +105,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5782da3991604bb41b6958479e1dca62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handSpriteRenderer: {fileID: 7917930549676045525}
   fingers:
   - {fileID: 1501168088590392327}
   - {fileID: 5805926983822627424}
   - {fileID: 7341147139317395517}
   - {fileID: 1249954289132751131}
   - {fileID: 5954220448175226227}
+  handSpriteDataSet:
+  - {fileID: 11400000, guid: 125c7829980b9e149a244ead7176d04d, type: 2}
+  - {fileID: 11400000, guid: 2c7a03db7bc297d46b0c042ba62c3bad, type: 2}
+  - {fileID: 11400000, guid: d78b27f1579f02942b35175389696b2b, type: 2}
+  - {fileID: 11400000, guid: 84eaaf115ef80d341a9cc65d23255296, type: 2}
+  - {fileID: 11400000, guid: 8616203479ad2d84ab584fa2f6ebf23c, type: 2}
+  - {fileID: 11400000, guid: 74de71d3bbbdf4b46a65ca65eefd0b28, type: 2}
+  - {fileID: 11400000, guid: 1568bc9895176a1478c7600f4108142e, type: 2}
+  - {fileID: 11400000, guid: 129fb0c9bb8d8d042929d89241fd8b27, type: 2}
+  - {fileID: 11400000, guid: 26cc5cce25fd9864286b18ffa5579d4f, type: 2}
+  - {fileID: 11400000, guid: f77330387d8f4c4429e03a9a4d48cca5, type: 2}
 --- !u!1 &2107234208806799966
 GameObject:
   m_ObjectHideFlags: 0

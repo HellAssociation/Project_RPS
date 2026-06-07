@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using SystemEnums;
 using UnityEngine;
 
@@ -11,10 +12,30 @@ public class EnemyHand : Hand
         EHandPosition.Scissors,
     };
 
+    static readonly EFingerType[] FINGER_TYPES =
+    {
+        EFingerType.Thumb,
+        EFingerType.Index,
+        EFingerType.Middle,
+        EFingerType.Ring,
+        EFingerType.Pinky,
+    };
+
     const float RANDOM_CYCLE_INTERVAL = 0.1f;
     const float LOCK_BEFORE_END = 1f;
+    const int HAND_SPRITE_DATA_COUNT = 10;
+
+    [SerializeField] HandSpriteData[] handSpriteDataSet;
+
+    Dictionary<EEnemyHandType, HandSpriteData> handSpriteDataTable;
 
     Coroutine _randomCoroutine;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        CacheHandSpriteData();
+    }
 
     void Start()
     {
@@ -23,6 +44,7 @@ public class EnemyHand : Hand
         InGameManager inGame = App.SceneManager.InGame;
         if (inGame == null) return;
         inGame.OnWaveStarted += HandleRoundStarted;
+        inGame.OnStageOpened += HandleStageOpened;
     }
 
     void OnDestroy()
@@ -30,6 +52,13 @@ public class EnemyHand : Hand
         InGameManager inGame = App.SceneManager.InGame;
         if (inGame == null) return;
         inGame.OnWaveStarted -= HandleRoundStarted;
+        inGame.OnStageOpened -= HandleStageOpened;
+    }
+
+    void HandleStageOpened(int stageIndex)
+    {
+        if (stageIndex < 0 || stageIndex >= HAND_SPRITE_DATA_COUNT) return;
+        ApplyHandSpriteData((EEnemyHandType)stageIndex);
     }
 
     void HandleRoundStarted(float duration)
@@ -81,5 +110,41 @@ public class EnemyHand : Hand
             return panel.CurrentHandPosition;
 
         return EHandPosition.Rock;
+    }
+
+    void CacheHandSpriteData()
+    {
+        handSpriteDataTable = new(HAND_SPRITE_DATA_COUNT);
+
+        if (handSpriteDataSet == null) return;
+
+        foreach (HandSpriteData data in handSpriteDataSet)
+        {
+            if (data == null) continue;
+
+            if (!handSpriteDataTable.TryAdd(data.HandId, data))
+                Debug.LogError($"[Error] {data.HandId} duplicate hand sprite data!");
+        }
+    }
+
+    public void ApplyHandSpriteData(EEnemyHandType _handType)
+    {
+        if (handSpriteDataTable == null || !handSpriteDataTable.TryGetValue(_handType, out HandSpriteData data) || data == null)
+        {
+            Debug.LogError($"[Error] {_handType} can't find hand sprite data!");
+            return;
+        }
+
+        SetHandSprite(data.HandSprite);
+
+        foreach (EFingerType fingerType in FINGER_TYPES)
+        {
+            Finger finger = GetFinger(fingerType);
+            if (finger == null) continue;
+
+            finger.SetSpriteData(new FingerSpriteData(
+                data.GetFingerSprite(fingerType, true),
+                data.GetFingerSprite(fingerType, false)));
+        }
     }
 }

@@ -265,7 +265,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _panelGameObject: {fileID: 3926300481012222431}
   _timerTMP: {fileID: 1365418529979420913}
-  _roundTMP: {fileID: 3091542083424495566}
+  _stageTMP: {fileID: 3091542083424495566}
 --- !u!1 &8324971719693347758
 GameObject:
   m_ObjectHideFlags: 0
@@ -278,7 +278,7 @@ GameObject:
   - component: {fileID: 900938844733652734}
   - component: {fileID: 3091542083424495566}
   m_Layer: 5
-  m_Name: RoundTMP
+  m_Name: StageTMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -331,7 +331,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Round 12
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 12a2c0a1f32d0d74e9c70bfe25899ca2, type: 2}
   m_sharedMaterial: {fileID: -5565543625374079614, guid: 12a2c0a1f32d0d74e9c70bfe25899ca2, type: 2}

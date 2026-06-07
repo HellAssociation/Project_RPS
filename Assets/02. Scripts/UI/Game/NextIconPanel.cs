@@ -24,9 +24,9 @@ public class NextIconPanel : PanelBase
     NextIconSlot currentSlot;
     NextIconSlot nextSlot;
 
-    readonly Vector3 leftPosition    = new(-248f, 0f, 0f);
-    readonly Vector3 currentPosition = new(  48f, 0f, 0f);
-    readonly Vector3 rightPosition   = new( 248f, 0f, 0f);
+    readonly Vector2 leftPosition    = new(-88f, 0f);
+    readonly Vector2 currentPosition = Vector2.zero;
+    readonly Vector2 rightPosition   = new(88f, 0f);
 
     EHandPosition _currentHandPosition;
     public EHandPosition CurrentHandPosition => _currentHandPosition;
@@ -45,6 +45,7 @@ public class NextIconPanel : PanelBase
 
         InGameManager inGame = App.SceneManager.InGame;
         if (inGame == null) return;
+        inGame.OnReadyStarted    += HandleReadyStarted;
         inGame.OnWaveStarted     += HandleWaveStarted;
         inGame.OnWaveResultShown += HandleWaveResultShown;
     }
@@ -53,6 +54,7 @@ public class NextIconPanel : PanelBase
     {
         InGameManager inGame = App.SceneManager.InGame;
         if (inGame == null) return;
+        inGame.OnReadyStarted    -= HandleReadyStarted;
         inGame.OnWaveStarted     -= HandleWaveStarted;
         inGame.OnWaveResultShown -= HandleWaveResultShown;
     }
@@ -74,7 +76,6 @@ public class NextIconPanel : PanelBase
             EHandPosition.Rock,
             EHandPosition.Scissors,
             EHandPosition.Paper,
-            EHandPosition.Rock,
         };
 
         for (int i = pool.Length - 1; i > 0; i--)
@@ -95,34 +96,40 @@ public class NextIconPanel : PanelBase
         LoadSlot(currentSlot, Dequeue());
         LoadSlot(nextSlot,    Dequeue());
 
-        currentSlot.Rect.localPosition = rightPosition;
-        nextSlot.Rect.localPosition    = rightPosition;
+        currentSlot.Rect.anchoredPosition = rightPosition;
+        nextSlot.Rect.anchoredPosition    = rightPosition;
 
         _currentHandPosition = currentSlot.HandPosition;
     }
 
-    void HandleWaveStarted(float _)
+    void HandleReadyStarted()
     {
         currentSlot.Rect.DOKill();
-        currentSlot.Rect.DOLocalMove(currentPosition, _tweenDuration).SetEase(Ease.OutBack);
+        currentSlot.Rect.DOAnchorPos(currentPosition, _tweenDuration).SetEase(Ease.InOutQuad);
     }
 
-    void HandleWaveResultShown()
+    void HandleWaveStarted(float _)
     {
+        _currentHandPosition = currentSlot.HandPosition;
+
         currentSlot.Rect.DOKill();
-        currentSlot.Rect.DOLocalMove(leftPosition, _tweenDuration).SetEase(Ease.InBack)
+        currentSlot.Rect.DOAnchorPos(leftPosition, _tweenDuration).SetEase(Ease.InOutQuad)
             .OnComplete(RecycleAndSwap);
+
+        nextSlot.Rect.DOKill();
+        nextSlot.Rect.DOAnchorPos(currentPosition, _tweenDuration).SetEase(Ease.InOutQuad);
     }
+
+    void HandleWaveResultShown() { }
 
     void RecycleAndSwap()
     {
         NextIconSlot recycled = currentSlot;
         LoadSlot(recycled, Dequeue());
-        recycled.Rect.localPosition = rightPosition;
+        recycled.Rect.anchoredPosition = rightPosition;
 
-        currentSlot          = nextSlot;
-        nextSlot             = recycled;
-        _currentHandPosition = currentSlot.HandPosition;
+        currentSlot = nextSlot;
+        nextSlot    = recycled;
     }
 
     void LoadSlot(NextIconSlot slot, EHandPosition position)

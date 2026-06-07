@@ -36,17 +36,17 @@ public class VersusPanel : PanelBase
         SetHidden(readyImage);
         SetHidden(fightImage);
 
-        Sequence seq = DOTween.Sequence();
+        Sequence sequence = DOTween.Sequence();
 
-        seq.AppendCallback(() => Stamp(readyImage));
-        seq.AppendInterval(0.75f);
-        seq.Append(readyImage.DOFade(0f, 0.1f));
+        sequence.AppendCallback(() => Stamp(readyImage));
+        sequence.AppendInterval(0.75f);
+        sequence.Append(readyImage.DOFade(0f, 0.1f));
 
-        seq.AppendCallback(() => Stamp(fightImage));
-        seq.AppendInterval(0.75f);
-        seq.Append(fightImage.DOFade(0f, 0.1f));
+        sequence.AppendCallback(() => Stamp(fightImage));
+        sequence.AppendInterval(0.75f);
+        sequence.Append(fightImage.DOFade(0f, 0.1f));
 
-        seq.OnComplete(() =>
+        sequence.OnComplete(() =>
         {
             _isAnimating = false;
             ClosePanel();

@@ -29,6 +29,7 @@ public class InGameManager : SceneManagerBase
     int _currentRound;
     int _wonWavesInRound;
     int _lives;
+    int _selectedStageIndex;
     EHandPosition _enemyHandPosition;
     StagePanel _stagePanel;
     VersusPanel _versusPanel;
@@ -42,10 +43,13 @@ public class InGameManager : SceneManagerBase
     public int CurrentRound => _currentRound;
     public int WonWavesInRound => _wonWavesInRound;
     public int Lives => _lives;
+    public int SelectedStageIndex => _selectedStageIndex;
 
     public event Action<EFingerType> OnLocalAssignedFingerChanged;
     public event Action<bool>        OnLocalFingerExtendedChanged;
     public event Action<float>       OnWaveTimerUpdated;
+    public event Action<int>         OnStageOpened;
+    public event Action              OnReadyStarted;
     public event Action<float>       OnWaveStarted;
     public event Action<EHandPosition> OnWaveJudged;
     public event Action<EOutcome>    OnOutcomeDetermined;
@@ -130,11 +134,15 @@ public class InGameManager : SceneManagerBase
         yield return Players.ServerEnsurePlayerObjectsCoroutine();
     }
 
-    void HandleRoundSelected()
+    void HandleRoundSelected(int stageIndex)
     {
+        _selectedStageIndex = stageIndex;
+
         if (_stagePanel != null) _stagePanel.ClosePanel();
         if (Phase == EInGamePhase.WaitingForRoundSelect)
             Phase = EInGamePhase.WaitingForSetup;
+
+        OnStageOpened?.Invoke(stageIndex);
         TryBeginHostSetup();
     }
 
@@ -178,6 +186,7 @@ public class InGameManager : SceneManagerBase
 
         Phase = EInGamePhase.AssignmentsReady;
         OnLocalAssignedFingerChanged?.Invoke(LocalAssignedFinger);
+        OnReadyStarted?.Invoke();
         if (_versusPanel != null) _versusPanel.OpenPanel();
     }
 

@@ -88,10 +88,10 @@ public class OutcomePanel : PanelBase
         outcomeImage.transform.localScale = Vector3.zero;
         outcomeImage.color = new Color(1f, 1f, 1f, 0f);
 
-        Sequence seq = DOTween.Sequence();
-        seq.Append(outcomeImage.transform.DOScale(1.3f, 0.35f).SetEase(Ease.OutBack));
-        seq.Join(outcomeImage.DOFade(1f, 0.18f));
-        seq.Append(outcomeImage.transform.DOScale(1f, 0.15f).SetEase(Ease.OutSine));
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(outcomeImage.transform.DOScale(1.3f, 0.35f).SetEase(Ease.OutBack));
+        sequence.Join(outcomeImage.DOFade(1f, 0.18f));
+        sequence.Append(outcomeImage.transform.DOScale(1f, 0.15f).SetEase(Ease.OutSine));
     }
 
     // Drops from above and thuds — heavy, deflating
@@ -100,15 +100,15 @@ public class OutcomePanel : PanelBase
         outcomeImage.rectTransform.anchoredPosition = _originAnchoredPos + new Vector2(0f, 180f);
         outcomeImage.color = new Color(1f, 1f, 1f, 0f);
 
-        Sequence seq = DOTween.Sequence();
-        seq.Append(outcomeImage.DOFade(1f, 0.08f));
-        seq.Append(outcomeImage.rectTransform
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(outcomeImage.DOFade(1f, 0.08f));
+        sequence.Append(outcomeImage.rectTransform
             .DOAnchorPos(_originAnchoredPos + new Vector2(0f, -15f), 0.38f)
             .SetEase(Ease.InCubic));
-        seq.Append(outcomeImage.rectTransform
+        sequence.Append(outcomeImage.rectTransform
             .DOAnchorPos(_originAnchoredPos, 0.15f)
             .SetEase(Ease.OutSine));
-        seq.AppendCallback(() =>
+        sequence.AppendCallback(() =>
             outcomeImage.transform.DOPunchScale(new Vector3(0.05f, -0.22f, 0f), 0.35f, 2, 0f));
     }
 
@@ -118,9 +118,9 @@ public class OutcomePanel : PanelBase
         outcomeImage.transform.localScale = new Vector3(0.85f, 0.85f, 1f);
         outcomeImage.color = new Color(1f, 1f, 1f, 0f);
 
-        Sequence seq = DOTween.Sequence();
-        seq.Append(outcomeImage.transform.DOScale(1f, 0.35f).SetEase(Ease.OutSine));
-        seq.Join(outcomeImage.DOFade(1f, 0.3f));
-        seq.Append(outcomeImage.transform.DOPunchScale(new Vector3(0.06f, 0.06f, 0f), 0.4f, 3, 0.5f));
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(outcomeImage.transform.DOScale(1f, 0.35f).SetEase(Ease.OutSine));
+        sequence.Join(outcomeImage.DOFade(1f, 0.3f));
+        sequence.Append(outcomeImage.transform.DOPunchScale(new Vector3(0.06f, 0.06f, 0f), 0.4f, 3, 0.5f));
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 [DefaultExecutionOrder((int)EExecutionOrder.GameContent)]
 public abstract class Hand : MonoBehaviour
 {
+    [SerializeField] SpriteRenderer handSpriteRenderer;
     [SerializeField] Finger[] fingers;
 
     protected const int FINGER_COUNT = 5;
@@ -12,6 +13,9 @@ public abstract class Hand : MonoBehaviour
 
     protected virtual void Awake()
     {
+        if (handSpriteRenderer == null)
+            handSpriteRenderer = GetComponent<SpriteRenderer>();
+
         CacheFingers();
     }
 
@@ -49,6 +53,12 @@ public abstract class Hand : MonoBehaviour
         return null;
     }
 
+    protected void SetHandSprite(Sprite _sprite)
+    {
+        if (handSpriteRenderer != null)
+            handSpriteRenderer.sprite = _sprite;
+    }
+
     // Opens/closes fingers matching the EHandPosition bitmask
     protected void ApplyHandPosition(EHandPosition handPosition)
     {
@@ -67,4 +77,18 @@ public abstract class Hand : MonoBehaviour
         foreach (var kvp in fingerTable)
             kvp.Value.SetOpen(false);
     }
+}
+
+public enum EEnemyHandType
+{
+    Enemy_01,
+    Enemy_02,
+    Enemy_03,
+    Enemy_04,
+    Enemy_05,
+    Enemy_06,
+    Enemy_07,
+    Enemy_08,
+    Enemy_09,
+    Enemy_10,
 }

@@ -26,6 +26,12 @@ public class Finger : MonoBehaviour
         ChangeSprite();
     }
 
+    public void SetSpriteData(FingerSpriteData _data)
+    {
+        fingerSpriteData = _data;
+        ChangeSprite();
+    }
+
     void ChangeSprite()
     {
         if(spriteRenderer != null)
@@ -38,6 +44,11 @@ public struct FingerSpriteData
 {
     [Header("Open / Close")]
     [SerializeField] Sprite[] fingerSprites;
+
+    public FingerSpriteData(Sprite _openSprite, Sprite _closeSprite)
+    {
+        fingerSprites = new Sprite[] { _openSprite, _closeSprite };
+    }
 
     public Sprite GetFingerSprite(bool _isOpen) => fingerSprites[_isOpen ? 0 : 1];
 }

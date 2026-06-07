@@ -317,6 +317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b187e6dbd02f2ae41ae19d4d4b8c3a52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handSpriteRenderer: {fileID: 1251643718823556326}
   fingers:
   - {fileID: 8898131477047249352}
   - {fileID: 2101617127412207646}

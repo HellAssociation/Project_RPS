@@ -1,4 +1,5 @@
 using System.Collections;
+using DG.Tweening;
 using SystemEnums;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,115 +14,117 @@ public class HUDPanel : PanelBase
     #endregion
 
     [Header("Player")]
-    [SerializeField] Image playerHPImage;
-    [SerializeField] Image playerFollowHPImage;
+    [SerializeField] Image         playerHPImage;
+    [SerializeField] Image         playerFollowHPImage;
+    [SerializeField] RectTransform playerHPRect;
 
     [Header("Enemy")]
-    [SerializeField] Image enemyHPImage;
-    [SerializeField] Image enemyFollowHPImage;
+    [SerializeField] Image         enemyHPImage;
+    [SerializeField] Image         enemyFollowHPImage;
+    [SerializeField] RectTransform enemyHPRect;
 
     [Header("HP Bar")]
-    [SerializeField] float delaySeconds = 0.4f;
-    [SerializeField] float drainSpeed   = 0.8f;
-    [SerializeField] float fillDuration = 0.8f;
+    [SerializeField] float fillDuration = 1.7f;
+    [SerializeField] float delaySeconds = 0.3f;
+    [SerializeField] float ghostSpeed   = 2.5f;
 
-    float _currentFill;
-    float _delayedFill;
-
-    Coroutine _drainCoroutine;
-    Coroutine _fillCoroutine;
+    float     _playerDelayed;
+    Coroutine _ghostCoroutine;
 
     InGameManager InGame => App.SceneManager.InGame;
 
     void Start()
     {
-        if (InGame != null)
-            InGame.OnLivesChanged += HandleLivesChanged;
-
-        PlayFillIn();
+        if (InGame == null) return;
+        InGame.OnReadyStarted += PlayFillIn;
+        InGame.OnLivesChanged += HandleLivesChanged;
+        InGame.OnStageOpened += HandleStageOpened;
     }
 
     void OnDestroy()
     {
-        if (InGame != null)
-            InGame.OnLivesChanged -= HandleLivesChanged;
+        if (InGame == null) return;
+        InGame.OnReadyStarted -= PlayFillIn;
+        InGame.OnLivesChanged -= HandleLivesChanged;
+        InGame.OnStageOpened -= HandleStageOpened;
     }
 
-    void HandleLivesChanged(int lives)
+    void HandleStageOpened(int stageIndex)
     {
-        float target = (float)lives / PlayerManager.MAX_HP;
-
-        if (target > _currentFill)
-            PlayFillIn();
-        else
-            PlayDrain(target);
-    }
-
-    void PlayDrain(float target)
-    {
-        if (_fillCoroutine != null)
-        {
-            StopCoroutine(_fillCoroutine);
-            _fillCoroutine = null;
-        }
-        if (_drainCoroutine != null) StopCoroutine(_drainCoroutine);
-        _drainCoroutine = StartCoroutine(DrainCoroutine(target));
+        PlayFillIn();
     }
 
     void PlayFillIn()
     {
-        if (_drainCoroutine != null)
-        {
-            StopCoroutine(_drainCoroutine);
-            _drainCoroutine = null;
-        }
-        if (_fillCoroutine != null) StopCoroutine(_fillCoroutine);
-        _fillCoroutine = StartCoroutine(FillInCoroutine());
+        if (_ghostCoroutine != null) { StopCoroutine(_ghostCoroutine); _ghostCoroutine = null; }
+
+        if (playerHPImage != null)       playerHPImage.DOKill();
+        if (playerFollowHPImage != null) playerFollowHPImage.DOKill();
+        if (enemyHPImage != null)        enemyHPImage.DOKill();
+        if (enemyFollowHPImage != null)  enemyFollowHPImage.DOKill();
+
+        _playerDelayed = 0f;
+
+        if (playerHPImage != null)       playerHPImage.fillAmount       = 0f;
+        if (playerFollowHPImage != null) playerFollowHPImage.fillAmount = 0f;
+        if (enemyHPImage != null)        enemyHPImage.fillAmount        = 0f;
+        if (enemyFollowHPImage != null)  enemyFollowHPImage.fillAmount  = 0f;
+
+        if (playerHPImage != null)
+            playerHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad);
+
+        if (playerFollowHPImage != null)
+            playerFollowHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad)
+                .OnUpdate(() => _playerDelayed = playerFollowHPImage.fillAmount)
+                .OnComplete(() => _playerDelayed = 1f);
+
+        if (enemyHPImage != null)
+            enemyHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad);
+
+        if (enemyFollowHPImage != null)
+            enemyFollowHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad);
     }
 
-    IEnumerator DrainCoroutine(float target)
+    void HandleLivesChanged(int lives)
     {
-        _currentFill = target;
-        if (playerHPImage != null) playerHPImage.fillAmount = _currentFill;
+        PlayDrain((float)lives / PlayerManager.MAX_HP);
+    }
 
+    void PlayDrain(float target)
+    {
+        if (playerHPImage != null)       playerHPImage.DOKill();
+        if (playerFollowHPImage != null) playerFollowHPImage.DOKill();
+
+        if (playerHPImage != null)
+        {
+            playerHPImage.fillAmount = target;
+            playerHPImage.DOColor(Color.white, 0.05f).SetLoops(2, LoopType.Yoyo);
+        }
+
+        if (playerHPRect != null)
+        {
+            playerHPRect.DOKill();
+            playerHPRect.DOPunchScale(new Vector3(0.02f, 0.14f, 0f), 0.28f, 5, 0.3f);
+        }
+
+        if (_ghostCoroutine != null) StopCoroutine(_ghostCoroutine);
+        _ghostCoroutine = StartCoroutine(GhostDrainCoroutine(target));
+    }
+
+    IEnumerator GhostDrainCoroutine(float target)
+    {
         float timer = delaySeconds;
-        while (timer > 0f)
+        while (timer > 0f) { timer -= Time.deltaTime; yield return null; }
+
+        while (_playerDelayed > target)
         {
-            timer -= Time.deltaTime;
+            _playerDelayed -= ghostSpeed * Time.deltaTime;
+            _playerDelayed  = Mathf.Max(_playerDelayed, target);
+            if (playerFollowHPImage != null)
+                playerFollowHPImage.fillAmount = _playerDelayed;
             yield return null;
         }
 
-        while (_delayedFill > _currentFill)
-        {
-            _delayedFill -= drainSpeed * Time.deltaTime;
-            _delayedFill  = Mathf.Max(_delayedFill, _currentFill);
-            if (playerFollowHPImage != null) playerFollowHPImage.fillAmount = _delayedFill;
-            yield return null;
-        }
-
-        _drainCoroutine = null;
-    }
-
-    IEnumerator FillInCoroutine()
-    {
-        float startFill = _currentFill;
-        float elapsed   = 0f;
-
-        while (elapsed < fillDuration)
-        {
-            elapsed += Time.deltaTime;
-            float fill = Mathf.Lerp(startFill, 1f, Mathf.Clamp01(elapsed / fillDuration));
-            _currentFill = fill;
-            _delayedFill = fill;
-            if (playerHPImage != null)      playerHPImage.fillAmount      = fill;
-            if (playerFollowHPImage != null) playerFollowHPImage.fillAmount = fill;
-            yield return null;
-        }
-
-        _currentFill = 1f;
-        _delayedFill = 1f;
-        if (playerHPImage != null)      playerHPImage.fillAmount      = 1f;
-        if (playerFollowHPImage != null) playerFollowHPImage.fillAmount = 1f;
-        _fillCoroutine = null;
+        _ghostCoroutine = null;
     }
 }

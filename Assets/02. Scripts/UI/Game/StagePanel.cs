@@ -59,14 +59,12 @@ public class StagePanel : PanelBase
     {
         if (!_panelGameObject.activeSelf || _canvas == null) return;
 
-        // Host: write mouse position to networked property
         if (Network.IsServerHost && Players.TryGetLocal(out PlayerNetworkObject localObj))
         {
             Vector2 mousePos = Mouse.current != null ? Mouse.current.position.ReadValue() : Vector2.zero;
             localObj.CursorScreenPos = new Vector2(mousePos.x / Screen.width, mousePos.y / Screen.height);
         }
 
-        // All players: update cursorRect from host's networked position
         if (cursorRect != null && Players.TryGetHost(out PlayerNetworkObject hostObj))
         {
             Vector2 n = hostObj.CursorScreenPos;
@@ -78,18 +76,17 @@ public class StagePanel : PanelBase
                 cursorRect.position = _canvas.transform.TransformPoint(localPos);
             }
         }
+
     }
 
     private void RefreshHostName()
     {
-        if (hostNameTMP == null) 
-            return;
-        
-        string name = string.Empty;
-        if (Players.TryGetHost(out PlayerNetworkObject hostObj))
-            name = hostObj.DisplayName.Value;
+        if (hostNameTMP == null) return;
+        if (!Players.TryGetHost(out PlayerNetworkObject hostObj)) return;
 
-        hostNameTMP.text = name;
+        string name = hostObj.DisplayName.Value;
+        if (!string.IsNullOrEmpty(name))
+            hostNameTMP.text = name;
     }
 
     private void RefreshHP()

@@ -12,8 +12,10 @@ public class TimerPanel : PanelBase
     public override EUIType UIType => EUIType.Timer;
     #endregion
 
+    private const string STAGE_TEXT = "Stage ";
+
     [SerializeField] TextMeshProUGUI _timerTMP;
-    [SerializeField] TextMeshProUGUI _roundTMP;
+    [SerializeField] TextMeshProUGUI _stageTMP;
 
     readonly StringBuilder _sb = new(16);
 
@@ -22,8 +24,8 @@ public class TimerPanel : PanelBase
         InGameManager inGame = App.SceneManager.InGame;
         if (inGame == null) return;
         inGame.OnWaveTimerUpdated  += UpdateTimer;
-        inGame.OnCurrentRoundChanged += UpdateRound;
-        UpdateRound(inGame.CurrentRound);
+        inGame.OnStageOpened += UpdateStage;
+        UpdateStage(inGame.SelectedStageIndex);
     }
 
     void OnDisable()
@@ -31,7 +33,7 @@ public class TimerPanel : PanelBase
         InGameManager inGame = App.SceneManager.InGame;
         if (inGame == null) return;
         inGame.OnWaveTimerUpdated  -= UpdateTimer;
-        inGame.OnCurrentRoundChanged -= UpdateRound;
+        inGame.OnStageOpened -= UpdateStage;
     }
 
     void UpdateTimer(float time)
@@ -46,12 +48,12 @@ public class TimerPanel : PanelBase
         _timerTMP.SetText(_sb);
     }
 
-    void UpdateRound(int round)
+    void UpdateStage(int stageIndex)
     {
-        if (_roundTMP == null) return;
+        if (_stageTMP == null) return;
         _sb.Clear();
-        _sb.Append("Round ");
-        _sb.Append(round);
-        _roundTMP.SetText(_sb);
+        _sb.Append(STAGE_TEXT);
+        _sb.Append(stageIndex + 1);
+        _stageTMP.SetText(_sb);
     }
 }

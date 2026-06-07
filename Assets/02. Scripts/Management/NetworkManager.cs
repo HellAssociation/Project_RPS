@@ -571,7 +571,7 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
     public event Action OnFingerAssignmentsReceived;
     public event Action<float> OnRoundStarted;
     public event Action<EHandPosition> OnRoundResultReceived;
-    public event Action OnStageSelected;
+    public event Action<int> OnStageSelected;
 
     /// <summary>호스트가 각 플레이어의 손가락 배정을 [Networked] 값으로 기록합니다.</summary>
     public void ServerInitializeFingerAssignments()
@@ -628,11 +628,11 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
         }
     }
 
-    public void ServerBroadcastStageSelected()
+    public void ServerBroadcastStageSelected(int stageIndex)
     {
         if (!IsServerHost) return;
-        BroadcastInGamePayload(new byte[] { (byte)EInGameRpsMessage.StageSelected });
-        OnStageSelected?.Invoke();
+        BroadcastInGamePayload(new byte[] { (byte)EInGameRpsMessage.StageSelected, (byte)stageIndex });
+        OnStageSelected?.Invoke(stageIndex);
     }
 
     public void ServerStartRound(float durationSeconds)
@@ -800,7 +800,13 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
                 break;
 
             case EInGameRpsMessage.StageSelected:
-                OnStageSelected?.Invoke();
+                if (data.Count < 2)
+                {
+                    return;
+                }
+
+                int stageIndex = data.Array[data.Offset + 1];
+                OnStageSelected?.Invoke(stageIndex);
                 break;
         }
     }

@@ -1,0 +1,16 @@
+{
+    "id": "Enemy_09",
+    "handSpriteName": "Enemy_09_Hand",
+    "spriteNames": [
+        "Enemy_09_Thumb_Open",
+        "Enemy_09_Thumb_Close",
+        "Enemy_09_Index_Open",
+        "Enemy_09_Index_Close",
+        "Enemy_09_Middle_Open",
+        "Enemy_09_Middle_Close",
+        "Enemy_09_Ring_Open",
+        "Enemy_09_Ring_Close",
+        "Enemy_09_Pinky_Open",
+        "Enemy_09_Pinky_Close"
+    ]
+}

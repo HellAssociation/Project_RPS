@@ -85,6 +85,9 @@ namespace SystemEnums
         Stage,
         Versus,
         HUD,
+        ForbidHandShape,
+        Wave,
+        Indicate,
     }
 
     /// <summary>
