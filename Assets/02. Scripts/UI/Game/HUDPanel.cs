@@ -28,13 +28,23 @@ public class HUDPanel : PanelBase
     [SerializeField] float delaySeconds = 0.3f;
     [SerializeField] float ghostSpeed   = 2.5f;
 
+    [Header("Hit Shake")]
+    [SerializeField] RectTransform hudShakeRect;
+    [SerializeField] float shakeDuration  = 0.3f;
+    [SerializeField] float shakeStrength  = 16f;
+    [SerializeField] int   shakeVibrato   = 28;
+
     float     _playerDelayed;
+    Vector2   _hudShakeOrigin;
     Coroutine _ghostCoroutine;
 
     InGameManager InGame => App.SceneManager.InGame;
 
     void Start()
     {
+        if (hudShakeRect != null)
+            _hudShakeOrigin = hudShakeRect.anchoredPosition;
+
         if (InGame == null) return;
         InGame.OnReadyStarted += PlayFillIn;
         InGame.OnLivesChanged += HandleLivesChanged;
@@ -107,8 +117,21 @@ public class HUDPanel : PanelBase
             playerHPRect.DOPunchScale(new Vector3(0.02f, 0.14f, 0f), 0.28f, 5, 0.3f);
         }
 
+        PlayHitShake();
+
         if (_ghostCoroutine != null) StopCoroutine(_ghostCoroutine);
         _ghostCoroutine = StartCoroutine(GhostDrainCoroutine(target));
+    }
+
+    // Tekken-style hit jolt: short, sharp shake on the HUD when the player takes damage
+    void PlayHitShake()
+    {
+        if (hudShakeRect == null) return;
+
+        hudShakeRect.DOKill();
+        hudShakeRect.anchoredPosition = _hudShakeOrigin;
+        hudShakeRect.DOShakeAnchorPos(shakeDuration, shakeStrength, shakeVibrato, 90f, false, true)
+            .OnComplete(() => hudShakeRect.anchoredPosition = _hudShakeOrigin);
     }
 
     IEnumerator GhostDrainCoroutine(float target)

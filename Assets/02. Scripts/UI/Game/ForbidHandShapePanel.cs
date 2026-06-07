@@ -42,6 +42,7 @@ public class ForbidHandShapePanel : PanelBase
         InitSlot(scissors);
     }
 
+#if UNITY_EDITOR
     void Update()
     {
         UpdateTest(); // TEST: delete this line when done
@@ -57,6 +58,7 @@ public class ForbidHandShapePanel : PanelBase
         if (Input.GetKeyDown(KeyCode.R))
             SetCooldown(EHandPosition.Rock, 5f);
     }
+#endif
 
     public void SetCooldown(EHandPosition hand, float duration)
     {
