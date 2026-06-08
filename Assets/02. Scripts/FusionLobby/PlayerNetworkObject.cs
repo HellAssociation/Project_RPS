@@ -25,6 +25,12 @@ public class PlayerNetworkObject : NetworkBehaviour
     [Networked] public NetworkBool IsFingerExtended { get; set; }
     [Networked] public Vector2 CursorScreenPos { get; set; }
 
+    [Networked] public EStarColor StarforceColor { get; set; }
+    [Networked] public EStarforceResult StarforceResult { get; set; }
+    [Networked] public float StarforceStopRatio { get; set; }
+    [Networked] public float StarforceStartTime { get; set; }
+    [Networked] public float StarforceCycleSeconds { get; set; }
+
     ChangeDetector _changeDetector;
 
     public int PlayerId => Object != null && Object.InputAuthority.IsRealPlayer
@@ -74,6 +80,13 @@ public class PlayerNetworkObject : NetworkBehaviour
                 case nameof(IsFingerExtended):
                     inGameChanged = true;
                     fingerExtendedChanged = true;
+                    break;
+                case nameof(StarforceColor):
+                case nameof(StarforceResult):
+                case nameof(StarforceStopRatio):
+                case nameof(StarforceStartTime):
+                case nameof(StarforceCycleSeconds):
+                    inGameChanged = true;
                     break;
             }
         }
@@ -129,5 +142,12 @@ public class PlayerNetworkObject : NetworkBehaviour
     public void RPC_SetFingerExtended(NetworkBool isExtended)
     {
         IsFingerExtended = isExtended;
+    }
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    public void RPC_SetStarforceResult(EStarforceResult result, float stopRatio)
+    {
+        StarforceResult = result;
+        StarforceStopRatio = stopRatio;
     }
 }

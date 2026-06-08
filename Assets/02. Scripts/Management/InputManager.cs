@@ -15,9 +15,12 @@ public class InputManager : CommonManagerBase
     public bool IsEnabled { get; private set; } = true;
     public bool IsFingerExtended { get; private set; }
 
+    /// <summary>모달(스타포스 등)이 열려 있는 동안 Space 입력이 손가락 토글로 새지 않도록 막는다.</summary>
+    public bool IsBlockedByModal { get; private set; }
+
     void Update()
     {
-        if (!IsEnabled || !App.IsGameScene)
+        if (!IsEnabled || IsBlockedByModal || !App.IsGameScene)
         {
             return;
         }
@@ -41,6 +44,11 @@ public class InputManager : CommonManagerBase
         {
             ResetFingerState();
         }
+    }
+
+    public void SetBlockedByModal(bool isBlocked)
+    {
+        IsBlockedByModal = isBlocked;
     }
 
     public void ToggleFinger()

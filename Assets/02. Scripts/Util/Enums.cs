@@ -88,6 +88,26 @@ namespace SystemEnums
         ForbidHandShape,
         Wave,
         Indicate,
+        Modal,
+    }
+
+    /// <summary>
+    /// 스타포스류 미니게임에서 플레이어를 구분하기 위한 색상. Frame과 Star에 동일하게 적용됩니다.
+    /// </summary>
+    public enum EStarColor
+    {
+        Red,
+        Blue,
+        Green,
+        Yellow,
+        Purple,
+    }
+
+    public enum EStarforceResult
+    {
+        None,
+        Success,
+        Fail,
     }
 
     /// <summary>
