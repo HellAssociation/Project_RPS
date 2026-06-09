@@ -24,9 +24,10 @@ public class HUDPanel : PanelBase
     [SerializeField] RectTransform enemyHPRect;
 
     [Header("HP Bar")]
-    [SerializeField] float fillDuration = 1.7f;
-    [SerializeField] float delaySeconds = 0.3f;
-    [SerializeField] float ghostSpeed   = 2.5f;
+    [SerializeField] float fillDuration      = 1.7f;
+    [SerializeField] float delaySeconds      = 0.3f;
+    [SerializeField] float ghostSpeed        = 2.5f;
+    [SerializeField] float enemyGhostSpeed   = 6f;
 
     [Header("Hit Shake")]
     [SerializeField] RectTransform playerHudShakeRect;
@@ -36,8 +37,10 @@ public class HUDPanel : PanelBase
     [SerializeField] int   shakeVibrato   = 28;
 
     float     _playerDelayed;
+    float     _enemyDelayed;
     Vector2   _hudShakeOrigin;
     Coroutine _ghostCoroutine;
+    Coroutine _enemyGhostCoroutine;
 
     InGameManager InGame => App.SceneManager.InGame;
 
@@ -47,17 +50,19 @@ public class HUDPanel : PanelBase
             _hudShakeOrigin = playerHudShakeRect.anchoredPosition;
 
         if (InGame == null) return;
-        InGame.OnReadyStarted += PlayFillIn;
-        InGame.OnLivesChanged += HandleLivesChanged;
-        InGame.OnStageOpened += HandleStageOpened;
+        InGame.OnReadyStarted    += PlayFillIn;
+        InGame.OnLivesChanged    += HandleLivesChanged;
+        InGame.OnEnemyHpChanged  += HandleEnemyHpChanged;
+        InGame.OnStageOpened     += HandleStageOpened;
     }
 
     void OnDestroy()
     {
         if (InGame == null) return;
-        InGame.OnReadyStarted -= PlayFillIn;
-        InGame.OnLivesChanged -= HandleLivesChanged;
-        InGame.OnStageOpened -= HandleStageOpened;
+        InGame.OnReadyStarted   -= PlayFillIn;
+        InGame.OnLivesChanged   -= HandleLivesChanged;
+        InGame.OnEnemyHpChanged -= HandleEnemyHpChanged;
+        InGame.OnStageOpened    -= HandleStageOpened;
     }
 
     void HandleStageOpened(int stageIndex)
@@ -67,7 +72,8 @@ public class HUDPanel : PanelBase
 
     void PlayFillIn()
     {
-        if (_ghostCoroutine != null) { StopCoroutine(_ghostCoroutine); _ghostCoroutine = null; }
+        if (_ghostCoroutine != null)      { StopCoroutine(_ghostCoroutine);      _ghostCoroutine      = null; }
+        if (_enemyGhostCoroutine != null) { StopCoroutine(_enemyGhostCoroutine); _enemyGhostCoroutine = null; }
 
         if (playerHPImage != null)       playerHPImage.DOKill();
         if (playerFollowHPImage != null) playerFollowHPImage.DOKill();
@@ -75,6 +81,7 @@ public class HUDPanel : PanelBase
         if (enemyFollowHPImage != null)  enemyFollowHPImage.DOKill();
 
         _playerDelayed = 0f;
+        _enemyDelayed  = 0f;
 
         if (playerHPImage != null)       playerHPImage.fillAmount       = 0f;
         if (playerFollowHPImage != null) playerFollowHPImage.fillAmount = 0f;
@@ -93,12 +100,67 @@ public class HUDPanel : PanelBase
             enemyHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad);
 
         if (enemyFollowHPImage != null)
-            enemyFollowHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad);
+            enemyFollowHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad)
+                .OnUpdate(() => _enemyDelayed = enemyFollowHPImage.fillAmount)
+                .OnComplete(() => _enemyDelayed = 1f);
     }
 
     void HandleLivesChanged(int lives)
     {
-        PlayDrain((float)lives / PlayerManager.MAX_HP);
+        int maxLives = InGame != null ? InGame.MaxLives : PlayerManager.MAX_HP;
+        PlayDrain((float)lives / maxLives);
+    }
+
+    void HandleEnemyHpChanged(int hp, int maxHp)
+    {
+        if (maxHp <= 0) return;
+        PlayEnemyDrain((float)Mathf.Max(hp, 0) / maxHp);
+    }
+
+    void PlayEnemyDrain(float target)
+    {
+        if (enemyHPImage != null)       enemyHPImage.DOKill();
+        if (enemyFollowHPImage != null) enemyFollowHPImage.DOKill();
+        if (_enemyGhostCoroutine != null) { StopCoroutine(_enemyGhostCoroutine); _enemyGhostCoroutine = null; }
+
+        if (target >= 1f)
+        {
+            if (enemyHPImage != null)       enemyHPImage.fillAmount       = 1f;
+            if (enemyFollowHPImage != null) enemyFollowHPImage.fillAmount = 1f;
+            _enemyDelayed = 1f;
+            return;
+        }
+
+        if (enemyHPImage != null)
+        {
+            enemyHPImage.fillAmount = target;
+            enemyHPImage.DOColor(Color.white, 0.05f).SetLoops(2, LoopType.Yoyo);
+        }
+
+        if (enemyHPRect != null)
+        {
+            enemyHPRect.DOKill();
+            enemyHPRect.DOPunchScale(new Vector3(0.02f, 0.14f, 0f), 0.28f, 5, 0.3f);
+        }
+
+        _enemyGhostCoroutine = StartCoroutine(EnemyGhostDrainCoroutine(target));
+    }
+
+    IEnumerator EnemyGhostDrainCoroutine(float target)
+    {
+        float timer = delaySeconds;
+        while (timer > 0f) { timer -= Time.deltaTime; yield return null; }
+
+        while (_enemyDelayed > target)
+        {
+            _enemyDelayed -= enemyGhostSpeed * Time.deltaTime;
+            _enemyDelayed  = Mathf.Max(_enemyDelayed, target);
+            if (enemyFollowHPImage != null)
+                enemyFollowHPImage.fillAmount = _enemyDelayed;
+            yield return null;
+        }
+
+        _enemyGhostCoroutine = null;
     }
 
     void PlayDrain(float target)

@@ -92,8 +92,9 @@ public class StagePanel : PanelBase
     private void RefreshHP()
     {
         if (hpImage == null || hpSprites == null || hpSprites.Length == 0) return;
-        int lives = App.SceneManager.InGame != null ? App.SceneManager.InGame.Lives : InGameManager.MAX_LIVES;
-        int index = Mathf.Clamp(InGameManager.MAX_LIVES - lives, 0, hpSprites.Length - 1);
+        int maxLives = App.SceneManager.InGame?.MaxLives ?? PlayerManager.MAX_HP;
+        int lives = App.SceneManager.InGame != null ? App.SceneManager.InGame.Lives : maxLives;
+        int index = Mathf.Clamp(maxLives - lives, 0, hpSprites.Length - 1);
         hpImage.sprite = hpSprites[index];
     }
 

@@ -1,0 +1,122 @@
+[
+  {
+    "index": 1,
+    "code": "ENEMY_TYPE_1",
+    "roundTimer": "STR_NAME_ENEMY_TYPE_1",
+    "roundHPMultiflier": "STR_DESC_ENEMY_TYPE_1",
+    "resource": "Enemy1",
+    "appearMinRound": 1,
+    "appearMaxRound": 1,
+    "value1": -1,
+    "value2": -1,
+    "value3": -1
+  },
+  {
+    "index": 2,
+    "code": "ENEMY_TYPE_2",
+    "roundTimer": "STR_NAME_ENEMY_TYPE_2",
+    "roundHPMultiflier": "STR_DESC_ENEMY_TYPE_2",
+    "resource": "Enemy2",
+    "appearMinRound": 2,
+    "appearMaxRound": 9,
+    "value1": -1,
+    "value2": -1,
+    "value3": -1
+  },
+  {
+    "index": 3,
+    "code": "ENEMY_TYPE_3",
+    "roundTimer": "STR_NAME_ENEMY_TYPE_3",
+    "roundHPMultiflier": "STR_DESC_ENEMY_TYPE_3",
+    "resource": "Enemy3",
+    "appearMinRound": 2,
+    "appearMaxRound": 9,
+    "value1": -1,
+    "value2": -1,
+    "value3": -1
+  },
+  {
+    "index": 4,
+    "code": "ENEMY_TYPE_4",
+    "roundTimer": "STR_NAME_ENEMY_TYPE_4",
+    "roundHPMultiflier": "STR_DESC_ENEMY_TYPE_4",
+    "resource": "Enemy4",
+    "appearMinRound": 2,
+    "appearMaxRound": 9,
+    "value1": -1,
+    "value2": -1,
+    "value3": -1
+  },
+  {
+    "index": 5,
+    "code": "ENEMY_TYPE_5",
+    "roundTimer": "STR_NAME_ENEMY_TYPE_5",
+    "roundHPMultiflier": "STR_DESC_ENEMY_TYPE_5",
+    "resource": "Enemy5",
+    "appearMinRound": 2,
+    "appearMaxRound": 9,
+    "value1": -1,
+    "value2": -1,
+    "value3": -1
+  },
+  {
+    "index": 6,
+    "code": "ENEMY_TYPE_6",
+    "roundTimer": "STR_NAME_ENEMY_TYPE_6",
+    "roundHPMultiflier": "STR_DESC_ENEMY_TYPE_6",
+    "resource": "Enemy6",
+    "appearMinRound": 2,
+    "appearMaxRound": 9,
+    "value1": -1,
+    "value2": -1,
+    "value3": -1
+  },
+  {
+    "index": 7,
+    "code": "ENEMY_TYPE_7",
+    "roundTimer": "STR_NAME_ENEMY_TYPE_7",
+    "roundHPMultiflier": "STR_DESC_ENEMY_TYPE_7",
+    "resource": "Enemy7",
+    "appearMinRound": 2,
+    "appearMaxRound": 9,
+    "value1": -1,
+    "value2": -1,
+    "value3": -1
+  },
+  {
+    "index": 8,
+    "code": "ENEMY_TYPE_8",
+    "roundTimer": "STR_NAME_ENEMY_TYPE_8",
+    "roundHPMultiflier": "STR_DESC_ENEMY_TYPE_8",
+    "resource": "Enemy8",
+    "appearMinRound": 2,
+    "appearMaxRound": 9,
+    "value1": -1,
+    "value2": -1,
+    "value3": -1
+  },
+  {
+    "index": 9,
+    "code": "ENEMY_TYPE_9",
+    "roundTimer": "STR_NAME_ENEMY_TYPE_9",
+    "roundHPMultiflier": "STR_DESC_ENEMY_TYPE_9",
+    "resource": "Enemy9",
+    "appearMinRound": 2,
+    "appearMaxRound": 9,
+    "value1": -1,
+    "value2": -1,
+    "value3": -1
+  },
+  {
+    "index": 10,
+    "code": "ENEMY_TYPE_10",
+    "roundTimer": "STR_NAME_ENEMY_TYPE_10",
+    "roundHPMultiflier": "STR_DESC_ENEMY_TYPE_10",
+    "resource": "Enemy10",
+    "appearMinRound": 10,
+    "appearMaxRound": 10,
+    "value1": -1,
+    "value2": -1,
+    "value3": -1
+  }
+]

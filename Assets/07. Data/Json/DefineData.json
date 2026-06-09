@@ -1,0 +1,17 @@
+[
+  {
+    "index": 1,
+    "code": "DEFINE_PLAYER_DEFAULT_HP",
+    "value": 100
+  },
+  {
+    "index": 2,
+    "code": "DEFINE_PLAYER_DEFAULT_DAMAGE",
+    "value": 100
+  },
+  {
+    "index": 3,
+    "code": "DEFINE_PLAYER_DEFAULT_TIMER",
+    "value": 3
+  }
+]

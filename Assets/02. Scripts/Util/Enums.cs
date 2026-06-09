@@ -126,4 +126,29 @@ namespace SystemEnums
         RoundResult = 2,
         StageSelected = 3,
     }
+
+    public enum EBoon { BOON_A, BOON_B, BOON_C }
+
+    public enum EDeviation { BOON_A, BOON_B, BOON_C }
+
+    public enum EDefine
+    {
+        DEFINE_PLAYER_DEFAULT_HP,
+        DEFINE_PLAYER_DEFAULT_DAMAGE,
+        DEFINE_PLAYER_DEFAULT_TIMER,
+    }
+
+    public enum EEnemyType
+    {
+        ENEMY_TYPE_1,  ENEMY_TYPE_2,  ENEMY_TYPE_3,
+        ENEMY_TYPE_4,  ENEMY_TYPE_5,  ENEMY_TYPE_6,
+        ENEMY_TYPE_7,  ENEMY_TYPE_8,  ENEMY_TYPE_9,
+        ENEMY_TYPE_10,
+    }
+
+    public enum ERound
+    {
+        ROUND_1,  ROUND_2,  ROUND_3,  ROUND_4,  ROUND_5,
+        ROUND_6,  ROUND_7,  ROUND_8,  ROUND_9,  ROUND_10,
+    }
 }

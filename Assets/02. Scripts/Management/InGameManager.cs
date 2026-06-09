@@ -6,12 +6,56 @@ using UnityEngine;
 [DefaultExecutionOrder((int)EExecutionOrder.BaseManagement)]
 public class InGameManager : SceneManagerBase
 {
-    public const float WaveDurationSeconds = 3f;
     public const int WAVES_PER_ROUND = 10;
     public const int MAX_ROUNDS = 10;
-    public const int MAX_LIVES = PlayerManager.MAX_HP;
+    public const int ENEMY_DAMAGE = 40;
 
     const float BETWEEN_WAVE_DELAY = 1f;
+
+    static DataManager Data => App.Data.BaseData;
+
+    public int MaxLives
+    {
+        get
+        {
+            if (Data != null && Data.TryGetDefine(EDefine.DEFINE_PLAYER_DEFAULT_HP, out DefineData d))
+                return d.value;
+            return PlayerManager.MAX_HP;
+        }
+    }
+
+    float GetWaveDuration(int round)
+    {
+        float baseDuration = (Data != null && Data.TryGetDefine(EDefine.DEFINE_PLAYER_DEFAULT_TIMER, out DefineData timer))
+            ? timer.value : 3f;
+        if (Data != null && Data.TryGetRound((ERound)(round - 1), out RoundData rd))
+            baseDuration += rd.roundTimer;
+        return baseDuration;
+    }
+
+    int PlayerDamage
+    {
+        get
+        {
+            if (Data != null && Data.TryGetDefine(EDefine.DEFINE_PLAYER_DEFAULT_DAMAGE, out DefineData d))
+                return d.value;
+            return 100;
+        }
+    }
+
+    int GetEnemyMaxHp(int round)
+    {
+        int baseHp = MaxLives;
+        if (Data != null && Data.TryGetRound((ERound)(round - 1), out RoundData rd))
+            return Mathf.RoundToInt(baseHp * rd.roundHPMultiflier);
+        return baseHp;
+    }
+
+    void InitEnemyHp()
+    {
+        _enemyMaxHp = GetEnemyMaxHp(_currentRound);
+        _enemyHp    = _enemyMaxHp;
+    }
     const float SLIDE_DURATION = 0.5f;
 
     static readonly WaitForSeconds WAIT_OUTCOME = new(BETWEEN_WAVE_DELAY);
@@ -29,6 +73,8 @@ public class InGameManager : SceneManagerBase
     int _currentRound;
     int _wonWavesInRound;
     int _lives;
+    int _enemyHp;
+    int _enemyMaxHp;
     int _selectedStageIndex;
     EHandPosition _enemyHandPosition;
     StagePanel _stagePanel;
@@ -55,6 +101,7 @@ public class InGameManager : SceneManagerBase
     public event Action<EOutcome>    OnOutcomeDetermined;
     public event Action              OnWaveResultShown;
     public event Action<int>         OnLivesChanged;
+    public event Action<int, int>    OnEnemyHpChanged;
     public event Action<int>         OnCurrentRoundChanged;
     public event Action<int>         OnRoundClear;
     public event Action              OnGameOver;
@@ -113,7 +160,9 @@ public class InGameManager : SceneManagerBase
         _hostSetupStarted  = false;
         _currentRound      = 1;
         _wonWavesInRound   = 0;
-        _lives             = MAX_LIVES;
+        _lives             = MaxLives;
+        _enemyHp           = 0;
+        _enemyMaxHp        = 0;
         _enemyHandPosition = EHandPosition.Invalid;
         Phase              = EInGamePhase.WaitingForRoundSelect;
         LastHandPosition   = EHandPosition.Invalid;
@@ -167,7 +216,7 @@ public class InGameManager : SceneManagerBase
         if (_versusPanel != null)
             yield return new WaitWhile(() => _versusPanel.IsAnimating);
 
-        Network.ServerStartRound(WaveDurationSeconds);
+        Network.ServerStartRound(GetWaveDuration(_currentRound));
         _hostSetupCoroutine = null;
     }
 
@@ -185,6 +234,7 @@ public class InGameManager : SceneManagerBase
             return;
 
         Phase = EInGamePhase.AssignmentsReady;
+        InitEnemyHp();
         OnLocalAssignedFingerChanged?.Invoke(LocalAssignedFinger);
         OnReadyStarted?.Invoke();
         if (_versusPanel != null) _versusPanel.OpenPanel();
@@ -259,13 +309,16 @@ public class InGameManager : SceneManagerBase
         switch (outcome)
         {
             case EOutcome.Win:
-                _wonWavesInRound++;
+                _enemyHp -= PlayerDamage;
+                OnEnemyHpChanged?.Invoke(Mathf.Max(_enemyHp, 0), _enemyMaxHp);
+                if (_enemyHp <= 0)
+                    _wonWavesInRound++;
                 if (_wonWavesInRound >= WAVES_PER_ROUND)
                     isRoundClear = true;
                 break;
 
             case EOutcome.Lose:
-                _lives--;
+                _lives -= ENEMY_DAMAGE;
                 OnLivesChanged?.Invoke(_lives);
                 if (_lives <= 0)
                 {
@@ -285,13 +338,19 @@ public class InGameManager : SceneManagerBase
         yield return WAIT_OUTCOME;
         OnWaveResultShown?.Invoke();
 
+        if (!isRoundClear && !isGameOver && _enemyHp <= 0)
+        {
+            _enemyHp = _enemyMaxHp;
+            OnEnemyHpChanged?.Invoke(_enemyHp, _enemyMaxHp);
+        }
+
         if (isGameOver)
         {
             Input.ResetFingerState();
             OnLocalFingerExtendedChanged?.Invoke(false);
             OnGameOver?.Invoke();
 
-            _lives           = MAX_LIVES;
+            _lives           = MaxLives;
             _wonWavesInRound = 0;
             _currentRound    = 1;
             _hostSetupStarted = false;
@@ -337,7 +396,7 @@ public class InGameManager : SceneManagerBase
         if (_versusPanel != null && _versusPanel.IsAnimating)
             yield return new WaitWhile(() => _versusPanel.IsAnimating);
 
-        Network.ServerStartRound(WaveDurationSeconds);
+        Network.ServerStartRound(GetWaveDuration(_currentRound));
         _betweenWaveCoroutine = null;
     }
 

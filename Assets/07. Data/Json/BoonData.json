@@ -1,0 +1,38 @@
+[
+  {
+    "index": 1,
+    "code": "BOON_A",
+    "name": "STR_NAME_BOON_A",
+    "description": "STR_DESC_BOON_A",
+    "position": "00000",
+    "value1": -1,
+    "value2": -1,
+    "value3": -1,
+    "value4": -1,
+    "value5": -1
+  },
+  {
+    "index": 2,
+    "code": "BOON_B",
+    "name": "STR_NAME_BOON_B",
+    "description": "STR_DESC_BOON_B",
+    "position": "00001",
+    "value1": -1,
+    "value2": -1,
+    "value3": -1,
+    "value4": -1,
+    "value5": -1
+  },
+  {
+    "index": 3,
+    "code": "BOON_C",
+    "name": "STR_NAME_BOON_C",
+    "description": "STR_DESC_BOON_C",
+    "position": "01001",
+    "value1": -1,
+    "value2": -1,
+    "value3": -1,
+    "value4": -1,
+    "value5": -1
+  }
+]

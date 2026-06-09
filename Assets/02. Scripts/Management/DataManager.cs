@@ -14,19 +14,40 @@ public class DataManager : DataManagerBase
     const int LoadGroupCount = 1;
     int _finishedLoadGroups;
 
+    readonly Dictionary<EBoon, BoonData>         _boonData       = new();
+    readonly Dictionary<EDefine, DefineData>      _defineData     = new();
+    readonly Dictionary<EDeviation, DeviationData> _deviationData = new();
+    readonly Dictionary<EEnemyType, EnemyData>    _enemyData      = new();
+    readonly Dictionary<ERound, RoundData>        _roundData      = new();
+
     protected override void Awake()
     {
         base.Awake();
         LoadData();
     }
 
-    private void LoadData()
+    void LoadData()
     {
-
+        StartCoroutine(LoadAllDataCoroutine());
     }
 
+    IEnumerator LoadAllDataCoroutine()
+    {
+        yield return LoadDataToDictionaryAsync("Boon",      _boonData);
+        yield return LoadDataToDictionaryAsync("Define",    _defineData);
+        yield return LoadDataToDictionaryAsync("Deviation", _deviationData);
+        yield return LoadDataToDictionaryAsync("Enemy",     _enemyData);
+        yield return LoadDataToDictionaryAsync("Round",     _roundData);
+        NotifyLoadGroupFinished();
+    }
 
-    private IEnumerator LoadDataToDictionaryAsync<TKey, TValue>(string dataName, Dictionary<TKey, TValue> targetDictionary)
+    public bool TryGetBoon(EBoon key, out BoonData data)             => _boonData.TryGetValue(key, out data);
+    public bool TryGetDefine(EDefine key, out DefineData data)        => _defineData.TryGetValue(key, out data);
+    public bool TryGetDeviation(EDeviation key, out DeviationData data) => _deviationData.TryGetValue(key, out data);
+    public bool TryGetEnemy(EEnemyType key, out EnemyData data)       => _enemyData.TryGetValue(key, out data);
+    public bool TryGetRound(ERound key, out RoundData data)           => _roundData.TryGetValue(key, out data);
+
+    IEnumerator LoadDataToDictionaryAsync<TKey, TValue>(string dataName, Dictionary<TKey, TValue> targetDictionary)
         where TKey : struct, Enum
         where TValue : IGameData
     {
@@ -77,13 +98,3 @@ public interface IGameData
 {
     string Code { get; }
 }
-
-// [Serializable]
-// public class WordData : IGameData
-// {
-//     string IGameData.Code => Code;
-
-//     public int Index;
-//     public string Code;
-//     public string Word;
-// }

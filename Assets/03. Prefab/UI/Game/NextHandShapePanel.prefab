@@ -226,7 +226,7 @@ MonoBehaviour:
   _panelGameObject: {fileID: 1237467226418718288}
   handPositionSprites:
   - {fileID: 21300000, guid: dfe152a962cfb014485f7421f4f69d18, type: 3}
-  - {fileID: 21300000, guid: 99469b8697aaa964e99ca47997fe4869, type: 3}
+  - {fileID: 21300000, guid: 7676fa9bbcd5a294698e5dc291b45f92, type: 3}
   - {fileID: 21300000, guid: 53fbf0303a9e82d4799c1347ff5d6a85, type: 3}
   - {fileID: -7529940062701870859, guid: f01cf17612485ac488ac5cf8323334b5, type: 3}
   _slots:

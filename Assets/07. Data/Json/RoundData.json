@@ -1,0 +1,62 @@
+[
+  {
+    "index": 1,
+    "code": "ROUND_1",
+    "roundTimer": 0,
+    "roundHPMultiflier": 1
+  },
+  {
+    "index": 2,
+    "code": "ROUND_2",
+    "roundTimer": -0.1,
+    "roundHPMultiflier": 1.1
+  },
+  {
+    "index": 3,
+    "code": "ROUND_3",
+    "roundTimer": -0.2,
+    "roundHPMultiflier": 1.3
+  },
+  {
+    "index": 4,
+    "code": "ROUND_4",
+    "roundTimer": -0.3,
+    "roundHPMultiflier": 1.5
+  },
+  {
+    "index": 5,
+    "code": "ROUND_5",
+    "roundTimer": -0.4,
+    "roundHPMultiflier": 1.8
+  },
+  {
+    "index": 6,
+    "code": "ROUND_6",
+    "roundTimer": -0.5,
+    "roundHPMultiflier": 2.1
+  },
+  {
+    "index": 7,
+    "code": "ROUND_7",
+    "roundTimer": -0.6,
+    "roundHPMultiflier": 2.5
+  },
+  {
+    "index": 8,
+    "code": "ROUND_8",
+    "roundTimer": -0.7,
+    "roundHPMultiflier": 2.9
+  },
+  {
+    "index": 9,
+    "code": "ROUND_9",
+    "roundTimer": -0.8,
+    "roundHPMultiflier": 3.4
+  },
+  {
+    "index": 10,
+    "code": "ROUND_10",
+    "roundTimer": -0.9,
+    "roundHPMultiflier": 4
+  }
+]
