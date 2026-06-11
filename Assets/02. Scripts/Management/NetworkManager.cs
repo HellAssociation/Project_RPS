@@ -179,7 +179,7 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
         }
     }
 
-    public void StartGame(Action<LobbyRequestResult> onComplete)
+    public void StartGame(EScene targetScene, Action<LobbyRequestResult> onComplete)
     {
         if (_session.State != ELobbyState.InLobby)
         {
@@ -199,7 +199,7 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
             return;
         }
 
-        StartCoroutine(LoadInGameSceneCoroutine(onComplete));
+        StartCoroutine(LoadInGameSceneCoroutine(targetScene, onComplete));
     }
 
     public void Shutdown()
@@ -321,7 +321,7 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
             : LobbyCodeUtility.NormalizeCode(requestedCode);
     }
 
-    IEnumerator LoadInGameSceneCoroutine(Action<LobbyRequestResult> onComplete)
+    IEnumerator LoadInGameSceneCoroutine(EScene targetScene, Action<LobbyRequestResult> onComplete)
     {
         if (!IsRunning || !_runner.IsServer)
         {
@@ -329,7 +329,7 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
             yield break;
         }
 
-        var sceneRef = SceneRef.FromIndex((int)EScene.InGame);
+        var sceneRef = SceneRef.FromIndex((int)targetScene);
         var loadOp = _runner.LoadScene(sceneRef);
 
         yield return new WaitUntil(() => loadOp.IsDone);
@@ -548,10 +548,10 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
 
     public void OnSceneLoadDone(NetworkRunner runner)
     {
-        if (runner.IsServer && SceneManager.GetActiveScene().buildIndex == (int)EScene.InGame)
-        {
+        if (!runner.IsServer) return;
+        int idx = SceneManager.GetActiveScene().buildIndex;
+        if (idx == (int)EScene.PvE_1v1 || idx == (int)EScene.PvE_1v5 || idx == (int)EScene.PvP_1v1)
             OnInGameSceneReady?.Invoke();
-        }
     }
 
     public void OnSceneLoadStart(NetworkRunner runner) { }
@@ -668,6 +668,9 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
     /// <summary>호스트 기준으로 모든 player object의 손가락 상태를 모아 RPS 마스크를 계산합니다.</summary>
     EFingerType GetServerExtendedFingersMask()
     {
+        if (ModeData.IsSingleControl)
+            return App.SystemManager.Input.ExtendedFingersMask;
+
         EFingerType mask = EFingerType.None;
 
         if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)

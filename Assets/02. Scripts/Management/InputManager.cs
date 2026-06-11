@@ -1,22 +1,29 @@
 using System;
+using System.Collections.Generic;
 using SystemEnums;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-/// <summary>
-/// 인게임 손가락(RPS) 입력을 중앙에서 처리합니다.
-/// Space bar로 배정된 손가락의 펴기/접기를 토글합니다.
-/// </summary>
 [DefaultExecutionOrder((int)EExecutionOrder.SystemHandler)]
 public class InputManager : CommonManagerBase
 {
     public event Action<bool> OnFingerToggled;
+    public event Action<EFingerType> OnSingleControlMaskChanged;
 
     public bool IsEnabled { get; private set; } = true;
     public bool IsFingerExtended { get; private set; }
+    public EFingerType ExtendedFingersMask { get; private set; } = EFingerType.None;
 
-    /// <summary>모달(스타포스 등)이 열려 있는 동안 Space 입력이 손가락 토글로 새지 않도록 막는다.</summary>
     public bool IsBlockedByModal { get; private set; }
+
+    public Dictionary<EFingerType, Key> SingleControlKeyBindings = new()
+    {
+        { EFingerType.Index,  Key.Digit1 },
+        { EFingerType.Thumb,  Key.Digit2 },
+        { EFingerType.Pinky,  Key.Digit3 },
+        { EFingerType.Middle, Key.Digit4 },
+        { EFingerType.Ring,   Key.Digit5 },
+    };
 
     void Update()
     {
@@ -30,10 +37,33 @@ public class InputManager : CommonManagerBase
             return;
         }
 
+        if (ModeData.IsSingleControl)
+            HandleSingleControlInput();
+        else
+            HandleMultiControlInput();
+    }
+
+    void HandleMultiControlInput()
+    {
         if (Keyboard.current[Key.Space].wasPressedThisFrame)
-        {
             ToggleFinger();
+    }
+
+    void HandleSingleControlInput()
+    {
+        bool changed = false;
+
+        foreach (KeyValuePair<EFingerType, Key> binding in SingleControlKeyBindings)
+        {
+            if (Keyboard.current[binding.Value].wasPressedThisFrame)
+            {
+                ExtendedFingersMask ^= binding.Key;
+                changed = true;
+            }
         }
+
+        if (changed)
+            OnSingleControlMaskChanged?.Invoke(ExtendedFingersMask);
     }
 
     public void SetEnabled(bool enabled)
@@ -70,5 +100,6 @@ public class InputManager : CommonManagerBase
     public void ResetFingerState()
     {
         IsFingerExtended = false;
+        ExtendedFingersMask = EFingerType.None;
     }
 }

@@ -66,7 +66,10 @@ public class App : Singleton<App>
     public static EScene CurrentScene { get; private set; }
     public static bool IsSceneLoading { get; private set; }
 
-    public static bool IsGameScene => CurrentScene == EScene.InGame;
+    public static bool IsGameScene =>
+        CurrentScene == EScene.PvE_1v1 ||
+        CurrentScene == EScene.PvE_1v5 ||
+        CurrentScene == EScene.PvP_1v1;
 
     public static void BootstrapScene(EScene scene)
     {

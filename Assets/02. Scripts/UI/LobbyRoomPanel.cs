@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using SystemEnums;
 using TMPro;
@@ -21,11 +22,14 @@ public class LobbyRoomPanel : PanelBase
     [SerializeField] private Button readyOrStartButton;
     [SerializeField] private TMP_Text readyOrStartButtonLabel;
     [SerializeField] private TMP_Text statusText;
+    [SerializeField] private TMP_Dropdown gameModeDropDown;
+    [SerializeField] private TextMeshProUGUI indicateModeText;
 
     readonly List<LobbyPlayerListItem> _spawnedItems = new();
 
     LobbyManager _lobbyManager;
     bool _isStartingGame;
+    EGameMode _selectedMode = EGameMode.PvE_1v1;
 
     protected override void Awake()
     {
@@ -33,6 +37,8 @@ public class LobbyRoomPanel : PanelBase
 
         leaveRoomButton.onClick.AddListener(OnLeaveRoomClicked);
         readyOrStartButton.onClick.AddListener(OnReadyOrStartClicked);
+        gameModeDropDown.onValueChanged.AddListener(OnModeDropdownChanged);
+        InitializeModeDropdown();
     }
 
     void Start()
@@ -50,6 +56,21 @@ public class LobbyRoomPanel : PanelBase
 
         leaveRoomButton.onClick.RemoveListener(OnLeaveRoomClicked);
         readyOrStartButton.onClick.RemoveListener(OnReadyOrStartClicked);
+        gameModeDropDown.onValueChanged.RemoveListener(OnModeDropdownChanged);
+    }
+
+    void InitializeModeDropdown()
+    {
+        gameModeDropDown.ClearOptions();
+        var options = new List<TMP_Dropdown.OptionData>();
+        foreach (EGameMode mode in (EGameMode[])Enum.GetValues(typeof(EGameMode)))
+            options.Add(new TMP_Dropdown.OptionData(mode.ToString()));
+        gameModeDropDown.AddOptions(options);
+    }
+
+    void OnModeDropdownChanged(int index)
+    {
+        _selectedMode = ((EGameMode[])Enum.GetValues(typeof(EGameMode)))[index];
     }
 
     void HandleLobbyError(string message)
@@ -84,7 +105,8 @@ public class LobbyRoomPanel : PanelBase
             RefreshActionButton();
             SetStatus("게임 시작 중...");
 
-            _lobbyManager.StartGame(result =>
+            EScene targetScene = (EScene)(int)_selectedMode;
+            _lobbyManager.StartGame(targetScene, result =>
             {
                 _isStartingGame = false;
 
@@ -94,8 +116,6 @@ public class LobbyRoomPanel : PanelBase
                     RefreshActionButton();
                     return;
                 }
-
-                // 성공 시 인게임 씬으로 넘어가며 로비 오브젝트가 파괴됩니다. 로비 UI 갱신 생략.
             });
             return;
         }
@@ -115,6 +135,17 @@ public class LobbyRoomPanel : PanelBase
         roomCodeText.text = _lobbyManager.SessionCode;
         RefreshPlayerList(_lobbyManager.Players);
         RefreshActionButton();
+        RefreshModeDisplay();
+    }
+
+    void RefreshModeDisplay()
+    {
+        bool isHost = _lobbyManager.IsHost;
+        gameModeDropDown.gameObject.SetActive(isHost);
+        indicateModeText.gameObject.SetActive(!isHost);
+
+        if (!isHost)
+            indicateModeText.text = _selectedMode.ToString();
     }
 
     void RefreshActionButton()

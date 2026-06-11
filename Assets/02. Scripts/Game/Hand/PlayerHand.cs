@@ -11,6 +11,7 @@ public class PlayerHand : Hand
         if (inGame == null) return;
         inGame.OnLocalAssignedFingerChanged += AssignActiveFinger;
         inGame.OnLocalFingerExtendedChanged += SetActiveFingerOpen;
+        inGame.OnLocalFingerMaskChanged     += ApplyFingerMask;
     }
 
     void OnDestroy()
@@ -19,6 +20,7 @@ public class PlayerHand : Hand
         if (inGame == null) return;
         inGame.OnLocalAssignedFingerChanged -= AssignActiveFinger;
         inGame.OnLocalFingerExtendedChanged -= SetActiveFingerOpen;
+        inGame.OnLocalFingerMaskChanged     -= ApplyFingerMask;
     }
 
     void AssignActiveFinger(EFingerType _fingerType)
@@ -30,5 +32,12 @@ public class PlayerHand : Hand
     void SetActiveFingerOpen(bool _isOpen)
     {
         activeFinger?.SetOpen(_isOpen);
+    }
+
+    void ApplyFingerMask(EFingerType mask)
+    {
+        if (fingerTable == null) return;
+        foreach (var kvp in fingerTable)
+            kvp.Value.SetOpen((mask & kvp.Key) != 0);
     }
 }

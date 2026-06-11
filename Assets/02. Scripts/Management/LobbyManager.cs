@@ -123,7 +123,7 @@ public class LobbyManager : SceneManagerBase
         Network.SetLocalReady(isReady);
     }
 
-    public void StartGame(Action<LobbyRequestResult> onComplete = null)
+    public void StartGame(EScene targetScene, Action<LobbyRequestResult> onComplete = null)
     {
         if (!IsHost)
         {
@@ -137,7 +137,7 @@ public class LobbyManager : SceneManagerBase
             return;
         }
 
-        Network.StartGame(result => Complete(result, onComplete));
+        Network.StartGame(targetScene, result => Complete(result, onComplete));
     }
 
     public bool CanStartGame()

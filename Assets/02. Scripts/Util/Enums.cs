@@ -6,7 +6,16 @@ namespace SystemEnums
     {
         Title,
         Lobby,
-        InGame,
+        PvE_1v1,
+        PvE_1v5,
+        PvP_1v1,
+    }
+
+    public enum EGameMode
+    {
+        PvE_1v1 = 2,
+        PvE_1v5 = 3,
+        PvP_1v1 = 4,
     }
 
     [Flags]

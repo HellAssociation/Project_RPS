@@ -93,6 +93,7 @@ public class InGameManager : SceneManagerBase
 
     public event Action<EFingerType> OnLocalAssignedFingerChanged;
     public event Action<bool>        OnLocalFingerExtendedChanged;
+    public event Action<EFingerType> OnLocalFingerMaskChanged;
     public event Action<float>       OnWaveTimerUpdated;
     public event Action<int>         OnStageOpened;
     public event Action              OnReadyStarted;
@@ -108,22 +109,24 @@ public class InGameManager : SceneManagerBase
 
     void OnEnable()
     {
-        Input.OnFingerToggled              += HandleFingerToggled;
-        Network.OnInGameSceneReady         += HandleInGameSceneReady;
+        Input.OnFingerToggled               += HandleFingerToggled;
+        Input.OnSingleControlMaskChanged    += HandleSingleControlMaskChanged;
+        Network.OnInGameSceneReady          += HandleInGameSceneReady;
         Network.OnFingerAssignmentsReceived += HandleFingerAssignmentsReceived;
-        Network.OnRoundStarted             += HandleWaveStarted;
-        Network.OnRoundResultReceived      += HandleWaveResultReceived;
-        Network.OnStageSelected            += HandleRoundSelected;
+        Network.OnRoundStarted              += HandleWaveStarted;
+        Network.OnRoundResultReceived       += HandleWaveResultReceived;
+        Network.OnStageSelected             += HandleRoundSelected;
     }
 
     void OnDisable()
     {
-        Input.OnFingerToggled              -= HandleFingerToggled;
-        Network.OnInGameSceneReady         -= HandleInGameSceneReady;
+        Input.OnFingerToggled               -= HandleFingerToggled;
+        Input.OnSingleControlMaskChanged    -= HandleSingleControlMaskChanged;
+        Network.OnInGameSceneReady          -= HandleInGameSceneReady;
         Network.OnFingerAssignmentsReceived -= HandleFingerAssignmentsReceived;
-        Network.OnRoundStarted             -= HandleWaveStarted;
-        Network.OnRoundResultReceived      -= HandleWaveResultReceived;
-        Network.OnStageSelected            -= HandleRoundSelected;
+        Network.OnRoundStarted              -= HandleWaveStarted;
+        Network.OnRoundResultReceived       -= HandleWaveResultReceived;
+        Network.OnStageSelected             -= HandleRoundSelected;
     }
 
     void Start()
@@ -251,6 +254,14 @@ public class InGameManager : SceneManagerBase
 #if UNITY_EDITOR
         Debug.Log($"[InGameManager] 손가락 입력 — {Players.LocalDisplayName}, {LocalAssignedFinger}, {(isExtended ? "펴기" : "접기")}");
 #endif
+    }
+
+    void HandleSingleControlMaskChanged(EFingerType mask)
+    {
+        if (!IsWaveActive)
+            return;
+
+        OnLocalFingerMaskChanged?.Invoke(mask);
     }
 
     void HandleWaveStarted(float durationSeconds)

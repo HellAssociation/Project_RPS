@@ -12,8 +12,14 @@ EditorBuildSettings:
     path: Assets/01. Scenes/02. Lobby.unity
     guid: 907438aa06e35ed46b9a81fadd42d1dd
   - enabled: 1
-    path: Assets/01. Scenes/03. Game.unity
+    path: Assets/01. Scenes/03. Game_PvE_1v1.unity
+    guid: 54e8615084fd05c4cbe83aab09421ff8
+  - enabled: 1
+    path: Assets/01. Scenes/03. Game_PvE_1v5.unity
     guid: 81f87502a525af34b9606bd95d1b5eb1
+  - enabled: 1
+    path: Assets/01. Scenes/03. Game_PvP_1v1.unity
+    guid: 9a4adaadf98bb054e9bc5b053cfd5ebe
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 0c541d042e23b6b43840136caaed3712, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
