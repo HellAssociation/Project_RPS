@@ -72,7 +72,7 @@ public class InputManager : CommonManagerBase
 
         if (!enabled)
         {
-            ResetFingerState();
+            IsFingerExtended = false;
         }
     }
 
@@ -95,6 +95,27 @@ public class InputManager : CommonManagerBase
 
         IsFingerExtended = isExtended;
         OnFingerToggled?.Invoke(isExtended);
+    }
+
+    public void RandomizeSingleControlBindings()
+    {
+        EFingerType[] fingers =
+        {
+            EFingerType.Thumb, EFingerType.Index, EFingerType.Middle,
+            EFingerType.Ring,  EFingerType.Pinky,
+        };
+        Key[] keys = { Key.Digit1, Key.Digit2, Key.Digit3, Key.Digit4, Key.Digit5 };
+
+        var rng = new System.Random();
+        for (int i = fingers.Length - 1; i > 0; i--)
+        {
+            int j = rng.Next(i + 1);
+            (fingers[i], fingers[j]) = (fingers[j], fingers[i]);
+        }
+
+        SingleControlKeyBindings.Clear();
+        for (int i = 0; i < keys.Length; i++)
+            SingleControlKeyBindings[fingers[i]] = keys[i];
     }
 
     public void ResetFingerState()

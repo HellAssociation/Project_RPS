@@ -190,6 +190,9 @@ public class InGameManager : SceneManagerBase
     {
         _selectedStageIndex = stageIndex;
 
+        if (ModeData.IsSingleControl)
+            Input.RandomizeSingleControlBindings();
+
         if (_stagePanel != null) _stagePanel.ClosePanel();
         if (Phase == EInGamePhase.WaitingForRoundSelect)
             Phase = EInGamePhase.WaitingForSetup;
@@ -286,6 +289,7 @@ public class InGameManager : SceneManagerBase
         Input.ResetFingerState();
         Input.SetEnabled(true);
         OnLocalFingerExtendedChanged?.Invoke(false);
+        OnLocalFingerMaskChanged?.Invoke(EFingerType.None);
         OnWaveStarted?.Invoke(durationSeconds);
         OnWaveTimerUpdated?.Invoke(WaveTimeRemaining);
 
@@ -359,6 +363,7 @@ public class InGameManager : SceneManagerBase
         {
             Input.ResetFingerState();
             OnLocalFingerExtendedChanged?.Invoke(false);
+            OnLocalFingerMaskChanged?.Invoke(EFingerType.None);
             OnGameOver?.Invoke();
 
             _lives           = MaxLives;
