@@ -1,0 +1,120 @@
+[
+  {
+    "id": "layer:core-infrastructure",
+    "name": "Core & Infrastructure",
+    "description": "The App service-locator/bootstrap, project-wide enums, and shared helpers (JSON parsing, RPS judging, frame monitoring) that every other layer depends on.",
+    "nodeIds": [
+      "file:Assets/02. Scripts/Util/App.cs",
+      "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "file:Assets/02. Scripts/Util/Enums.cs",
+      "file:Assets/02. Scripts/Util/FrameChecker.cs",
+      "file:Assets/02. Scripts/Util/JsonHelper.cs",
+      "file:Assets/02. Scripts/Util/RpsHandUtility.cs"
+    ]
+  },
+  {
+    "id": "layer:managers",
+    "name": "Managers",
+    "description": "App-driven singleton and per-scene managers (network, player, lobby, in-game, data, asset, sound, input, title) plus their ManagerBase/SceneManagerBase/UIManagerBase base classes that orchestrate the game's subsystems.",
+    "nodeIds": [
+      "file:Assets/02. Scripts/Management/AssetManager.cs",
+      "file:Assets/02. Scripts/Management/DataManager.cs",
+      "file:Assets/02. Scripts/Management/GameData.cs",
+      "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "file:Assets/02. Scripts/Management/InGameUIManager.cs",
+      "file:Assets/02. Scripts/Management/InputManager.cs",
+      "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "file:Assets/02. Scripts/Management/LobbyUIManager.cs",
+      "file:Assets/02. Scripts/Management/ManagerBase.cs",
+      "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "file:Assets/02. Scripts/Management/SceneManagerBase.cs",
+      "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "file:Assets/02. Scripts/Management/TitleManager.cs",
+      "file:Assets/02. Scripts/Management/TitleUIManager.cs",
+      "file:Assets/02. Scripts/Management/UIManagerBase.cs"
+    ]
+  },
+  {
+    "id": "layer:networking",
+    "name": "Networking",
+    "description": "Photon Fusion lobby and session objects: the [Networked] PlayerNetworkObject, session/player state models, result wrappers, and lobby-code utilities for real-time multiplayer.",
+    "nodeIds": [
+      "file:Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs",
+      "file:Assets/02. Scripts/FusionLobby/LobbyPlayer.cs",
+      "file:Assets/02. Scripts/FusionLobby/LobbyRequestResult.cs",
+      "file:Assets/02. Scripts/FusionLobby/LobbySession.cs",
+      "file:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "file:Assets/02. Scripts/FusionLobby/PlayerProfile.cs"
+    ]
+  },
+  {
+    "id": "layer:gameplay",
+    "name": "Gameplay",
+    "description": "Core RPS gameplay domain: player/enemy hands, fingers, hand-sprite data, game-mode flags, and the HP-bar visual effect that drive match logic.",
+    "nodeIds": [
+      "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "file:Assets/02. Scripts/Game/Hand/Finger.cs",
+      "file:Assets/02. Scripts/Game/Hand/Hand.cs",
+      "file:Assets/02. Scripts/Game/Hand/HandSpriteData.cs",
+      "file:Assets/02. Scripts/Game/Hand/PlayerHand.cs",
+      "file:Assets/02. Scripts/Game/ModeData.cs",
+      "file:Assets/02. Scripts/Effect/HPBarController.cs"
+    ]
+  },
+  {
+    "id": "layer:ui-presentation",
+    "name": "UI & Presentation",
+    "description": "uGUI panels and reusable slot/modal widgets for the title, lobby, and in-game HUD, all built on the PanelBase lifecycle hub that self-registers with the UI managers.",
+    "nodeIds": [
+      "file:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "file:Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "file:Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "file:Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs",
+      "file:Assets/02. Scripts/UI/Game/ModalContent.cs",
+      "file:Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "file:Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "file:Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "file:Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "file:Assets/02. Scripts/UI/Game/TimerPanel.cs",
+      "file:Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs",
+      "file:Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs",
+      "file:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+      "file:Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs",
+      "file:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "file:Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "file:Assets/02. Scripts/UI/Game/WavePanel.cs",
+      "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "file:Assets/02. Scripts/UI/LobbyPlayerListItem.cs",
+      "file:Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+      "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "file:Assets/02. Scripts/UI/SlotHoverScale.cs",
+      "file:Assets/02. Scripts/UI/TitlePanel.cs"
+    ]
+  },
+  {
+    "id": "layer:editor-tooling",
+    "name": "Editor Tooling",
+    "description": "Unity Editor utility windows for generating HandSpriteData ScriptableObjects from JSON and for fast scene launching during development.",
+    "nodeIds": [
+      "file:Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "file:Assets/Editor/SceneFastLauncher.cs"
+    ]
+  },
+  {
+    "id": "layer:data-config",
+    "name": "Game Data & Project Config",
+    "description": "Game-balance JSON tables (boon, define, deviation, enemy, round) consumed by DataManager, Unity package manifests, and the CLAUDE.md project guideline document.",
+    "nodeIds": [
+      "config:Assets/07. Data/Json/BoonData.json",
+      "config:Assets/07. Data/Json/DefineData.json",
+      "config:Assets/07. Data/Json/DeviationData.json",
+      "config:Assets/07. Data/Json/EnemyData.json",
+      "config:Assets/07. Data/Json/RoundData.json",
+      "config:Packages/manifest.json",
+      "config:Packages/packages-lock.json",
+      "document:CLAUDE.md"
+    ]
+  }
+]

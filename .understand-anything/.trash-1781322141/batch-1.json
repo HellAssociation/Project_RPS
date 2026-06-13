@@ -1,0 +1,90 @@
+{
+  "nodes": [
+    {
+      "id": "config:Assets/07. Data/Json/BoonData.json",
+      "type": "config",
+      "name": "BoonData.json",
+      "filePath": "Assets/07. Data/Json/BoonData.json",
+      "summary": "Game-balance data defining selectable boons (perks), each with a code, localized name/description string keys, a 5-bit position mask, and five tunable value slots. Loaded at runtime by DataManager into boon data structures.",
+      "tags": ["configuration", "game-data", "balance", "boon"],
+      "complexity": "simple",
+      "languageNotes": "Array-of-records JSON keyed by index/code; name and description hold localization string IDs (STR_NAME_*, STR_DESC_*) rather than literal text."
+    },
+    {
+      "id": "config:Assets/07. Data/Json/DefineData.json",
+      "type": "config",
+      "name": "DefineData.json",
+      "filePath": "Assets/07. Data/Json/DefineData.json",
+      "summary": "Global gameplay constants (define table) holding the player's default HP, default damage, and default round timer values. Loaded at runtime by DataManager as base tuning parameters.",
+      "tags": ["configuration", "game-data", "constants", "balance"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Assets/07. Data/Json/DeviationData.json",
+      "type": "config",
+      "name": "DeviationData.json",
+      "filePath": "Assets/07. Data/Json/DeviationData.json",
+      "summary": "Game-balance data defining deviation entries (boon-shaped records with code, localized name/description keys, position mask, and five value slots) used as gameplay modifiers. Loaded at runtime by DataManager.",
+      "tags": ["configuration", "game-data", "balance", "deviation"],
+      "complexity": "simple",
+      "languageNotes": "Schema mirrors BoonData.json (index/code/name/description/position/value1-5); values default to -1 placeholders pending tuning."
+    },
+    {
+      "id": "config:Assets/07. Data/Json/EnemyData.json",
+      "type": "config",
+      "name": "EnemyData.json",
+      "filePath": "Assets/07. Data/Json/EnemyData.json",
+      "summary": "Enemy roster of ten enemy types, each with a code, localized string keys, a resource/prefab name, the min/max round range in which it can appear, and three tunable value slots. Loaded at runtime by DataManager to drive enemy spawning.",
+      "tags": ["configuration", "game-data", "enemy", "balance"],
+      "complexity": "simple",
+      "languageNotes": "appearMinRound/appearMaxRound gate spawn eligibility by round; resource (Enemy1..Enemy10) maps each entry to a loadable prefab/asset."
+    },
+    {
+      "id": "config:Assets/07. Data/Json/RoundData.json",
+      "type": "config",
+      "name": "RoundData.json",
+      "filePath": "Assets/07. Data/Json/RoundData.json",
+      "summary": "Per-round difficulty curve for ten rounds, defining a cumulative round-timer delta and an enemy HP multiplier that scales from 1.0 up to 4.0. Loaded at runtime by DataManager to ramp difficulty across rounds.",
+      "tags": ["configuration", "game-data", "round", "difficulty", "balance"],
+      "complexity": "simple",
+      "languageNotes": "roundTimer values are negative deltas (timer shrinks each round); roundHPMultiflier grows non-linearly to steepen late-game difficulty."
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:Assets/07. Data/Json/BoonData.json",
+      "target": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Assets/07. Data/Json/DefineData.json",
+      "target": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Assets/07. Data/Json/DeviationData.json",
+      "target": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Assets/07. Data/Json/EnemyData.json",
+      "target": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Assets/07. Data/Json/RoundData.json",
+      "target": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

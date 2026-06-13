@@ -1,0 +1,887 @@
+{
+  "nodes": [
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "type": "file",
+      "name": "StagePanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "summary": "Panel showing the stage map with selectable StageSlot widgets, host name, boss HP, and a cursor reflecting the host player's pointer.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "in-game",
+        "networking"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/StagePanel.cs:StagePanel",
+      "type": "class",
+      "name": "StagePanel",
+      "filePath": "Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "lineRange": [
+        7,
+        110
+      ],
+      "summary": "PanelBase rendering stage slots, host HP and name, and mirroring the host's cursor position from networked player state.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "networking"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/StagePanel.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "filePath": "Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "lineRange": [
+        58,
+        80
+      ],
+      "summary": "Reads the local mouse position and updates the host cursor rect from networked host pointer state each frame.",
+      "tags": [
+        "input",
+        "networking",
+        "frame-loop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/StagePanel.cs:CacheStageSlots",
+      "type": "function",
+      "name": "CacheStageSlots",
+      "filePath": "Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "lineRange": [
+        101,
+        109
+      ],
+      "summary": "Finds child StageSlot widgets and initializes each with its stage index.",
+      "tags": [
+        "ui-panel",
+        "initialization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/TimerPanel.cs",
+      "type": "file",
+      "name": "TimerPanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/TimerPanel.cs",
+      "summary": "Panel displaying the round countdown timer and current stage label, updating via subscribed timer and stage events.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "in-game",
+        "event-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/TimerPanel.cs:TimerPanel",
+      "type": "class",
+      "name": "TimerPanel",
+      "filePath": "Assets/02. Scripts/UI/Game/TimerPanel.cs",
+      "lineRange": [
+        6,
+        59
+      ],
+      "summary": "PanelBase formatting the remaining time and stage number into TextMeshPro fields using a reusable StringBuilder.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "event-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs",
+      "type": "file",
+      "name": "IndicateSlot.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs",
+      "summary": "Reusable slot widget for the IndicatePanel that shows a name/description tooltip and positions itself by anchored coordinates.",
+      "tags": [
+        "component",
+        "widget",
+        "tooltip",
+        "in-game"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs:IndicateSlot",
+      "type": "class",
+      "name": "IndicateSlot",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs",
+      "lineRange": [
+        4,
+        51
+      ],
+      "summary": "MonoBehaviour tooltip slot exposing its IndicateType and show/hide/position helpers for the IndicatePanel.",
+      "tags": [
+        "component",
+        "widget",
+        "tooltip"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs",
+      "type": "file",
+      "name": "NextIconSlot.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs",
+      "summary": "Reusable icon slot widget for NextIconPanel exposing its rect transform and current hand position with a sprite setter.",
+      "tags": [
+        "component",
+        "widget",
+        "in-game"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs:NextIconSlot",
+      "type": "class",
+      "name": "NextIconSlot",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs",
+      "lineRange": [
+        5,
+        28
+      ],
+      "summary": "MonoBehaviour slot caching its rect/image and exposing SetSlot to apply a hand-position sprite.",
+      "tags": [
+        "component",
+        "widget"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+      "type": "file",
+      "name": "StageSlot.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+      "summary": "Clickable stage selection slot that broadcasts the chosen stage to the network when its button is pressed.",
+      "tags": [
+        "component",
+        "widget",
+        "in-game",
+        "networking"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs:StageSlot",
+      "type": "class",
+      "name": "StageSlot",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+      "lineRange": [
+        5,
+        42
+      ],
+      "summary": "SlotHoverScale-derived stage button that initializes its label and broadcasts its stage index to the network on click.",
+      "tags": [
+        "component",
+        "widget",
+        "networking"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs",
+      "type": "file",
+      "name": "Tooltip.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs",
+      "summary": "Pointer event handler that drives the IndicatePanel to show, follow, and hide a typed tooltip as the cursor enters, moves over, and exits the element.",
+      "tags": [
+        "component",
+        "event-handler",
+        "tooltip",
+        "in-game"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs:Tooltip",
+      "type": "class",
+      "name": "Tooltip",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs",
+      "lineRange": [
+        4,
+        41
+      ],
+      "summary": "MonoBehaviour implementing pointer enter/move/exit to relay tooltip show/position/hide calls to the cached IndicatePanel.",
+      "tags": [
+        "component",
+        "event-handler",
+        "tooltip"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "type": "file",
+      "name": "WaveSlot.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "summary": "Reusable wave indicator slot widget showing a wave ball and a defeated mark with DOTween punch/fade animations.",
+      "tags": [
+        "component",
+        "widget",
+        "in-game",
+        "animation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs:WaveSlot",
+      "type": "class",
+      "name": "WaveSlot",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "lineRange": [
+        5,
+        54
+      ],
+      "summary": "MonoBehaviour wave slot that initializes by wave type and animates defeat marking and clearing with DOTween.",
+      "tags": [
+        "component",
+        "widget",
+        "animation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs:MarkDefeated",
+      "type": "function",
+      "name": "MarkDefeated",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "lineRange": [
+        27,
+        42
+      ],
+      "summary": "Plays the defeated feedback: punch scale, color dim, and a delete-mark scale/punch DOTween sequence.",
+      "tags": [
+        "animation",
+        "widget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "type": "file",
+      "name": "VersusPanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "summary": "Intro panel that plays a 'Ready / Fight' stamp DOTween sequence when opened, then auto-closes itself.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "in-game",
+        "animation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/VersusPanel.cs:VersusPanel",
+      "type": "class",
+      "name": "VersusPanel",
+      "filePath": "Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "lineRange": [
+        6,
+        71
+      ],
+      "summary": "PanelBase that runs a ready/fight stamp intro DOTween sequence on open and closes itself on completion.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "animation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/VersusPanel.cs:PlayIntroSequence",
+      "type": "function",
+      "name": "PlayIntroSequence",
+      "filePath": "Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "lineRange": [
+        27,
+        54
+      ],
+      "summary": "Builds and runs the ready-then-fight stamp DOTween sequence, closing the panel when done.",
+      "tags": [
+        "animation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/WavePanel.cs",
+      "type": "file",
+      "name": "WavePanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/WavePanel.cs",
+      "summary": "Panel managing the row of WaveSlot indicators, resetting them on stage open and marking the next slot defeated on a winning outcome.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "in-game",
+        "event-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/WavePanel.cs:WavePanel",
+      "type": "class",
+      "name": "WavePanel",
+      "filePath": "Assets/02. Scripts/UI/Game/WavePanel.cs",
+      "lineRange": [
+        4,
+        64
+      ],
+      "summary": "PanelBase that initializes and clears WaveSlot widgets on stage events and marks defeated waves on outcome events.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "event-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "type": "file",
+      "name": "LobbyEntryPanel.cs",
+      "filePath": "Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "summary": "Lobby entry panel with create-room, join-by-code, and quick-join flows that drive the lobby manager, toggling interactability and status text during async requests.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "lobby",
+        "networking"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Each button handler guards a busy flag and reports progress through status text while awaiting lobby manager callbacks."
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/LobbyEntryPanel.cs:LobbyEntryPanel",
+      "type": "class",
+      "name": "LobbyEntryPanel",
+      "filePath": "Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "lineRange": [
+        11,
+        315
+      ],
+      "summary": "PanelBase handling lobby entry actions (create/join/quick-join) by calling the lobby manager and updating UI state.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "lobby",
+        "networking"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/LobbyEntryPanel.cs:OnCreateRoomClicked",
+      "type": "function",
+      "name": "OnCreateRoomClicked",
+      "filePath": "Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "lineRange": [
+        107,
+        157
+      ],
+      "summary": "Initiates room creation through the lobby manager, managing busy state and status feedback.",
+      "tags": [
+        "lobby",
+        "networking",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/LobbyEntryPanel.cs:OnJoinRoomClicked",
+      "type": "function",
+      "name": "OnJoinRoomClicked",
+      "filePath": "Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "lineRange": [
+        161,
+        225
+      ],
+      "summary": "Validates the join code and requests joining a specific room via the lobby manager.",
+      "tags": [
+        "lobby",
+        "networking",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/LobbyEntryPanel.cs:OnQuickJoinClicked",
+      "type": "function",
+      "name": "OnQuickJoinClicked",
+      "filePath": "Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "lineRange": [
+        229,
+        279
+      ],
+      "summary": "Requests a quick random-room join through the lobby manager with busy-state and status handling.",
+      "tags": [
+        "lobby",
+        "networking",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/LobbyEntryPanel.cs:SetInteractable",
+      "type": "function",
+      "name": "SetInteractable",
+      "filePath": "Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "lineRange": [
+        283,
+        303
+      ],
+      "summary": "Enables or disables all entry buttons and inputs while a lobby request is in flight.",
+      "tags": [
+        "lobby",
+        "ui-state"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/LobbyPlayerListItem.cs",
+      "type": "file",
+      "name": "LobbyPlayerListItem.cs",
+      "filePath": "Assets/02. Scripts/UI/LobbyPlayerListItem.cs",
+      "summary": "Row widget for the lobby player list showing a player's name and ready state.",
+      "tags": [
+        "component",
+        "widget",
+        "lobby"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/LobbyPlayerListItem.cs:LobbyPlayerListItem",
+      "type": "class",
+      "name": "LobbyPlayerListItem",
+      "filePath": "Assets/02. Scripts/UI/LobbyPlayerListItem.cs",
+      "lineRange": [
+        5,
+        31
+      ],
+      "summary": "MonoBehaviour list-item widget rendering one lobby player's display name and ready indicator.",
+      "tags": [
+        "component",
+        "widget",
+        "lobby"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+      "type": "file",
+      "name": "LobbyRoomPanel.cs",
+      "filePath": "Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+      "summary": "Lobby room panel listing connected players via LobbyPlayerListItem rows and exposing ready/start/leave actions wired to the lobby manager.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "lobby",
+        "networking"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/LobbyRoomPanel.cs:LobbyRoomPanel",
+      "type": "class",
+      "name": "LobbyRoomPanel",
+      "filePath": "Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+      "lineRange": [
+        8,
+        194
+      ],
+      "summary": "PanelBase rendering the in-room player list and handling ready/start/leave interactions against the lobby manager.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "lobby",
+        "networking"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/StagePanel.cs:StagePanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/StagePanel.cs:Update",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/StagePanel.cs:CacheStageSlots",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/StagePanel.cs:StagePanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/StagePanel.cs:StagePanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "target": "file:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/StagePanel.cs:StagePanel",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs:StageSlot",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/TimerPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/TimerPanel.cs:TimerPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/TimerPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/TimerPanel.cs:TimerPanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/TimerPanel.cs:TimerPanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/TimerPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs:IndicateSlot",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs:IndicateSlot",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs:NextIconSlot",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs:NextIconSlot",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs:StageSlot",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs:StageSlot",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs:StageSlot",
+      "target": "class:Assets/02. Scripts/UI/SlotHoverScale.cs:SlotHoverScale",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+      "target": "file:Assets/02. Scripts/UI/SlotHoverScale.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs:Tooltip",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs:Tooltip",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs",
+      "target": "file:Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs:Tooltip",
+      "target": "class:Assets/02. Scripts/UI/Game/IndicatePanel.cs:IndicatePanel",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs:WaveSlot",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs:MarkDefeated",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs:WaveSlot",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/VersusPanel.cs:VersusPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/VersusPanel.cs:PlayIntroSequence",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/VersusPanel.cs:VersusPanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/VersusPanel.cs:VersusPanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/WavePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/WavePanel.cs:WavePanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/WavePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/WavePanel.cs:WavePanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/WavePanel.cs:WavePanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/WavePanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/WavePanel.cs",
+      "target": "file:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/WavePanel.cs:WavePanel",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs:WaveSlot",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/LobbyEntryPanel.cs:LobbyEntryPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/LobbyEntryPanel.cs:OnCreateRoomClicked",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/LobbyEntryPanel.cs:OnJoinRoomClicked",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/LobbyEntryPanel.cs:OnQuickJoinClicked",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/LobbyEntryPanel.cs:SetInteractable",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/LobbyEntryPanel.cs:LobbyEntryPanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/LobbyEntryPanel.cs:LobbyEntryPanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyPlayerListItem.cs",
+      "target": "class:Assets/02. Scripts/UI/LobbyPlayerListItem.cs:LobbyPlayerListItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyPlayerListItem.cs",
+      "target": "class:Assets/02. Scripts/UI/LobbyPlayerListItem.cs:LobbyPlayerListItem",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/LobbyRoomPanel.cs:LobbyRoomPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/LobbyRoomPanel.cs:LobbyRoomPanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/LobbyRoomPanel.cs:LobbyRoomPanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/LobbyPlayerListItem.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/LobbyRoomPanel.cs:LobbyRoomPanel",
+      "target": "class:Assets/02. Scripts/UI/LobbyPlayerListItem.cs:LobbyPlayerListItem",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

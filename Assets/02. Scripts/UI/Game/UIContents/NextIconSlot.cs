@@ -9,6 +9,7 @@ public class NextIconSlot : MonoBehaviour
 
     public RectTransform Rect => _rect;
     public EHandPosition HandPosition { get; private set; }
+    public EHandPosition ResolvedHandPosition { get; private set; }
 
     public void Init()
     {
@@ -19,9 +20,10 @@ public class NextIconSlot : MonoBehaviour
             _iconImage = GetComponentInChildren<Image>();
     }
 
-    public void SetSlot(EHandPosition handPosition, Sprite sprite)
+    public void SetSlot(EHandPosition handPosition, EHandPosition resolvedHandPosition, Sprite sprite)
     {
         HandPosition = handPosition;
+        ResolvedHandPosition = resolvedHandPosition;
         if (_iconImage != null)
             _iconImage.sprite = sprite;
     }

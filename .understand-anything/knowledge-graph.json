@@ -1,0 +1,5392 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "Project_RPS",
+    "languages": [
+      "csharp",
+      "json",
+      "markdown"
+    ],
+    "frameworks": [
+      "Unity",
+      "Photon Fusion",
+      "Universal Render Pipeline",
+      "Unity Input System",
+      "Addressables"
+    ],
+    "description": "A real-time multiplayer Rock-Paper-Scissors game built in Unity, using Photon Fusion for networking, URP rendering, uGUI, and Addressables for asset loading.",
+    "analyzedAt": "2026-06-13T03:34:35Z",
+    "gitCommitHash": "70233995e4c6c5199b2a5e7f33a9c89fb8236904"
+  },
+  "nodes": [
+    {
+      "id": "config:Assets/07. Data/Json/BoonData.json",
+      "type": "config",
+      "name": "BoonData.json",
+      "filePath": "Assets/07. Data/Json/BoonData.json",
+      "summary": "Game-balance data defining selectable boons (perks), each with a code, localized name/description string keys, a 5-bit position mask, and five tunable value slots. Loaded at runtime by DataManager into boon data structures.",
+      "tags": [
+        "configuration",
+        "game-data",
+        "balance",
+        "boon"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Array-of-records JSON keyed by index/code; name and description hold localization string IDs (STR_NAME_*, STR_DESC_*) rather than literal text."
+    },
+    {
+      "id": "config:Assets/07. Data/Json/DefineData.json",
+      "type": "config",
+      "name": "DefineData.json",
+      "filePath": "Assets/07. Data/Json/DefineData.json",
+      "summary": "Global gameplay constants (define table) holding the player's default HP, default damage, and default round timer values. Loaded at runtime by DataManager as base tuning parameters.",
+      "tags": [
+        "configuration",
+        "game-data",
+        "constants",
+        "balance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Assets/07. Data/Json/DeviationData.json",
+      "type": "config",
+      "name": "DeviationData.json",
+      "filePath": "Assets/07. Data/Json/DeviationData.json",
+      "summary": "Game-balance data defining deviation entries (boon-shaped records with code, localized name/description keys, position mask, and five value slots) used as gameplay modifiers. Loaded at runtime by DataManager.",
+      "tags": [
+        "configuration",
+        "game-data",
+        "balance",
+        "deviation"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Schema mirrors BoonData.json (index/code/name/description/position/value1-5); values default to -1 placeholders pending tuning."
+    },
+    {
+      "id": "config:Assets/07. Data/Json/EnemyData.json",
+      "type": "config",
+      "name": "EnemyData.json",
+      "filePath": "Assets/07. Data/Json/EnemyData.json",
+      "summary": "Enemy roster of ten enemy types, each with a code, localized string keys, a resource/prefab name, the min/max round range in which it can appear, and three tunable value slots. Loaded at runtime by DataManager to drive enemy spawning.",
+      "tags": [
+        "configuration",
+        "game-data",
+        "enemy",
+        "balance"
+      ],
+      "complexity": "simple",
+      "languageNotes": "appearMinRound/appearMaxRound gate spawn eligibility by round; resource (Enemy1..Enemy10) maps each entry to a loadable prefab/asset."
+    },
+    {
+      "id": "config:Assets/07. Data/Json/RoundData.json",
+      "type": "config",
+      "name": "RoundData.json",
+      "filePath": "Assets/07. Data/Json/RoundData.json",
+      "summary": "Per-round difficulty curve for ten rounds, defining a cumulative round-timer delta and an enemy HP multiplier that scales from 1.0 up to 4.0. Loaded at runtime by DataManager to ramp difficulty across rounds.",
+      "tags": [
+        "configuration",
+        "game-data",
+        "round",
+        "difficulty",
+        "balance"
+      ],
+      "complexity": "simple",
+      "languageNotes": "roundTimer values are negative deltas (timer shrinks each round); roundHPMultiflier grows non-linearly to steepen late-game difficulty."
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/AssetManager.cs",
+      "type": "file",
+      "name": "AssetManager.cs",
+      "filePath": "Assets/02. Scripts/Management/AssetManager.cs",
+      "summary": "CommonManagerBase manager that loads and caches AudioClip assets through Addressables, keyed by an audio clip enum.",
+      "tags": [
+        "service",
+        "manager",
+        "assets",
+        "addressables"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/AssetManager.cs:GetAudioClip",
+      "type": "function",
+      "name": "GetAudioClip",
+      "filePath": "Assets/02. Scripts/Management/AssetManager.cs",
+      "lineRange": [
+        12,
+        38
+      ],
+      "summary": "Returns a cached AudioClip or synchronously loads it via Addressables, caching the result and warning on failure.",
+      "tags": [
+        "assets",
+        "addressables",
+        "caching"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/AssetManager.cs:AssetManager",
+      "type": "class",
+      "name": "AssetManager",
+      "filePath": "Assets/02. Scripts/Management/AssetManager.cs",
+      "lineRange": [
+        7,
+        39
+      ],
+      "summary": "Manager that caches and serves Addressables-loaded audio clips, registered on App via CommonManagerBase.",
+      "tags": [
+        "service",
+        "manager",
+        "assets"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "type": "file",
+      "name": "DataManager.cs",
+      "filePath": "Assets/02. Scripts/Management/DataManager.cs",
+      "summary": "DataManagerBase manager that asynchronously loads JSON game-data tables (boon, define, deviation, enemy, round) from Addressables into typed dictionaries and exposes TryGet lookups.",
+      "tags": [
+        "service",
+        "manager",
+        "data-loading",
+        "addressables"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/DataManager.cs:LoadDataToDictionaryAsync",
+      "type": "function",
+      "name": "LoadDataToDictionaryAsync",
+      "filePath": "Assets/02. Scripts/Management/DataManager.cs",
+      "lineRange": [
+        50,
+        85
+      ],
+      "summary": "Loads a named JSON TextAsset via Addressables, deserializes it into a keyed dictionary with JsonHelper, and reports load-group completion.",
+      "tags": [
+        "data-loading",
+        "addressables",
+        "serialization"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/DataManager.cs:LoadAllDataCoroutine",
+      "type": "function",
+      "name": "LoadAllDataCoroutine",
+      "filePath": "Assets/02. Scripts/Management/DataManager.cs",
+      "lineRange": [
+        34,
+        42
+      ],
+      "summary": "Coroutine that kicks off loading all game-data dictionaries and notifies when the load group finishes.",
+      "tags": [
+        "coroutine",
+        "data-loading"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/DataManager.cs:DataManager",
+      "type": "class",
+      "name": "DataManager",
+      "filePath": "Assets/02. Scripts/Management/DataManager.cs",
+      "lineRange": [
+        10,
+        95
+      ],
+      "summary": "Game-data manager that loads JSON tables into dictionaries and serves typed lookups for boon, define, deviation, enemy, and round data.",
+      "tags": [
+        "service",
+        "manager",
+        "data-loading"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/GameData.cs",
+      "type": "file",
+      "name": "GameData.cs",
+      "filePath": "Assets/02. Scripts/Management/GameData.cs",
+      "summary": "Serializable data-model classes (BoonData, DefineData, DeviationData, EnemyData, RoundData) deserialized from JSON and keyed by Code, implementing IGameData.",
+      "tags": [
+        "data-model",
+        "serialization",
+        "type-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/GameData.cs:EnemyData",
+      "type": "class",
+      "name": "EnemyData",
+      "filePath": "Assets/02. Scripts/Management/GameData.cs",
+      "lineRange": [
+        44,
+        58
+      ],
+      "summary": "Enemy configuration record (round timer, HP multiplier, resource, appearance range) keyed by Code.",
+      "tags": [
+        "data-model",
+        "serialization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/GameData.cs:RoundData",
+      "type": "class",
+      "name": "RoundData",
+      "filePath": "Assets/02. Scripts/Management/GameData.cs",
+      "lineRange": [
+        60,
+        68
+      ],
+      "summary": "Per-round configuration record carrying round timer and HP multiplier, keyed by Code.",
+      "tags": [
+        "data-model",
+        "serialization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "type": "file",
+      "name": "InGameManager.cs",
+      "filePath": "Assets/02. Scripts/Management/InGameManager.cs",
+      "summary": "SceneManagerBase scene controller driving the in-game match flow: wave timers, host setup, finger assignments, RPS outcome resolution, lives/HP tracking, and round transitions, coordinating NetworkManager, PlayerManager, and InputManager via events.",
+      "tags": [
+        "manager",
+        "scene-manager",
+        "game-logic",
+        "orchestration"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/InGameManager.cs:BetweenWavesCoroutine",
+      "type": "function",
+      "name": "BetweenWavesCoroutine",
+      "filePath": "Assets/02. Scripts/Management/InGameManager.cs",
+      "lineRange": [
+        351,
+        417
+      ],
+      "summary": "Coroutine handling the inter-wave interval: shows results, updates HP/lives, fires game-over or round-clear events, and on the host re-initializes finger assignments and starts the next round.",
+      "tags": [
+        "coroutine",
+        "game-logic",
+        "orchestration"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/InGameManager.cs:HandleWaveResultReceived",
+      "type": "function",
+      "name": "HandleWaveResultReceived",
+      "filePath": "Assets/02. Scripts/Management/InGameManager.cs",
+      "lineRange": [
+        312,
+        349
+      ],
+      "summary": "Processes a broadcast wave result, determines the RPS outcome, updates enemy HP and player lives, fires UI events, and starts the between-waves coroutine.",
+      "tags": [
+        "game-logic",
+        "event-handler",
+        "networking"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/InGameManager.cs:WaveTimerCoroutine",
+      "type": "function",
+      "name": "WaveTimerCoroutine",
+      "filePath": "Assets/02. Scripts/Management/InGameManager.cs",
+      "lineRange": [
+        284,
+        310
+      ],
+      "summary": "Coroutine that runs a wave countdown, enables/disables input, ticks UI timer events, and on the host judges and broadcasts the round result at expiry.",
+      "tags": [
+        "coroutine",
+        "game-logic",
+        "networking"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/InGameManager.cs:HostSetupCoroutine",
+      "type": "function",
+      "name": "HostSetupCoroutine",
+      "filePath": "Assets/02. Scripts/Management/InGameManager.cs",
+      "lineRange": [
+        213,
+        227
+      ],
+      "summary": "Host-only coroutine that ensures player objects are spawned, initializes finger assignments, waits for readiness, and starts the first round.",
+      "tags": [
+        "coroutine",
+        "game-logic",
+        "networking",
+        "host"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/InGameManager.cs:DetermineOutcome",
+      "type": "function",
+      "name": "DetermineOutcome",
+      "filePath": "Assets/02. Scripts/Management/InGameManager.cs",
+      "lineRange": [
+        424,
+        440
+      ],
+      "summary": "Pure helper that resolves the Rock-Paper-Scissors result between the player's and enemy's hand positions.",
+      "tags": [
+        "game-logic",
+        "rps",
+        "pure-function"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/InGameManager.cs:InGameManager",
+      "type": "class",
+      "name": "InGameManager",
+      "filePath": "Assets/02. Scripts/Management/InGameManager.cs",
+      "lineRange": [
+        6,
+        441
+      ],
+      "summary": "In-game scene manager orchestrating wave/round flow, host setup, RPS judging, and HP/lives state, exposing many gameplay events to the UI layer.",
+      "tags": [
+        "manager",
+        "scene-manager",
+        "game-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/InGameUIManager.cs",
+      "type": "file",
+      "name": "InGameUIManager.cs",
+      "filePath": "Assets/02. Scripts/Management/InGameUIManager.cs",
+      "summary": "Minimal in-game UI manager stub extending UIManagerBase, serving as the registration point for in-game UI panels.",
+      "tags": [
+        "manager",
+        "ui",
+        "stub"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/InputManager.cs",
+      "type": "file",
+      "name": "InputManager.cs",
+      "filePath": "Assets/02. Scripts/Management/InputManager.cs",
+      "summary": "CommonManagerBase manager reading keyboard input each frame for single- and multi-control finger modes, tracking the extended-finger mask and firing toggle/mask-change events.",
+      "tags": [
+        "manager",
+        "input",
+        "game-logic",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/InputManager.cs:RandomizeSingleControlBindings",
+      "type": "function",
+      "name": "RandomizeSingleControlBindings",
+      "filePath": "Assets/02. Scripts/Management/InputManager.cs",
+      "lineRange": [
+        100,
+        119
+      ],
+      "summary": "Randomly maps keyboard keys to finger types for single-control mode, rebuilding the binding dictionary each round.",
+      "tags": [
+        "input",
+        "game-logic",
+        "randomization"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/InputManager.cs:HandleSingleControlInput",
+      "type": "function",
+      "name": "HandleSingleControlInput",
+      "filePath": "Assets/02. Scripts/Management/InputManager.cs",
+      "lineRange": [
+        52,
+        67
+      ],
+      "summary": "Reads the randomized key bindings and emits the resulting single-control finger mask change event.",
+      "tags": [
+        "input",
+        "game-logic",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/InputManager.cs:InputManager",
+      "type": "class",
+      "name": "InputManager",
+      "filePath": "Assets/02. Scripts/Management/InputManager.cs",
+      "lineRange": [
+        7,
+        126
+      ],
+      "summary": "Input manager polling keys for finger control, supporting modal blocking and enable toggling, and broadcasting finger-toggle and mask-change events.",
+      "tags": [
+        "manager",
+        "input",
+        "game-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "type": "file",
+      "name": "LobbyManager.cs",
+      "filePath": "Assets/02. Scripts/Management/LobbyManager.cs",
+      "summary": "SceneManagerBase lobby scene controller wrapping NetworkManager session operations (create/join/quick-join/leave/start), managing ready state and display names, and refreshing lobby UI panels.",
+      "tags": [
+        "manager",
+        "scene-manager",
+        "lobby",
+        "networking"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/LobbyManager.cs:StartGame",
+      "type": "function",
+      "name": "StartGame",
+      "filePath": "Assets/02. Scripts/Management/LobbyManager.cs",
+      "lineRange": [
+        126,
+        141
+      ],
+      "summary": "Validates start preconditions then delegates to NetworkManager.StartGame to transition all clients to the target scene, completing with a result.",
+      "tags": [
+        "lobby",
+        "networking",
+        "game-flow"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/LobbyManager.cs:RefreshLobbyUI",
+      "type": "function",
+      "name": "RefreshLobbyUI",
+      "filePath": "Assets/02. Scripts/Management/LobbyManager.cs",
+      "lineRange": [
+        153,
+        175
+      ],
+      "summary": "Opens or closes the lobby entry/room panels based on session state and refreshes the room panel content from the current session.",
+      "tags": [
+        "lobby",
+        "ui",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/LobbyManager.cs:Complete",
+      "type": "function",
+      "name": "Complete",
+      "filePath": "Assets/02. Scripts/Management/LobbyManager.cs",
+      "lineRange": [
+        187,
+        202
+      ],
+      "summary": "Logs and invokes the completion callback for a lobby operation result, surfacing success or error messages.",
+      "tags": [
+        "lobby",
+        "result",
+        "callback"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/LobbyManager.cs:LobbyManager",
+      "type": "class",
+      "name": "LobbyManager",
+      "filePath": "Assets/02. Scripts/Management/LobbyManager.cs",
+      "lineRange": [
+        9,
+        203
+      ],
+      "summary": "Lobby scene manager exposing high-level session lifecycle operations over NetworkManager and keeping lobby UI in sync with session updates.",
+      "tags": [
+        "manager",
+        "scene-manager",
+        "lobby"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/LobbyUIManager.cs",
+      "type": "file",
+      "name": "LobbyUIManager.cs",
+      "filePath": "Assets/02. Scripts/Management/LobbyUIManager.cs",
+      "summary": "Minimal lobby UI manager extending UIManagerBase that triggers an initial lobby UI refresh on Start.",
+      "tags": [
+        "manager",
+        "ui",
+        "lobby",
+        "stub"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/ManagerBase.cs",
+      "type": "file",
+      "name": "ManagerBase.cs",
+      "filePath": "Assets/02. Scripts/Management/ManagerBase.cs",
+      "summary": "Defines the manager registration infrastructure: a static ManagerHandler that reflects App's manager fields and injects instances, plus DataManagerBase and CommonManagerBase base classes that self-register on Awake.",
+      "tags": [
+        "base-class",
+        "manager",
+        "dependency-injection",
+        "reflection"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses System.Reflection (BindingFlags, FieldInfo) to discover and assign manager singleton fields on the App container at runtime."
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/ManagerBase.cs:ManagerHandler",
+      "type": "class",
+      "name": "ManagerHandler",
+      "filePath": "Assets/02. Scripts/Management/ManagerBase.cs",
+      "lineRange": [
+        8,
+        52
+      ],
+      "summary": "Static reflection-based registry that maps manager types to App fields and injects manager instances into the App singleton.",
+      "tags": [
+        "dependency-injection",
+        "reflection",
+        "static"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/ManagerBase.cs:DataManagerBase",
+      "type": "class",
+      "name": "DataManagerBase",
+      "filePath": "Assets/02. Scripts/Management/ManagerBase.cs",
+      "lineRange": [
+        54,
+        59
+      ],
+      "summary": "MonoBehaviour base for data-loading managers that self-registers with ManagerHandler on Awake and tracks IsDataLoaded.",
+      "tags": [
+        "base-class",
+        "manager"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/ManagerBase.cs:CommonManagerBase",
+      "type": "class",
+      "name": "CommonManagerBase",
+      "filePath": "Assets/02. Scripts/Management/ManagerBase.cs",
+      "lineRange": [
+        61,
+        64
+      ],
+      "summary": "MonoBehaviour base for common managers that self-registers its instance with ManagerHandler on Awake.",
+      "tags": [
+        "base-class",
+        "manager"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "type": "file",
+      "name": "NetworkManager.cs",
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "summary": "The Photon Fusion networking hub (CommonManagerBase, INetworkRunnerCallbacks): manages NetworkRunner lifecycle, cloud connection, session create/join/start, finger-assignment sync, and round-result broadcasting over reliable data and [Networked] PlayerNetworkObject state.",
+      "tags": [
+        "manager",
+        "networking",
+        "photon-fusion",
+        "service"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Implements INetworkRunnerCallbacks (OnPlayerJoined/Left, OnShutdown, OnReliableDataReceived, etc.) and drives a Fusion NetworkRunner across coroutines for session and scene transitions."
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/NetworkManager.cs:StartSessionCoroutine",
+      "type": "function",
+      "name": "StartSessionCoroutine",
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "lineRange": [
+        265,
+        308
+      ],
+      "summary": "Coroutine that starts a Fusion NetworkRunner game (host or client) for a session, applying the connected session and reporting the result.",
+      "tags": [
+        "coroutine",
+        "networking",
+        "photon-fusion"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/NetworkManager.cs:EnsureCloudLobbyCoroutine",
+      "type": "function",
+      "name": "EnsureCloudLobbyCoroutine",
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "lineRange": [
+        373,
+        415
+      ],
+      "summary": "Coroutine that restores or re-joins the cloud lobby, recovering connection state after a failed start.",
+      "tags": [
+        "coroutine",
+        "networking",
+        "photon-fusion"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/NetworkManager.cs:ServerInitializeFingerAssignments",
+      "type": "function",
+      "name": "ServerInitializeFingerAssignments",
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "lineRange": [
+        577,
+        606
+      ],
+      "summary": "Host-side assignment of finger types to each connected PlayerNetworkObject at round start.",
+      "tags": [
+        "networking",
+        "photon-fusion",
+        "host",
+        "game-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/NetworkManager.cs:ClientSendFingerState",
+      "type": "function",
+      "name": "ClientSendFingerState",
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "lineRange": [
+        609,
+        629
+      ],
+      "summary": "Client-side push of the local player's extended-finger state to the host via the PlayerNetworkObject RPC.",
+      "tags": [
+        "networking",
+        "photon-fusion",
+        "rpc"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/NetworkManager.cs:ServerJudgeAndBroadcastRoundResult",
+      "type": "function",
+      "name": "ServerJudgeAndBroadcastRoundResult",
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "lineRange": [
+        657,
+        666
+      ],
+      "summary": "Host-side aggregation of the server finger mask into a round result that is broadcast to all clients.",
+      "tags": [
+        "networking",
+        "photon-fusion",
+        "host",
+        "game-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/NetworkManager.cs:HandleInGameRpsData",
+      "type": "function",
+      "name": "HandleInGameRpsData",
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "lineRange": [
+        774,
+        815
+      ],
+      "summary": "Parses an incoming reliable-data in-game RPS payload and dispatches the decoded round/hand result to the game layer.",
+      "tags": [
+        "networking",
+        "photon-fusion",
+        "serialization"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/NetworkManager.cs:StartGame",
+      "type": "function",
+      "name": "StartGame",
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "lineRange": [
+        182,
+        203
+      ],
+      "summary": "Loads the target in-game scene through Fusion and reports completion, formatting any start error.",
+      "tags": [
+        "networking",
+        "photon-fusion",
+        "game-flow"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/NetworkManager.cs:NetworkManager",
+      "type": "class",
+      "name": "NetworkManager",
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "lineRange": [
+        21,
+        818
+      ],
+      "summary": "Central Fusion networking manager owning the NetworkRunner and session lifecycle, implementing INetworkRunnerCallbacks and synchronizing finger assignments and round results.",
+      "tags": [
+        "manager",
+        "networking",
+        "photon-fusion"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "type": "file",
+      "name": "PlayerManager.cs",
+      "filePath": "Assets/02. Scripts/Management/PlayerManager.cs",
+      "summary": "CommonManagerBase manager that resolves, spawns, and despawns PlayerNetworkObjects, builds lobby player snapshots, and exposes local-player accessors for the game and UI layers.",
+      "tags": [
+        "manager",
+        "networking",
+        "player",
+        "photon-fusion"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/PlayerManager.cs:ServerEnsurePlayerObjectsCoroutine",
+      "type": "function",
+      "name": "ServerEnsurePlayerObjectsCoroutine",
+      "filePath": "Assets/02. Scripts/Management/PlayerManager.cs",
+      "lineRange": [
+        99,
+        129
+      ],
+      "summary": "Host-side coroutine ensuring every active session player has a spawned PlayerNetworkObject before a round starts.",
+      "tags": [
+        "coroutine",
+        "networking",
+        "host",
+        "player"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/PlayerManager.cs:BuildLobbyPlayers",
+      "type": "function",
+      "name": "BuildLobbyPlayers",
+      "filePath": "Assets/02. Scripts/Management/PlayerManager.cs",
+      "lineRange": [
+        231,
+        267
+      ],
+      "summary": "Builds the list of LobbyPlayer snapshots from active PlayerNetworkObjects for the lobby UI, including host and ready flags.",
+      "tags": [
+        "lobby",
+        "player",
+        "data-model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/PlayerManager.cs:SpawnAsyncCoroutine",
+      "type": "function",
+      "name": "SpawnAsyncCoroutine",
+      "filePath": "Assets/02. Scripts/Management/PlayerManager.cs",
+      "lineRange": [
+        131,
+        167
+      ],
+      "summary": "Coroutine that spawns a player's networked prefab and wires up the local PlayerNetworkObject reference when applicable.",
+      "tags": [
+        "coroutine",
+        "networking",
+        "player",
+        "spawn"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/PlayerManager.cs:TryGetHost",
+      "type": "function",
+      "name": "TryGetHost",
+      "filePath": "Assets/02. Scripts/Management/PlayerManager.cs",
+      "lineRange": [
+        207,
+        228
+      ],
+      "summary": "Resolves the host's PlayerNetworkObject from the active runner, returning false when unavailable.",
+      "tags": [
+        "networking",
+        "player",
+        "lookup"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/PlayerManager.cs:PlayerManager",
+      "type": "class",
+      "name": "PlayerManager",
+      "filePath": "Assets/02. Scripts/Management/PlayerManager.cs",
+      "lineRange": [
+        12,
+        322
+      ],
+      "summary": "Player manager owning lookup, spawn/despawn, and lobby-snapshot building for PlayerNetworkObjects, bridging Fusion networked state to game and UI.",
+      "tags": [
+        "manager",
+        "networking",
+        "player"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/SceneManagerBase.cs",
+      "type": "file",
+      "name": "SceneManagerBase.cs",
+      "filePath": "Assets/02. Scripts/Management/SceneManagerBase.cs",
+      "summary": "Abstract base for per-scene managers extending CommonManagerBase, logging scene context on Awake and providing MoveToNextScene scene transitions via App.LoadScene.",
+      "tags": [
+        "base-class",
+        "manager",
+        "scene-manager"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/SceneManagerBase.cs:SceneManagerBase",
+      "type": "class",
+      "name": "SceneManagerBase",
+      "filePath": "Assets/02. Scripts/Management/SceneManagerBase.cs",
+      "lineRange": [
+        4,
+        16
+      ],
+      "summary": "Abstract scene-manager base offering MoveToNextScene and scene-context logging, extending CommonManagerBase.",
+      "tags": [
+        "base-class",
+        "manager",
+        "scene-manager"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Effect/HPBarController.cs",
+      "type": "file",
+      "name": "HPBarController.cs",
+      "filePath": "Assets/02. Scripts/Effect/HPBarController.cs",
+      "summary": "MonoBehaviour that animates a UI HP bar by driving a delayed-drain shader fill effect on an instanced material via SetFloat.",
+      "tags": [
+        "component",
+        "ui",
+        "effect",
+        "shader"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Effect/HPBarController.cs:SetHP",
+      "type": "function",
+      "name": "SetHP",
+      "filePath": "Assets/02. Scripts/Effect/HPBarController.cs",
+      "lineRange": [
+        48,
+        68
+      ],
+      "summary": "Sets the target fill ratio (current/max), clamps it, and starts the delayed drain animation toward the new value.",
+      "tags": [
+        "effect",
+        "ui",
+        "state-update"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Effect/HPBarController.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "filePath": "Assets/02. Scripts/Effect/HPBarController.cs",
+      "lineRange": [
+        28,
+        44
+      ],
+      "summary": "Per-frame tick that advances the delayed-fill toward the current fill after a delay, writing the shader's delayed-fill property.",
+      "tags": [
+        "effect",
+        "update-loop",
+        "animation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Effect/HPBarController.cs:HPBarController",
+      "type": "class",
+      "name": "HPBarController",
+      "filePath": "Assets/02. Scripts/Effect/HPBarController.cs",
+      "lineRange": [
+        4,
+        69
+      ],
+      "summary": "UI HP bar controller that animates a two-layer (instant + delayed) fill using an instanced material and shader float properties.",
+      "tags": [
+        "component",
+        "ui",
+        "effect"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs",
+      "type": "file",
+      "name": "LobbyCodeUtility.cs",
+      "filePath": "Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs",
+      "summary": "Static utility for generating, validating, and normalizing alphanumeric lobby session codes used by the Photon Fusion networking layer.",
+      "tags": [
+        "utility",
+        "validation",
+        "lobby"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs:LobbyCodeUtility",
+      "type": "class",
+      "name": "LobbyCodeUtility",
+      "filePath": "Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs",
+      "lineRange": [
+        5,
+        50
+      ],
+      "summary": "Static helper providing GenerateCode, IsValidCode, and NormalizeCode for session join codes built from a restricted character set.",
+      "tags": [
+        "utility",
+        "validation",
+        "static"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/FusionLobby/LobbyPlayer.cs",
+      "type": "file",
+      "name": "LobbyPlayer.cs",
+      "filePath": "Assets/02. Scripts/FusionLobby/LobbyPlayer.cs",
+      "summary": "Immutable data model snapshot of a lobby participant (id, display name, host/ready/local flags) used to render lobby UI.",
+      "tags": [
+        "data-model",
+        "lobby",
+        "dto"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/FusionLobby/LobbyRequestResult.cs",
+      "type": "file",
+      "name": "LobbyRequestResult.cs",
+      "filePath": "Assets/02. Scripts/FusionLobby/LobbyRequestResult.cs",
+      "summary": "Result wrapper for lobby operations with static Success and Fail factory helpers carrying an optional error message.",
+      "tags": [
+        "data-model",
+        "result",
+        "lobby"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/FusionLobby/LobbySession.cs",
+      "type": "file",
+      "name": "LobbySession.cs",
+      "filePath": "Assets/02. Scripts/FusionLobby/LobbySession.cs",
+      "summary": "Mutable session-state container tracking session code, state, players, host flag, and derived readiness/fullness for the Fusion lobby.",
+      "tags": [
+        "data-model",
+        "lobby",
+        "state"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/FusionLobby/LobbySession.cs:LobbySession",
+      "type": "class",
+      "name": "LobbySession",
+      "filePath": "Assets/02. Scripts/FusionLobby/LobbySession.cs",
+      "lineRange": [
+        5,
+        78
+      ],
+      "summary": "Holds lobby session state and player list with Reset/ApplyConnected/SetState/ReplacePlayers mutators and derived IsFull/AllClientsReady properties.",
+      "tags": [
+        "data-model",
+        "lobby",
+        "state"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "type": "file",
+      "name": "PlayerNetworkObject.cs",
+      "filePath": "Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "summary": "Photon Fusion NetworkBehaviour holding [Networked] per-player state (display name, ready, assigned finger, cursor, starforce result) and exposing RPCs; uses a ChangeDetector in Render to fire LobbyDataChanged/InGameDataChanged events.",
+      "tags": [
+        "networking",
+        "data-model",
+        "photon-fusion",
+        "rpc"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Fusion NetworkBehaviour: [Networked] properties synced across clients, [Rpc] methods (RPC_*), and GetChangeDetector/DetectChanges in Render to diff networked state."
+    },
+    {
+      "id": "function:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs:Render",
+      "type": "function",
+      "name": "Render",
+      "filePath": "Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "lineRange": [
+        58,
+        121
+      ],
+      "summary": "Per-render change detection over [Networked] properties that raises LobbyDataChanged and InGameDataChanged events when synced player state changes.",
+      "tags": [
+        "networking",
+        "photon-fusion",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs:Spawned",
+      "type": "function",
+      "name": "Spawned",
+      "filePath": "Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "lineRange": [
+        40,
+        56
+      ],
+      "summary": "Fusion spawn callback that initializes the change detector, pushes the local display name via RPC, and fires initial data-changed events.",
+      "tags": [
+        "networking",
+        "photon-fusion",
+        "lifecycle"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs:PlayerNetworkObject",
+      "type": "class",
+      "name": "PlayerNetworkObject",
+      "filePath": "Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "lineRange": [
+        14,
+        153
+      ],
+      "summary": "Networked player object carrying lobby and in-game state with RPCs for display name, ready, finger extension, and starforce result.",
+      "tags": [
+        "networking",
+        "photon-fusion",
+        "data-model",
+        "rpc"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/FusionLobby/PlayerProfile.cs",
+      "type": "file",
+      "name": "PlayerProfile.cs",
+      "filePath": "Assets/02. Scripts/FusionLobby/PlayerProfile.cs",
+      "summary": "Static helper persisting the local player's display name and a generated user id to PlayerPrefs, with display-name normalization.",
+      "tags": [
+        "utility",
+        "persistence",
+        "player"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/FusionLobby/PlayerProfile.cs:PlayerProfile",
+      "type": "class",
+      "name": "PlayerProfile",
+      "filePath": "Assets/02. Scripts/FusionLobby/PlayerProfile.cs",
+      "lineRange": [
+        6,
+        50
+      ],
+      "summary": "Manages persistent local player profile (display name, user id) via PlayerPrefs with Load, SaveDisplayName, and GetOrCreateUserId.",
+      "tags": [
+        "utility",
+        "persistence",
+        "static"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "type": "file",
+      "name": "EnemyHand.cs",
+      "filePath": "Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "summary": "Hand subclass for the AI/enemy hand that randomly cycles RPS positions during a round via coroutine, caches HandSpriteData, and reports its position to InGameManager.",
+      "tags": [
+        "component",
+        "game-logic",
+        "hand",
+        "coroutine"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Game/Hand/EnemyHand.cs:RandomCycleCoroutine",
+      "type": "function",
+      "name": "RandomCycleCoroutine",
+      "filePath": "Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "lineRange": [
+        85,
+        101
+      ],
+      "summary": "Coroutine that randomizes the enemy hand position at intervals until a lock window before round end, syncing position to InGameManager.",
+      "tags": [
+        "coroutine",
+        "game-logic",
+        "hand"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Game/Hand/EnemyHand.cs:ApplyHandSpriteData",
+      "type": "function",
+      "name": "ApplyHandSpriteData",
+      "filePath": "Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "lineRange": [
+        130,
+        149
+      ],
+      "summary": "Looks up cached HandSpriteData by hand type and applies the hand sprite plus per-finger open/closed sprite data.",
+      "tags": [
+        "game-logic",
+        "hand",
+        "sprite"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Game/Hand/EnemyHand.cs:CacheHandSpriteData",
+      "type": "function",
+      "name": "CacheHandSpriteData",
+      "filePath": "Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "lineRange": [
+        115,
+        128
+      ],
+      "summary": "Builds a lookup table of HandSpriteData assets keyed by hand id for fast sprite application.",
+      "tags": [
+        "game-logic",
+        "hand",
+        "caching"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Game/Hand/EnemyHand.cs:EnemyHand",
+      "type": "class",
+      "name": "EnemyHand",
+      "filePath": "Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "lineRange": [
+        6,
+        150
+      ],
+      "summary": "Enemy hand that randomly cycles positions during a round and applies HandSpriteData visuals, extending the abstract Hand base class.",
+      "tags": [
+        "component",
+        "game-logic",
+        "hand"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Game/Hand/Finger.cs",
+      "type": "file",
+      "name": "Finger.cs",
+      "filePath": "Assets/02. Scripts/Game/Hand/Finger.cs",
+      "summary": "MonoBehaviour representing a single finger on a hand, toggling its open/closed sprite from FingerSpriteData via a SpriteRenderer.",
+      "tags": [
+        "component",
+        "game-logic",
+        "hand",
+        "sprite"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Game/Hand/Finger.cs:Finger",
+      "type": "class",
+      "name": "Finger",
+      "filePath": "Assets/02. Scripts/Game/Hand/Finger.cs",
+      "lineRange": [
+        4,
+        40
+      ],
+      "summary": "Single finger component holding finger type and open state, swapping its sprite based on FingerSpriteData.",
+      "tags": [
+        "component",
+        "game-logic",
+        "hand"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Game/Hand/Hand.cs",
+      "type": "file",
+      "name": "Hand.cs",
+      "filePath": "Assets/02. Scripts/Game/Hand/Hand.cs",
+      "summary": "Abstract base MonoBehaviour for a hand that caches its child Finger components into a lookup table and exposes finger open/close and hand-position helpers.",
+      "tags": [
+        "component",
+        "game-logic",
+        "hand",
+        "base-class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Game/Hand/Hand.cs:CacheFingers",
+      "type": "function",
+      "name": "CacheFingers",
+      "filePath": "Assets/02. Scripts/Game/Hand/Hand.cs",
+      "lineRange": [
+        22,
+        45
+      ],
+      "summary": "Collects child Finger components, validates the expected count, builds the finger lookup table, and initializes each finger.",
+      "tags": [
+        "game-logic",
+        "hand",
+        "caching"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Game/Hand/Hand.cs:Hand",
+      "type": "class",
+      "name": "Hand",
+      "filePath": "Assets/02. Scripts/Game/Hand/Hand.cs",
+      "lineRange": [
+        5,
+        80
+      ],
+      "summary": "Abstract hand base providing finger caching, lookup, sprite assignment, position application, and CloseAll for player and enemy hands.",
+      "tags": [
+        "component",
+        "game-logic",
+        "base-class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Game/Hand/HandSpriteData.cs",
+      "type": "file",
+      "name": "HandSpriteData.cs",
+      "filePath": "Assets/02. Scripts/Game/Hand/HandSpriteData.cs",
+      "summary": "ScriptableObject asset holding a hand id, hand sprite, and per-finger open/closed sprites with a GetFingerSprite lookup.",
+      "tags": [
+        "data-model",
+        "scriptable-object",
+        "sprite"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Game/Hand/HandSpriteData.cs:HandSpriteData",
+      "type": "class",
+      "name": "HandSpriteData",
+      "filePath": "Assets/02. Scripts/Game/Hand/HandSpriteData.cs",
+      "lineRange": [
+        4,
+        47
+      ],
+      "summary": "ScriptableObject defining a hand's sprite set and resolving finger sprites by finger type and open state.",
+      "tags": [
+        "data-model",
+        "scriptable-object",
+        "sprite"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Game/Hand/PlayerHand.cs",
+      "type": "file",
+      "name": "PlayerHand.cs",
+      "filePath": "Assets/02. Scripts/Game/Hand/PlayerHand.cs",
+      "summary": "Hand subclass for the local player that tracks an active finger and applies finger open/closed state and masks driven by player input events.",
+      "tags": [
+        "component",
+        "game-logic",
+        "hand"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Game/Hand/PlayerHand.cs:PlayerHand",
+      "type": "class",
+      "name": "PlayerHand",
+      "filePath": "Assets/02. Scripts/Game/Hand/PlayerHand.cs",
+      "lineRange": [
+        4,
+        43
+      ],
+      "summary": "Player-controlled hand extending Hand, assigning an active finger and applying open state and finger masks.",
+      "tags": [
+        "component",
+        "game-logic",
+        "hand"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Game/ModeData.cs",
+      "type": "file",
+      "name": "ModeData.cs",
+      "filePath": "Assets/02. Scripts/Game/ModeData.cs",
+      "summary": "Tiny data holder exposing the IsSingleControl flag that selects between single- and multi-control game input modes.",
+      "tags": [
+        "data-model",
+        "config",
+        "game-mode"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "type": "file",
+      "name": "SoundManager.cs",
+      "filePath": "Assets/02. Scripts/Management/SoundManager.cs",
+      "summary": "Audio system manager handling BGM crossfading, looping SFX, and a pooled one-shot SFX source set, loading and caching clips through the asset manager.",
+      "tags": [
+        "service",
+        "singleton",
+        "audio",
+        "object-pool",
+        "manager"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Uses Unity coroutines for BGM fade tweening and an AudioSource pool to avoid per-SFX allocations."
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/SoundManager.cs:SoundManager",
+      "type": "class",
+      "name": "SoundManager",
+      "filePath": "Assets/02. Scripts/Management/SoundManager.cs",
+      "lineRange": [
+        7,
+        287
+      ],
+      "summary": "CommonManagerBase singleton that plays/stops BGM with volume fades and dispatches pooled SFX, caching loaded AudioClips for reuse.",
+      "tags": [
+        "service",
+        "singleton",
+        "audio",
+        "manager"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/SoundManager.cs:PlayBGM",
+      "type": "function",
+      "name": "PlayBGM",
+      "filePath": "Assets/02. Scripts/Management/SoundManager.cs",
+      "lineRange": [
+        164,
+        199
+      ],
+      "summary": "Loads/caches a clip then crossfades the background music source from the current track to the requested one.",
+      "tags": [
+        "audio",
+        "coroutine",
+        "fade"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/SoundManager.cs:FadeBgmVolume",
+      "type": "function",
+      "name": "FadeBgmVolume",
+      "filePath": "Assets/02. Scripts/Management/SoundManager.cs",
+      "lineRange": [
+        265,
+        286
+      ],
+      "summary": "Coroutine that lerps the BGM source volume from one value to another over a duration, invoking a completion callback.",
+      "tags": [
+        "audio",
+        "coroutine",
+        "fade"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/SoundManager.cs:PlaySFX",
+      "type": "function",
+      "name": "PlaySFX",
+      "filePath": "Assets/02. Scripts/Management/SoundManager.cs",
+      "lineRange": [
+        242,
+        250
+      ],
+      "summary": "Loads the clip and plays it one-shot through a free pooled SFX AudioSource.",
+      "tags": [
+        "audio",
+        "object-pool"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/SoundManager.cs:GetFreeSFXSource",
+      "type": "function",
+      "name": "GetFreeSFXSource",
+      "filePath": "Assets/02. Scripts/Management/SoundManager.cs",
+      "lineRange": [
+        227,
+        240
+      ],
+      "summary": "Returns an idle AudioSource from the pool, growing the pool when all are busy.",
+      "tags": [
+        "audio",
+        "object-pool"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/SoundManager.cs:LoadAndCacheClip",
+      "type": "function",
+      "name": "LoadAndCacheClip",
+      "filePath": "Assets/02. Scripts/Management/SoundManager.cs",
+      "lineRange": [
+        150,
+        162
+      ],
+      "summary": "Returns a cached AudioClip or fetches it via the asset manager and stores it before invoking the callback.",
+      "tags": [
+        "audio",
+        "caching",
+        "asset-loading"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/SoundManager.cs:PlayLoopingSfx",
+      "type": "function",
+      "name": "PlayLoopingSfx",
+      "filePath": "Assets/02. Scripts/Management/SoundManager.cs",
+      "lineRange": [
+        94,
+        111
+      ],
+      "summary": "Loads a clip and plays it on the dedicated looping SFX source, replacing any current loop.",
+      "tags": [
+        "audio",
+        "loop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/TitleManager.cs",
+      "type": "file",
+      "name": "TitleManager.cs",
+      "filePath": "Assets/02. Scripts/Management/TitleManager.cs",
+      "summary": "Title-scene controller that validates the player nickname, connects to the photon cloud, and transitions to the lobby scene on success.",
+      "tags": [
+        "manager",
+        "scene-controller",
+        "networking",
+        "entry-point"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/TitleManager.cs:TitleManager",
+      "type": "class",
+      "name": "TitleManager",
+      "filePath": "Assets/02. Scripts/Management/TitleManager.cs",
+      "lineRange": [
+        5,
+        54
+      ],
+      "summary": "SceneManagerBase that drives the title screen: normalizes/saves the display name, initializes the network manager, and moves to the lobby scene.",
+      "tags": [
+        "manager",
+        "scene-controller",
+        "networking"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/TitleUIManager.cs",
+      "type": "file",
+      "name": "TitleUIManager.cs",
+      "filePath": "Assets/02. Scripts/Management/TitleUIManager.cs",
+      "summary": "Empty UIManagerBase subclass that registers and manages the title scene's panels.",
+      "tags": [
+        "manager",
+        "ui-manager",
+        "scene-ui"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/TitleUIManager.cs:TitleUIManager",
+      "type": "class",
+      "name": "TitleUIManager",
+      "filePath": "Assets/02. Scripts/Management/TitleUIManager.cs",
+      "lineRange": [
+        3,
+        5
+      ],
+      "summary": "Title-scene UI manager deriving all panel registration and stack behavior from UIManagerBase.",
+      "tags": [
+        "manager",
+        "ui-manager"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/UIManagerBase.cs",
+      "type": "file",
+      "name": "UIManagerBase.cs",
+      "filePath": "Assets/02. Scripts/Management/UIManagerBase.cs",
+      "summary": "Base UI manager that registers panels by type, maintains a panel dictionary and an ESC-closeable UI stack, and exposes open/close/get helpers.",
+      "tags": [
+        "manager",
+        "ui-manager",
+        "registry",
+        "base-class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/UIManagerBase.cs:UIManagerBase",
+      "type": "class",
+      "name": "UIManagerBase",
+      "filePath": "Assets/02. Scripts/Management/UIManagerBase.cs",
+      "lineRange": [
+        7,
+        110
+      ],
+      "summary": "Generic-typed UI manager base maintaining a panel registry and stack, with OpenPanel/ClosePanel/GetPanel helpers parameterized by PanelBase subtype.",
+      "tags": [
+        "manager",
+        "ui-manager",
+        "registry",
+        "base-class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/UIManagerBase.cs:RegisterPanel",
+      "type": "function",
+      "name": "RegisterPanel",
+      "filePath": "Assets/02. Scripts/Management/UIManagerBase.cs",
+      "lineRange": [
+        33,
+        47
+      ],
+      "summary": "Adds a panel to the type-keyed dictionary, logging an error on duplicate registration.",
+      "tags": [
+        "registry",
+        "ui-manager"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/UIManagerBase.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "filePath": "Assets/02. Scripts/Management/UIManagerBase.cs",
+      "lineRange": [
+        20,
+        31
+      ],
+      "summary": "Closes the top stacked panel when ESC is pressed and the panel allows ESC-close.",
+      "tags": [
+        "input",
+        "ui-stack"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "type": "file",
+      "name": "ForbidHandShapePanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "summary": "In-game panel showing rock/paper/scissors cooldown indicators with DOTween animations for dim, flash, and completion punch effects.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "in-game",
+        "animation"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Per-hand cooldowns are tracked in parallel float fields and animated with DOTween sequences."
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs:ForbidHandShapePanel",
+      "type": "class",
+      "name": "ForbidHandShapePanel",
+      "filePath": "Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "lineRange": [
+        7,
+        136
+      ],
+      "summary": "PanelBase showing forbidden-hand-shape cooldowns per RPS hand, ticking timers each frame and animating slot states.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "animation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs:SetCooldown",
+      "type": "function",
+      "name": "SetCooldown",
+      "filePath": "Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "lineRange": [
+        63,
+        80
+      ],
+      "summary": "Starts a cooldown for a given hand by setting its remaining/total time and activating the matching slot.",
+      "tags": [
+        "cooldown",
+        "ui-panel"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs:CompleteSlot",
+      "type": "function",
+      "name": "CompleteSlot",
+      "filePath": "Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "lineRange": [
+        122,
+        135
+      ],
+      "summary": "Plays the cooldown-finished flash, fade, and punch-scale DOTween effects on a slot.",
+      "tags": [
+        "animation",
+        "ui-panel"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "type": "file",
+      "name": "HUDPanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "summary": "Heads-up display panel rendering player and enemy HP bars with animated drain, ghost-follow fills, and hit-shake feedback, driven by game events.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "in-game",
+        "hud",
+        "animation"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Combines DOTween fill tweens with manual ghost-bar coroutines to animate delayed HP drain."
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/HUDPanel.cs:HUDPanel",
+      "type": "class",
+      "name": "HUDPanel",
+      "filePath": "Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "lineRange": [
+        7,
+        216
+      ],
+      "summary": "PanelBase HUD subscribing to lives/HP/stage events and animating player and enemy health bars with drain, fill-in, and shake effects.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "hud",
+        "animation",
+        "event-handler"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/HUDPanel.cs:PlayFillIn",
+      "type": "function",
+      "name": "PlayFillIn",
+      "filePath": "Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "lineRange": [
+        73,
+        106
+      ],
+      "summary": "Resets and animates both HP bars filling from empty to full with eased ghost-follow tweens on stage open.",
+      "tags": [
+        "animation",
+        "hud"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/HUDPanel.cs:PlayEnemyDrain",
+      "type": "function",
+      "name": "PlayEnemyDrain",
+      "filePath": "Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "lineRange": [
+        120,
+        147
+      ],
+      "summary": "Animates the enemy HP bar draining to a target value with color flash, punch scale, and a ghost-follow coroutine.",
+      "tags": [
+        "animation",
+        "hud",
+        "coroutine"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/HUDPanel.cs:PlayDrain",
+      "type": "function",
+      "name": "PlayDrain",
+      "filePath": "Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "lineRange": [
+        166,
+        187
+      ],
+      "summary": "Animates the player HP bar draining with color flash, punch scale, hit shake, and a ghost-follow coroutine.",
+      "tags": [
+        "animation",
+        "hud",
+        "coroutine"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "type": "file",
+      "name": "IndicatePanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "summary": "Tooltip-style panel that shows a typed IndicateSlot following the mouse, used to display contextual name/description hints.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "in-game",
+        "tooltip"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/IndicatePanel.cs:IndicatePanel",
+      "type": "class",
+      "name": "IndicatePanel",
+      "filePath": "Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "lineRange": [
+        5,
+        70
+      ],
+      "summary": "PanelBase that maps IndicateType to IndicateSlot widgets and shows/hides the active slot at the cursor position.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "tooltip"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "type": "file",
+      "name": "StarforceModalContent.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "summary": "Networked starforce-style timing mini-game shown inside a modal, where each player stops a moving star in a success zone synchronized via the network manager.",
+      "tags": [
+        "component",
+        "modal-content",
+        "minigame",
+        "networking",
+        "in-game"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Synchronizes a host-assigned challenge and per-player results over the network, computing star positions from a shared simulation time."
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:StarforceModalContent",
+      "type": "class",
+      "name": "StarforceModalContent",
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "lineRange": [
+        17,
+        297
+      ],
+      "summary": "ModalContent driving a synchronized starforce timing mini-game: builds participants, assigns the challenge on the host, animates stars, and submits results via RPC.",
+      "tags": [
+        "modal-content",
+        "minigame",
+        "networking",
+        "event-handler"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "lineRange": [
+        75,
+        104
+      ],
+      "summary": "Each frame computes the shared ping-pong star ratio from simulation time, positions all stars, and handles local input.",
+      "tags": [
+        "minigame",
+        "networking",
+        "frame-loop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:BuildParticipants",
+      "type": "function",
+      "name": "BuildParticipants",
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "lineRange": [
+        109,
+        132
+      ],
+      "summary": "Builds the sorted, capped list of participating player refs from the network's active players.",
+      "tags": [
+        "minigame",
+        "networking"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:ServerAssignChallenge",
+      "type": "function",
+      "name": "ServerAssignChallenge",
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "lineRange": [
+        153,
+        170
+      ],
+      "summary": "On the host, shuffles colors and assigns a randomized cycle duration challenge to each participant over the network.",
+      "tags": [
+        "minigame",
+        "networking",
+        "host-authority"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:SubmitLocalResult",
+      "type": "function",
+      "name": "SubmitLocalResult",
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "lineRange": [
+        203,
+        221
+      ],
+      "summary": "Stops the local star, marks completion, and broadcasts the local result via RPC, requesting close if everyone finished.",
+      "tags": [
+        "minigame",
+        "networking",
+        "rpc"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:HandleNetworkDataChanged",
+      "type": "function",
+      "name": "HandleNetworkDataChanged",
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "lineRange": [
+        223,
+        237
+      ],
+      "summary": "Reacts to networked state changes by caching timing and stopping remote stars whose results arrived.",
+      "tags": [
+        "minigame",
+        "networking",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs",
+      "type": "file",
+      "name": "StarforceStar.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs",
+      "summary": "Visual widget for a single starforce mini-game star, exposing reset, move, and stop operations on its image and rect transform.",
+      "tags": [
+        "component",
+        "widget",
+        "minigame"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs:StarforceStar",
+      "type": "class",
+      "name": "StarforceStar",
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs",
+      "lineRange": [
+        9,
+        50
+      ],
+      "summary": "MonoBehaviour star widget with visibility, color reset, horizontal move, and stopped-state handling controlled by the modal content.",
+      "tags": [
+        "component",
+        "widget",
+        "minigame"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/ModalContent.cs",
+      "type": "file",
+      "name": "ModalContent.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/ModalContent.cs",
+      "summary": "Abstract base for individual modal contents, defining Activate/Deactivate hooks and an OnRequestClose event for self-driven closing.",
+      "tags": [
+        "base-class",
+        "modal-content",
+        "type-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/ModalContent.cs:ModalContent",
+      "type": "class",
+      "name": "ModalContent",
+      "filePath": "Assets/02. Scripts/UI/Game/ModalContent.cs",
+      "lineRange": [
+        9,
+        17
+      ],
+      "summary": "Abstract MonoBehaviour base requiring Activate/Deactivate and raising OnRequestClose so the hosting ModalPanel can close it.",
+      "tags": [
+        "base-class",
+        "modal-content"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "type": "file",
+      "name": "ModalPanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "summary": "Panel that hosts registered ModalContent instances, showing one by type, blocking input while active, and closing on content request.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "modal",
+        "in-game"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/ModalPanel.cs:ModalPanel",
+      "type": "class",
+      "name": "ModalPanel",
+      "filePath": "Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "lineRange": [
+        5,
+        92
+      ],
+      "summary": "PanelBase managing a set of ModalContent children, activating one by generic type and toggling modal input blocking.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "modal"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/ModalPanel.cs:Show",
+      "type": "function",
+      "name": "Show",
+      "filePath": "Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "lineRange": [
+        44,
+        58
+      ],
+      "summary": "Hides any active content, activates the requested one, blocks input, and opens the panel.",
+      "tags": [
+        "modal",
+        "ui-panel"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "type": "file",
+      "name": "NextIconPanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "summary": "Panel showing the upcoming hand-position icons from a generated queue, recycling and sliding NextIconSlot widgets between positions on wave events.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "in-game",
+        "queue",
+        "animation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/NextIconPanel.cs:NextIconPanel",
+      "type": "class",
+      "name": "NextIconPanel",
+      "filePath": "Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "lineRange": [
+        6,
+        159
+      ],
+      "summary": "PanelBase managing a queue of upcoming hand positions and animating NextIconSlot widgets left/center/right on ready and wave events.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "queue",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/NextIconPanel.cs:GenerateQueue",
+      "type": "function",
+      "name": "GenerateQueue",
+      "filePath": "Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "lineRange": [
+        62,
+        89
+      ],
+      "summary": "Builds the randomized queue of upcoming hand positions for the icon preview.",
+      "tags": [
+        "queue",
+        "random"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/NextIconPanel.cs:HandleWaveStarted",
+      "type": "function",
+      "name": "HandleWaveStarted",
+      "filePath": "Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "lineRange": [
+        111,
+        121
+      ],
+      "summary": "Animates the current slot out left and the next slot into center when a wave starts, then recycles slots.",
+      "tags": [
+        "animation",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "type": "file",
+      "name": "OutcomePanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "summary": "Panel that displays the round outcome (win/lose/draw) with distinct DOTween animation sequences, hiding itself at the next round start.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "in-game",
+        "animation",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/OutcomePanel.cs:OutcomePanel",
+      "type": "class",
+      "name": "OutcomePanel",
+      "filePath": "Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "lineRange": [
+        6,
+        126
+      ],
+      "summary": "PanelBase showing the round result sprite with win/lose/draw DOTween sequences, subscribing to outcome and round-start events.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "animation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/OutcomePanel.cs:PlayAnimation",
+      "type": "function",
+      "name": "PlayAnimation",
+      "filePath": "Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "lineRange": [
+        71,
+        83
+      ],
+      "summary": "Resets the image and dispatches to the win, lose, or draw animation based on the outcome.",
+      "tags": [
+        "animation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/OutcomePanel.cs:PlayLoseAnimation",
+      "type": "function",
+      "name": "PlayLoseAnimation",
+      "filePath": "Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "lineRange": [
+        98,
+        113
+      ],
+      "summary": "Plays the multi-step lose feedback DOTween sequence with fade, anchored drop, and punch scale.",
+      "tags": [
+        "animation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "type": "file",
+      "name": "StagePanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "summary": "Panel showing the stage map with selectable StageSlot widgets, host name, boss HP, and a cursor reflecting the host player's pointer.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "in-game",
+        "networking"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/StagePanel.cs:StagePanel",
+      "type": "class",
+      "name": "StagePanel",
+      "filePath": "Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "lineRange": [
+        7,
+        110
+      ],
+      "summary": "PanelBase rendering stage slots, host HP and name, and mirroring the host's cursor position from networked player state.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "networking"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/StagePanel.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "filePath": "Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "lineRange": [
+        58,
+        80
+      ],
+      "summary": "Reads the local mouse position and updates the host cursor rect from networked host pointer state each frame.",
+      "tags": [
+        "input",
+        "networking",
+        "frame-loop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/StagePanel.cs:CacheStageSlots",
+      "type": "function",
+      "name": "CacheStageSlots",
+      "filePath": "Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "lineRange": [
+        101,
+        109
+      ],
+      "summary": "Finds child StageSlot widgets and initializes each with its stage index.",
+      "tags": [
+        "ui-panel",
+        "initialization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/TimerPanel.cs",
+      "type": "file",
+      "name": "TimerPanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/TimerPanel.cs",
+      "summary": "Panel displaying the round countdown timer and current stage label, updating via subscribed timer and stage events.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "in-game",
+        "event-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/TimerPanel.cs:TimerPanel",
+      "type": "class",
+      "name": "TimerPanel",
+      "filePath": "Assets/02. Scripts/UI/Game/TimerPanel.cs",
+      "lineRange": [
+        6,
+        59
+      ],
+      "summary": "PanelBase formatting the remaining time and stage number into TextMeshPro fields using a reusable StringBuilder.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "event-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs",
+      "type": "file",
+      "name": "IndicateSlot.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs",
+      "summary": "Reusable slot widget for the IndicatePanel that shows a name/description tooltip and positions itself by anchored coordinates.",
+      "tags": [
+        "component",
+        "widget",
+        "tooltip",
+        "in-game"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs:IndicateSlot",
+      "type": "class",
+      "name": "IndicateSlot",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs",
+      "lineRange": [
+        4,
+        51
+      ],
+      "summary": "MonoBehaviour tooltip slot exposing its IndicateType and show/hide/position helpers for the IndicatePanel.",
+      "tags": [
+        "component",
+        "widget",
+        "tooltip"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs",
+      "type": "file",
+      "name": "NextIconSlot.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs",
+      "summary": "Reusable icon slot widget for NextIconPanel exposing its rect transform and current hand position with a sprite setter.",
+      "tags": [
+        "component",
+        "widget",
+        "in-game"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs:NextIconSlot",
+      "type": "class",
+      "name": "NextIconSlot",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs",
+      "lineRange": [
+        5,
+        28
+      ],
+      "summary": "MonoBehaviour slot caching its rect/image and exposing SetSlot to apply a hand-position sprite.",
+      "tags": [
+        "component",
+        "widget"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+      "type": "file",
+      "name": "StageSlot.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+      "summary": "Clickable stage selection slot that broadcasts the chosen stage to the network when its button is pressed.",
+      "tags": [
+        "component",
+        "widget",
+        "in-game",
+        "networking"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs:StageSlot",
+      "type": "class",
+      "name": "StageSlot",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+      "lineRange": [
+        5,
+        42
+      ],
+      "summary": "SlotHoverScale-derived stage button that initializes its label and broadcasts its stage index to the network on click.",
+      "tags": [
+        "component",
+        "widget",
+        "networking"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs",
+      "type": "file",
+      "name": "Tooltip.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs",
+      "summary": "Pointer event handler that drives the IndicatePanel to show, follow, and hide a typed tooltip as the cursor enters, moves over, and exits the element.",
+      "tags": [
+        "component",
+        "event-handler",
+        "tooltip",
+        "in-game"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs:Tooltip",
+      "type": "class",
+      "name": "Tooltip",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs",
+      "lineRange": [
+        4,
+        41
+      ],
+      "summary": "MonoBehaviour implementing pointer enter/move/exit to relay tooltip show/position/hide calls to the cached IndicatePanel.",
+      "tags": [
+        "component",
+        "event-handler",
+        "tooltip"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "type": "file",
+      "name": "WaveSlot.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "summary": "Reusable wave indicator slot widget showing a wave ball and a defeated mark with DOTween punch/fade animations.",
+      "tags": [
+        "component",
+        "widget",
+        "in-game",
+        "animation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs:WaveSlot",
+      "type": "class",
+      "name": "WaveSlot",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "lineRange": [
+        5,
+        54
+      ],
+      "summary": "MonoBehaviour wave slot that initializes by wave type and animates defeat marking and clearing with DOTween.",
+      "tags": [
+        "component",
+        "widget",
+        "animation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs:MarkDefeated",
+      "type": "function",
+      "name": "MarkDefeated",
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "lineRange": [
+        27,
+        42
+      ],
+      "summary": "Plays the defeated feedback: punch scale, color dim, and a delete-mark scale/punch DOTween sequence.",
+      "tags": [
+        "animation",
+        "widget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "type": "file",
+      "name": "VersusPanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "summary": "Intro panel that plays a 'Ready / Fight' stamp DOTween sequence when opened, then auto-closes itself.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "in-game",
+        "animation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/VersusPanel.cs:VersusPanel",
+      "type": "class",
+      "name": "VersusPanel",
+      "filePath": "Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "lineRange": [
+        6,
+        71
+      ],
+      "summary": "PanelBase that runs a ready/fight stamp intro DOTween sequence on open and closes itself on completion.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "animation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/VersusPanel.cs:PlayIntroSequence",
+      "type": "function",
+      "name": "PlayIntroSequence",
+      "filePath": "Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "lineRange": [
+        27,
+        54
+      ],
+      "summary": "Builds and runs the ready-then-fight stamp DOTween sequence, closing the panel when done.",
+      "tags": [
+        "animation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/WavePanel.cs",
+      "type": "file",
+      "name": "WavePanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/WavePanel.cs",
+      "summary": "Panel managing the row of WaveSlot indicators, resetting them on stage open and marking the next slot defeated on a winning outcome.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "in-game",
+        "event-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/WavePanel.cs:WavePanel",
+      "type": "class",
+      "name": "WavePanel",
+      "filePath": "Assets/02. Scripts/UI/Game/WavePanel.cs",
+      "lineRange": [
+        4,
+        64
+      ],
+      "summary": "PanelBase that initializes and clears WaveSlot widgets on stage events and marks defeated waves on outcome events.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "event-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "type": "file",
+      "name": "LobbyEntryPanel.cs",
+      "filePath": "Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "summary": "Lobby entry panel with create-room, join-by-code, and quick-join flows that drive the lobby manager, toggling interactability and status text during async requests.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "lobby",
+        "networking"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Each button handler guards a busy flag and reports progress through status text while awaiting lobby manager callbacks."
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/LobbyEntryPanel.cs:LobbyEntryPanel",
+      "type": "class",
+      "name": "LobbyEntryPanel",
+      "filePath": "Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "lineRange": [
+        11,
+        315
+      ],
+      "summary": "PanelBase handling lobby entry actions (create/join/quick-join) by calling the lobby manager and updating UI state.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "lobby",
+        "networking"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/LobbyEntryPanel.cs:OnCreateRoomClicked",
+      "type": "function",
+      "name": "OnCreateRoomClicked",
+      "filePath": "Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "lineRange": [
+        107,
+        157
+      ],
+      "summary": "Initiates room creation through the lobby manager, managing busy state and status feedback.",
+      "tags": [
+        "lobby",
+        "networking",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/LobbyEntryPanel.cs:OnJoinRoomClicked",
+      "type": "function",
+      "name": "OnJoinRoomClicked",
+      "filePath": "Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "lineRange": [
+        161,
+        225
+      ],
+      "summary": "Validates the join code and requests joining a specific room via the lobby manager.",
+      "tags": [
+        "lobby",
+        "networking",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/LobbyEntryPanel.cs:OnQuickJoinClicked",
+      "type": "function",
+      "name": "OnQuickJoinClicked",
+      "filePath": "Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "lineRange": [
+        229,
+        279
+      ],
+      "summary": "Requests a quick random-room join through the lobby manager with busy-state and status handling.",
+      "tags": [
+        "lobby",
+        "networking",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/LobbyEntryPanel.cs:SetInteractable",
+      "type": "function",
+      "name": "SetInteractable",
+      "filePath": "Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "lineRange": [
+        283,
+        303
+      ],
+      "summary": "Enables or disables all entry buttons and inputs while a lobby request is in flight.",
+      "tags": [
+        "lobby",
+        "ui-state"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/LobbyPlayerListItem.cs",
+      "type": "file",
+      "name": "LobbyPlayerListItem.cs",
+      "filePath": "Assets/02. Scripts/UI/LobbyPlayerListItem.cs",
+      "summary": "Row widget for the lobby player list showing a player's name and ready state.",
+      "tags": [
+        "component",
+        "widget",
+        "lobby"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/LobbyPlayerListItem.cs:LobbyPlayerListItem",
+      "type": "class",
+      "name": "LobbyPlayerListItem",
+      "filePath": "Assets/02. Scripts/UI/LobbyPlayerListItem.cs",
+      "lineRange": [
+        5,
+        31
+      ],
+      "summary": "MonoBehaviour list-item widget rendering one lobby player's display name and ready indicator.",
+      "tags": [
+        "component",
+        "widget",
+        "lobby"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+      "type": "file",
+      "name": "LobbyRoomPanel.cs",
+      "filePath": "Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+      "summary": "Lobby room panel listing connected players via LobbyPlayerListItem rows and exposing ready/start/leave actions wired to the lobby manager.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "lobby",
+        "networking"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/LobbyRoomPanel.cs:LobbyRoomPanel",
+      "type": "class",
+      "name": "LobbyRoomPanel",
+      "filePath": "Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+      "lineRange": [
+        8,
+        194
+      ],
+      "summary": "PanelBase rendering the in-room player list and handling ready/start/leave interactions against the lobby manager.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "lobby",
+        "networking"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "file",
+      "name": "PanelBase.cs",
+      "filePath": "Assets/02. Scripts/UI/PanelBase.cs",
+      "summary": "Abstract base class for all UI panels, handling self-registration with the UI manager and open/close lifecycle including UI-stack push/pop. Acts as the foundational UI hub inherited by every concrete panel.",
+      "tags": [
+        "component",
+        "ui",
+        "base-class",
+        "abstract",
+        "lifecycle"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses [DefaultExecutionOrder] attribute and abstract auto-properties to enforce a panel contract on subclasses."
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "class",
+      "name": "PanelBase",
+      "filePath": "Assets/02. Scripts/UI/PanelBase.cs",
+      "lineRange": [
+        5,
+        60
+      ],
+      "summary": "Abstract MonoBehaviour defining the panel contract (IsOpened, CanCloseWithESC, IsStackable, UIType) plus virtual OpenPanel/ClosePanel that coordinate with the global UI manager stack.",
+      "tags": [
+        "component",
+        "ui",
+        "abstract",
+        "base-class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/PanelBase.cs:OpenPanel",
+      "type": "function",
+      "name": "OpenPanel",
+      "filePath": "Assets/02. Scripts/UI/PanelBase.cs",
+      "lineRange": [
+        41,
+        49
+      ],
+      "summary": "Activates the panel GameObject and, when stackable, pushes the panel onto the UI manager's stack.",
+      "tags": [
+        "ui",
+        "lifecycle",
+        "event-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/PanelBase.cs:ClosePanel",
+      "type": "function",
+      "name": "ClosePanel",
+      "filePath": "Assets/02. Scripts/UI/PanelBase.cs",
+      "lineRange": [
+        51,
+        59
+      ],
+      "summary": "Deactivates the panel GameObject and, when stackable, pops the panel off the UI manager's stack.",
+      "tags": [
+        "ui",
+        "lifecycle",
+        "event-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/SlotHoverScale.cs",
+      "type": "file",
+      "name": "SlotHoverScale.cs",
+      "filePath": "Assets/02. Scripts/UI/SlotHoverScale.cs",
+      "summary": "UI behaviour that scales a slot element up on pointer hover and back on exit using DOTween animations, implementing Unity pointer event interfaces.",
+      "tags": [
+        "component",
+        "ui",
+        "animation",
+        "event-handler"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Implements IPointerEnterHandler/IPointerExitHandler and uses DOTween's DOScale with SetUpdate(true) for time-scale-independent tweening."
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/SlotHoverScale.cs:SlotHoverScale",
+      "type": "class",
+      "name": "SlotHoverScale",
+      "filePath": "Assets/02. Scripts/UI/SlotHoverScale.cs",
+      "lineRange": [
+        5,
+        43
+      ],
+      "summary": "MonoBehaviour implementing hover-driven scale tweening for UI slots, cleaning up the active tween on disable.",
+      "tags": [
+        "component",
+        "ui",
+        "animation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/TitlePanel.cs",
+      "type": "file",
+      "name": "TitlePanel.cs",
+      "filePath": "Assets/02. Scripts/UI/TitlePanel.cs",
+      "summary": "Title-screen panel that collects a nickname and triggers a connection through TitleManager, managing button interactability and status text during the connect flow.",
+      "tags": [
+        "component",
+        "ui",
+        "api-handler",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/TitlePanel.cs:TitlePanel",
+      "type": "class",
+      "name": "TitlePanel",
+      "filePath": "Assets/02. Scripts/UI/TitlePanel.cs",
+      "lineRange": [
+        6,
+        76
+      ],
+      "summary": "Concrete PanelBase subclass for the title screen that wires the connect button to TitleManager.Connect and reflects connection state in the UI.",
+      "tags": [
+        "component",
+        "ui",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/TitlePanel.cs:OnConnectClicked",
+      "type": "function",
+      "name": "OnConnectClicked",
+      "filePath": "Assets/02. Scripts/UI/TitlePanel.cs",
+      "lineRange": [
+        42,
+        64
+      ],
+      "summary": "Handles the connect button click by disabling input, showing a connecting status, and invoking TitleManager.Connect with a result callback.",
+      "tags": [
+        "event-handler",
+        "ui",
+        "networking"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Util/App.cs",
+      "type": "file",
+      "name": "App.cs",
+      "filePath": "Assets/02. Scripts/Util/App.cs",
+      "summary": "Central service locator and bootstrap singleton exposing all game managers, platform checks, scene state, and global scene-load events via nested static accessor classes.",
+      "tags": [
+        "service",
+        "singleton",
+        "entry-point",
+        "service-locator"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Uses nested static classes (UI, SceneManager, Game, Data, Utility) as namespaced accessors over a single Singleton instance."
+    },
+    {
+      "id": "class:Assets/02. Scripts/Util/App.cs:App",
+      "type": "class",
+      "name": "App",
+      "filePath": "Assets/02. Scripts/Util/App.cs",
+      "lineRange": [
+        7,
+        139
+      ],
+      "summary": "Singleton aggregating every game manager and global static state (platform, scene, events), serving as the project-wide service locator and scene-load coordinator.",
+      "tags": [
+        "service",
+        "singleton",
+        "service-locator"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Util/App.cs:LoadScene",
+      "type": "function",
+      "name": "LoadScene",
+      "filePath": "Assets/02. Scripts/Util/App.cs",
+      "lineRange": [
+        80,
+        96
+      ],
+      "summary": "Fires the OnSceneLoad event, delegates the actual load to AppHelper.LoadScene, and updates previous/current scene tracking.",
+      "tags": [
+        "scene-management",
+        "event-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "type": "file",
+      "name": "AppHelper.cs",
+      "filePath": "Assets/02. Scripts/Util/AppHelper.cs",
+      "summary": "MonoBehaviour bootstrap that persists across scenes, drives scene loading and frame-rate limiting, and bridges Unity scene callbacks into App's static events; also defines the generic Singleton base.",
+      "tags": [
+        "service",
+        "bootstrap",
+        "scene-management",
+        "singleton"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Util/AppHelper.cs:Singleton",
+      "type": "class",
+      "name": "Singleton",
+      "filePath": "Assets/02. Scripts/Util/AppHelper.cs",
+      "lineRange": [
+        8,
+        18
+      ],
+      "summary": "Generic lazy-instantiating singleton base providing a static Instance accessor for non-MonoBehaviour types like App.",
+      "tags": [
+        "singleton",
+        "base-class",
+        "generic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Util/AppHelper.cs:AppHelper",
+      "type": "class",
+      "name": "AppHelper",
+      "filePath": "Assets/02. Scripts/Util/AppHelper.cs",
+      "lineRange": [
+        20,
+        133
+      ],
+      "summary": "DontDestroyOnLoad MonoBehaviour that manages frame-limit configuration, scene load/unload, and quit handling, forwarding scene events to the App service locator.",
+      "tags": [
+        "service",
+        "bootstrap",
+        "scene-management"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Util/AppHelper.cs:OnSceneLoaded",
+      "type": "function",
+      "name": "OnSceneLoaded",
+      "filePath": "Assets/02. Scripts/Util/AppHelper.cs",
+      "lineRange": [
+        90,
+        100
+      ],
+      "summary": "Scene-loaded callback that re-applies the frame limit, bootstraps the loaded scene into App, and invokes App.OnSceneLoaded.",
+      "tags": [
+        "event-handler",
+        "scene-management"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Util/AppHelper.cs:SetFrameLimit",
+      "type": "function",
+      "name": "SetFrameLimit",
+      "filePath": "Assets/02. Scripts/Util/AppHelper.cs",
+      "lineRange": [
+        120,
+        132
+      ],
+      "summary": "Configures Application target frame rate and vSync based on the scene's target frame rate setting.",
+      "tags": [
+        "utility",
+        "performance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Util/Enums.cs",
+      "type": "file",
+      "name": "Enums.cs",
+      "filePath": "Assets/02. Scripts/Util/Enums.cs",
+      "summary": "Central definition file for project-wide enums (scenes, UI types, finger/hand types, execution order, etc.) under the SystemEnums namespace, referenced across the entire codebase.",
+      "tags": [
+        "type-definition",
+        "enum",
+        "shared",
+        "configuration"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Groups all shared enum types in a single SystemEnums namespace to give every other script a common vocabulary."
+    },
+    {
+      "id": "file:Assets/02. Scripts/Util/FrameChecker.cs",
+      "type": "file",
+      "name": "FrameChecker.cs",
+      "filePath": "Assets/02. Scripts/Util/FrameChecker.cs",
+      "summary": "On-screen FPS and millisecond-per-frame overlay rendered via OnGUI, with color-coded styling based on performance thresholds.",
+      "tags": [
+        "utility",
+        "monitoring",
+        "performance",
+        "ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Util/FrameChecker.cs:FrameChecker",
+      "type": "class",
+      "name": "FrameChecker",
+      "filePath": "Assets/02. Scripts/Util/FrameChecker.cs",
+      "lineRange": [
+        4,
+        95
+      ],
+      "summary": "CommonManagerBase subclass that samples frame timing each Update and draws an FPS/ms overlay through OnGUI.",
+      "tags": [
+        "monitoring",
+        "performance",
+        "ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Util/JsonHelper.cs",
+      "type": "file",
+      "name": "JsonHelper.cs",
+      "filePath": "Assets/02. Scripts/Util/JsonHelper.cs",
+      "summary": "Generic JSON (de)serialization helper wrapping Unity JsonUtility for arrays and providing async parsing into dictionaries, used by the data layer.",
+      "tags": [
+        "utility",
+        "serialization",
+        "json",
+        "data-model"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses a generic Wrapper<T> struct to work around JsonUtility's inability to serialize top-level arrays, plus Task.Run for off-thread parsing."
+    },
+    {
+      "id": "class:Assets/02. Scripts/Util/JsonHelper.cs:JsonHelper",
+      "type": "class",
+      "name": "JsonHelper",
+      "filePath": "Assets/02. Scripts/Util/JsonHelper.cs",
+      "lineRange": [
+        6,
+        81
+      ],
+      "summary": "Static helper exposing FromJson/ToJson array wrappers and async JsonToDictAsync overloads for parsing JSON into keyed dictionaries.",
+      "tags": [
+        "utility",
+        "serialization",
+        "json"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Util/JsonHelper.cs:JsonToDictAsync",
+      "type": "function",
+      "name": "JsonToDictAsync",
+      "filePath": "Assets/02. Scripts/Util/JsonHelper.cs",
+      "lineRange": [
+        52,
+        80
+      ],
+      "summary": "Asynchronously parses a JSON array into a dictionary keyed by an enum parsed from each item's Code field, logging warnings on parse failures.",
+      "tags": [
+        "serialization",
+        "async",
+        "data-pipeline"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "type": "file",
+      "name": "RpsHandUtility.cs",
+      "filePath": "Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "summary": "Static utility encapsulating rock-paper-scissors judging rules and random finger-assignment/shuffle logic for game rounds.",
+      "tags": [
+        "utility",
+        "game-logic",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Util/RpsHandUtility.cs:RpsHandUtility",
+      "type": "class",
+      "name": "RpsHandUtility",
+      "filePath": "Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "lineRange": [
+        8,
+        59
+      ],
+      "summary": "Static class providing Judge for RPS outcome evaluation and CreateRandomAssignments/Shuffle for randomized finger-to-player assignments.",
+      "tags": [
+        "utility",
+        "game-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Util/RpsHandUtility.cs:CreateRandomAssignments",
+      "type": "function",
+      "name": "CreateRandomAssignments",
+      "filePath": "Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "lineRange": [
+        33,
+        49
+      ],
+      "summary": "Builds a randomized mapping of player ids to finger types by cloning and shuffling the assignable-fingers set.",
+      "tags": [
+        "utility",
+        "game-logic",
+        "randomization"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "type": "file",
+      "name": "HandSpriteDataGeneratorWindow.cs",
+      "filePath": "Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "summary": "Unity Editor tool window that generates HandSpriteData ScriptableObjects from a dropped JSON definition, resolving sprites and creating output assets.",
+      "tags": [
+        "editor-tool",
+        "tooling",
+        "asset-pipeline",
+        "build-system"
+      ],
+      "complexity": "complex",
+      "languageNotes": "EditorWindow-based tooling using AssetDatabase APIs and drag-and-drop handling; lives under Assets/Editor so it is excluded from runtime builds."
+    },
+    {
+      "id": "class:Assets/Editor/HandSpriteDataGeneratorWindow.cs:HandSpriteDataGeneratorWindow",
+      "type": "class",
+      "name": "HandSpriteDataGeneratorWindow",
+      "filePath": "Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "lineRange": [
+        5,
+        160
+      ],
+      "summary": "EditorWindow that accepts a dropped JSON asset and generates a HandSpriteData ScriptableObject by resolving named sprites and writing the asset to disk.",
+      "tags": [
+        "editor-tool",
+        "tooling",
+        "asset-pipeline"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/Editor/HandSpriteDataGeneratorWindow.cs:GenerateFromJson",
+      "type": "function",
+      "name": "GenerateFromJson",
+      "filePath": "Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "lineRange": [
+        64,
+        110
+      ],
+      "summary": "Parses the dropped JSON into HandSpriteJson, resolves each sprite, populates a HandSpriteData asset, and saves it via AssetDatabase.",
+      "tags": [
+        "editor-tool",
+        "asset-pipeline",
+        "serialization"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/Editor/HandSpriteDataGeneratorWindow.cs:FindSprite",
+      "type": "function",
+      "name": "FindSprite",
+      "filePath": "Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "lineRange": [
+        112,
+        135
+      ],
+      "summary": "Searches the configured sprite folder for a sprite matching the given name, checking sub-asset representations before falling back to a direct load.",
+      "tags": [
+        "editor-tool",
+        "asset-pipeline",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/Editor/SceneFastLauncher.cs",
+      "type": "file",
+      "name": "SceneFastLauncher.cs",
+      "filePath": "Assets/Editor/SceneFastLauncher.cs",
+      "summary": "Unity Editor utility window for quickly opening project scenes from a drag-and-drop list, persisting the scene set in EditorPrefs.",
+      "tags": [
+        "editor-tool",
+        "tooling",
+        "productivity"
+      ],
+      "complexity": "complex",
+      "languageNotes": "EditorWindow tool persisting state via EditorPrefs and opening scenes through EditorSceneManager."
+    },
+    {
+      "id": "class:Assets/Editor/SceneFastLauncher.cs:SceneFastLauncher",
+      "type": "class",
+      "name": "SceneFastLauncher",
+      "filePath": "Assets/Editor/SceneFastLauncher.cs",
+      "lineRange": [
+        6,
+        125
+      ],
+      "summary": "EditorWindow maintaining a persisted list of SceneAssets and providing one-click open buttons with drag-and-drop registration.",
+      "tags": [
+        "editor-tool",
+        "tooling",
+        "productivity"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": "CLAUDE.md",
+      "summary": "Project guideline document instructing contributors and AI agents to avoid comments by default and keep any necessary comment to one short English line.",
+      "tags": [
+        "documentation",
+        "guidelines",
+        "conventions"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Packages/manifest.json",
+      "type": "config",
+      "name": "manifest.json",
+      "filePath": "Packages/manifest.json",
+      "summary": "Unity Package Manager manifest declaring the project's direct package dependencies and registry configuration.",
+      "tags": [
+        "configuration",
+        "dependencies",
+        "package-management",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Packages/packages-lock.json",
+      "type": "config",
+      "name": "packages-lock.json",
+      "filePath": "Packages/packages-lock.json",
+      "summary": "Unity Package Manager lockfile pinning resolved versions, sources, and dependency hashes for reproducible package restoration.",
+      "tags": [
+        "configuration",
+        "dependencies",
+        "lockfile",
+        "package-management"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:Assets/07. Data/Json/BoonData.json",
+      "target": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Assets/07. Data/Json/DefineData.json",
+      "target": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Assets/07. Data/Json/DeviationData.json",
+      "target": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Assets/07. Data/Json/EnemyData.json",
+      "target": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Assets/07. Data/Json/RoundData.json",
+      "target": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/AssetManager.cs",
+      "target": "function:Assets/02. Scripts/Management/AssetManager.cs:GetAudioClip",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/AssetManager.cs",
+      "target": "class:Assets/02. Scripts/Management/AssetManager.cs:AssetManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/AssetManager.cs:AssetManager",
+      "target": "class:Assets/02. Scripts/Management/ManagerBase.cs:CommonManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "target": "function:Assets/02. Scripts/Management/DataManager.cs:LoadDataToDictionaryAsync",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "target": "function:Assets/02. Scripts/Management/DataManager.cs:LoadAllDataCoroutine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "target": "class:Assets/02. Scripts/Management/DataManager.cs:DataManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/DataManager.cs:DataManager",
+      "target": "class:Assets/02. Scripts/Management/ManagerBase.cs:DataManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "target": "file:Assets/02. Scripts/Management/GameData.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/GameData.cs",
+      "target": "class:Assets/02. Scripts/Management/GameData.cs:EnemyData",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/GameData.cs",
+      "target": "class:Assets/02. Scripts/Management/GameData.cs:RoundData",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "function:Assets/02. Scripts/Management/InGameManager.cs:BetweenWavesCoroutine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "function:Assets/02. Scripts/Management/InGameManager.cs:HandleWaveResultReceived",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "function:Assets/02. Scripts/Management/InGameManager.cs:WaveTimerCoroutine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "function:Assets/02. Scripts/Management/InGameManager.cs:HostSetupCoroutine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "function:Assets/02. Scripts/Management/InGameManager.cs:DetermineOutcome",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "class:Assets/02. Scripts/Management/InGameManager.cs:InGameManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/InGameManager.cs:InGameManager",
+      "target": "class:Assets/02. Scripts/Management/SceneManagerBase.cs:SceneManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "file:Assets/02. Scripts/Management/InputManager.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InputManager.cs",
+      "target": "function:Assets/02. Scripts/Management/InputManager.cs:RandomizeSingleControlBindings",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InputManager.cs",
+      "target": "function:Assets/02. Scripts/Management/InputManager.cs:HandleSingleControlInput",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InputManager.cs",
+      "target": "class:Assets/02. Scripts/Management/InputManager.cs:InputManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/InputManager.cs:InputManager",
+      "target": "class:Assets/02. Scripts/Management/ManagerBase.cs:CommonManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "target": "function:Assets/02. Scripts/Management/LobbyManager.cs:StartGame",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "target": "function:Assets/02. Scripts/Management/LobbyManager.cs:RefreshLobbyUI",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "target": "function:Assets/02. Scripts/Management/LobbyManager.cs:Complete",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "target": "class:Assets/02. Scripts/Management/LobbyManager.cs:LobbyManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/LobbyManager.cs:LobbyManager",
+      "target": "class:Assets/02. Scripts/Management/SceneManagerBase.cs:SceneManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "target": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "target": "file:Assets/02. Scripts/FusionLobby/PlayerProfile.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "target": "file:Assets/02. Scripts/FusionLobby/LobbyRequestResult.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "target": "file:Assets/02. Scripts/FusionLobby/LobbySession.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/LobbyUIManager.cs",
+      "target": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/ManagerBase.cs",
+      "target": "class:Assets/02. Scripts/Management/ManagerBase.cs:ManagerHandler",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/ManagerBase.cs",
+      "target": "class:Assets/02. Scripts/Management/ManagerBase.cs:DataManagerBase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/ManagerBase.cs",
+      "target": "class:Assets/02. Scripts/Management/ManagerBase.cs:CommonManagerBase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "function:Assets/02. Scripts/Management/NetworkManager.cs:StartSessionCoroutine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "function:Assets/02. Scripts/Management/NetworkManager.cs:EnsureCloudLobbyCoroutine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "function:Assets/02. Scripts/Management/NetworkManager.cs:ServerInitializeFingerAssignments",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "function:Assets/02. Scripts/Management/NetworkManager.cs:ClientSendFingerState",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "function:Assets/02. Scripts/Management/NetworkManager.cs:ServerJudgeAndBroadcastRoundResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "function:Assets/02. Scripts/Management/NetworkManager.cs:HandleInGameRpsData",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "function:Assets/02. Scripts/Management/NetworkManager.cs:StartGame",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "class:Assets/02. Scripts/Management/NetworkManager.cs:NetworkManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/NetworkManager.cs:NetworkManager",
+      "target": "class:Assets/02. Scripts/Management/ManagerBase.cs:CommonManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "file:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "file:Assets/02. Scripts/FusionLobby/LobbySession.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "file:Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "file:Assets/02. Scripts/FusionLobby/LobbyRequestResult.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "target": "function:Assets/02. Scripts/Management/PlayerManager.cs:ServerEnsurePlayerObjectsCoroutine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "target": "function:Assets/02. Scripts/Management/PlayerManager.cs:BuildLobbyPlayers",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "target": "function:Assets/02. Scripts/Management/PlayerManager.cs:SpawnAsyncCoroutine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "target": "function:Assets/02. Scripts/Management/PlayerManager.cs:TryGetHost",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "target": "class:Assets/02. Scripts/Management/PlayerManager.cs:PlayerManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/PlayerManager.cs:PlayerManager",
+      "target": "class:Assets/02. Scripts/Management/ManagerBase.cs:CommonManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "target": "file:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "target": "file:Assets/02. Scripts/FusionLobby/LobbyPlayer.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "target": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/SceneManagerBase.cs",
+      "target": "class:Assets/02. Scripts/Management/SceneManagerBase.cs:SceneManagerBase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/SceneManagerBase.cs:SceneManagerBase",
+      "target": "class:Assets/02. Scripts/Management/ManagerBase.cs:CommonManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Effect/HPBarController.cs",
+      "target": "function:Assets/02. Scripts/Effect/HPBarController.cs:SetHP",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Effect/HPBarController.cs",
+      "target": "function:Assets/02. Scripts/Effect/HPBarController.cs:Update",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Effect/HPBarController.cs",
+      "target": "class:Assets/02. Scripts/Effect/HPBarController.cs:HPBarController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs",
+      "target": "class:Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs:LobbyCodeUtility",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/FusionLobby/LobbySession.cs",
+      "target": "class:Assets/02. Scripts/FusionLobby/LobbySession.cs:LobbySession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "class:Assets/02. Scripts/FusionLobby/LobbySession.cs:LobbySession",
+      "target": "file:Assets/02. Scripts/FusionLobby/LobbyPlayer.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "target": "function:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs:Render",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "target": "function:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs:Spawned",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "target": "class:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs:PlayerNetworkObject",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/FusionLobby/PlayerProfile.cs",
+      "target": "class:Assets/02. Scripts/FusionLobby/PlayerProfile.cs:PlayerProfile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "target": "function:Assets/02. Scripts/Game/Hand/EnemyHand.cs:RandomCycleCoroutine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "target": "function:Assets/02. Scripts/Game/Hand/EnemyHand.cs:ApplyHandSpriteData",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "target": "function:Assets/02. Scripts/Game/Hand/EnemyHand.cs:CacheHandSpriteData",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "target": "class:Assets/02. Scripts/Game/Hand/EnemyHand.cs:EnemyHand",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "class:Assets/02. Scripts/Game/Hand/EnemyHand.cs:EnemyHand",
+      "target": "class:Assets/02. Scripts/Game/Hand/Hand.cs:Hand",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "target": "file:Assets/02. Scripts/Game/Hand/HandSpriteData.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "target": "file:Assets/02. Scripts/Game/Hand/Finger.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "target": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/Finger.cs",
+      "target": "class:Assets/02. Scripts/Game/Hand/Finger.cs:Finger",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/Hand.cs",
+      "target": "function:Assets/02. Scripts/Game/Hand/Hand.cs:CacheFingers",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/Hand.cs",
+      "target": "class:Assets/02. Scripts/Game/Hand/Hand.cs:Hand",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/Hand.cs",
+      "target": "file:Assets/02. Scripts/Game/Hand/Finger.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/HandSpriteData.cs",
+      "target": "class:Assets/02. Scripts/Game/Hand/HandSpriteData.cs:HandSpriteData",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/PlayerHand.cs",
+      "target": "class:Assets/02. Scripts/Game/Hand/PlayerHand.cs:PlayerHand",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "class:Assets/02. Scripts/Game/Hand/PlayerHand.cs:PlayerHand",
+      "target": "class:Assets/02. Scripts/Game/Hand/Hand.cs:Hand",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "target": "class:Assets/02. Scripts/Management/SoundManager.cs:SoundManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "target": "function:Assets/02. Scripts/Management/SoundManager.cs:PlayBGM",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "target": "function:Assets/02. Scripts/Management/SoundManager.cs:FadeBgmVolume",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "target": "function:Assets/02. Scripts/Management/SoundManager.cs:PlaySFX",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "target": "function:Assets/02. Scripts/Management/SoundManager.cs:GetFreeSFXSource",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "target": "function:Assets/02. Scripts/Management/SoundManager.cs:LoadAndCacheClip",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "target": "function:Assets/02. Scripts/Management/SoundManager.cs:PlayLoopingSfx",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "target": "class:Assets/02. Scripts/Management/SoundManager.cs:SoundManager",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/SoundManager.cs:SoundManager",
+      "target": "function:Assets/02. Scripts/Management/SoundManager.cs:PlayBGM",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/SoundManager.cs:SoundManager",
+      "target": "function:Assets/02. Scripts/Management/SoundManager.cs:PlaySFX",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/TitleManager.cs",
+      "target": "class:Assets/02. Scripts/Management/TitleManager.cs:TitleManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/TitleManager.cs",
+      "target": "class:Assets/02. Scripts/Management/TitleManager.cs:TitleManager",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/TitleUIManager.cs",
+      "target": "class:Assets/02. Scripts/Management/TitleUIManager.cs:TitleUIManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/TitleUIManager.cs",
+      "target": "class:Assets/02. Scripts/Management/TitleUIManager.cs:TitleUIManager",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/TitleUIManager.cs:TitleUIManager",
+      "target": "class:Assets/02. Scripts/Management/UIManagerBase.cs:UIManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/TitleUIManager.cs",
+      "target": "file:Assets/02. Scripts/Management/UIManagerBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/UIManagerBase.cs",
+      "target": "class:Assets/02. Scripts/Management/UIManagerBase.cs:UIManagerBase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/UIManagerBase.cs",
+      "target": "function:Assets/02. Scripts/Management/UIManagerBase.cs:RegisterPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/UIManagerBase.cs",
+      "target": "function:Assets/02. Scripts/Management/UIManagerBase.cs:Update",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/UIManagerBase.cs",
+      "target": "class:Assets/02. Scripts/Management/UIManagerBase.cs:UIManagerBase",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/UIManagerBase.cs:UIManagerBase",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs:ForbidHandShapePanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs:SetCooldown",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs:CompleteSlot",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs:ForbidHandShapePanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs:ForbidHandShapePanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/HUDPanel.cs:HUDPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/HUDPanel.cs:PlayFillIn",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/HUDPanel.cs:PlayEnemyDrain",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/HUDPanel.cs:PlayDrain",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/HUDPanel.cs:HUDPanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/HUDPanel.cs:HUDPanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/IndicatePanel.cs:IndicatePanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/IndicatePanel.cs:IndicatePanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/IndicatePanel.cs:IndicatePanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "target": "file:Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/IndicatePanel.cs:IndicatePanel",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs:IndicateSlot",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:StarforceModalContent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:Update",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:BuildParticipants",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:ServerAssignChallenge",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:SubmitLocalResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:HandleNetworkDataChanged",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:StarforceModalContent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:StarforceModalContent",
+      "target": "class:Assets/02. Scripts/UI/Game/ModalContent.cs:ModalContent",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "target": "file:Assets/02. Scripts/UI/Game/ModalContent.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "target": "file:Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:StarforceModalContent",
+      "target": "class:Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs:StarforceStar",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs:StarforceStar",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs:StarforceStar",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ModalContent.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/ModalContent.cs:ModalContent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ModalContent.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/ModalContent.cs:ModalContent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/ModalPanel.cs:ModalPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/ModalPanel.cs:Show",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/ModalPanel.cs:ModalPanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/ModalPanel.cs:ModalPanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/Game/ModalContent.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/ModalPanel.cs:ModalPanel",
+      "target": "class:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:StarforceModalContent",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/NextIconPanel.cs:NextIconPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/NextIconPanel.cs:GenerateQueue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/NextIconPanel.cs:HandleWaveStarted",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/NextIconPanel.cs:NextIconPanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/NextIconPanel.cs:NextIconPanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/NextIconPanel.cs:NextIconPanel",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs:NextIconSlot",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/OutcomePanel.cs:OutcomePanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/OutcomePanel.cs:PlayAnimation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/OutcomePanel.cs:PlayLoseAnimation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/OutcomePanel.cs:OutcomePanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/OutcomePanel.cs:OutcomePanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/StagePanel.cs:StagePanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/StagePanel.cs:Update",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/StagePanel.cs:CacheStageSlots",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/StagePanel.cs:StagePanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/StagePanel.cs:StagePanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "target": "file:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/StagePanel.cs:StagePanel",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs:StageSlot",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/TimerPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/TimerPanel.cs:TimerPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/TimerPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/TimerPanel.cs:TimerPanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/TimerPanel.cs:TimerPanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/TimerPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs:IndicateSlot",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs:IndicateSlot",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs:NextIconSlot",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs:NextIconSlot",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs:StageSlot",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs:StageSlot",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs:StageSlot",
+      "target": "class:Assets/02. Scripts/UI/SlotHoverScale.cs:SlotHoverScale",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+      "target": "file:Assets/02. Scripts/UI/SlotHoverScale.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs:Tooltip",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs:Tooltip",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs",
+      "target": "file:Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs:Tooltip",
+      "target": "class:Assets/02. Scripts/UI/Game/IndicatePanel.cs:IndicatePanel",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs:WaveSlot",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs:MarkDefeated",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs:WaveSlot",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/VersusPanel.cs:VersusPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/VersusPanel.cs:PlayIntroSequence",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/VersusPanel.cs:VersusPanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/VersusPanel.cs:VersusPanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/WavePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/WavePanel.cs:WavePanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/WavePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/WavePanel.cs:WavePanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/WavePanel.cs:WavePanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/WavePanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/WavePanel.cs",
+      "target": "file:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/WavePanel.cs:WavePanel",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs:WaveSlot",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/LobbyEntryPanel.cs:LobbyEntryPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/LobbyEntryPanel.cs:OnCreateRoomClicked",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/LobbyEntryPanel.cs:OnJoinRoomClicked",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/LobbyEntryPanel.cs:OnQuickJoinClicked",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/LobbyEntryPanel.cs:SetInteractable",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/LobbyEntryPanel.cs:LobbyEntryPanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/LobbyEntryPanel.cs:LobbyEntryPanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyPlayerListItem.cs",
+      "target": "class:Assets/02. Scripts/UI/LobbyPlayerListItem.cs:LobbyPlayerListItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyPlayerListItem.cs",
+      "target": "class:Assets/02. Scripts/UI/LobbyPlayerListItem.cs:LobbyPlayerListItem",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/LobbyRoomPanel.cs:LobbyRoomPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/LobbyRoomPanel.cs:LobbyRoomPanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/LobbyRoomPanel.cs:LobbyRoomPanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/LobbyPlayerListItem.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/LobbyRoomPanel.cs:LobbyRoomPanel",
+      "target": "class:Assets/02. Scripts/UI/LobbyPlayerListItem.cs:LobbyPlayerListItem",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "target": "function:Assets/02. Scripts/UI/PanelBase.cs:OpenPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "target": "function:Assets/02. Scripts/UI/PanelBase.cs:ClosePanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "target": "class:Assets/02. Scripts/Util/App.cs:App",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "target": "file:Assets/02. Scripts/Util/Enums.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/SlotHoverScale.cs",
+      "target": "class:Assets/02. Scripts/UI/SlotHoverScale.cs:SlotHoverScale",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/SlotHoverScale.cs",
+      "target": "class:Assets/02. Scripts/UI/SlotHoverScale.cs:SlotHoverScale",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/TitlePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/TitlePanel.cs:TitlePanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/TitlePanel.cs",
+      "target": "function:Assets/02. Scripts/UI/TitlePanel.cs:OnConnectClicked",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/TitlePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/TitlePanel.cs:TitlePanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/TitlePanel.cs:TitlePanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/TitlePanel.cs",
+      "target": "class:Assets/02. Scripts/Util/App.cs:App",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/TitlePanel.cs",
+      "target": "file:Assets/02. Scripts/Util/Enums.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/App.cs",
+      "target": "class:Assets/02. Scripts/Util/App.cs:App",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/App.cs",
+      "target": "function:Assets/02. Scripts/Util/App.cs:LoadScene",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/App.cs",
+      "target": "class:Assets/02. Scripts/Util/App.cs:App",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/Util/App.cs:App",
+      "target": "class:Assets/02. Scripts/Util/AppHelper.cs:Singleton",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "function:Assets/02. Scripts/Util/App.cs:LoadScene",
+      "target": "function:Assets/02. Scripts/Util/AppHelper.cs:SetFrameLimit",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/App.cs",
+      "target": "class:Assets/02. Scripts/Util/AppHelper.cs:AppHelper",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/App.cs",
+      "target": "class:Assets/02. Scripts/Util/FrameChecker.cs:FrameChecker",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/App.cs",
+      "target": "file:Assets/02. Scripts/Util/Enums.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "target": "class:Assets/02. Scripts/Util/AppHelper.cs:Singleton",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "target": "class:Assets/02. Scripts/Util/AppHelper.cs:AppHelper",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "target": "function:Assets/02. Scripts/Util/AppHelper.cs:OnSceneLoaded",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "target": "function:Assets/02. Scripts/Util/AppHelper.cs:SetFrameLimit",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "target": "class:Assets/02. Scripts/Util/AppHelper.cs:AppHelper",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "target": "class:Assets/02. Scripts/Util/AppHelper.cs:Singleton",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:Assets/02. Scripts/Util/AppHelper.cs:OnSceneLoaded",
+      "target": "function:Assets/02. Scripts/Util/App.cs:LoadScene",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "target": "class:Assets/02. Scripts/Util/App.cs:App",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "target": "file:Assets/02. Scripts/Util/Enums.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/FrameChecker.cs",
+      "target": "class:Assets/02. Scripts/Util/FrameChecker.cs:FrameChecker",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/FrameChecker.cs",
+      "target": "class:Assets/02. Scripts/Util/FrameChecker.cs:FrameChecker",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/JsonHelper.cs",
+      "target": "class:Assets/02. Scripts/Util/JsonHelper.cs:JsonHelper",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/JsonHelper.cs",
+      "target": "function:Assets/02. Scripts/Util/JsonHelper.cs:JsonToDictAsync",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/JsonHelper.cs",
+      "target": "class:Assets/02. Scripts/Util/JsonHelper.cs:JsonHelper",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/JsonHelper.cs",
+      "target": "file:Assets/02. Scripts/Util/Enums.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "target": "class:Assets/02. Scripts/Util/RpsHandUtility.cs:RpsHandUtility",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "target": "function:Assets/02. Scripts/Util/RpsHandUtility.cs:CreateRandomAssignments",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "target": "class:Assets/02. Scripts/Util/RpsHandUtility.cs:RpsHandUtility",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "target": "file:Assets/02. Scripts/Util/Enums.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "target": "class:Assets/Editor/HandSpriteDataGeneratorWindow.cs:HandSpriteDataGeneratorWindow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "target": "function:Assets/Editor/HandSpriteDataGeneratorWindow.cs:GenerateFromJson",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "target": "function:Assets/Editor/HandSpriteDataGeneratorWindow.cs:FindSprite",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "target": "class:Assets/Editor/HandSpriteDataGeneratorWindow.cs:HandSpriteDataGeneratorWindow",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/Editor/SceneFastLauncher.cs",
+      "target": "class:Assets/Editor/SceneFastLauncher.cs:SceneFastLauncher",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/Editor/SceneFastLauncher.cs",
+      "target": "class:Assets/Editor/SceneFastLauncher.cs:SceneFastLauncher",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "file:Assets/02. Scripts/Util/App.cs",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:Packages/manifest.json",
+      "target": "file:Assets/02. Scripts/Util/App.cs",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Packages/packages-lock.json",
+      "target": "config:Packages/manifest.json",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameUIManager.cs",
+      "target": "class:Assets/02. Scripts/Management/UIManagerBase.cs:UIManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/ModeData.cs",
+      "target": "class:Assets/02. Scripts/Util/App.cs:App",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:core-infrastructure",
+      "name": "Core & Infrastructure",
+      "description": "The App service-locator/bootstrap, project-wide enums, and shared helpers (JSON parsing, RPS judging, frame monitoring) that every other layer depends on.",
+      "nodeIds": [
+        "file:Assets/02. Scripts/Util/App.cs",
+        "file:Assets/02. Scripts/Util/AppHelper.cs",
+        "file:Assets/02. Scripts/Util/Enums.cs",
+        "file:Assets/02. Scripts/Util/FrameChecker.cs",
+        "file:Assets/02. Scripts/Util/JsonHelper.cs",
+        "file:Assets/02. Scripts/Util/RpsHandUtility.cs"
+      ]
+    },
+    {
+      "id": "layer:managers",
+      "name": "Managers",
+      "description": "App-driven singleton and per-scene managers (network, player, lobby, in-game, data, asset, sound, input, title) plus their ManagerBase/SceneManagerBase/UIManagerBase base classes that orchestrate the game's subsystems.",
+      "nodeIds": [
+        "file:Assets/02. Scripts/Management/AssetManager.cs",
+        "file:Assets/02. Scripts/Management/DataManager.cs",
+        "file:Assets/02. Scripts/Management/GameData.cs",
+        "file:Assets/02. Scripts/Management/InGameManager.cs",
+        "file:Assets/02. Scripts/Management/InGameUIManager.cs",
+        "file:Assets/02. Scripts/Management/InputManager.cs",
+        "file:Assets/02. Scripts/Management/LobbyManager.cs",
+        "file:Assets/02. Scripts/Management/LobbyUIManager.cs",
+        "file:Assets/02. Scripts/Management/ManagerBase.cs",
+        "file:Assets/02. Scripts/Management/NetworkManager.cs",
+        "file:Assets/02. Scripts/Management/PlayerManager.cs",
+        "file:Assets/02. Scripts/Management/SceneManagerBase.cs",
+        "file:Assets/02. Scripts/Management/SoundManager.cs",
+        "file:Assets/02. Scripts/Management/TitleManager.cs",
+        "file:Assets/02. Scripts/Management/TitleUIManager.cs",
+        "file:Assets/02. Scripts/Management/UIManagerBase.cs"
+      ]
+    },
+    {
+      "id": "layer:networking",
+      "name": "Networking",
+      "description": "Photon Fusion lobby and session objects: the [Networked] PlayerNetworkObject, session/player state models, result wrappers, and lobby-code utilities for real-time multiplayer.",
+      "nodeIds": [
+        "file:Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs",
+        "file:Assets/02. Scripts/FusionLobby/LobbyPlayer.cs",
+        "file:Assets/02. Scripts/FusionLobby/LobbyRequestResult.cs",
+        "file:Assets/02. Scripts/FusionLobby/LobbySession.cs",
+        "file:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+        "file:Assets/02. Scripts/FusionLobby/PlayerProfile.cs"
+      ]
+    },
+    {
+      "id": "layer:gameplay",
+      "name": "Gameplay",
+      "description": "Core RPS gameplay domain: player/enemy hands, fingers, hand-sprite data, game-mode flags, and the HP-bar visual effect that drive match logic.",
+      "nodeIds": [
+        "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+        "file:Assets/02. Scripts/Game/Hand/Finger.cs",
+        "file:Assets/02. Scripts/Game/Hand/Hand.cs",
+        "file:Assets/02. Scripts/Game/Hand/HandSpriteData.cs",
+        "file:Assets/02. Scripts/Game/Hand/PlayerHand.cs",
+        "file:Assets/02. Scripts/Game/ModeData.cs",
+        "file:Assets/02. Scripts/Effect/HPBarController.cs"
+      ]
+    },
+    {
+      "id": "layer:ui-presentation",
+      "name": "UI & Presentation",
+      "description": "uGUI panels and reusable slot/modal widgets for the title, lobby, and in-game HUD, all built on the PanelBase lifecycle hub that self-registers with the UI managers.",
+      "nodeIds": [
+        "file:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+        "file:Assets/02. Scripts/UI/Game/HUDPanel.cs",
+        "file:Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+        "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+        "file:Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs",
+        "file:Assets/02. Scripts/UI/Game/ModalContent.cs",
+        "file:Assets/02. Scripts/UI/Game/ModalPanel.cs",
+        "file:Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+        "file:Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+        "file:Assets/02. Scripts/UI/Game/StagePanel.cs",
+        "file:Assets/02. Scripts/UI/Game/TimerPanel.cs",
+        "file:Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs",
+        "file:Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs",
+        "file:Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+        "file:Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs",
+        "file:Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+        "file:Assets/02. Scripts/UI/Game/VersusPanel.cs",
+        "file:Assets/02. Scripts/UI/Game/WavePanel.cs",
+        "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+        "file:Assets/02. Scripts/UI/LobbyPlayerListItem.cs",
+        "file:Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+        "file:Assets/02. Scripts/UI/PanelBase.cs",
+        "file:Assets/02. Scripts/UI/SlotHoverScale.cs",
+        "file:Assets/02. Scripts/UI/TitlePanel.cs"
+      ]
+    },
+    {
+      "id": "layer:editor-tooling",
+      "name": "Editor Tooling",
+      "description": "Unity Editor utility windows for generating HandSpriteData ScriptableObjects from JSON and for fast scene launching during development.",
+      "nodeIds": [
+        "file:Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+        "file:Assets/Editor/SceneFastLauncher.cs"
+      ]
+    },
+    {
+      "id": "layer:data-config",
+      "name": "Game Data & Project Config",
+      "description": "Game-balance JSON tables (boon, define, deviation, enemy, round) consumed by DataManager, Unity package manifests, and the CLAUDE.md project guideline document.",
+      "nodeIds": [
+        "config:Assets/07. Data/Json/BoonData.json",
+        "config:Assets/07. Data/Json/DefineData.json",
+        "config:Assets/07. Data/Json/DeviationData.json",
+        "config:Assets/07. Data/Json/EnemyData.json",
+        "config:Assets/07. Data/Json/RoundData.json",
+        "config:Packages/manifest.json",
+        "config:Packages/packages-lock.json",
+        "document:CLAUDE.md"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "Project Conventions & Entry Point",
+      "description": "There is no README, so start with CLAUDE.md, the project's contributor guideline (no comments by default; any necessary comment is one short English line). With conventions in mind, the conceptual entry point is App.cs, a service-locator/bootstrap singleton that exposes every game manager, platform checks, scene state, and global scene-load events through nested static accessor classes. Because Unity instantiates MonoBehaviours rather than calling a main(), this composition root is the closest thing to a program entry point and the lens through which the rest of the codebase is wired together.",
+      "nodeIds": [
+        "document:CLAUDE.md",
+        "file:Assets/02. Scripts/Util/App.cs"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Core Vocabulary & Shared Helpers",
+      "description": "Enums.cs is the most widely referenced foundation file (high fan-in): it centralizes project-wide enums for scenes, UI types, finger/hand types, and execution order under the SystemEnums namespace. Alongside it sit the shared utilities the whole game leans on: RpsHandUtility encodes the actual rock-paper-scissors win/lose rules and the random finger-assignment/shuffle logic, while JsonHelper wraps Unity's JsonUtility to async-parse JSON arrays into dictionaries for the data layer. Together these define the project's vocabulary and the two domain rules (RPS judging, JSON loading) that everything downstream depends on.",
+      "nodeIds": [
+        "file:Assets/02. Scripts/Util/Enums.cs",
+        "file:Assets/02. Scripts/Util/RpsHandUtility.cs",
+        "file:Assets/02. Scripts/Util/JsonHelper.cs"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "App Lifecycle Bootstrap",
+      "description": "Building on App.cs from Step 1, AppHelper.cs is the MonoBehaviour that gives the static App its runtime heartbeat: it persists across scenes, drives scene loading and frame-rate limiting, and bridges Unity's scene callbacks into App's static events. It also defines the generic Singleton<T> base used throughout the project. This file explains HOW the bootstrap actually runs inside Unity's lifecycle, complementing the static accessors you saw earlier.",
+      "nodeIds": [
+        "file:Assets/02. Scripts/Util/AppHelper.cs"
+      ],
+      "languageLesson": "Unity's DontDestroyOnLoad keeps a GameObject alive across scene loads. A generic Singleton<T> base where T : MonoBehaviour gives each derived manager a typed static Instance without rewriting the boilerplate."
+    },
+    {
+      "order": 4,
+      "title": "The Manager Layer & Base Classes",
+      "description": "The Managers layer is how App's subsystems are orchestrated. ManagerBase.cs holds the registration infrastructure: a static ManagerHandler reflects over App's manager fields and injects instances, while DataManagerBase and CommonManagerBase self-register on Awake. SceneManagerBase extends that for per-scene controllers, logging scene context and providing MoveToNextScene transitions, and UIManagerBase registers panels by type and maintains an ESC-closeable UI stack. These base classes are the contract every concrete manager and scene controller in later steps inherits from.",
+      "nodeIds": [
+        "file:Assets/02. Scripts/Management/ManagerBase.cs",
+        "file:Assets/02. Scripts/Management/SceneManagerBase.cs",
+        "file:Assets/02. Scripts/Management/UIManagerBase.cs"
+      ],
+      "languageLesson": "C# reflection lets ManagerHandler discover App's manager fields at runtime and inject instances, a lightweight dependency-injection pattern that avoids hand-wiring each manager into the service locator."
+    },
+    {
+      "order": 5,
+      "title": "Loading Game Data",
+      "description": "DataManager.cs (high fan-in) is a DataManagerBase manager that asynchronously loads JSON game-data tables from Addressables into typed dictionaries and exposes TryGet lookups. GameData.cs defines the serializable model classes (BoonData, DefineData, DeviationData, EnemyData, RoundData) that the JSON deserializes into, each keyed by Code and implementing IGameData. This is where the JsonHelper from Step 2 and the manager infrastructure from Step 4 come together to turn raw files into queryable balance data.",
+      "nodeIds": [
+        "file:Assets/02. Scripts/Management/DataManager.cs",
+        "file:Assets/02. Scripts/Management/GameData.cs"
+      ]
+    },
+    {
+      "order": 6,
+      "title": "Game-Balance Data Tables",
+      "description": "These JSON files are the tunable balance inputs DataManager loads at runtime. DefineData holds global constants (default HP, damage, round timer); RoundData defines the ten-round difficulty curve with cumulative timer deltas and an enemy-HP multiplier ramping to 4.0; EnemyData is the roster of ten enemy types with appearance round ranges; and BoonData/DeviationData define the perk and modifier records with position masks and value slots. Inspecting them shows how designers tune the game without touching code, mapping each table directly to the model classes from Step 5.",
+      "nodeIds": [
+        "config:Assets/07. Data/Json/DefineData.json",
+        "config:Assets/07. Data/Json/RoundData.json",
+        "config:Assets/07. Data/Json/EnemyData.json",
+        "config:Assets/07. Data/Json/BoonData.json",
+        "config:Assets/07. Data/Json/DeviationData.json"
+      ]
+    },
+    {
+      "order": 7,
+      "title": "Networking with Photon Fusion",
+      "description": "NetworkManager.cs is the Photon Fusion hub (high fan-out): a CommonManagerBase implementing INetworkRunnerCallbacks that manages the NetworkRunner lifecycle, cloud connection, session create/join/start, finger-assignment sync, and round-result broadcasting. PlayerNetworkObject.cs is the replicated NetworkBehaviour holding [Networked] per-player state (display name, ready, assigned finger, cursor, starforce result) and exposing RPCs, using a ChangeDetector in Render to fire data-changed events. PlayerManager spawns, despawns, and resolves these objects and exposes local-player accessors to the rest of the game.",
+      "nodeIds": [
+        "file:Assets/02. Scripts/Management/NetworkManager.cs",
+        "file:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+        "file:Assets/02. Scripts/Management/PlayerManager.cs"
+      ],
+      "languageLesson": "Photon Fusion replicates [Networked] properties automatically and uses [Rpc] methods for remote calls. A ChangeDetector in the Render loop diffs networked state each frame so clients fire local events only when replicated values actually change."
+    },
+    {
+      "order": 8,
+      "title": "The Lobby Flow",
+      "description": "Before a match starts, players gather in a lobby built on the networking layer from Step 7. LobbyManager.cs is a SceneManagerBase that wraps NetworkManager session operations (create/join/quick-join/leave/start), manages ready state and display names, and refreshes lobby UI. LobbySession is the mutable state container tracking session code, players, host flag, and derived readiness/fullness, while LobbyCodeUtility generates and validates the alphanumeric session codes. This trio turns raw network sessions into a joinable, shareable room.",
+      "nodeIds": [
+        "file:Assets/02. Scripts/Management/LobbyManager.cs",
+        "file:Assets/02. Scripts/FusionLobby/LobbySession.cs",
+        "file:Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs"
+      ]
+    },
+    {
+      "order": 9,
+      "title": "Gameplay Domain: Hands & Fingers",
+      "description": "This is the core RPS gameplay domain. Hand.cs is the abstract base MonoBehaviour that caches child Finger components and exposes open/close and hand-position helpers; PlayerHand tracks the local player's active finger and applies input-driven masks, while EnemyHand randomly cycles RPS positions via coroutine and reports its position to InGameManager. Finger.cs toggles a single finger's open/closed sprite. Notice how the RPS judging rules from RpsHandUtility (Step 2) and the assigned-finger state from PlayerNetworkObject (Step 7) converge here into the physical hand representation.",
+      "nodeIds": [
+        "file:Assets/02. Scripts/Game/Hand/Hand.cs",
+        "file:Assets/02. Scripts/Game/Hand/PlayerHand.cs",
+        "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+        "file:Assets/02. Scripts/Game/Hand/Finger.cs"
+      ]
+    },
+    {
+      "order": 10,
+      "title": "Match Flow Orchestration",
+      "description": "InGameManager.cs is the SceneManagerBase that drives the in-game match (high fan-out): wave timers, host setup, finger assignments, RPS outcome resolution, lives/HP tracking, and round transitions, coordinating NetworkManager, PlayerManager, and InputManager through events. InputManager reads keyboard input each frame for single- and multi-control finger modes, firing toggle and mask-change events that the player's hand consumes. This step ties the data, networking, and hand domains from earlier steps into the actual moment-to-moment match loop.",
+      "nodeIds": [
+        "file:Assets/02. Scripts/Management/InGameManager.cs",
+        "file:Assets/02. Scripts/Management/InputManager.cs"
+      ]
+    },
+    {
+      "order": 11,
+      "title": "UI Presentation Layer",
+      "description": "PanelBase.cs is the single most depended-upon file in the codebase (fan-in 12): the abstract base for every UI panel, handling self-registration with the UI manager and the open/close lifecycle including UI-stack push/pop. Built on it, HUDPanel renders animated player/enemy HP bars driven by game events, OutcomePanel plays win/lose/draw sequences, and on the lobby side LobbyEntryPanel handles create/join/quick-join flows wired to LobbyManager. Seeing PanelBase next to a concrete in-game and lobby panel shows how the entire presentation layer hangs off one lifecycle hub and reacts to the events emitted by the managers from Steps 8 and 10.",
+      "nodeIds": [
+        "file:Assets/02. Scripts/UI/PanelBase.cs",
+        "file:Assets/02. Scripts/UI/Game/HUDPanel.cs",
+        "file:Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+        "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs"
+      ]
+    },
+    {
+      "order": 12,
+      "title": "Editor Tooling (Closing Step)",
+      "description": "Finally, the Editor Tooling layer supports development rather than runtime. HandSpriteDataGeneratorWindow is a Unity Editor window that generates HandSpriteData ScriptableObjects from a dropped JSON definition, resolving sprites and creating output assets, and SceneFastLauncher is a drag-and-drop window for quickly opening project scenes, persisting the set in EditorPrefs. These close the tour by showing how the team automates asset generation and speeds up iteration, completing the picture from conventions to runtime to developer workflow.",
+      "nodeIds": [
+        "file:Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+        "file:Assets/Editor/SceneFastLauncher.cs"
+      ]
+    }
+  ]
+}

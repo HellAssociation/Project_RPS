@@ -1,0 +1,663 @@
+{
+  "nodes": [
+    {
+      "id": "file:Assets/02. Scripts/Effect/HPBarController.cs",
+      "type": "file",
+      "name": "HPBarController.cs",
+      "filePath": "Assets/02. Scripts/Effect/HPBarController.cs",
+      "summary": "MonoBehaviour that animates a UI HP bar by driving a delayed-drain shader fill effect on an instanced material via SetFloat.",
+      "tags": [
+        "component",
+        "ui",
+        "effect",
+        "shader"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Effect/HPBarController.cs:SetHP",
+      "type": "function",
+      "name": "SetHP",
+      "filePath": "Assets/02. Scripts/Effect/HPBarController.cs",
+      "lineRange": [
+        48,
+        68
+      ],
+      "summary": "Sets the target fill ratio (current/max), clamps it, and starts the delayed drain animation toward the new value.",
+      "tags": [
+        "effect",
+        "ui",
+        "state-update"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Effect/HPBarController.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "filePath": "Assets/02. Scripts/Effect/HPBarController.cs",
+      "lineRange": [
+        28,
+        44
+      ],
+      "summary": "Per-frame tick that advances the delayed-fill toward the current fill after a delay, writing the shader's delayed-fill property.",
+      "tags": [
+        "effect",
+        "update-loop",
+        "animation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Effect/HPBarController.cs:HPBarController",
+      "type": "class",
+      "name": "HPBarController",
+      "filePath": "Assets/02. Scripts/Effect/HPBarController.cs",
+      "lineRange": [
+        4,
+        69
+      ],
+      "summary": "UI HP bar controller that animates a two-layer (instant + delayed) fill using an instanced material and shader float properties.",
+      "tags": [
+        "component",
+        "ui",
+        "effect"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs",
+      "type": "file",
+      "name": "LobbyCodeUtility.cs",
+      "filePath": "Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs",
+      "summary": "Static utility for generating, validating, and normalizing alphanumeric lobby session codes used by the Photon Fusion networking layer.",
+      "tags": [
+        "utility",
+        "validation",
+        "lobby"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs:LobbyCodeUtility",
+      "type": "class",
+      "name": "LobbyCodeUtility",
+      "filePath": "Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs",
+      "lineRange": [
+        5,
+        50
+      ],
+      "summary": "Static helper providing GenerateCode, IsValidCode, and NormalizeCode for session join codes built from a restricted character set.",
+      "tags": [
+        "utility",
+        "validation",
+        "static"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/FusionLobby/LobbyPlayer.cs",
+      "type": "file",
+      "name": "LobbyPlayer.cs",
+      "filePath": "Assets/02. Scripts/FusionLobby/LobbyPlayer.cs",
+      "summary": "Immutable data model snapshot of a lobby participant (id, display name, host/ready/local flags) used to render lobby UI.",
+      "tags": [
+        "data-model",
+        "lobby",
+        "dto"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/FusionLobby/LobbyRequestResult.cs",
+      "type": "file",
+      "name": "LobbyRequestResult.cs",
+      "filePath": "Assets/02. Scripts/FusionLobby/LobbyRequestResult.cs",
+      "summary": "Result wrapper for lobby operations with static Success and Fail factory helpers carrying an optional error message.",
+      "tags": [
+        "data-model",
+        "result",
+        "lobby"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/FusionLobby/LobbySession.cs",
+      "type": "file",
+      "name": "LobbySession.cs",
+      "filePath": "Assets/02. Scripts/FusionLobby/LobbySession.cs",
+      "summary": "Mutable session-state container tracking session code, state, players, host flag, and derived readiness/fullness for the Fusion lobby.",
+      "tags": [
+        "data-model",
+        "lobby",
+        "state"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/FusionLobby/LobbySession.cs:LobbySession",
+      "type": "class",
+      "name": "LobbySession",
+      "filePath": "Assets/02. Scripts/FusionLobby/LobbySession.cs",
+      "lineRange": [
+        5,
+        78
+      ],
+      "summary": "Holds lobby session state and player list with Reset/ApplyConnected/SetState/ReplacePlayers mutators and derived IsFull/AllClientsReady properties.",
+      "tags": [
+        "data-model",
+        "lobby",
+        "state"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "type": "file",
+      "name": "PlayerNetworkObject.cs",
+      "filePath": "Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "summary": "Photon Fusion NetworkBehaviour holding [Networked] per-player state (display name, ready, assigned finger, cursor, starforce result) and exposing RPCs; uses a ChangeDetector in Render to fire LobbyDataChanged/InGameDataChanged events.",
+      "tags": [
+        "networking",
+        "data-model",
+        "photon-fusion",
+        "rpc"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Fusion NetworkBehaviour: [Networked] properties synced across clients, [Rpc] methods (RPC_*), and GetChangeDetector/DetectChanges in Render to diff networked state."
+    },
+    {
+      "id": "function:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs:Render",
+      "type": "function",
+      "name": "Render",
+      "filePath": "Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "lineRange": [
+        58,
+        121
+      ],
+      "summary": "Per-render change detection over [Networked] properties that raises LobbyDataChanged and InGameDataChanged events when synced player state changes.",
+      "tags": [
+        "networking",
+        "photon-fusion",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs:Spawned",
+      "type": "function",
+      "name": "Spawned",
+      "filePath": "Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "lineRange": [
+        40,
+        56
+      ],
+      "summary": "Fusion spawn callback that initializes the change detector, pushes the local display name via RPC, and fires initial data-changed events.",
+      "tags": [
+        "networking",
+        "photon-fusion",
+        "lifecycle"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs:PlayerNetworkObject",
+      "type": "class",
+      "name": "PlayerNetworkObject",
+      "filePath": "Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "lineRange": [
+        14,
+        153
+      ],
+      "summary": "Networked player object carrying lobby and in-game state with RPCs for display name, ready, finger extension, and starforce result.",
+      "tags": [
+        "networking",
+        "photon-fusion",
+        "data-model",
+        "rpc"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/FusionLobby/PlayerProfile.cs",
+      "type": "file",
+      "name": "PlayerProfile.cs",
+      "filePath": "Assets/02. Scripts/FusionLobby/PlayerProfile.cs",
+      "summary": "Static helper persisting the local player's display name and a generated user id to PlayerPrefs, with display-name normalization.",
+      "tags": [
+        "utility",
+        "persistence",
+        "player"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/FusionLobby/PlayerProfile.cs:PlayerProfile",
+      "type": "class",
+      "name": "PlayerProfile",
+      "filePath": "Assets/02. Scripts/FusionLobby/PlayerProfile.cs",
+      "lineRange": [
+        6,
+        50
+      ],
+      "summary": "Manages persistent local player profile (display name, user id) via PlayerPrefs with Load, SaveDisplayName, and GetOrCreateUserId.",
+      "tags": [
+        "utility",
+        "persistence",
+        "static"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "type": "file",
+      "name": "EnemyHand.cs",
+      "filePath": "Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "summary": "Hand subclass for the AI/enemy hand that randomly cycles RPS positions during a round via coroutine, caches HandSpriteData, and reports its position to InGameManager.",
+      "tags": [
+        "component",
+        "game-logic",
+        "hand",
+        "coroutine"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Game/Hand/EnemyHand.cs:RandomCycleCoroutine",
+      "type": "function",
+      "name": "RandomCycleCoroutine",
+      "filePath": "Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "lineRange": [
+        85,
+        101
+      ],
+      "summary": "Coroutine that randomizes the enemy hand position at intervals until a lock window before round end, syncing position to InGameManager.",
+      "tags": [
+        "coroutine",
+        "game-logic",
+        "hand"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Game/Hand/EnemyHand.cs:ApplyHandSpriteData",
+      "type": "function",
+      "name": "ApplyHandSpriteData",
+      "filePath": "Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "lineRange": [
+        130,
+        149
+      ],
+      "summary": "Looks up cached HandSpriteData by hand type and applies the hand sprite plus per-finger open/closed sprite data.",
+      "tags": [
+        "game-logic",
+        "hand",
+        "sprite"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Game/Hand/EnemyHand.cs:CacheHandSpriteData",
+      "type": "function",
+      "name": "CacheHandSpriteData",
+      "filePath": "Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "lineRange": [
+        115,
+        128
+      ],
+      "summary": "Builds a lookup table of HandSpriteData assets keyed by hand id for fast sprite application.",
+      "tags": [
+        "game-logic",
+        "hand",
+        "caching"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Game/Hand/EnemyHand.cs:EnemyHand",
+      "type": "class",
+      "name": "EnemyHand",
+      "filePath": "Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "lineRange": [
+        6,
+        150
+      ],
+      "summary": "Enemy hand that randomly cycles positions during a round and applies HandSpriteData visuals, extending the abstract Hand base class.",
+      "tags": [
+        "component",
+        "game-logic",
+        "hand"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Game/Hand/Finger.cs",
+      "type": "file",
+      "name": "Finger.cs",
+      "filePath": "Assets/02. Scripts/Game/Hand/Finger.cs",
+      "summary": "MonoBehaviour representing a single finger on a hand, toggling its open/closed sprite from FingerSpriteData via a SpriteRenderer.",
+      "tags": [
+        "component",
+        "game-logic",
+        "hand",
+        "sprite"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Game/Hand/Finger.cs:Finger",
+      "type": "class",
+      "name": "Finger",
+      "filePath": "Assets/02. Scripts/Game/Hand/Finger.cs",
+      "lineRange": [
+        4,
+        40
+      ],
+      "summary": "Single finger component holding finger type and open state, swapping its sprite based on FingerSpriteData.",
+      "tags": [
+        "component",
+        "game-logic",
+        "hand"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Game/Hand/Hand.cs",
+      "type": "file",
+      "name": "Hand.cs",
+      "filePath": "Assets/02. Scripts/Game/Hand/Hand.cs",
+      "summary": "Abstract base MonoBehaviour for a hand that caches its child Finger components into a lookup table and exposes finger open/close and hand-position helpers.",
+      "tags": [
+        "component",
+        "game-logic",
+        "hand",
+        "base-class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Game/Hand/Hand.cs:CacheFingers",
+      "type": "function",
+      "name": "CacheFingers",
+      "filePath": "Assets/02. Scripts/Game/Hand/Hand.cs",
+      "lineRange": [
+        22,
+        45
+      ],
+      "summary": "Collects child Finger components, validates the expected count, builds the finger lookup table, and initializes each finger.",
+      "tags": [
+        "game-logic",
+        "hand",
+        "caching"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Game/Hand/Hand.cs:Hand",
+      "type": "class",
+      "name": "Hand",
+      "filePath": "Assets/02. Scripts/Game/Hand/Hand.cs",
+      "lineRange": [
+        5,
+        80
+      ],
+      "summary": "Abstract hand base providing finger caching, lookup, sprite assignment, position application, and CloseAll for player and enemy hands.",
+      "tags": [
+        "component",
+        "game-logic",
+        "base-class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Game/Hand/HandSpriteData.cs",
+      "type": "file",
+      "name": "HandSpriteData.cs",
+      "filePath": "Assets/02. Scripts/Game/Hand/HandSpriteData.cs",
+      "summary": "ScriptableObject asset holding a hand id, hand sprite, and per-finger open/closed sprites with a GetFingerSprite lookup.",
+      "tags": [
+        "data-model",
+        "scriptable-object",
+        "sprite"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Game/Hand/HandSpriteData.cs:HandSpriteData",
+      "type": "class",
+      "name": "HandSpriteData",
+      "filePath": "Assets/02. Scripts/Game/Hand/HandSpriteData.cs",
+      "lineRange": [
+        4,
+        47
+      ],
+      "summary": "ScriptableObject defining a hand's sprite set and resolving finger sprites by finger type and open state.",
+      "tags": [
+        "data-model",
+        "scriptable-object",
+        "sprite"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Game/Hand/PlayerHand.cs",
+      "type": "file",
+      "name": "PlayerHand.cs",
+      "filePath": "Assets/02. Scripts/Game/Hand/PlayerHand.cs",
+      "summary": "Hand subclass for the local player that tracks an active finger and applies finger open/closed state and masks driven by player input events.",
+      "tags": [
+        "component",
+        "game-logic",
+        "hand"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Game/Hand/PlayerHand.cs:PlayerHand",
+      "type": "class",
+      "name": "PlayerHand",
+      "filePath": "Assets/02. Scripts/Game/Hand/PlayerHand.cs",
+      "lineRange": [
+        4,
+        43
+      ],
+      "summary": "Player-controlled hand extending Hand, assigning an active finger and applying open state and finger masks.",
+      "tags": [
+        "component",
+        "game-logic",
+        "hand"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Game/ModeData.cs",
+      "type": "file",
+      "name": "ModeData.cs",
+      "filePath": "Assets/02. Scripts/Game/ModeData.cs",
+      "summary": "Tiny data holder exposing the IsSingleControl flag that selects between single- and multi-control game input modes.",
+      "tags": [
+        "data-model",
+        "config",
+        "game-mode"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:Assets/02. Scripts/Effect/HPBarController.cs",
+      "target": "function:Assets/02. Scripts/Effect/HPBarController.cs:SetHP",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Effect/HPBarController.cs",
+      "target": "function:Assets/02. Scripts/Effect/HPBarController.cs:Update",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Effect/HPBarController.cs",
+      "target": "class:Assets/02. Scripts/Effect/HPBarController.cs:HPBarController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs",
+      "target": "class:Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs:LobbyCodeUtility",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/FusionLobby/LobbySession.cs",
+      "target": "class:Assets/02. Scripts/FusionLobby/LobbySession.cs:LobbySession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:Assets/02. Scripts/FusionLobby/LobbySession.cs:LobbySession",
+      "target": "file:Assets/02. Scripts/FusionLobby/LobbyPlayer.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "target": "function:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs:Render",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "target": "function:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs:Spawned",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "target": "class:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs:PlayerNetworkObject",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/FusionLobby/PlayerProfile.cs",
+      "target": "class:Assets/02. Scripts/FusionLobby/PlayerProfile.cs:PlayerProfile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "target": "function:Assets/02. Scripts/Game/Hand/EnemyHand.cs:RandomCycleCoroutine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "target": "function:Assets/02. Scripts/Game/Hand/EnemyHand.cs:ApplyHandSpriteData",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "target": "function:Assets/02. Scripts/Game/Hand/EnemyHand.cs:CacheHandSpriteData",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "target": "class:Assets/02. Scripts/Game/Hand/EnemyHand.cs:EnemyHand",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:Assets/02. Scripts/Game/Hand/EnemyHand.cs:EnemyHand",
+      "target": "class:Assets/02. Scripts/Game/Hand/Hand.cs:Hand",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "target": "file:Assets/02. Scripts/Game/Hand/HandSpriteData.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "target": "file:Assets/02. Scripts/Game/Hand/Finger.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "target": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/Finger.cs",
+      "target": "class:Assets/02. Scripts/Game/Hand/Finger.cs:Finger",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/Hand.cs",
+      "target": "function:Assets/02. Scripts/Game/Hand/Hand.cs:CacheFingers",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/Hand.cs",
+      "target": "class:Assets/02. Scripts/Game/Hand/Hand.cs:Hand",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/Hand.cs",
+      "target": "file:Assets/02. Scripts/Game/Hand/Finger.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/HandSpriteData.cs",
+      "target": "class:Assets/02. Scripts/Game/Hand/HandSpriteData.cs:HandSpriteData",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Game/Hand/PlayerHand.cs",
+      "target": "class:Assets/02. Scripts/Game/Hand/PlayerHand.cs:PlayerHand",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:Assets/02. Scripts/Game/Hand/PlayerHand.cs:PlayerHand",
+      "target": "class:Assets/02. Scripts/Game/Hand/Hand.cs:Hand",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    }
+  ]
+}

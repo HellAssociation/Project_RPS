@@ -19,7 +19,27 @@ public class NextIconPanel : PanelBase
 
     [SerializeField] float _tweenDuration = 0.35f;
 
-    readonly Queue<EHandPosition> _queue = new();
+    // Display = icon shown to players (Random stays hidden as "?"); Resolved = actual hand for judging.
+    readonly struct HandSlot
+    {
+        public readonly EHandPosition Display;
+        public readonly EHandPosition Resolved;
+        public HandSlot(EHandPosition display, EHandPosition resolved)
+        {
+            Display = display;
+            Resolved = resolved;
+        }
+    }
+
+    static readonly EHandPosition[] ValidPositions =
+    {
+        EHandPosition.Rock,
+        EHandPosition.Paper,
+        EHandPosition.Scissors,
+    };
+
+    readonly Queue<HandSlot> _queue = new();
+    System.Random _rng = new();
 
     NextIconSlot currentSlot;
     NextIconSlot nextSlot;
@@ -29,7 +49,9 @@ public class NextIconPanel : PanelBase
     readonly Vector2 rightPosition   = new(88f, 0f);
 
     EHandPosition _currentHandPosition;
+    EHandPosition _currentResolvedHandPosition;
     public EHandPosition CurrentHandPosition => _currentHandPosition;
+    public EHandPosition CurrentResolvedHandPosition => _currentResolvedHandPosition;
 
     protected override void Awake()
     {
@@ -40,11 +62,12 @@ public class NextIconPanel : PanelBase
 
     void Start()
     {
-        GenerateQueue();
+        GenerateQueue(0);
         LoadInitialSlots();
 
         InGameManager inGame = App.SceneManager.InGame;
         if (inGame == null) return;
+        inGame.OnStageOpened     += HandleStageOpened;
         inGame.OnReadyStarted    += HandleReadyStarted;
         inGame.OnWaveStarted     += HandleWaveStarted;
         inGame.OnWaveResultShown += HandleWaveResultShown;
@@ -54,13 +77,22 @@ public class NextIconPanel : PanelBase
     {
         InGameManager inGame = App.SceneManager.InGame;
         if (inGame == null) return;
+        inGame.OnStageOpened     -= HandleStageOpened;
         inGame.OnReadyStarted    -= HandleReadyStarted;
         inGame.OnWaveStarted     -= HandleWaveStarted;
         inGame.OnWaveResultShown -= HandleWaveResultShown;
     }
 
-    void GenerateQueue()
+    void HandleStageOpened(int _)
     {
+        InGameManager inGame = App.SceneManager.InGame;
+        GenerateQueue(inGame != null ? inGame.EnemySeed : 0);
+        LoadInitialSlots();
+    }
+
+    void GenerateQueue(int seed)
+    {
+        _rng = new System.Random(seed);
         _queue.Clear();
 
         EHandPosition[] pool =
@@ -80,12 +112,12 @@ public class NextIconPanel : PanelBase
 
         for (int i = pool.Length - 1; i > 0; i--)
         {
-            int j = Random.Range(0, i + 1);
+            int j = _rng.Next(i + 1);
             (pool[i], pool[j]) = (pool[j], pool[i]);
         }
 
         foreach (var pos in pool)
-            _queue.Enqueue(pos);
+            _queue.Enqueue(MakeSlot(pos));
     }
 
     void LoadInitialSlots()
@@ -99,7 +131,8 @@ public class NextIconPanel : PanelBase
         currentSlot.Rect.anchoredPosition = rightPosition;
         nextSlot.Rect.anchoredPosition    = rightPosition;
 
-        _currentHandPosition = currentSlot.HandPosition;
+        _currentHandPosition         = currentSlot.HandPosition;
+        _currentResolvedHandPosition = currentSlot.ResolvedHandPosition;
     }
 
     void HandleReadyStarted()
@@ -110,7 +143,8 @@ public class NextIconPanel : PanelBase
 
     void HandleWaveStarted(float _)
     {
-        _currentHandPosition = currentSlot.HandPosition;
+        _currentHandPosition         = currentSlot.HandPosition;
+        _currentResolvedHandPosition = currentSlot.ResolvedHandPosition;
 
         currentSlot.Rect.DOKill();
         currentSlot.Rect.DOAnchorPos(leftPosition, _tweenDuration).SetEase(Ease.InOutQuad)
@@ -132,17 +166,25 @@ public class NextIconPanel : PanelBase
         nextSlot    = recycled;
     }
 
-    void LoadSlot(NextIconSlot slot, EHandPosition position)
+    void LoadSlot(NextIconSlot slot, HandSlot hand)
     {
-        slot.SetSlot(position, GetSprite(position));
+        slot.SetSlot(hand.Display, hand.Resolved, GetSprite(hand.Display));
     }
 
-    EHandPosition Dequeue()
+    HandSlot Dequeue()
     {
         if (_queue.Count > 0) return _queue.Dequeue();
 
         EHandPosition[] options = { EHandPosition.Rock, EHandPosition.Paper, EHandPosition.Scissors, EHandPosition.Random };
-        return options[Random.Range(0, options.Length)];
+        return MakeSlot(options[_rng.Next(options.Length)]);
+    }
+
+    HandSlot MakeSlot(EHandPosition display)
+    {
+        EHandPosition resolved = display == EHandPosition.Random
+            ? ValidPositions[_rng.Next(ValidPositions.Length)]
+            : display;
+        return new HandSlot(display, resolved);
     }
 
     public Sprite GetSprite(EHandPosition handPosition)

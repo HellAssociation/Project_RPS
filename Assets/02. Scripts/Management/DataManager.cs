@@ -47,6 +47,20 @@ public class DataManager : DataManagerBase
     public bool TryGetEnemy(EEnemyType key, out EnemyData data)       => _enemyData.TryGetValue(key, out data);
     public bool TryGetRound(ERound key, out RoundData data)           => _roundData.TryGetValue(key, out data);
 
+    /// <summary>로드된 모든 축복 카드의 인덱스(=CardRef.Index)를 채웁니다. 카드 드로우 풀 구성용.</summary>
+    public void GetBoonIndices(List<int> buffer)
+    {
+        buffer.Clear();
+        foreach (EBoon key in _boonData.Keys) buffer.Add((int)key);
+    }
+
+    /// <summary>로드된 모든 저주 카드의 인덱스(=CardRef.Index)를 채웁니다. 카드 드로우 풀 구성용.</summary>
+    public void GetDeviationIndices(List<int> buffer)
+    {
+        buffer.Clear();
+        foreach (EDeviation key in _deviationData.Keys) buffer.Add((int)key);
+    }
+
     IEnumerator LoadDataToDictionaryAsync<TKey, TValue>(string dataName, Dictionary<TKey, TValue> targetDictionary)
         where TKey : struct, Enum
         where TValue : IGameData

@@ -1,0 +1,6293 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 25,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "Assets/02. Scripts/Effect/HPBarController.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 69,
+      "nonEmptyLines": 58,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 21,
+          "endLine": 26,
+          "params": []
+        },
+        {
+          "name": "Update",
+          "startLine": 28,
+          "endLine": 44,
+          "params": []
+        },
+        {
+          "name": "SetHP",
+          "startLine": 48,
+          "endLine": 68,
+          "params": [
+            "current",
+            "max"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "HPBarController",
+          "startLine": 4,
+          "endLine": 69,
+          "methods": [
+            "Awake",
+            "Update",
+            "SetHP"
+          ],
+          "properties": [
+            "delaySeconds",
+            "drainSpeed",
+            "_mat",
+            "_currentFill",
+            "_delayedFill",
+            "_drainTimer",
+            "_draining",
+            "PropFill",
+            "PropDelayed"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "SetHP",
+          "line": 48,
+          "isDefault": false
+        },
+        {
+          "name": "HPBarController",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "Instantiate",
+          "lineNumber": 24
+        },
+        {
+          "caller": "Awake",
+          "callee": "GetComponent<Image>",
+          "lineNumber": 24
+        },
+        {
+          "caller": "Awake",
+          "callee": "GetComponent<Image>",
+          "lineNumber": 25
+        },
+        {
+          "caller": "Update",
+          "callee": "Mathf.Max",
+          "lineNumber": 41
+        },
+        {
+          "caller": "Update",
+          "callee": "_mat.SetFloat",
+          "lineNumber": 42
+        },
+        {
+          "caller": "SetHP",
+          "callee": "Mathf.Clamp01",
+          "lineNumber": 50
+        },
+        {
+          "caller": "SetHP",
+          "callee": "_mat.SetFloat",
+          "lineNumber": 60
+        },
+        {
+          "caller": "SetHP",
+          "callee": "_mat.SetFloat",
+          "lineNumber": 66
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 3,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 50,
+      "nonEmptyLines": 42,
+      "functions": [
+        {
+          "name": "GenerateCode",
+          "startLine": 10,
+          "endLine": 20,
+          "params": [
+            "length"
+          ]
+        },
+        {
+          "name": "IsValidCode",
+          "startLine": 22,
+          "endLine": 44,
+          "params": [
+            "code"
+          ]
+        },
+        {
+          "name": "NormalizeCode",
+          "startLine": 46,
+          "endLine": 49,
+          "params": [
+            "code"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "LobbyCodeUtility",
+          "startLine": 5,
+          "endLine": 50,
+          "methods": [
+            "GenerateCode",
+            "IsValidCode",
+            "NormalizeCode"
+          ],
+          "properties": [
+            "CodeChars",
+            "DefaultCodeLength"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GenerateCode",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "IsValidCode",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "NormalizeCode",
+          "line": 46,
+          "isDefault": false
+        },
+        {
+          "name": "LobbyCodeUtility",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GenerateCode",
+          "callee": "new StringBuilder",
+          "lineNumber": 12
+        },
+        {
+          "caller": "GenerateCode",
+          "callee": "UnityEngine.Random.Range",
+          "lineNumber": 15
+        },
+        {
+          "caller": "GenerateCode",
+          "callee": "builder.Append",
+          "lineNumber": 16
+        },
+        {
+          "caller": "GenerateCode",
+          "callee": "builder.ToString",
+          "lineNumber": 19
+        },
+        {
+          "caller": "IsValidCode",
+          "callee": "string.IsNullOrWhiteSpace",
+          "lineNumber": 24
+        },
+        {
+          "caller": "IsValidCode",
+          "callee": "NormalizeCode",
+          "lineNumber": 29
+        },
+        {
+          "caller": "IsValidCode",
+          "callee": "CodeChars.IndexOf",
+          "lineNumber": 37
+        },
+        {
+          "caller": "NormalizeCode",
+          "callee": "code.Trim().ToUpperInvariant",
+          "lineNumber": 48
+        },
+        {
+          "caller": "NormalizeCode",
+          "callee": "code.Trim",
+          "lineNumber": 48
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 3,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/FusionLobby/LobbyPlayer.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 20,
+      "nonEmptyLines": 18,
+      "functions": [
+        {
+          "name": "LobbyPlayer",
+          "startLine": 12,
+          "endLine": 19,
+          "params": [
+            "playerId",
+            "displayName",
+            "isHost",
+            "isLocal"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "LobbyPlayer",
+          "startLine": 3,
+          "endLine": 20,
+          "methods": [
+            "LobbyPlayer"
+          ],
+          "properties": [
+            "PlayerId",
+            "DisplayName",
+            "IsHost",
+            "IsReady",
+            "IsLocal"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "PlayerId",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "DisplayName",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "IsHost",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "IsReady",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "IsLocal",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "LobbyPlayer",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "LobbyPlayer",
+          "line": 3,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 7,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/FusionLobby/LobbyRequestResult.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 21,
+      "nonEmptyLines": 18,
+      "callGraph": [
+        {
+          "caller": "Success",
+          "callee": "new LobbyRequestResult",
+          "lineNumber": 14
+        },
+        {
+          "caller": "Fail",
+          "callee": "new LobbyRequestResult",
+          "lineNumber": 19
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/FusionLobby/LobbySession.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 78,
+      "nonEmptyLines": 68,
+      "functions": [
+        {
+          "name": "Reset",
+          "startLine": 49,
+          "endLine": 57,
+          "params": []
+        },
+        {
+          "name": "ApplyConnected",
+          "startLine": 59,
+          "endLine": 66,
+          "params": [
+            "sessionCode",
+            "maxPlayers",
+            "isHost",
+            "localPlayerId"
+          ]
+        },
+        {
+          "name": "SetState",
+          "startLine": 68,
+          "endLine": 71,
+          "params": [
+            "state"
+          ]
+        },
+        {
+          "name": "ReplacePlayers",
+          "startLine": 73,
+          "endLine": 77,
+          "params": [
+            "players"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "LobbySession",
+          "startLine": 5,
+          "endLine": 78,
+          "methods": [
+            "Reset",
+            "ApplyConnected",
+            "SetState",
+            "ReplacePlayers"
+          ],
+          "properties": [
+            "_players",
+            "SessionCode",
+            "State",
+            "MaxPlayers",
+            "IsHost",
+            "LocalPlayerId",
+            "Players",
+            "PlayerCount",
+            "IsFull",
+            "AllClientsReady"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "SessionCode",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "State",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "MaxPlayers",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "IsHost",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "LocalPlayerId",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "Players",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "PlayerCount",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "IsFull",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "AllClientsReady",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "Reset",
+          "line": 49,
+          "isDefault": false
+        },
+        {
+          "name": "ApplyConnected",
+          "line": 59,
+          "isDefault": false
+        },
+        {
+          "name": "SetState",
+          "line": 68,
+          "isDefault": false
+        },
+        {
+          "name": "ReplacePlayers",
+          "line": 73,
+          "isDefault": false
+        },
+        {
+          "name": "LobbySession",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Reset",
+          "callee": "_players.Clear",
+          "lineNumber": 56
+        },
+        {
+          "caller": "ReplacePlayers",
+          "callee": "_players.Clear",
+          "lineNumber": 75
+        },
+        {
+          "caller": "ReplacePlayers",
+          "callee": "_players.AddRange",
+          "lineNumber": 76
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 14,
+        "functionCount": 4,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 153,
+      "nonEmptyLines": 131,
+      "functions": [
+        {
+          "name": "Spawned",
+          "startLine": 40,
+          "endLine": 56,
+          "params": []
+        },
+        {
+          "name": "Render",
+          "startLine": 58,
+          "endLine": 121,
+          "params": []
+        },
+        {
+          "name": "Despawned",
+          "startLine": 123,
+          "endLine": 127,
+          "params": [
+            "runner",
+            "hasState"
+          ]
+        },
+        {
+          "name": "RPC_SetDisplayName",
+          "startLine": 129,
+          "endLine": 133,
+          "params": [
+            "displayName"
+          ]
+        },
+        {
+          "name": "RPC_SetReady",
+          "startLine": 135,
+          "endLine": 139,
+          "params": [
+            "isReady"
+          ]
+        },
+        {
+          "name": "RPC_SetFingerExtended",
+          "startLine": 141,
+          "endLine": 145,
+          "params": [
+            "isExtended"
+          ]
+        },
+        {
+          "name": "RPC_SetStarforceResult",
+          "startLine": 147,
+          "endLine": 152,
+          "params": [
+            "result",
+            "stopRatio"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "PlayerNetworkObject",
+          "startLine": 14,
+          "endLine": 153,
+          "methods": [
+            "Spawned",
+            "Render",
+            "Despawned",
+            "RPC_SetDisplayName",
+            "RPC_SetReady",
+            "RPC_SetFingerExtended",
+            "RPC_SetStarforceResult"
+          ],
+          "properties": [
+            "DisplayName",
+            "IsReady",
+            "AssignedFinger",
+            "IsFingerExtended",
+            "CursorScreenPos",
+            "StarforceColor",
+            "StarforceResult",
+            "StarforceStopRatio",
+            "StarforceStartTime",
+            "StarforceCycleSeconds",
+            "_changeDetector",
+            "PlayerId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "DisplayName",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "IsReady",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "AssignedFinger",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "IsFingerExtended",
+          "line": 25,
+          "isDefault": false
+        },
+        {
+          "name": "CursorScreenPos",
+          "line": 26,
+          "isDefault": false
+        },
+        {
+          "name": "StarforceColor",
+          "line": 28,
+          "isDefault": false
+        },
+        {
+          "name": "StarforceResult",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "StarforceStopRatio",
+          "line": 30,
+          "isDefault": false
+        },
+        {
+          "name": "StarforceStartTime",
+          "line": 31,
+          "isDefault": false
+        },
+        {
+          "name": "StarforceCycleSeconds",
+          "line": 32,
+          "isDefault": false
+        },
+        {
+          "name": "PlayerId",
+          "line": 36,
+          "isDefault": false
+        },
+        {
+          "name": "Spawned",
+          "line": 40,
+          "isDefault": false
+        },
+        {
+          "name": "Render",
+          "line": 58,
+          "isDefault": false
+        },
+        {
+          "name": "Despawned",
+          "line": 123,
+          "isDefault": false
+        },
+        {
+          "name": "RPC_SetDisplayName",
+          "line": 129,
+          "isDefault": false
+        },
+        {
+          "name": "RPC_SetReady",
+          "line": 135,
+          "isDefault": false
+        },
+        {
+          "name": "RPC_SetFingerExtended",
+          "line": 141,
+          "isDefault": false
+        },
+        {
+          "name": "RPC_SetStarforceResult",
+          "line": 147,
+          "isDefault": false
+        },
+        {
+          "name": "PlayerNetworkObject",
+          "line": 14,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Spawned",
+          "callee": "GetChangeDetector",
+          "lineNumber": 42
+        },
+        {
+          "caller": "Spawned",
+          "callee": "RPC_SetDisplayName",
+          "lineNumber": 51
+        },
+        {
+          "caller": "Spawned",
+          "callee": "LobbyDataChanged?.Invoke",
+          "lineNumber": 54
+        },
+        {
+          "caller": "Spawned",
+          "callee": "InGameDataChanged?.Invoke",
+          "lineNumber": 55
+        },
+        {
+          "caller": "Render",
+          "callee": "_changeDetector.DetectChanges",
+          "lineNumber": 69
+        },
+        {
+          "caller": "Render",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 103
+        },
+        {
+          "caller": "Render",
+          "callee": "Debug.Log",
+          "lineNumber": 108
+        },
+        {
+          "caller": "Render",
+          "callee": "LobbyDataChanged?.Invoke",
+          "lineNumber": 114
+        },
+        {
+          "caller": "Render",
+          "callee": "InGameDataChanged?.Invoke",
+          "lineNumber": 119
+        },
+        {
+          "caller": "Despawned",
+          "callee": "LobbyDataChanged?.Invoke",
+          "lineNumber": 125
+        },
+        {
+          "caller": "Despawned",
+          "callee": "InGameDataChanged?.Invoke",
+          "lineNumber": 126
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 19,
+        "functionCount": 7,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/FusionLobby/PlayerProfile.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 50,
+      "nonEmptyLines": 42,
+      "functions": [
+        {
+          "name": "Load",
+          "startLine": 14,
+          "endLine": 18,
+          "params": []
+        },
+        {
+          "name": "SaveDisplayName",
+          "startLine": 20,
+          "endLine": 25,
+          "params": [
+            "displayName"
+          ]
+        },
+        {
+          "name": "GetOrCreateUserId",
+          "startLine": 27,
+          "endLine": 38,
+          "params": []
+        },
+        {
+          "name": "NormalizeDisplayName",
+          "startLine": 40,
+          "endLine": 49,
+          "params": [
+            "displayName"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "PlayerProfile",
+          "startLine": 6,
+          "endLine": 50,
+          "methods": [
+            "Load",
+            "SaveDisplayName",
+            "GetOrCreateUserId",
+            "NormalizeDisplayName"
+          ],
+          "properties": [
+            "KeyDisplayName",
+            "KeyUserId",
+            "DisplayName",
+            "UserId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "DisplayName",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "UserId",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "Load",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "SaveDisplayName",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "GetOrCreateUserId",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "NormalizeDisplayName",
+          "line": 40,
+          "isDefault": false
+        },
+        {
+          "name": "PlayerProfile",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Load",
+          "callee": "PlayerPrefs.GetString",
+          "lineNumber": 16
+        },
+        {
+          "caller": "Load",
+          "callee": "PlayerPrefs.GetString",
+          "lineNumber": 17
+        },
+        {
+          "caller": "SaveDisplayName",
+          "callee": "NormalizeDisplayName",
+          "lineNumber": 22
+        },
+        {
+          "caller": "SaveDisplayName",
+          "callee": "PlayerPrefs.SetString",
+          "lineNumber": 23
+        },
+        {
+          "caller": "SaveDisplayName",
+          "callee": "PlayerPrefs.Save",
+          "lineNumber": 24
+        },
+        {
+          "caller": "GetOrCreateUserId",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 29
+        },
+        {
+          "caller": "GetOrCreateUserId",
+          "callee": "System.Guid.NewGuid().ToString",
+          "lineNumber": 34
+        },
+        {
+          "caller": "GetOrCreateUserId",
+          "callee": "System.Guid.NewGuid",
+          "lineNumber": 34
+        },
+        {
+          "caller": "GetOrCreateUserId",
+          "callee": "PlayerPrefs.SetString",
+          "lineNumber": 35
+        },
+        {
+          "caller": "GetOrCreateUserId",
+          "callee": "PlayerPrefs.Save",
+          "lineNumber": 36
+        },
+        {
+          "caller": "NormalizeDisplayName",
+          "callee": "string.IsNullOrWhiteSpace",
+          "lineNumber": 42
+        },
+        {
+          "caller": "NormalizeDisplayName",
+          "callee": "displayName.Trim",
+          "lineNumber": 47
+        },
+        {
+          "caller": "NormalizeDisplayName",
+          "callee": "displayName.Substring",
+          "lineNumber": 48
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 7,
+        "functionCount": 4,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 150,
+      "nonEmptyLines": 122,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 34,
+          "endLine": 38,
+          "params": []
+        },
+        {
+          "name": "Start",
+          "startLine": 40,
+          "endLine": 48,
+          "params": []
+        },
+        {
+          "name": "OnDestroy",
+          "startLine": 50,
+          "endLine": 56,
+          "params": []
+        },
+        {
+          "name": "HandleStageOpened",
+          "startLine": 58,
+          "endLine": 62,
+          "params": [
+            "stageIndex"
+          ]
+        },
+        {
+          "name": "HandleRoundStarted",
+          "startLine": 64,
+          "endLine": 83,
+          "params": [
+            "duration"
+          ]
+        },
+        {
+          "name": "RandomCycleCoroutine",
+          "startLine": 85,
+          "endLine": 101,
+          "params": [
+            "totalDuration"
+          ]
+        },
+        {
+          "name": "GetFrontSlotPosition",
+          "startLine": 104,
+          "endLine": 113,
+          "params": []
+        },
+        {
+          "name": "CacheHandSpriteData",
+          "startLine": 115,
+          "endLine": 128,
+          "params": []
+        },
+        {
+          "name": "ApplyHandSpriteData",
+          "startLine": 130,
+          "endLine": 149,
+          "params": [
+            "_handType"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "EnemyHand",
+          "startLine": 6,
+          "endLine": 150,
+          "methods": [
+            "Awake",
+            "Start",
+            "OnDestroy",
+            "HandleStageOpened",
+            "HandleRoundStarted",
+            "RandomCycleCoroutine",
+            "GetFrontSlotPosition",
+            "CacheHandSpriteData",
+            "ApplyHandSpriteData"
+          ],
+          "properties": [
+            "VALID_POSITIONS",
+            "FINGER_TYPES",
+            "RANDOM_CYCLE_INTERVAL",
+            "LOCK_BEFORE_END",
+            "HAND_SPRITE_DATA_COUNT",
+            "handSpriteDataSet",
+            "handSpriteDataTable",
+            "_randomCoroutine"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ApplyHandSpriteData",
+          "line": 130,
+          "isDefault": false
+        },
+        {
+          "name": "EnemyHand",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 36
+        },
+        {
+          "caller": "Awake",
+          "callee": "CacheHandSpriteData",
+          "lineNumber": 37
+        },
+        {
+          "caller": "Start",
+          "callee": "CloseAll",
+          "lineNumber": 42
+        },
+        {
+          "caller": "HandleStageOpened",
+          "callee": "ApplyHandSpriteData",
+          "lineNumber": 61
+        },
+        {
+          "caller": "HandleRoundStarted",
+          "callee": "StopCoroutine",
+          "lineNumber": 68
+        },
+        {
+          "caller": "HandleRoundStarted",
+          "callee": "GetFrontSlotPosition",
+          "lineNumber": 72
+        },
+        {
+          "caller": "HandleRoundStarted",
+          "callee": "StartCoroutine",
+          "lineNumber": 76
+        },
+        {
+          "caller": "HandleRoundStarted",
+          "callee": "RandomCycleCoroutine",
+          "lineNumber": 76
+        },
+        {
+          "caller": "HandleRoundStarted",
+          "callee": "ApplyHandPosition",
+          "lineNumber": 80
+        },
+        {
+          "caller": "HandleRoundStarted",
+          "callee": "App.SceneManager.InGame?.SetEnemyHandPosition",
+          "lineNumber": 81
+        },
+        {
+          "caller": "RandomCycleCoroutine",
+          "callee": "Mathf.Max",
+          "lineNumber": 88
+        },
+        {
+          "caller": "RandomCycleCoroutine",
+          "callee": "ApplyHandPosition",
+          "lineNumber": 92
+        },
+        {
+          "caller": "RandomCycleCoroutine",
+          "callee": "Random.Range",
+          "lineNumber": 92
+        },
+        {
+          "caller": "RandomCycleCoroutine",
+          "callee": "new WaitForSeconds",
+          "lineNumber": 93
+        },
+        {
+          "caller": "RandomCycleCoroutine",
+          "callee": "Random.Range",
+          "lineNumber": 97
+        },
+        {
+          "caller": "RandomCycleCoroutine",
+          "callee": "ApplyHandPosition",
+          "lineNumber": 98
+        },
+        {
+          "caller": "RandomCycleCoroutine",
+          "callee": "App.SceneManager.InGame?.SetEnemyHandPosition",
+          "lineNumber": 99
+        },
+        {
+          "caller": "GetFrontSlotPosition",
+          "callee": "ui.TryGetPanel",
+          "lineNumber": 109
+        },
+        {
+          "caller": "CacheHandSpriteData",
+          "callee": "handSpriteDataTable.TryAdd",
+          "lineNumber": 125
+        },
+        {
+          "caller": "CacheHandSpriteData",
+          "callee": "Debug.LogError",
+          "lineNumber": 126
+        },
+        {
+          "caller": "ApplyHandSpriteData",
+          "callee": "handSpriteDataTable.TryGetValue",
+          "lineNumber": 132
+        },
+        {
+          "caller": "ApplyHandSpriteData",
+          "callee": "Debug.LogError",
+          "lineNumber": 134
+        },
+        {
+          "caller": "ApplyHandSpriteData",
+          "callee": "SetHandSprite",
+          "lineNumber": 138
+        },
+        {
+          "caller": "ApplyHandSpriteData",
+          "callee": "GetFinger",
+          "lineNumber": 142
+        },
+        {
+          "caller": "ApplyHandSpriteData",
+          "callee": "finger.SetSpriteData",
+          "lineNumber": 145
+        },
+        {
+          "caller": "ApplyHandSpriteData",
+          "callee": "new FingerSpriteData",
+          "lineNumber": 145
+        },
+        {
+          "caller": "ApplyHandSpriteData",
+          "callee": "data.GetFingerSprite",
+          "lineNumber": 146
+        },
+        {
+          "caller": "ApplyHandSpriteData",
+          "callee": "data.GetFingerSprite",
+          "lineNumber": 147
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 9,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Game/Hand/Finger.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 54,
+      "nonEmptyLines": 43,
+      "functions": [
+        {
+          "name": "Init",
+          "startLine": 15,
+          "endLine": 21,
+          "params": []
+        },
+        {
+          "name": "SetOpen",
+          "startLine": 23,
+          "endLine": 27,
+          "params": [
+            "_isOpen"
+          ]
+        },
+        {
+          "name": "SetSpriteData",
+          "startLine": 29,
+          "endLine": 33,
+          "params": [
+            "_data"
+          ]
+        },
+        {
+          "name": "ChangeSprite",
+          "startLine": 35,
+          "endLine": 39,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "Finger",
+          "startLine": 4,
+          "endLine": 40,
+          "methods": [
+            "Init",
+            "SetOpen",
+            "SetSpriteData",
+            "ChangeSprite"
+          ],
+          "properties": [
+            "fingerType",
+            "spriteRenderer",
+            "fingerSpriteData",
+            "FingerType",
+            "isOpen",
+            "IsOpen"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "FingerType",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "IsOpen",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "Init",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "SetOpen",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "SetSpriteData",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "Finger",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Init",
+          "callee": "GetComponent<SpriteRenderer>",
+          "lineNumber": 18
+        },
+        {
+          "caller": "Init",
+          "callee": "SetOpen",
+          "lineNumber": 20
+        },
+        {
+          "caller": "SetOpen",
+          "callee": "ChangeSprite",
+          "lineNumber": 26
+        },
+        {
+          "caller": "SetSpriteData",
+          "callee": "ChangeSprite",
+          "lineNumber": 32
+        },
+        {
+          "caller": "ChangeSprite",
+          "callee": "fingerSpriteData.GetFingerSprite",
+          "lineNumber": 38
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 6,
+        "functionCount": 4,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Game/Hand/Hand.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 94,
+      "nonEmptyLines": 77,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 14,
+          "endLine": 20,
+          "params": []
+        },
+        {
+          "name": "CacheFingers",
+          "startLine": 22,
+          "endLine": 45,
+          "params": []
+        },
+        {
+          "name": "GetFinger",
+          "startLine": 47,
+          "endLine": 54,
+          "params": [
+            "_fingerType"
+          ]
+        },
+        {
+          "name": "SetHandSprite",
+          "startLine": 56,
+          "endLine": 60,
+          "params": [
+            "_sprite"
+          ]
+        },
+        {
+          "name": "ApplyHandPosition",
+          "startLine": 63,
+          "endLine": 72,
+          "params": [
+            "handPosition"
+          ]
+        },
+        {
+          "name": "CloseAll",
+          "startLine": 74,
+          "endLine": 79,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "Hand",
+          "startLine": 5,
+          "endLine": 80,
+          "methods": [
+            "Awake",
+            "CacheFingers",
+            "GetFinger",
+            "SetHandSprite",
+            "ApplyHandPosition",
+            "CloseAll"
+          ],
+          "properties": [
+            "handSpriteRenderer",
+            "fingers",
+            "FINGER_COUNT",
+            "fingerTable"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Hand",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "GetComponent<SpriteRenderer>",
+          "lineNumber": 17
+        },
+        {
+          "caller": "Awake",
+          "callee": "CacheFingers",
+          "lineNumber": 19
+        },
+        {
+          "caller": "CacheFingers",
+          "callee": "GetComponentsInChildren<Finger>",
+          "lineNumber": 25
+        },
+        {
+          "caller": "CacheFingers",
+          "callee": "Debug.LogError",
+          "lineNumber": 29
+        },
+        {
+          "caller": "CacheFingers",
+          "callee": "fingerTable.TryAdd",
+          "lineNumber": 37
+        },
+        {
+          "caller": "CacheFingers",
+          "callee": "Debug.LogError",
+          "lineNumber": 39
+        },
+        {
+          "caller": "CacheFingers",
+          "callee": "fingers[i].Init",
+          "lineNumber": 43
+        },
+        {
+          "caller": "GetFinger",
+          "callee": "fingerTable.TryGetValue",
+          "lineNumber": 49
+        },
+        {
+          "caller": "GetFinger",
+          "callee": "Debug.LogError",
+          "lineNumber": 52
+        },
+        {
+          "caller": "ApplyHandPosition",
+          "callee": "kvp.Value.SetOpen",
+          "lineNumber": 71
+        },
+        {
+          "caller": "CloseAll",
+          "callee": "kvp.Value.SetOpen",
+          "lineNumber": 78
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 6,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Game/Hand/HandSpriteData.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 47,
+      "nonEmptyLines": 39,
+      "functions": [
+        {
+          "name": "GetFingerSprite",
+          "startLine": 18,
+          "endLine": 27,
+          "params": [
+            "_fingerType",
+            "_isOpen"
+          ]
+        },
+        {
+          "name": "FingerIndex",
+          "startLine": 38,
+          "endLine": 46,
+          "params": [
+            "_fingerType"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "HandSpriteData",
+          "startLine": 4,
+          "endLine": 47,
+          "methods": [
+            "GetFingerSprite",
+            "FingerIndex"
+          ],
+          "properties": [
+            "FINGER_SPRITE_COUNT",
+            "handId",
+            "handSprite",
+            "fingerSprites",
+            "HandId",
+            "HandSprite",
+            "FingerSprites"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "FINGER_SPRITE_COUNT",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "HandId",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "HandSprite",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "FingerSprites",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "GetFingerSprite",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "HandSpriteData",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GetFingerSprite",
+          "callee": "FingerIndex",
+          "lineNumber": 20
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 6,
+        "functionCount": 2,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Game/Hand/PlayerHand.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 43,
+      "nonEmptyLines": 37,
+      "functions": [
+        {
+          "name": "Start",
+          "startLine": 8,
+          "endLine": 15,
+          "params": []
+        },
+        {
+          "name": "OnDestroy",
+          "startLine": 17,
+          "endLine": 24,
+          "params": []
+        },
+        {
+          "name": "AssignActiveFinger",
+          "startLine": 26,
+          "endLine": 30,
+          "params": [
+            "_fingerType"
+          ]
+        },
+        {
+          "name": "SetActiveFingerOpen",
+          "startLine": 32,
+          "endLine": 35,
+          "params": [
+            "_isOpen"
+          ]
+        },
+        {
+          "name": "ApplyFingerMask",
+          "startLine": 37,
+          "endLine": 42,
+          "params": [
+            "mask"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "PlayerHand",
+          "startLine": 4,
+          "endLine": 43,
+          "methods": [
+            "Start",
+            "OnDestroy",
+            "AssignActiveFinger",
+            "SetActiveFingerOpen",
+            "ApplyFingerMask"
+          ],
+          "properties": [
+            "activeFinger"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "PlayerHand",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "AssignActiveFinger",
+          "callee": "GetFinger",
+          "lineNumber": 28
+        },
+        {
+          "caller": "AssignActiveFinger",
+          "callee": "activeFinger?.SetOpen",
+          "lineNumber": 29
+        },
+        {
+          "caller": "SetActiveFingerOpen",
+          "callee": "activeFinger?.SetOpen",
+          "lineNumber": 34
+        },
+        {
+          "caller": "ApplyFingerMask",
+          "callee": "kvp.Value.SetOpen",
+          "lineNumber": 41
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 5,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Game/ModeData.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "classes": [
+        {
+          "name": "ModeData",
+          "startLine": 3,
+          "endLine": 7,
+          "methods": [],
+          "properties": [
+            "IsSingleControl"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IsSingleControl",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "ModeData",
+          "line": 3,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Management/AssetManager.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 39,
+      "nonEmptyLines": 33,
+      "functions": [
+        {
+          "name": "GetAudioClip",
+          "startLine": 12,
+          "endLine": 38,
+          "params": [
+            "clip"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "AssetManager",
+          "startLine": 7,
+          "endLine": 39,
+          "methods": [
+            "GetAudioClip"
+          ],
+          "properties": [
+            "_audioCache"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GetAudioClip",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "AssetManager",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GetAudioClip",
+          "callee": "_audioCache.TryGetValue",
+          "lineNumber": 19
+        },
+        {
+          "caller": "GetAudioClip",
+          "callee": "clip.ToString",
+          "lineNumber": 24
+        },
+        {
+          "caller": "GetAudioClip",
+          "callee": "Addressables.LoadAssetAsync<AudioClip>",
+          "lineNumber": 25
+        },
+        {
+          "caller": "GetAudioClip",
+          "callee": "handle.WaitForCompletion",
+          "lineNumber": 26
+        },
+        {
+          "caller": "GetAudioClip",
+          "callee": "Debug.LogWarning",
+          "lineNumber": 34
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Management/DataManager.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 100,
+      "nonEmptyLines": 84,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 23,
+          "endLine": 27,
+          "params": []
+        },
+        {
+          "name": "LoadData",
+          "startLine": 29,
+          "endLine": 32,
+          "params": []
+        },
+        {
+          "name": "LoadAllDataCoroutine",
+          "startLine": 34,
+          "endLine": 42,
+          "params": []
+        },
+        {
+          "name": "TryGetBoon",
+          "startLine": 44,
+          "endLine": 44,
+          "params": [
+            "key",
+            "data"
+          ]
+        },
+        {
+          "name": "TryGetDefine",
+          "startLine": 45,
+          "endLine": 45,
+          "params": [
+            "key",
+            "data"
+          ]
+        },
+        {
+          "name": "TryGetDeviation",
+          "startLine": 46,
+          "endLine": 46,
+          "params": [
+            "key",
+            "data"
+          ]
+        },
+        {
+          "name": "TryGetEnemy",
+          "startLine": 47,
+          "endLine": 47,
+          "params": [
+            "key",
+            "data"
+          ]
+        },
+        {
+          "name": "TryGetRound",
+          "startLine": 48,
+          "endLine": 48,
+          "params": [
+            "key",
+            "data"
+          ]
+        },
+        {
+          "name": "LoadDataToDictionaryAsync",
+          "startLine": 50,
+          "endLine": 85,
+          "params": [
+            "dataName",
+            "targetDictionary"
+          ]
+        },
+        {
+          "name": "NotifyLoadGroupFinished",
+          "startLine": 87,
+          "endLine": 94,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "DataManager",
+          "startLine": 10,
+          "endLine": 95,
+          "methods": [
+            "Awake",
+            "LoadData",
+            "LoadAllDataCoroutine",
+            "TryGetBoon",
+            "TryGetDefine",
+            "TryGetDeviation",
+            "TryGetEnemy",
+            "TryGetRound",
+            "LoadDataToDictionaryAsync",
+            "NotifyLoadGroupFinished"
+          ],
+          "properties": [
+            "DataPathPrefix",
+            "LoadGroupCount",
+            "_finishedLoadGroups",
+            "_boonData",
+            "_defineData",
+            "_deviationData",
+            "_enemyData",
+            "_roundData"
+          ]
+        },
+        {
+          "name": "IGameData",
+          "startLine": 97,
+          "endLine": 100,
+          "methods": [],
+          "properties": [
+            "Code"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "TryGetBoon",
+          "line": 44,
+          "isDefault": false
+        },
+        {
+          "name": "TryGetDefine",
+          "line": 45,
+          "isDefault": false
+        },
+        {
+          "name": "TryGetDeviation",
+          "line": 46,
+          "isDefault": false
+        },
+        {
+          "name": "TryGetEnemy",
+          "line": 47,
+          "isDefault": false
+        },
+        {
+          "name": "TryGetRound",
+          "line": 48,
+          "isDefault": false
+        },
+        {
+          "name": "DataManager",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "IGameData",
+          "line": 97,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 25
+        },
+        {
+          "caller": "Awake",
+          "callee": "LoadData",
+          "lineNumber": 26
+        },
+        {
+          "caller": "LoadData",
+          "callee": "StartCoroutine",
+          "lineNumber": 31
+        },
+        {
+          "caller": "LoadData",
+          "callee": "LoadAllDataCoroutine",
+          "lineNumber": 31
+        },
+        {
+          "caller": "LoadAllDataCoroutine",
+          "callee": "LoadDataToDictionaryAsync",
+          "lineNumber": 36
+        },
+        {
+          "caller": "LoadAllDataCoroutine",
+          "callee": "LoadDataToDictionaryAsync",
+          "lineNumber": 37
+        },
+        {
+          "caller": "LoadAllDataCoroutine",
+          "callee": "LoadDataToDictionaryAsync",
+          "lineNumber": 38
+        },
+        {
+          "caller": "LoadAllDataCoroutine",
+          "callee": "LoadDataToDictionaryAsync",
+          "lineNumber": 39
+        },
+        {
+          "caller": "LoadAllDataCoroutine",
+          "callee": "LoadDataToDictionaryAsync",
+          "lineNumber": 40
+        },
+        {
+          "caller": "LoadAllDataCoroutine",
+          "callee": "NotifyLoadGroupFinished",
+          "lineNumber": 41
+        },
+        {
+          "caller": "TryGetBoon",
+          "callee": "_boonData.TryGetValue",
+          "lineNumber": 44
+        },
+        {
+          "caller": "TryGetDefine",
+          "callee": "_defineData.TryGetValue",
+          "lineNumber": 45
+        },
+        {
+          "caller": "TryGetDeviation",
+          "callee": "_deviationData.TryGetValue",
+          "lineNumber": 46
+        },
+        {
+          "caller": "TryGetEnemy",
+          "callee": "_enemyData.TryGetValue",
+          "lineNumber": 47
+        },
+        {
+          "caller": "TryGetRound",
+          "callee": "_roundData.TryGetValue",
+          "lineNumber": 48
+        },
+        {
+          "caller": "LoadDataToDictionaryAsync",
+          "callee": "Addressables.LoadAssetAsync<TextAsset>",
+          "lineNumber": 55
+        },
+        {
+          "caller": "LoadDataToDictionaryAsync",
+          "callee": "Debug.LogError",
+          "lineNumber": 60
+        },
+        {
+          "caller": "LoadDataToDictionaryAsync",
+          "callee": "string.IsNullOrWhiteSpace",
+          "lineNumber": 65
+        },
+        {
+          "caller": "LoadDataToDictionaryAsync",
+          "callee": "Debug.LogError",
+          "lineNumber": 67
+        },
+        {
+          "caller": "LoadDataToDictionaryAsync",
+          "callee": "JsonHelper.JsonToDictAsync<TKey, TValue>",
+          "lineNumber": 71
+        },
+        {
+          "caller": "LoadDataToDictionaryAsync",
+          "callee": "Debug.LogError",
+          "lineNumber": 80
+        },
+        {
+          "caller": "LoadDataToDictionaryAsync",
+          "callee": "Debug.Log",
+          "lineNumber": 84
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 7,
+        "functionCount": 10,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Management/GameData.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 68,
+      "nonEmptyLines": 63,
+      "classes": [
+        {
+          "name": "BoonData",
+          "startLine": 3,
+          "endLine": 17,
+          "methods": [],
+          "properties": [
+            "index",
+            "code",
+            "name",
+            "description",
+            "position",
+            "value1",
+            "value2",
+            "value3",
+            "value4",
+            "value5",
+            "Code"
+          ]
+        },
+        {
+          "name": "DefineData",
+          "startLine": 19,
+          "endLine": 26,
+          "methods": [],
+          "properties": [
+            "index",
+            "code",
+            "value",
+            "Code"
+          ]
+        },
+        {
+          "name": "DeviationData",
+          "startLine": 28,
+          "endLine": 42,
+          "methods": [],
+          "properties": [
+            "index",
+            "code",
+            "name",
+            "description",
+            "position",
+            "value1",
+            "value2",
+            "value3",
+            "value4",
+            "value5",
+            "Code"
+          ]
+        },
+        {
+          "name": "EnemyData",
+          "startLine": 44,
+          "endLine": 58,
+          "methods": [],
+          "properties": [
+            "index",
+            "code",
+            "roundTimer",
+            "roundHPMultiflier",
+            "resource",
+            "appearMinRound",
+            "appearMaxRound",
+            "value1",
+            "value2",
+            "value3",
+            "Code"
+          ]
+        },
+        {
+          "name": "RoundData",
+          "startLine": 60,
+          "endLine": 68,
+          "methods": [],
+          "properties": [
+            "index",
+            "code",
+            "roundTimer",
+            "roundHPMultiflier",
+            "Code"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "index",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "code",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "name",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "description",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "position",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "value1",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "value2",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "value3",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "value4",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "value5",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "BoonData",
+          "line": 3,
+          "isDefault": false
+        },
+        {
+          "name": "index",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "code",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "value",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "DefineData",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "index",
+          "line": 31,
+          "isDefault": false
+        },
+        {
+          "name": "code",
+          "line": 32,
+          "isDefault": false
+        },
+        {
+          "name": "name",
+          "line": 33,
+          "isDefault": false
+        },
+        {
+          "name": "description",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "position",
+          "line": 35,
+          "isDefault": false
+        },
+        {
+          "name": "value1",
+          "line": 36,
+          "isDefault": false
+        },
+        {
+          "name": "value2",
+          "line": 37,
+          "isDefault": false
+        },
+        {
+          "name": "value3",
+          "line": 38,
+          "isDefault": false
+        },
+        {
+          "name": "value4",
+          "line": 39,
+          "isDefault": false
+        },
+        {
+          "name": "value5",
+          "line": 40,
+          "isDefault": false
+        },
+        {
+          "name": "DeviationData",
+          "line": 28,
+          "isDefault": false
+        },
+        {
+          "name": "index",
+          "line": 47,
+          "isDefault": false
+        },
+        {
+          "name": "code",
+          "line": 48,
+          "isDefault": false
+        },
+        {
+          "name": "roundTimer",
+          "line": 49,
+          "isDefault": false
+        },
+        {
+          "name": "roundHPMultiflier",
+          "line": 50,
+          "isDefault": false
+        },
+        {
+          "name": "resource",
+          "line": 51,
+          "isDefault": false
+        },
+        {
+          "name": "appearMinRound",
+          "line": 52,
+          "isDefault": false
+        },
+        {
+          "name": "appearMaxRound",
+          "line": 53,
+          "isDefault": false
+        },
+        {
+          "name": "value1",
+          "line": 54,
+          "isDefault": false
+        },
+        {
+          "name": "value2",
+          "line": 55,
+          "isDefault": false
+        },
+        {
+          "name": "value3",
+          "line": 56,
+          "isDefault": false
+        },
+        {
+          "name": "EnemyData",
+          "line": 44,
+          "isDefault": false
+        },
+        {
+          "name": "index",
+          "line": 63,
+          "isDefault": false
+        },
+        {
+          "name": "code",
+          "line": 64,
+          "isDefault": false
+        },
+        {
+          "name": "roundTimer",
+          "line": 65,
+          "isDefault": false
+        },
+        {
+          "name": "roundHPMultiflier",
+          "line": 66,
+          "isDefault": false
+        },
+        {
+          "name": "RoundData",
+          "line": 60,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 42,
+        "functionCount": 0,
+        "classCount": 5
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Management/InGameManager.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 441,
+      "nonEmptyLines": 367,
+      "functions": [
+        {
+          "name": "GetWaveDuration",
+          "startLine": 27,
+          "endLine": 34,
+          "params": [
+            "round"
+          ]
+        },
+        {
+          "name": "GetEnemyMaxHp",
+          "startLine": 46,
+          "endLine": 52,
+          "params": [
+            "round"
+          ]
+        },
+        {
+          "name": "InitEnemyHp",
+          "startLine": 54,
+          "endLine": 58,
+          "params": []
+        },
+        {
+          "name": "OnEnable",
+          "startLine": 110,
+          "endLine": 119,
+          "params": []
+        },
+        {
+          "name": "OnDisable",
+          "startLine": 121,
+          "endLine": 130,
+          "params": []
+        },
+        {
+          "name": "Start",
+          "startLine": 132,
+          "endLine": 136,
+          "params": []
+        },
+        {
+          "name": "CachePanels",
+          "startLine": 138,
+          "endLine": 153,
+          "params": []
+        },
+        {
+          "name": "BeginInGameSetup",
+          "startLine": 155,
+          "endLine": 176,
+          "params": []
+        },
+        {
+          "name": "HandleInGameSceneReady",
+          "startLine": 178,
+          "endLine": 182,
+          "params": []
+        },
+        {
+          "name": "EarlySpawnPlayerObjectsCoroutine",
+          "startLine": 184,
+          "endLine": 187,
+          "params": []
+        },
+        {
+          "name": "HandleRoundSelected",
+          "startLine": 189,
+          "endLine": 202,
+          "params": [
+            "stageIndex"
+          ]
+        },
+        {
+          "name": "TryBeginHostSetup",
+          "startLine": 204,
+          "endLine": 211,
+          "params": []
+        },
+        {
+          "name": "HostSetupCoroutine",
+          "startLine": 213,
+          "endLine": 227,
+          "params": []
+        },
+        {
+          "name": "HandleFingerAssignmentsReceived",
+          "startLine": 229,
+          "endLine": 235,
+          "params": []
+        },
+        {
+          "name": "ApplyAssignmentsReady",
+          "startLine": 237,
+          "endLine": 247,
+          "params": []
+        },
+        {
+          "name": "HandleFingerToggled",
+          "startLine": 249,
+          "endLine": 260,
+          "params": [
+            "isExtended"
+          ]
+        },
+        {
+          "name": "HandleSingleControlMaskChanged",
+          "startLine": 262,
+          "endLine": 268,
+          "params": [
+            "mask"
+          ]
+        },
+        {
+          "name": "HandleWaveStarted",
+          "startLine": 270,
+          "endLine": 282,
+          "params": [
+            "durationSeconds"
+          ]
+        },
+        {
+          "name": "WaveTimerCoroutine",
+          "startLine": 284,
+          "endLine": 310,
+          "params": [
+            "durationSeconds"
+          ]
+        },
+        {
+          "name": "HandleWaveResultReceived",
+          "startLine": 312,
+          "endLine": 349,
+          "params": [
+            "handPosition"
+          ]
+        },
+        {
+          "name": "BetweenWavesCoroutine",
+          "startLine": 351,
+          "endLine": 417,
+          "params": [
+            "isRoundClear",
+            "isGameOver"
+          ]
+        },
+        {
+          "name": "SetEnemyHandPosition",
+          "startLine": 419,
+          "endLine": 422,
+          "params": [
+            "position"
+          ]
+        },
+        {
+          "name": "DetermineOutcome",
+          "startLine": 424,
+          "endLine": 440,
+          "params": [
+            "player",
+            "enemy"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "InGameManager",
+          "startLine": 6,
+          "endLine": 441,
+          "methods": [
+            "GetWaveDuration",
+            "GetEnemyMaxHp",
+            "InitEnemyHp",
+            "OnEnable",
+            "OnDisable",
+            "Start",
+            "CachePanels",
+            "BeginInGameSetup",
+            "HandleInGameSceneReady",
+            "EarlySpawnPlayerObjectsCoroutine",
+            "HandleRoundSelected",
+            "TryBeginHostSetup",
+            "HostSetupCoroutine",
+            "HandleFingerAssignmentsReceived",
+            "ApplyAssignmentsReady",
+            "HandleFingerToggled",
+            "HandleSingleControlMaskChanged",
+            "HandleWaveStarted",
+            "WaveTimerCoroutine",
+            "HandleWaveResultReceived",
+            "BetweenWavesCoroutine",
+            "SetEnemyHandPosition",
+            "DetermineOutcome"
+          ],
+          "properties": [
+            "WAVES_PER_ROUND",
+            "MAX_ROUNDS",
+            "ENEMY_DAMAGE",
+            "BETWEEN_WAVE_DELAY",
+            "Data",
+            "MaxLives",
+            "PlayerDamage",
+            "SLIDE_DURATION",
+            "WAIT_OUTCOME",
+            "WAIT_SLIDE",
+            "Network",
+            "Players",
+            "Input",
+            "_waveCoroutine",
+            "_hostSetupCoroutine",
+            "_betweenWaveCoroutine",
+            "_hostSetupStarted",
+            "_currentRound",
+            "_wonWavesInRound",
+            "_lives",
+            "_enemyHp",
+            "_enemyMaxHp",
+            "_selectedStageIndex",
+            "_enemyHandPosition",
+            "_stagePanel",
+            "_versusPanel",
+            "Phase",
+            "IsWaveActive",
+            "WaveTimeRemaining",
+            "LocalAssignedFinger",
+            "LocalFingerExtended",
+            "LastHandPosition",
+            "CurrentRound",
+            "WonWavesInRound",
+            "Lives",
+            "SelectedStageIndex"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "WAVES_PER_ROUND",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "MAX_ROUNDS",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "ENEMY_DAMAGE",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "MaxLives",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "Phase",
+          "line": 83,
+          "isDefault": false
+        },
+        {
+          "name": "IsWaveActive",
+          "line": 84,
+          "isDefault": false
+        },
+        {
+          "name": "WaveTimeRemaining",
+          "line": 85,
+          "isDefault": false
+        },
+        {
+          "name": "LocalAssignedFinger",
+          "line": 86,
+          "isDefault": false
+        },
+        {
+          "name": "LocalFingerExtended",
+          "line": 87,
+          "isDefault": false
+        },
+        {
+          "name": "LastHandPosition",
+          "line": 88,
+          "isDefault": false
+        },
+        {
+          "name": "CurrentRound",
+          "line": 89,
+          "isDefault": false
+        },
+        {
+          "name": "WonWavesInRound",
+          "line": 90,
+          "isDefault": false
+        },
+        {
+          "name": "Lives",
+          "line": 91,
+          "isDefault": false
+        },
+        {
+          "name": "SelectedStageIndex",
+          "line": 92,
+          "isDefault": false
+        },
+        {
+          "name": "SetEnemyHandPosition",
+          "line": 419,
+          "isDefault": false
+        },
+        {
+          "name": "InGameManager",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "GetWaveDuration",
+          "callee": "Data.TryGetDefine",
+          "lineNumber": 29
+        },
+        {
+          "caller": "GetWaveDuration",
+          "callee": "Data.TryGetRound",
+          "lineNumber": 31
+        },
+        {
+          "caller": "GetEnemyMaxHp",
+          "callee": "Data.TryGetRound",
+          "lineNumber": 49
+        },
+        {
+          "caller": "GetEnemyMaxHp",
+          "callee": "Mathf.RoundToInt",
+          "lineNumber": 50
+        },
+        {
+          "caller": "InitEnemyHp",
+          "callee": "GetEnemyMaxHp",
+          "lineNumber": 56
+        },
+        {
+          "caller": "Start",
+          "callee": "CachePanels",
+          "lineNumber": 134
+        },
+        {
+          "caller": "Start",
+          "callee": "BeginInGameSetup",
+          "lineNumber": 135
+        },
+        {
+          "caller": "CachePanels",
+          "callee": "App.UI.InGame.TryGetPanel",
+          "lineNumber": 140
+        },
+        {
+          "caller": "CachePanels",
+          "callee": "Debug.LogError",
+          "lineNumber": 143
+        },
+        {
+          "caller": "CachePanels",
+          "callee": "App.UI.InGame.TryGetPanel",
+          "lineNumber": 147
+        },
+        {
+          "caller": "CachePanels",
+          "callee": "Debug.LogError",
+          "lineNumber": 150
+        },
+        {
+          "caller": "BeginInGameSetup",
+          "callee": "StopCoroutine",
+          "lineNumber": 159
+        },
+        {
+          "caller": "BeginInGameSetup",
+          "callee": "Input.SetEnabled",
+          "lineNumber": 173
+        },
+        {
+          "caller": "BeginInGameSetup",
+          "callee": "Input.ResetFingerState",
+          "lineNumber": 174
+        },
+        {
+          "caller": "BeginInGameSetup",
+          "callee": "Network.ResetInGameRoundNotification",
+          "lineNumber": 175
+        },
+        {
+          "caller": "HandleInGameSceneReady",
+          "callee": "StartCoroutine",
+          "lineNumber": 181
+        },
+        {
+          "caller": "HandleInGameSceneReady",
+          "callee": "EarlySpawnPlayerObjectsCoroutine",
+          "lineNumber": 181
+        },
+        {
+          "caller": "EarlySpawnPlayerObjectsCoroutine",
+          "callee": "Players.ServerEnsurePlayerObjectsCoroutine",
+          "lineNumber": 186
+        },
+        {
+          "caller": "HandleRoundSelected",
+          "callee": "Input.RandomizeSingleControlBindings",
+          "lineNumber": 194
+        },
+        {
+          "caller": "HandleRoundSelected",
+          "callee": "_stagePanel.ClosePanel",
+          "lineNumber": 196
+        },
+        {
+          "caller": "HandleRoundSelected",
+          "callee": "OnStageOpened?.Invoke",
+          "lineNumber": 200
+        },
+        {
+          "caller": "HandleRoundSelected",
+          "callee": "TryBeginHostSetup",
+          "lineNumber": 201
+        },
+        {
+          "caller": "TryBeginHostSetup",
+          "callee": "StartCoroutine",
+          "lineNumber": 210
+        },
+        {
+          "caller": "TryBeginHostSetup",
+          "callee": "HostSetupCoroutine",
+          "lineNumber": 210
+        },
+        {
+          "caller": "HostSetupCoroutine",
+          "callee": "Players.ServerEnsurePlayerObjectsCoroutine",
+          "lineNumber": 215
+        },
+        {
+          "caller": "HostSetupCoroutine",
+          "callee": "Network.ServerInitializeFingerAssignments",
+          "lineNumber": 217
+        },
+        {
+          "caller": "HostSetupCoroutine",
+          "callee": "ApplyAssignmentsReady",
+          "lineNumber": 220
+        },
+        {
+          "caller": "HostSetupCoroutine",
+          "callee": "new WaitWhile",
+          "lineNumber": 223
+        },
+        {
+          "caller": "HostSetupCoroutine",
+          "callee": "Network.ServerStartRound",
+          "lineNumber": 225
+        },
+        {
+          "caller": "HostSetupCoroutine",
+          "callee": "GetWaveDuration",
+          "lineNumber": 225
+        },
+        {
+          "caller": "HandleFingerAssignmentsReceived",
+          "callee": "ApplyAssignmentsReady",
+          "lineNumber": 234
+        },
+        {
+          "caller": "ApplyAssignmentsReady",
+          "callee": "InitEnemyHp",
+          "lineNumber": 243
+        },
+        {
+          "caller": "ApplyAssignmentsReady",
+          "callee": "OnLocalAssignedFingerChanged?.Invoke",
+          "lineNumber": 244
+        },
+        {
+          "caller": "ApplyAssignmentsReady",
+          "callee": "OnReadyStarted?.Invoke",
+          "lineNumber": 245
+        },
+        {
+          "caller": "ApplyAssignmentsReady",
+          "callee": "_versusPanel.OpenPanel",
+          "lineNumber": 246
+        },
+        {
+          "caller": "HandleFingerToggled",
+          "callee": "Network.ClientSendFingerState",
+          "lineNumber": 254
+        },
+        {
+          "caller": "HandleFingerToggled",
+          "callee": "OnLocalFingerExtendedChanged?.Invoke",
+          "lineNumber": 255
+        },
+        {
+          "caller": "HandleFingerToggled",
+          "callee": "Debug.Log",
+          "lineNumber": 258
+        },
+        {
+          "caller": "HandleSingleControlMaskChanged",
+          "callee": "OnLocalFingerMaskChanged?.Invoke",
+          "lineNumber": 267
+        },
+        {
+          "caller": "HandleWaveStarted",
+          "callee": "StopCoroutine",
+          "lineNumber": 274
+        },
+        {
+          "caller": "HandleWaveStarted",
+          "callee": "StopCoroutine",
+          "lineNumber": 279
+        },
+        {
+          "caller": "HandleWaveStarted",
+          "callee": "StartCoroutine",
+          "lineNumber": 281
+        },
+        {
+          "caller": "HandleWaveStarted",
+          "callee": "WaveTimerCoroutine",
+          "lineNumber": 281
+        },
+        {
+          "caller": "WaveTimerCoroutine",
+          "callee": "Input.ResetFingerState",
+          "lineNumber": 289
+        },
+        {
+          "caller": "WaveTimerCoroutine",
+          "callee": "Input.SetEnabled",
+          "lineNumber": 290
+        },
+        {
+          "caller": "WaveTimerCoroutine",
+          "callee": "OnLocalFingerExtendedChanged?.Invoke",
+          "lineNumber": 291
+        },
+        {
+          "caller": "WaveTimerCoroutine",
+          "callee": "OnLocalFingerMaskChanged?.Invoke",
+          "lineNumber": 292
+        },
+        {
+          "caller": "WaveTimerCoroutine",
+          "callee": "OnWaveStarted?.Invoke",
+          "lineNumber": 293
+        },
+        {
+          "caller": "WaveTimerCoroutine",
+          "callee": "OnWaveTimerUpdated?.Invoke",
+          "lineNumber": 294
+        },
+        {
+          "caller": "WaveTimerCoroutine",
+          "callee": "OnWaveTimerUpdated?.Invoke",
+          "lineNumber": 299
+        },
+        {
+          "caller": "WaveTimerCoroutine",
+          "callee": "Mathf.Max",
+          "lineNumber": 299
+        },
+        {
+          "caller": "WaveTimerCoroutine",
+          "callee": "OnWaveTimerUpdated?.Invoke",
+          "lineNumber": 304
+        },
+        {
+          "caller": "WaveTimerCoroutine",
+          "callee": "Input.SetEnabled",
+          "lineNumber": 305
+        },
+        {
+          "caller": "WaveTimerCoroutine",
+          "callee": "Network.ServerJudgeAndBroadcastRoundResult",
+          "lineNumber": 309
+        },
+        {
+          "caller": "HandleWaveResultReceived",
+          "callee": "DetermineOutcome",
+          "lineNumber": 316
+        },
+        {
+          "caller": "HandleWaveResultReceived",
+          "callee": "OnOutcomeDetermined?.Invoke",
+          "lineNumber": 318
+        },
+        {
+          "caller": "HandleWaveResultReceived",
+          "callee": "OnWaveJudged?.Invoke",
+          "lineNumber": 319
+        },
+        {
+          "caller": "HandleWaveResultReceived",
+          "callee": "OnEnemyHpChanged?.Invoke",
+          "lineNumber": 328
+        },
+        {
+          "caller": "HandleWaveResultReceived",
+          "callee": "Mathf.Max",
+          "lineNumber": 328
+        },
+        {
+          "caller": "HandleWaveResultReceived",
+          "callee": "OnLivesChanged?.Invoke",
+          "lineNumber": 337
+        },
+        {
+          "caller": "HandleWaveResultReceived",
+          "callee": "StopCoroutine",
+          "lineNumber": 347
+        },
+        {
+          "caller": "HandleWaveResultReceived",
+          "callee": "StartCoroutine",
+          "lineNumber": 348
+        },
+        {
+          "caller": "HandleWaveResultReceived",
+          "callee": "BetweenWavesCoroutine",
+          "lineNumber": 348
+        },
+        {
+          "caller": "BetweenWavesCoroutine",
+          "callee": "OnWaveResultShown?.Invoke",
+          "lineNumber": 354
+        },
+        {
+          "caller": "BetweenWavesCoroutine",
+          "callee": "OnEnemyHpChanged?.Invoke",
+          "lineNumber": 359
+        },
+        {
+          "caller": "BetweenWavesCoroutine",
+          "callee": "Input.ResetFingerState",
+          "lineNumber": 364
+        },
+        {
+          "caller": "BetweenWavesCoroutine",
+          "callee": "OnLocalFingerExtendedChanged?.Invoke",
+          "lineNumber": 365
+        },
+        {
+          "caller": "BetweenWavesCoroutine",
+          "callee": "OnLocalFingerMaskChanged?.Invoke",
+          "lineNumber": 366
+        },
+        {
+          "caller": "BetweenWavesCoroutine",
+          "callee": "OnGameOver?.Invoke",
+          "lineNumber": 367
+        },
+        {
+          "caller": "BetweenWavesCoroutine",
+          "callee": "OnLivesChanged?.Invoke",
+          "lineNumber": 374
+        },
+        {
+          "caller": "BetweenWavesCoroutine",
+          "callee": "OnCurrentRoundChanged?.Invoke",
+          "lineNumber": 375
+        },
+        {
+          "caller": "BetweenWavesCoroutine",
+          "callee": "_stagePanel.OpenPanel",
+          "lineNumber": 377
+        },
+        {
+          "caller": "BetweenWavesCoroutine",
+          "callee": "OnCurrentRoundChanged?.Invoke",
+          "lineNumber": 387
+        },
+        {
+          "caller": "BetweenWavesCoroutine",
+          "callee": "OnRoundClear?.Invoke",
+          "lineNumber": 388
+        },
+        {
+          "caller": "BetweenWavesCoroutine",
+          "callee": "Players.ServerEnsurePlayerObjectsCoroutine",
+          "lineNumber": 406
+        },
+        {
+          "caller": "BetweenWavesCoroutine",
+          "callee": "Network.ServerInitializeFingerAssignments",
+          "lineNumber": 407
+        },
+        {
+          "caller": "BetweenWavesCoroutine",
+          "callee": "ApplyAssignmentsReady",
+          "lineNumber": 409
+        },
+        {
+          "caller": "BetweenWavesCoroutine",
+          "callee": "new WaitWhile",
+          "lineNumber": 413
+        },
+        {
+          "caller": "BetweenWavesCoroutine",
+          "callee": "Network.ServerStartRound",
+          "lineNumber": 415
+        },
+        {
+          "caller": "BetweenWavesCoroutine",
+          "callee": "GetWaveDuration",
+          "lineNumber": 415
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 16,
+        "functionCount": 23,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Management/InGameUIManager.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "classes": [
+        {
+          "name": "InGameUIManager",
+          "startLine": 4,
+          "endLine": 7,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "InGameUIManager",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Management/InputManager.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 126,
+      "nonEmptyLines": 105,
+      "functions": [
+        {
+          "name": "Update",
+          "startLine": 28,
+          "endLine": 44,
+          "params": []
+        },
+        {
+          "name": "HandleMultiControlInput",
+          "startLine": 46,
+          "endLine": 50,
+          "params": []
+        },
+        {
+          "name": "HandleSingleControlInput",
+          "startLine": 52,
+          "endLine": 67,
+          "params": []
+        },
+        {
+          "name": "SetEnabled",
+          "startLine": 69,
+          "endLine": 77,
+          "params": [
+            "enabled"
+          ]
+        },
+        {
+          "name": "SetBlockedByModal",
+          "startLine": 79,
+          "endLine": 82,
+          "params": [
+            "isBlocked"
+          ]
+        },
+        {
+          "name": "ToggleFinger",
+          "startLine": 84,
+          "endLine": 87,
+          "params": []
+        },
+        {
+          "name": "SetFingerExtended",
+          "startLine": 89,
+          "endLine": 98,
+          "params": [
+            "isExtended"
+          ]
+        },
+        {
+          "name": "RandomizeSingleControlBindings",
+          "startLine": 100,
+          "endLine": 119,
+          "params": []
+        },
+        {
+          "name": "ResetFingerState",
+          "startLine": 121,
+          "endLine": 125,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "InputManager",
+          "startLine": 7,
+          "endLine": 126,
+          "methods": [
+            "Update",
+            "HandleMultiControlInput",
+            "HandleSingleControlInput",
+            "SetEnabled",
+            "SetBlockedByModal",
+            "ToggleFinger",
+            "SetFingerExtended",
+            "RandomizeSingleControlBindings",
+            "ResetFingerState"
+          ],
+          "properties": [
+            "IsEnabled",
+            "IsFingerExtended",
+            "ExtendedFingersMask",
+            "IsBlockedByModal",
+            "SingleControlKeyBindings"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IsEnabled",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "IsFingerExtended",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "ExtendedFingersMask",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "IsBlockedByModal",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "SingleControlKeyBindings",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "SetEnabled",
+          "line": 69,
+          "isDefault": false
+        },
+        {
+          "name": "SetBlockedByModal",
+          "line": 79,
+          "isDefault": false
+        },
+        {
+          "name": "ToggleFinger",
+          "line": 84,
+          "isDefault": false
+        },
+        {
+          "name": "SetFingerExtended",
+          "line": 89,
+          "isDefault": false
+        },
+        {
+          "name": "RandomizeSingleControlBindings",
+          "line": 100,
+          "isDefault": false
+        },
+        {
+          "name": "ResetFingerState",
+          "line": 121,
+          "isDefault": false
+        },
+        {
+          "name": "InputManager",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Update",
+          "callee": "HandleSingleControlInput",
+          "lineNumber": 41
+        },
+        {
+          "caller": "Update",
+          "callee": "HandleMultiControlInput",
+          "lineNumber": 43
+        },
+        {
+          "caller": "HandleMultiControlInput",
+          "callee": "ToggleFinger",
+          "lineNumber": 49
+        },
+        {
+          "caller": "HandleSingleControlInput",
+          "callee": "OnSingleControlMaskChanged?.Invoke",
+          "lineNumber": 66
+        },
+        {
+          "caller": "ToggleFinger",
+          "callee": "SetFingerExtended",
+          "lineNumber": 86
+        },
+        {
+          "caller": "SetFingerExtended",
+          "callee": "OnFingerToggled?.Invoke",
+          "lineNumber": 97
+        },
+        {
+          "caller": "RandomizeSingleControlBindings",
+          "callee": "rng.Next",
+          "lineNumber": 112
+        },
+        {
+          "caller": "RandomizeSingleControlBindings",
+          "callee": "SingleControlKeyBindings.Clear",
+          "lineNumber": 116
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 12,
+        "functionCount": 9,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Management/LobbyManager.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 203,
+      "nonEmptyLines": 170,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 43,
+          "endLine": 55,
+          "params": []
+        },
+        {
+          "name": "Start",
+          "startLine": 57,
+          "endLine": 60,
+          "params": []
+        },
+        {
+          "name": "OnDestroy",
+          "startLine": 62,
+          "endLine": 66,
+          "params": []
+        },
+        {
+          "name": "OnApplicationQuit",
+          "startLine": 68,
+          "endLine": 71,
+          "params": []
+        },
+        {
+          "name": "CreateSession",
+          "startLine": 73,
+          "endLine": 82,
+          "params": [
+            "sessionCode",
+            "onComplete"
+          ]
+        },
+        {
+          "name": "JoinSession",
+          "startLine": 84,
+          "endLine": 93,
+          "params": [
+            "sessionCode",
+            "onComplete"
+          ]
+        },
+        {
+          "name": "QuickJoinSession",
+          "startLine": 95,
+          "endLine": 104,
+          "params": [
+            "onComplete"
+          ]
+        },
+        {
+          "name": "LeaveSession",
+          "startLine": 106,
+          "endLine": 109,
+          "params": []
+        },
+        {
+          "name": "SetLocalDisplayName",
+          "startLine": 111,
+          "endLine": 119,
+          "params": [
+            "displayName"
+          ]
+        },
+        {
+          "name": "SetLocalReady",
+          "startLine": 121,
+          "endLine": 124,
+          "params": [
+            "isReady"
+          ]
+        },
+        {
+          "name": "StartGame",
+          "startLine": 126,
+          "endLine": 141,
+          "params": [
+            "targetScene",
+            "onComplete"
+          ]
+        },
+        {
+          "name": "CanStartGame",
+          "startLine": 143,
+          "endLine": 146,
+          "params": []
+        },
+        {
+          "name": "HandleLobbySessionUpdated",
+          "startLine": 148,
+          "endLine": 151,
+          "params": [
+            "session"
+          ]
+        },
+        {
+          "name": "RefreshLobbyUI",
+          "startLine": 153,
+          "endLine": 175,
+          "params": []
+        },
+        {
+          "name": "HandleLobbyError",
+          "startLine": 177,
+          "endLine": 185,
+          "params": [
+            "message"
+          ]
+        },
+        {
+          "name": "Complete",
+          "startLine": 187,
+          "endLine": 202,
+          "params": [
+            "result",
+            "onComplete"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "LobbyManager",
+          "startLine": 9,
+          "endLine": 203,
+          "methods": [
+            "Awake",
+            "Start",
+            "OnDestroy",
+            "OnApplicationQuit",
+            "CreateSession",
+            "JoinSession",
+            "QuickJoinSession",
+            "LeaveSession",
+            "SetLocalDisplayName",
+            "SetLocalReady",
+            "StartGame",
+            "CanStartGame",
+            "HandleLobbySessionUpdated",
+            "RefreshLobbyUI",
+            "HandleLobbyError",
+            "Complete"
+          ],
+          "properties": [
+            "localDisplayName",
+            "defaultMaxPlayers",
+            "minPlayersToStart",
+            "requireAllReady",
+            "Network",
+            "Session",
+            "State",
+            "IsInLobby",
+            "IsHost",
+            "SessionCode",
+            "Players",
+            "LocalDisplayName",
+            "IsLocalReady",
+            "RequiresAllPlayersReady"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Session",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "State",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "IsInLobby",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "IsHost",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "SessionCode",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "Players",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "LocalDisplayName",
+          "line": 25,
+          "isDefault": false
+        },
+        {
+          "name": "IsLocalReady",
+          "line": 26,
+          "isDefault": false
+        },
+        {
+          "name": "RequiresAllPlayersReady",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "CreateSession",
+          "line": 73,
+          "isDefault": false
+        },
+        {
+          "name": "JoinSession",
+          "line": 84,
+          "isDefault": false
+        },
+        {
+          "name": "QuickJoinSession",
+          "line": 95,
+          "isDefault": false
+        },
+        {
+          "name": "LeaveSession",
+          "line": 106,
+          "isDefault": false
+        },
+        {
+          "name": "SetLocalDisplayName",
+          "line": 111,
+          "isDefault": false
+        },
+        {
+          "name": "SetLocalReady",
+          "line": 121,
+          "isDefault": false
+        },
+        {
+          "name": "StartGame",
+          "line": 126,
+          "isDefault": false
+        },
+        {
+          "name": "CanStartGame",
+          "line": 143,
+          "isDefault": false
+        },
+        {
+          "name": "RefreshLobbyUI",
+          "line": 153,
+          "isDefault": false
+        },
+        {
+          "name": "LobbyManager",
+          "line": 9,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 45
+        },
+        {
+          "caller": "Awake",
+          "callee": "PlayerProfile.Load",
+          "lineNumber": 47
+        },
+        {
+          "caller": "Awake",
+          "callee": "string.IsNullOrWhiteSpace",
+          "lineNumber": 48
+        },
+        {
+          "caller": "Start",
+          "callee": "Network.Initialize",
+          "lineNumber": 59
+        },
+        {
+          "caller": "OnApplicationQuit",
+          "callee": "Network.Shutdown",
+          "lineNumber": 70
+        },
+        {
+          "caller": "CreateSession",
+          "callee": "Complete",
+          "lineNumber": 77
+        },
+        {
+          "caller": "CreateSession",
+          "callee": "LobbyRequestResult.Fail",
+          "lineNumber": 77
+        },
+        {
+          "caller": "CreateSession",
+          "callee": "Network.CreateSession",
+          "lineNumber": 81
+        },
+        {
+          "caller": "CreateSession",
+          "callee": "Complete",
+          "lineNumber": 81
+        },
+        {
+          "caller": "JoinSession",
+          "callee": "Complete",
+          "lineNumber": 88
+        },
+        {
+          "caller": "JoinSession",
+          "callee": "LobbyRequestResult.Fail",
+          "lineNumber": 88
+        },
+        {
+          "caller": "JoinSession",
+          "callee": "Network.JoinSession",
+          "lineNumber": 92
+        },
+        {
+          "caller": "JoinSession",
+          "callee": "Complete",
+          "lineNumber": 92
+        },
+        {
+          "caller": "QuickJoinSession",
+          "callee": "Complete",
+          "lineNumber": 99
+        },
+        {
+          "caller": "QuickJoinSession",
+          "callee": "LobbyRequestResult.Fail",
+          "lineNumber": 99
+        },
+        {
+          "caller": "QuickJoinSession",
+          "callee": "Network.QuickJoinSession",
+          "lineNumber": 103
+        },
+        {
+          "caller": "QuickJoinSession",
+          "callee": "Complete",
+          "lineNumber": 103
+        },
+        {
+          "caller": "LeaveSession",
+          "callee": "Network.LeaveSession",
+          "lineNumber": 108
+        },
+        {
+          "caller": "SetLocalDisplayName",
+          "callee": "string.IsNullOrWhiteSpace",
+          "lineNumber": 113
+        },
+        {
+          "caller": "SetLocalDisplayName",
+          "callee": "displayName.Trim",
+          "lineNumber": 115
+        },
+        {
+          "caller": "SetLocalDisplayName",
+          "callee": "Network.SetLocalDisplayName",
+          "lineNumber": 118
+        },
+        {
+          "caller": "SetLocalReady",
+          "callee": "Network.SetLocalReady",
+          "lineNumber": 123
+        },
+        {
+          "caller": "StartGame",
+          "callee": "Complete",
+          "lineNumber": 130
+        },
+        {
+          "caller": "StartGame",
+          "callee": "LobbyRequestResult.Fail",
+          "lineNumber": 130
+        },
+        {
+          "caller": "StartGame",
+          "callee": "CanStartGame",
+          "lineNumber": 134
+        },
+        {
+          "caller": "StartGame",
+          "callee": "Complete",
+          "lineNumber": 136
+        },
+        {
+          "caller": "StartGame",
+          "callee": "LobbyRequestResult.Fail",
+          "lineNumber": 136
+        },
+        {
+          "caller": "StartGame",
+          "callee": "Network.StartGame",
+          "lineNumber": 140
+        },
+        {
+          "caller": "StartGame",
+          "callee": "Complete",
+          "lineNumber": 140
+        },
+        {
+          "caller": "CanStartGame",
+          "callee": "Network.CanStartGame",
+          "lineNumber": 145
+        },
+        {
+          "caller": "HandleLobbySessionUpdated",
+          "callee": "RefreshLobbyUI",
+          "lineNumber": 150
+        },
+        {
+          "caller": "RefreshLobbyUI",
+          "callee": "App.UI.Lobby.ClosePanel<LobbyEntryPanel>",
+          "lineNumber": 162
+        },
+        {
+          "caller": "RefreshLobbyUI",
+          "callee": "App.UI.Lobby.OpenPanel<LobbyRoomPanel>",
+          "lineNumber": 163
+        },
+        {
+          "caller": "RefreshLobbyUI",
+          "callee": "App.UI.Lobby.TryGetPanel",
+          "lineNumber": 165
+        },
+        {
+          "caller": "RefreshLobbyUI",
+          "callee": "roomPanel.RefreshContent",
+          "lineNumber": 167
+        },
+        {
+          "caller": "RefreshLobbyUI",
+          "callee": "App.UI.Lobby.ClosePanel<LobbyRoomPanel>",
+          "lineNumber": 172
+        },
+        {
+          "caller": "RefreshLobbyUI",
+          "callee": "App.UI.Lobby.OpenPanel<LobbyEntryPanel>",
+          "lineNumber": 173
+        },
+        {
+          "caller": "HandleLobbyError",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 179
+        },
+        {
+          "caller": "HandleLobbyError",
+          "callee": "Debug.LogError",
+          "lineNumber": 181
+        },
+        {
+          "caller": "HandleLobbyError",
+          "callee": "OnLobbyError?.Invoke",
+          "lineNumber": 184
+        },
+        {
+          "caller": "Complete",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 189
+        },
+        {
+          "caller": "Complete",
+          "callee": "Debug.Log",
+          "lineNumber": 193
+        },
+        {
+          "caller": "Complete",
+          "callee": "Debug.LogError",
+          "lineNumber": 197
+        },
+        {
+          "caller": "Complete",
+          "callee": "onComplete?.Invoke",
+          "lineNumber": 201
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 19,
+        "functionCount": 16,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Management/LobbyUIManager.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 11,
+      "nonEmptyLines": 10,
+      "functions": [
+        {
+          "name": "Start",
+          "startLine": 7,
+          "endLine": 10,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "LobbyUIManager",
+          "startLine": 4,
+          "endLine": 11,
+          "methods": [
+            "Start"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "LobbyUIManager",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Start",
+          "callee": "App.SceneManager.Lobby.RefreshLobbyUI",
+          "lineNumber": 9
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Management/ManagerBase.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 64,
+      "nonEmptyLines": 52,
+      "functions": [
+        {
+          "name": "ManagerHandler",
+          "startLine": 13,
+          "endLine": 27,
+          "params": []
+        },
+        {
+          "name": "SetFieldValue",
+          "startLine": 29,
+          "endLine": 45,
+          "params": [
+            "type",
+            "manager"
+          ]
+        },
+        {
+          "name": "SetFieldValue",
+          "startLine": 47,
+          "endLine": 51,
+          "params": [
+            "manager"
+          ]
+        },
+        {
+          "name": "Awake",
+          "startLine": 58,
+          "endLine": 58,
+          "params": []
+        },
+        {
+          "name": "Awake",
+          "startLine": 63,
+          "endLine": 63,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "ManagerHandler",
+          "startLine": 8,
+          "endLine": 52,
+          "methods": [
+            "ManagerHandler",
+            "SetFieldValue",
+            "SetFieldValue"
+          ],
+          "properties": [
+            "_appFieldInfo"
+          ]
+        },
+        {
+          "name": "DataManagerBase",
+          "startLine": 54,
+          "endLine": 59,
+          "methods": [
+            "Awake"
+          ],
+          "properties": [
+            "IsDataLoaded"
+          ]
+        },
+        {
+          "name": "CommonManagerBase",
+          "startLine": 61,
+          "endLine": 64,
+          "methods": [
+            "Awake"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ManagerHandler",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "IsDataLoaded",
+          "line": 56,
+          "isDefault": false
+        },
+        {
+          "name": "DataManagerBase",
+          "line": 54,
+          "isDefault": false
+        },
+        {
+          "name": "CommonManagerBase",
+          "line": 61,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ManagerHandler",
+          "callee": "typeof(App).GetFields",
+          "lineNumber": 16
+        },
+        {
+          "caller": "ManagerHandler",
+          "callee": "_appFieldInfo.TryAdd",
+          "lineNumber": 22
+        },
+        {
+          "caller": "ManagerHandler",
+          "callee": "Debug.LogError",
+          "lineNumber": 24
+        },
+        {
+          "caller": "SetFieldValue",
+          "callee": "_appFieldInfo.TryGetValue",
+          "lineNumber": 31
+        },
+        {
+          "caller": "SetFieldValue",
+          "callee": "_appFieldInfo.Values.Where",
+          "lineNumber": 33
+        },
+        {
+          "caller": "SetFieldValue",
+          "callee": "field.FieldType.IsAssignableFrom",
+          "lineNumber": 33
+        },
+        {
+          "caller": "SetFieldValue",
+          "callee": "fields.Count",
+          "lineNumber": 35
+        },
+        {
+          "caller": "SetFieldValue",
+          "callee": "Debug.LogError",
+          "lineNumber": 37
+        },
+        {
+          "caller": "SetFieldValue",
+          "callee": "fields.ElementAt",
+          "lineNumber": 41
+        },
+        {
+          "caller": "SetFieldValue",
+          "callee": "fieldInfo.SetValue",
+          "lineNumber": 44
+        },
+        {
+          "caller": "SetFieldValue",
+          "callee": "manager.GetType",
+          "lineNumber": 49
+        },
+        {
+          "caller": "SetFieldValue",
+          "callee": "SetFieldValue",
+          "lineNumber": 50
+        },
+        {
+          "caller": "Awake",
+          "callee": "ManagerHandler.SetFieldValue",
+          "lineNumber": 58
+        },
+        {
+          "caller": "Awake",
+          "callee": "ManagerHandler.SetFieldValue",
+          "lineNumber": 63
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 5,
+        "classCount": 3
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 818,
+      "nonEmptyLines": 676,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 47,
+          "endLine": 52,
+          "params": []
+        },
+        {
+          "name": "OnEnable",
+          "startLine": 54,
+          "endLine": 62,
+          "params": []
+        },
+        {
+          "name": "OnDisable",
+          "startLine": 64,
+          "endLine": 72,
+          "params": []
+        },
+        {
+          "name": "OnDestroy",
+          "startLine": 74,
+          "endLine": 80,
+          "params": []
+        },
+        {
+          "name": "ConnectToCloud",
+          "startLine": 84,
+          "endLine": 87,
+          "params": [
+            "onComplete"
+          ]
+        },
+        {
+          "name": "Initialize",
+          "startLine": 89,
+          "endLine": 99,
+          "params": [
+            "localDisplayName",
+            "defaultMaxPlayers",
+            "minPlayersToStart",
+            "requireAllReady"
+          ]
+        },
+        {
+          "name": "CreateSession",
+          "startLine": 101,
+          "endLine": 115,
+          "params": [
+            "sessionCode",
+            "maxPlayers",
+            "onComplete"
+          ]
+        },
+        {
+          "name": "JoinSession",
+          "startLine": 117,
+          "endLine": 127,
+          "params": [
+            "sessionCode",
+            "onComplete"
+          ]
+        },
+        {
+          "name": "QuickJoinSession",
+          "startLine": 132,
+          "endLine": 135,
+          "params": [
+            "onComplete"
+          ]
+        },
+        {
+          "name": "LeaveSession",
+          "startLine": 137,
+          "endLine": 146,
+          "params": []
+        },
+        {
+          "name": "SetLocalReady",
+          "startLine": 148,
+          "endLine": 167,
+          "params": [
+            "isReady"
+          ]
+        },
+        {
+          "name": "SetLocalDisplayName",
+          "startLine": 169,
+          "endLine": 180,
+          "params": [
+            "displayName"
+          ]
+        },
+        {
+          "name": "StartGame",
+          "startLine": 182,
+          "endLine": 203,
+          "params": [
+            "targetScene",
+            "onComplete"
+          ]
+        },
+        {
+          "name": "Shutdown",
+          "startLine": 205,
+          "endLine": 209,
+          "params": []
+        },
+        {
+          "name": "GetActivePlayers",
+          "startLine": 211,
+          "endLine": 219,
+          "params": []
+        },
+        {
+          "name": "GetLocalPlayerId",
+          "startLine": 221,
+          "endLine": 224,
+          "params": []
+        },
+        {
+          "name": "CanStartGame",
+          "startLine": 226,
+          "endLine": 244,
+          "params": []
+        },
+        {
+          "name": "ConnectToCloudCoroutine",
+          "startLine": 246,
+          "endLine": 263,
+          "params": [
+            "onComplete"
+          ]
+        },
+        {
+          "name": "StartSessionCoroutine",
+          "startLine": 265,
+          "endLine": 308,
+          "params": [
+            "gameMode",
+            "sessionName",
+            "maxPlayers",
+            "isHost",
+            "onComplete"
+          ]
+        },
+        {
+          "name": "ResolveSessionCode",
+          "startLine": 310,
+          "endLine": 322,
+          "params": [
+            "requestedCode"
+          ]
+        },
+        {
+          "name": "LoadInGameSceneCoroutine",
+          "startLine": 324,
+          "endLine": 346,
+          "params": [
+            "targetScene",
+            "onComplete"
+          ]
+        },
+        {
+          "name": "LeaveSessionCoroutine",
+          "startLine": 348,
+          "endLine": 352,
+          "params": []
+        },
+        {
+          "name": "ShutdownSessionCoroutine",
+          "startLine": 354,
+          "endLine": 371,
+          "params": [
+            "disconnectCloud"
+          ]
+        },
+        {
+          "name": "EnsureCloudLobbyCoroutine",
+          "startLine": 373,
+          "endLine": 415,
+          "params": [
+            "rejoinAfterFailedStart"
+          ]
+        },
+        {
+          "name": "EnsureRunnerComponents",
+          "startLine": 417,
+          "endLine": 428,
+          "params": []
+        },
+        {
+          "name": "FormatStartGameError",
+          "startLine": 430,
+          "endLine": 443,
+          "params": [
+            "result",
+            "context"
+          ]
+        },
+        {
+          "name": "GetStartGameErrorMessage",
+          "startLine": 445,
+          "endLine": 455,
+          "params": [
+            "shutdownReason"
+          ]
+        },
+        {
+          "name": "TryGetAliveRunner",
+          "startLine": 457,
+          "endLine": 461,
+          "params": [
+            "runner"
+          ]
+        },
+        {
+          "name": "ApplyConnectedSession",
+          "startLine": 463,
+          "endLine": 468,
+          "params": [
+            "sessionCode",
+            "maxPlayers",
+            "isHost"
+          ]
+        },
+        {
+          "name": "RefreshSessionPlayers",
+          "startLine": 470,
+          "endLine": 479,
+          "params": []
+        },
+        {
+          "name": "OnPlayerJoined",
+          "startLine": 483,
+          "endLine": 491,
+          "params": [
+            "runner",
+            "player"
+          ]
+        },
+        {
+          "name": "OnPlayerLeft",
+          "startLine": 493,
+          "endLine": 501,
+          "params": [
+            "runner",
+            "player"
+          ]
+        },
+        {
+          "name": "OnShutdown",
+          "startLine": 503,
+          "endLine": 520,
+          "params": [
+            "runner",
+            "shutdownReason"
+          ]
+        },
+        {
+          "name": "OnConnectedToServer",
+          "startLine": 522,
+          "endLine": 522,
+          "params": [
+            "runner"
+          ]
+        },
+        {
+          "name": "OnDisconnectedFromServer",
+          "startLine": 524,
+          "endLine": 530,
+          "params": [
+            "runner",
+            "reason"
+          ]
+        },
+        {
+          "name": "OnReliableDataReceived",
+          "startLine": 532,
+          "endLine": 538,
+          "params": [
+            "runner",
+            "player",
+            "key",
+            "data"
+          ]
+        },
+        {
+          "name": "OnConnectRequest",
+          "startLine": 540,
+          "endLine": 540,
+          "params": [
+            "runner",
+            "request",
+            "token"
+          ]
+        },
+        {
+          "name": "OnConnectFailed",
+          "startLine": 541,
+          "endLine": 541,
+          "params": [
+            "runner",
+            "remoteAddress",
+            "reason"
+          ]
+        },
+        {
+          "name": "OnInput",
+          "startLine": 542,
+          "endLine": 542,
+          "params": [
+            "runner",
+            "input"
+          ]
+        },
+        {
+          "name": "OnInputMissing",
+          "startLine": 543,
+          "endLine": 543,
+          "params": [
+            "runner",
+            "player",
+            "input"
+          ]
+        },
+        {
+          "name": "OnSessionListUpdated",
+          "startLine": 544,
+          "endLine": 544,
+          "params": [
+            "runner",
+            "sessionList"
+          ]
+        },
+        {
+          "name": "OnCustomAuthenticationResponse",
+          "startLine": 545,
+          "endLine": 545,
+          "params": [
+            "runner",
+            "data"
+          ]
+        },
+        {
+          "name": "OnHostMigration",
+          "startLine": 546,
+          "endLine": 546,
+          "params": [
+            "runner",
+            "hostMigrationToken"
+          ]
+        },
+        {
+          "name": "OnReliableDataProgress",
+          "startLine": 547,
+          "endLine": 547,
+          "params": [
+            "runner",
+            "player",
+            "key",
+            "progress"
+          ]
+        },
+        {
+          "name": "OnSceneLoadDone",
+          "startLine": 549,
+          "endLine": 555,
+          "params": [
+            "runner"
+          ]
+        },
+        {
+          "name": "OnSceneLoadStart",
+          "startLine": 557,
+          "endLine": 557,
+          "params": [
+            "runner"
+          ]
+        },
+        {
+          "name": "OnObjectEnterAOI",
+          "startLine": 558,
+          "endLine": 558,
+          "params": [
+            "runner",
+            "obj",
+            "player"
+          ]
+        },
+        {
+          "name": "OnObjectExitAOI",
+          "startLine": 559,
+          "endLine": 559,
+          "params": [
+            "runner",
+            "obj",
+            "player"
+          ]
+        },
+        {
+          "name": "OnUserSimulationMessage",
+          "startLine": 560,
+          "endLine": 560,
+          "params": [
+            "runner",
+            "message"
+          ]
+        },
+        {
+          "name": "ServerInitializeFingerAssignments",
+          "startLine": 577,
+          "endLine": 606,
+          "params": []
+        },
+        {
+          "name": "ClientSendFingerState",
+          "startLine": 609,
+          "endLine": 629,
+          "params": [
+            "isExtended"
+          ]
+        },
+        {
+          "name": "ServerBroadcastStageSelected",
+          "startLine": 631,
+          "endLine": 636,
+          "params": [
+            "stageIndex"
+          ]
+        },
+        {
+          "name": "ServerStartRound",
+          "startLine": 638,
+          "endLine": 655,
+          "params": [
+            "durationSeconds"
+          ]
+        },
+        {
+          "name": "ServerJudgeAndBroadcastRoundResult",
+          "startLine": 657,
+          "endLine": 666,
+          "params": []
+        },
+        {
+          "name": "GetServerExtendedFingersMask",
+          "startLine": 669,
+          "endLine": 694,
+          "params": []
+        },
+        {
+          "name": "ResetServerFingerExtendedStates",
+          "startLine": 696,
+          "endLine": 712,
+          "params": []
+        },
+        {
+          "name": "BroadcastRoundResult",
+          "startLine": 714,
+          "endLine": 724,
+          "params": [
+            "handPosition"
+          ]
+        },
+        {
+          "name": "BroadcastInGamePayload",
+          "startLine": 726,
+          "endLine": 742,
+          "params": [
+            "payload"
+          ]
+        },
+        {
+          "name": "AppendFloat",
+          "startLine": 744,
+          "endLine": 750,
+          "params": [
+            "payload",
+            "value"
+          ]
+        },
+        {
+          "name": "ResetInGameRoundNotification",
+          "startLine": 753,
+          "endLine": 756,
+          "params": []
+        },
+        {
+          "name": "HandleInGameDataChanged",
+          "startLine": 758,
+          "endLine": 772,
+          "params": []
+        },
+        {
+          "name": "HandleInGameRpsData",
+          "startLine": 774,
+          "endLine": 815,
+          "params": [
+            "runner",
+            "from",
+            "data"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "NetworkManager",
+          "startLine": 21,
+          "endLine": 818,
+          "methods": [
+            "Awake",
+            "OnEnable",
+            "OnDisable",
+            "OnDestroy",
+            "ConnectToCloud",
+            "Initialize",
+            "CreateSession",
+            "JoinSession",
+            "QuickJoinSession",
+            "LeaveSession",
+            "SetLocalReady",
+            "SetLocalDisplayName",
+            "StartGame",
+            "Shutdown",
+            "GetActivePlayers",
+            "GetLocalPlayerId",
+            "CanStartGame",
+            "ConnectToCloudCoroutine",
+            "StartSessionCoroutine",
+            "ResolveSessionCode",
+            "LoadInGameSceneCoroutine",
+            "LeaveSessionCoroutine",
+            "ShutdownSessionCoroutine",
+            "EnsureCloudLobbyCoroutine",
+            "EnsureRunnerComponents",
+            "FormatStartGameError",
+            "GetStartGameErrorMessage",
+            "TryGetAliveRunner",
+            "ApplyConnectedSession",
+            "RefreshSessionPlayers",
+            "OnPlayerJoined",
+            "OnPlayerLeft",
+            "OnShutdown",
+            "OnConnectedToServer",
+            "OnDisconnectedFromServer",
+            "OnReliableDataReceived",
+            "OnConnectRequest",
+            "OnConnectFailed",
+            "OnInput",
+            "OnInputMissing",
+            "OnSessionListUpdated",
+            "OnCustomAuthenticationResponse",
+            "OnHostMigration",
+            "OnReliableDataProgress",
+            "OnSceneLoadDone",
+            "OnSceneLoadStart",
+            "OnObjectEnterAOI",
+            "OnObjectExitAOI",
+            "OnUserSimulationMessage",
+            "ServerInitializeFingerAssignments",
+            "ClientSendFingerState",
+            "ServerBroadcastStageSelected",
+            "ServerStartRound",
+            "ServerJudgeAndBroadcastRoundResult",
+            "GetServerExtendedFingersMask",
+            "ResetServerFingerExtendedStates",
+            "BroadcastRoundResult",
+            "BroadcastInGamePayload",
+            "AppendFloat",
+            "ResetInGameRoundNotification",
+            "HandleInGameDataChanged",
+            "HandleInGameRpsData"
+          ],
+          "properties": [
+            "MaxPlayers",
+            "SessionNotFoundMessage",
+            "_runner",
+            "_session",
+            "_localDisplayName",
+            "_defaultMaxPlayers",
+            "_minPlayersToStart",
+            "_requireAllReady",
+            "_isRestoringCloudLobby",
+            "_lastCloudConnectError",
+            "Runner",
+            "IsRunning",
+            "IsCloudConnected",
+            "Session",
+            "IsLocalReady",
+            "LocalDisplayName",
+            "IsServerHost",
+            "InGameRpsKey",
+            "_localAssignmentNotified"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "MaxPlayers",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "SessionNotFoundMessage",
+          "line": 25,
+          "isDefault": false
+        },
+        {
+          "name": "Runner",
+          "line": 37,
+          "isDefault": false
+        },
+        {
+          "name": "IsRunning",
+          "line": 38,
+          "isDefault": false
+        },
+        {
+          "name": "IsCloudConnected",
+          "line": 39,
+          "isDefault": false
+        },
+        {
+          "name": "Session",
+          "line": 40,
+          "isDefault": false
+        },
+        {
+          "name": "IsLocalReady",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "LocalDisplayName",
+          "line": 42,
+          "isDefault": false
+        },
+        {
+          "name": "IsServerHost",
+          "line": 82,
+          "isDefault": false
+        },
+        {
+          "name": "ConnectToCloud",
+          "line": 84,
+          "isDefault": false
+        },
+        {
+          "name": "Initialize",
+          "line": 89,
+          "isDefault": false
+        },
+        {
+          "name": "CreateSession",
+          "line": 101,
+          "isDefault": false
+        },
+        {
+          "name": "JoinSession",
+          "line": 117,
+          "isDefault": false
+        },
+        {
+          "name": "QuickJoinSession",
+          "line": 132,
+          "isDefault": false
+        },
+        {
+          "name": "LeaveSession",
+          "line": 137,
+          "isDefault": false
+        },
+        {
+          "name": "SetLocalReady",
+          "line": 148,
+          "isDefault": false
+        },
+        {
+          "name": "SetLocalDisplayName",
+          "line": 169,
+          "isDefault": false
+        },
+        {
+          "name": "StartGame",
+          "line": 182,
+          "isDefault": false
+        },
+        {
+          "name": "Shutdown",
+          "line": 205,
+          "isDefault": false
+        },
+        {
+          "name": "GetActivePlayers",
+          "line": 211,
+          "isDefault": false
+        },
+        {
+          "name": "GetLocalPlayerId",
+          "line": 221,
+          "isDefault": false
+        },
+        {
+          "name": "CanStartGame",
+          "line": 226,
+          "isDefault": false
+        },
+        {
+          "name": "TryGetAliveRunner",
+          "line": 457,
+          "isDefault": false
+        },
+        {
+          "name": "OnPlayerJoined",
+          "line": 483,
+          "isDefault": false
+        },
+        {
+          "name": "OnPlayerLeft",
+          "line": 493,
+          "isDefault": false
+        },
+        {
+          "name": "OnShutdown",
+          "line": 503,
+          "isDefault": false
+        },
+        {
+          "name": "OnConnectedToServer",
+          "line": 522,
+          "isDefault": false
+        },
+        {
+          "name": "OnDisconnectedFromServer",
+          "line": 524,
+          "isDefault": false
+        },
+        {
+          "name": "OnReliableDataReceived",
+          "line": 532,
+          "isDefault": false
+        },
+        {
+          "name": "OnConnectRequest",
+          "line": 540,
+          "isDefault": false
+        },
+        {
+          "name": "OnConnectFailed",
+          "line": 541,
+          "isDefault": false
+        },
+        {
+          "name": "OnInput",
+          "line": 542,
+          "isDefault": false
+        },
+        {
+          "name": "OnInputMissing",
+          "line": 543,
+          "isDefault": false
+        },
+        {
+          "name": "OnSessionListUpdated",
+          "line": 544,
+          "isDefault": false
+        },
+        {
+          "name": "OnCustomAuthenticationResponse",
+          "line": 545,
+          "isDefault": false
+        },
+        {
+          "name": "OnHostMigration",
+          "line": 546,
+          "isDefault": false
+        },
+        {
+          "name": "OnReliableDataProgress",
+          "line": 547,
+          "isDefault": false
+        },
+        {
+          "name": "OnSceneLoadDone",
+          "line": 549,
+          "isDefault": false
+        },
+        {
+          "name": "OnSceneLoadStart",
+          "line": 557,
+          "isDefault": false
+        },
+        {
+          "name": "OnObjectEnterAOI",
+          "line": 558,
+          "isDefault": false
+        },
+        {
+          "name": "OnObjectExitAOI",
+          "line": 559,
+          "isDefault": false
+        },
+        {
+          "name": "OnUserSimulationMessage",
+          "line": 560,
+          "isDefault": false
+        },
+        {
+          "name": "ServerInitializeFingerAssignments",
+          "line": 577,
+          "isDefault": false
+        },
+        {
+          "name": "ClientSendFingerState",
+          "line": 609,
+          "isDefault": false
+        },
+        {
+          "name": "ServerBroadcastStageSelected",
+          "line": 631,
+          "isDefault": false
+        },
+        {
+          "name": "ServerStartRound",
+          "line": 638,
+          "isDefault": false
+        },
+        {
+          "name": "ServerJudgeAndBroadcastRoundResult",
+          "line": 657,
+          "isDefault": false
+        },
+        {
+          "name": "ResetInGameRoundNotification",
+          "line": 753,
+          "isDefault": false
+        },
+        {
+          "name": "NetworkManager",
+          "line": 21,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 49
+        },
+        {
+          "caller": "Awake",
+          "callee": "EnsureRunnerComponents",
+          "lineNumber": 50
+        },
+        {
+          "caller": "Awake",
+          "callee": "_runner.AddCallbacks",
+          "lineNumber": 51
+        },
+        {
+          "caller": "OnDestroy",
+          "callee": "_runner.RemoveCallbacks",
+          "lineNumber": 78
+        },
+        {
+          "caller": "ConnectToCloud",
+          "callee": "StartCoroutine",
+          "lineNumber": 86
+        },
+        {
+          "caller": "ConnectToCloud",
+          "callee": "ConnectToCloudCoroutine",
+          "lineNumber": 86
+        },
+        {
+          "caller": "Initialize",
+          "callee": "string.IsNullOrWhiteSpace",
+          "lineNumber": 91
+        },
+        {
+          "caller": "Initialize",
+          "callee": "localDisplayName.Trim",
+          "lineNumber": 93
+        },
+        {
+          "caller": "Initialize",
+          "callee": "Mathf.Clamp",
+          "lineNumber": 96
+        },
+        {
+          "caller": "CreateSession",
+          "callee": "string.IsNullOrWhiteSpace",
+          "lineNumber": 103
+        },
+        {
+          "caller": "CreateSession",
+          "callee": "LobbyCodeUtility.GenerateCode",
+          "lineNumber": 104
+        },
+        {
+          "caller": "CreateSession",
+          "callee": "LobbyCodeUtility.NormalizeCode",
+          "lineNumber": 105
+        },
+        {
+          "caller": "CreateSession",
+          "callee": "LobbyCodeUtility.IsValidCode",
+          "lineNumber": 107
+        },
+        {
+          "caller": "CreateSession",
+          "callee": "onComplete?.Invoke",
+          "lineNumber": 109
+        },
+        {
+          "caller": "CreateSession",
+          "callee": "LobbyRequestResult.Fail",
+          "lineNumber": 109
+        },
+        {
+          "caller": "CreateSession",
+          "callee": "Mathf.Clamp",
+          "lineNumber": 113
+        },
+        {
+          "caller": "CreateSession",
+          "callee": "StartCoroutine",
+          "lineNumber": 114
+        },
+        {
+          "caller": "CreateSession",
+          "callee": "StartSessionCoroutine",
+          "lineNumber": 114
+        },
+        {
+          "caller": "JoinSession",
+          "callee": "LobbyCodeUtility.NormalizeCode",
+          "lineNumber": 119
+        },
+        {
+          "caller": "JoinSession",
+          "callee": "LobbyCodeUtility.IsValidCode",
+          "lineNumber": 120
+        },
+        {
+          "caller": "JoinSession",
+          "callee": "onComplete?.Invoke",
+          "lineNumber": 122
+        },
+        {
+          "caller": "JoinSession",
+          "callee": "LobbyRequestResult.Fail",
+          "lineNumber": 122
+        },
+        {
+          "caller": "JoinSession",
+          "callee": "StartCoroutine",
+          "lineNumber": 126
+        },
+        {
+          "caller": "JoinSession",
+          "callee": "StartSessionCoroutine",
+          "lineNumber": 126
+        },
+        {
+          "caller": "QuickJoinSession",
+          "callee": "StartCoroutine",
+          "lineNumber": 134
+        },
+        {
+          "caller": "QuickJoinSession",
+          "callee": "StartSessionCoroutine",
+          "lineNumber": 134
+        },
+        {
+          "caller": "LeaveSession",
+          "callee": "_session.Reset",
+          "lineNumber": 139
+        },
+        {
+          "caller": "LeaveSession",
+          "callee": "OnSessionUpdated?.Invoke",
+          "lineNumber": 140
+        },
+        {
+          "caller": "LeaveSession",
+          "callee": "TryGetAliveRunner",
+          "lineNumber": 142
+        },
+        {
+          "caller": "LeaveSession",
+          "callee": "StartCoroutine",
+          "lineNumber": 144
+        },
+        {
+          "caller": "LeaveSession",
+          "callee": "LeaveSessionCoroutine",
+          "lineNumber": 144
+        },
+        {
+          "caller": "SetLocalReady",
+          "callee": "App.Game.Players.TryGetLocal",
+          "lineNumber": 155
+        },
+        {
+          "caller": "SetLocalReady",
+          "callee": "lobbyPlayer.RPC_SetReady",
+          "lineNumber": 166
+        },
+        {
+          "caller": "SetLocalDisplayName",
+          "callee": "string.IsNullOrWhiteSpace",
+          "lineNumber": 171
+        },
+        {
+          "caller": "SetLocalDisplayName",
+          "callee": "displayName.Trim",
+          "lineNumber": 173
+        },
+        {
+          "caller": "SetLocalDisplayName",
+          "callee": "RefreshSessionPlayers",
+          "lineNumber": 178
+        },
+        {
+          "caller": "StartGame",
+          "callee": "onComplete?.Invoke",
+          "lineNumber": 186
+        },
+        {
+          "caller": "StartGame",
+          "callee": "LobbyRequestResult.Fail",
+          "lineNumber": 186
+        },
+        {
+          "caller": "StartGame",
+          "callee": "onComplete?.Invoke",
+          "lineNumber": 192
+        },
+        {
+          "caller": "StartGame",
+          "callee": "LobbyRequestResult.Fail",
+          "lineNumber": 192
+        },
+        {
+          "caller": "StartGame",
+          "callee": "CanStartGame",
+          "lineNumber": 196
+        },
+        {
+          "caller": "StartGame",
+          "callee": "onComplete?.Invoke",
+          "lineNumber": 198
+        },
+        {
+          "caller": "StartGame",
+          "callee": "LobbyRequestResult.Fail",
+          "lineNumber": 198
+        },
+        {
+          "caller": "StartGame",
+          "callee": "StartCoroutine",
+          "lineNumber": 202
+        },
+        {
+          "caller": "StartGame",
+          "callee": "LoadInGameSceneCoroutine",
+          "lineNumber": 202
+        },
+        {
+          "caller": "Shutdown",
+          "callee": "_session.Reset",
+          "lineNumber": 207
+        },
+        {
+          "caller": "Shutdown",
+          "callee": "StartCoroutine",
+          "lineNumber": 208
+        },
+        {
+          "caller": "Shutdown",
+          "callee": "ShutdownSessionCoroutine",
+          "lineNumber": 208
+        },
+        {
+          "caller": "GetActivePlayers",
+          "callee": "Array.Empty<PlayerRef>",
+          "lineNumber": 215
+        },
+        {
+          "caller": "GetActivePlayers",
+          "callee": "new List<PlayerRef>",
+          "lineNumber": 218
+        },
+        {
+          "caller": "GetLocalPlayerId",
+          "callee": "_runner.LocalPlayer.PlayerId.ToString",
+          "lineNumber": 223
+        },
+        {
+          "caller": "ConnectToCloudCoroutine",
+          "callee": "TryGetAliveRunner",
+          "lineNumber": 248
+        },
+        {
+          "caller": "ConnectToCloudCoroutine",
+          "callee": "onComplete?.Invoke",
+          "lineNumber": 250
+        },
+        {
+          "caller": "ConnectToCloudCoroutine",
+          "callee": "LobbyRequestResult.Success",
+          "lineNumber": 250
+        },
+        {
+          "caller": "ConnectToCloudCoroutine",
+          "callee": "EnsureCloudLobbyCoroutine",
+          "lineNumber": 254
+        },
+        {
+          "caller": "ConnectToCloudCoroutine",
+          "callee": "onComplete?.Invoke",
+          "lineNumber": 258
+        },
+        {
+          "caller": "ConnectToCloudCoroutine",
+          "callee": "LobbyRequestResult.Success",
+          "lineNumber": 258
+        },
+        {
+          "caller": "ConnectToCloudCoroutine",
+          "callee": "onComplete?.Invoke",
+          "lineNumber": 262
+        },
+        {
+          "caller": "ConnectToCloudCoroutine",
+          "callee": "LobbyRequestResult.Fail",
+          "lineNumber": 262
+        },
+        {
+          "caller": "StartSessionCoroutine",
+          "callee": "ShutdownSessionCoroutine",
+          "lineNumber": 274
+        },
+        {
+          "caller": "StartSessionCoroutine",
+          "callee": "EnsureCloudLobbyCoroutine",
+          "lineNumber": 277
+        },
+        {
+          "caller": "StartSessionCoroutine",
+          "callee": "onComplete?.Invoke",
+          "lineNumber": 280
+        },
+        {
+          "caller": "StartSessionCoroutine",
+          "callee": "LobbyRequestResult.Fail",
+          "lineNumber": 280
+        },
+        {
+          "caller": "StartSessionCoroutine",
+          "callee": "Mathf.Clamp",
+          "lineNumber": 284
+        },
+        {
+          "caller": "StartSessionCoroutine",
+          "callee": "_runner.StartGame",
+          "lineNumber": 286
+        },
+        {
+          "caller": "StartSessionCoroutine",
+          "callee": "new StartGameArgs",
+          "lineNumber": 286
+        },
+        {
+          "caller": "StartSessionCoroutine",
+          "callee": "_runner.GetComponent<INetworkSceneManager>",
+          "lineNumber": 291
+        },
+        {
+          "caller": "StartSessionCoroutine",
+          "callee": "_runner.GetComponent<INetworkObjectProvider>",
+          "lineNumber": 292
+        },
+        {
+          "caller": "StartSessionCoroutine",
+          "callee": "new WaitUntil",
+          "lineNumber": 295
+        },
+        {
+          "caller": "StartSessionCoroutine",
+          "callee": "onComplete?.Invoke",
+          "lineNumber": 299
+        },
+        {
+          "caller": "StartSessionCoroutine",
+          "callee": "LobbyRequestResult.Fail",
+          "lineNumber": 299
+        },
+        {
+          "caller": "StartSessionCoroutine",
+          "callee": "GetStartGameErrorMessage",
+          "lineNumber": 299
+        },
+        {
+          "caller": "StartSessionCoroutine",
+          "callee": "EnsureCloudLobbyCoroutine",
+          "lineNumber": 300
+        },
+        {
+          "caller": "StartSessionCoroutine",
+          "callee": "ResolveSessionCode",
+          "lineNumber": 304
+        },
+        {
+          "caller": "StartSessionCoroutine",
+          "callee": "ApplyConnectedSession",
+          "lineNumber": 306
+        },
+        {
+          "caller": "StartSessionCoroutine",
+          "callee": "onComplete?.Invoke",
+          "lineNumber": 307
+        },
+        {
+          "caller": "StartSessionCoroutine",
+          "callee": "LobbyRequestResult.Success",
+          "lineNumber": 307
+        },
+        {
+          "caller": "ResolveSessionCode",
+          "callee": "TryGetAliveRunner",
+          "lineNumber": 312
+        },
+        {
+          "caller": "ResolveSessionCode",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 314
+        },
+        {
+          "caller": "ResolveSessionCode",
+          "callee": "LobbyCodeUtility.NormalizeCode",
+          "lineNumber": 316
+        },
+        {
+          "caller": "ResolveSessionCode",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 319
+        },
+        {
+          "caller": "ResolveSessionCode",
+          "callee": "LobbyCodeUtility.NormalizeCode",
+          "lineNumber": 321
+        },
+        {
+          "caller": "LoadInGameSceneCoroutine",
+          "callee": "onComplete?.Invoke",
+          "lineNumber": 328
+        },
+        {
+          "caller": "LoadInGameSceneCoroutine",
+          "callee": "LobbyRequestResult.Fail",
+          "lineNumber": 328
+        },
+        {
+          "caller": "LoadInGameSceneCoroutine",
+          "callee": "SceneRef.FromIndex",
+          "lineNumber": 332
+        },
+        {
+          "caller": "LoadInGameSceneCoroutine",
+          "callee": "_runner.LoadScene",
+          "lineNumber": 333
+        },
+        {
+          "caller": "LoadInGameSceneCoroutine",
+          "callee": "new WaitUntil",
+          "lineNumber": 335
+        },
+        {
+          "caller": "LoadInGameSceneCoroutine",
+          "callee": "_session.SetState",
+          "lineNumber": 339
+        },
+        {
+          "caller": "LoadInGameSceneCoroutine",
+          "callee": "OnSessionUpdated?.Invoke",
+          "lineNumber": 340
+        },
+        {
+          "caller": "LoadInGameSceneCoroutine",
+          "callee": "onComplete?.Invoke",
+          "lineNumber": 341
+        },
+        {
+          "caller": "LoadInGameSceneCoroutine",
+          "callee": "LobbyRequestResult.Success",
+          "lineNumber": 341
+        },
+        {
+          "caller": "LoadInGameSceneCoroutine",
+          "callee": "onComplete?.Invoke",
+          "lineNumber": 345
+        },
+        {
+          "caller": "LoadInGameSceneCoroutine",
+          "callee": "LobbyRequestResult.Fail",
+          "lineNumber": 345
+        },
+        {
+          "caller": "LeaveSessionCoroutine",
+          "callee": "ShutdownSessionCoroutine",
+          "lineNumber": 350
+        },
+        {
+          "caller": "LeaveSessionCoroutine",
+          "callee": "EnsureCloudLobbyCoroutine",
+          "lineNumber": 351
+        },
+        {
+          "caller": "ShutdownSessionCoroutine",
+          "callee": "TryGetAliveRunner",
+          "lineNumber": 356
+        },
+        {
+          "caller": "ShutdownSessionCoroutine",
+          "callee": "runner.Shutdown",
+          "lineNumber": 363
+        },
+        {
+          "caller": "ShutdownSessionCoroutine",
+          "callee": "new WaitUntil",
+          "lineNumber": 364
+        },
+        {
+          "caller": "EnsureCloudLobbyCoroutine",
+          "callee": "ShutdownSessionCoroutine",
+          "lineNumber": 380
+        },
+        {
+          "caller": "EnsureCloudLobbyCoroutine",
+          "callee": "PlayerProfile.NormalizeDisplayName",
+          "lineNumber": 396
+        },
+        {
+          "caller": "EnsureCloudLobbyCoroutine",
+          "callee": "PlayerProfile.SaveDisplayName",
+          "lineNumber": 397
+        },
+        {
+          "caller": "EnsureCloudLobbyCoroutine",
+          "callee": "new AuthenticationValues",
+          "lineNumber": 399
+        },
+        {
+          "caller": "EnsureCloudLobbyCoroutine",
+          "callee": "_runner.JoinSessionLobby",
+          "lineNumber": 401
+        },
+        {
+          "caller": "EnsureCloudLobbyCoroutine",
+          "callee": "new WaitUntil",
+          "lineNumber": 402
+        },
+        {
+          "caller": "EnsureCloudLobbyCoroutine",
+          "callee": "FormatStartGameError",
+          "lineNumber": 412
+        },
+        {
+          "caller": "EnsureCloudLobbyCoroutine",
+          "callee": "Debug.LogError",
+          "lineNumber": 413
+        },
+        {
+          "caller": "EnsureRunnerComponents",
+          "callee": "_runner.GetComponent<INetworkSceneManager>",
+          "lineNumber": 419
+        },
+        {
+          "caller": "EnsureRunnerComponents",
+          "callee": "_runner.gameObject.AddComponent<NetworkSceneManagerDefault>",
+          "lineNumber": 421
+        },
+        {
+          "caller": "EnsureRunnerComponents",
+          "callee": "_runner.GetComponent<INetworkObjectProvider>",
+          "lineNumber": 424
+        },
+        {
+          "caller": "EnsureRunnerComponents",
+          "callee": "_runner.gameObject.AddComponent<NetworkObjectProviderDefault>",
+          "lineNumber": 426
+        },
+        {
+          "caller": "FormatStartGameError",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 432
+        },
+        {
+          "caller": "GetStartGameErrorMessage",
+          "callee": "shutdownReason.ToString",
+          "lineNumber": 453
+        },
+        {
+          "caller": "ApplyConnectedSession",
+          "callee": "_session.Reset",
+          "lineNumber": 465
+        },
+        {
+          "caller": "ApplyConnectedSession",
+          "callee": "_session.ApplyConnected",
+          "lineNumber": 466
+        },
+        {
+          "caller": "ApplyConnectedSession",
+          "callee": "GetLocalPlayerId",
+          "lineNumber": 466
+        },
+        {
+          "caller": "ApplyConnectedSession",
+          "callee": "RefreshSessionPlayers",
+          "lineNumber": 467
+        },
+        {
+          "caller": "RefreshSessionPlayers",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 472
+        },
+        {
+          "caller": "RefreshSessionPlayers",
+          "callee": "_session.ReplacePlayers",
+          "lineNumber": 477
+        },
+        {
+          "caller": "RefreshSessionPlayers",
+          "callee": "App.Game.Players.BuildLobbyPlayers",
+          "lineNumber": 477
+        },
+        {
+          "caller": "RefreshSessionPlayers",
+          "callee": "OnSessionUpdated?.Invoke",
+          "lineNumber": 478
+        },
+        {
+          "caller": "OnPlayerJoined",
+          "callee": "App.Game.Players.Spawn",
+          "lineNumber": 487
+        },
+        {
+          "caller": "OnPlayerJoined",
+          "callee": "RefreshSessionPlayers",
+          "lineNumber": 490
+        },
+        {
+          "caller": "OnPlayerLeft",
+          "callee": "App.Game.Players.Despawn",
+          "lineNumber": 497
+        },
+        {
+          "caller": "OnPlayerLeft",
+          "callee": "RefreshSessionPlayers",
+          "lineNumber": 500
+        },
+        {
+          "caller": "OnShutdown",
+          "callee": "_session.Reset",
+          "lineNumber": 507
+        },
+        {
+          "caller": "OnShutdown",
+          "callee": "OnSessionUpdated?.Invoke",
+          "lineNumber": 508
+        },
+        {
+          "caller": "OnShutdown",
+          "callee": "StartCoroutine",
+          "lineNumber": 509
+        },
+        {
+          "caller": "OnShutdown",
+          "callee": "EnsureCloudLobbyCoroutine",
+          "lineNumber": 509
+        },
+        {
+          "caller": "OnShutdown",
+          "callee": "_session.Reset",
+          "lineNumber": 516
+        },
+        {
+          "caller": "OnShutdown",
+          "callee": "OnSessionUpdated?.Invoke",
+          "lineNumber": 517
+        },
+        {
+          "caller": "OnShutdown",
+          "callee": "OnError?.Invoke",
+          "lineNumber": 518
+        },
+        {
+          "caller": "OnReliableDataReceived",
+          "callee": "key.Equals",
+          "lineNumber": 534
+        },
+        {
+          "caller": "OnReliableDataReceived",
+          "callee": "HandleInGameRpsData",
+          "lineNumber": 536
+        },
+        {
+          "caller": "OnSceneLoadDone",
+          "callee": "SceneManager.GetActiveScene",
+          "lineNumber": 552
+        },
+        {
+          "caller": "OnSceneLoadDone",
+          "callee": "OnInGameSceneReady?.Invoke",
+          "lineNumber": 554
+        },
+        {
+          "caller": "ServerInitializeFingerAssignments",
+          "callee": "TryGetAliveRunner",
+          "lineNumber": 579
+        },
+        {
+          "caller": "ServerInitializeFingerAssignments",
+          "callee": "GetActivePlayers",
+          "lineNumber": 585
+        },
+        {
+          "caller": "ServerInitializeFingerAssignments",
+          "callee": "new List<int>",
+          "lineNumber": 586
+        },
+        {
+          "caller": "ServerInitializeFingerAssignments",
+          "callee": "playerIds.Add",
+          "lineNumber": 589
+        },
+        {
+          "caller": "ServerInitializeFingerAssignments",
+          "callee": "playerIds.Sort",
+          "lineNumber": 592
+        },
+        {
+          "caller": "ServerInitializeFingerAssignments",
+          "callee": "RpsHandUtility.CreateRandomAssignments",
+          "lineNumber": 594
+        },
+        {
+          "caller": "ServerInitializeFingerAssignments",
+          "callee": "players.TryGet",
+          "lineNumber": 598
+        },
+        {
+          "caller": "ServerInitializeFingerAssignments",
+          "callee": "assignments.TryGetValue",
+          "lineNumber": 600
+        },
+        {
+          "caller": "ClientSendFingerState",
+          "callee": "TryGetAliveRunner",
+          "lineNumber": 611
+        },
+        {
+          "caller": "ClientSendFingerState",
+          "callee": "App.Game.Players.TryGetLocal",
+          "lineNumber": 616
+        },
+        {
+          "caller": "ClientSendFingerState",
+          "callee": "playerObject.RPC_SetFingerExtended",
+          "lineNumber": 627
+        },
+        {
+          "caller": "ServerBroadcastStageSelected",
+          "callee": "BroadcastInGamePayload",
+          "lineNumber": 634
+        },
+        {
+          "caller": "ServerBroadcastStageSelected",
+          "callee": "OnStageSelected?.Invoke",
+          "lineNumber": 635
+        },
+        {
+          "caller": "ServerStartRound",
+          "callee": "TryGetAliveRunner",
+          "lineNumber": 640
+        },
+        {
+          "caller": "ServerStartRound",
+          "callee": "ResetServerFingerExtendedStates",
+          "lineNumber": 645
+        },
+        {
+          "caller": "ServerStartRound",
+          "callee": "AppendFloat",
+          "lineNumber": 651
+        },
+        {
+          "caller": "ServerStartRound",
+          "callee": "BroadcastInGamePayload",
+          "lineNumber": 653
+        },
+        {
+          "caller": "ServerStartRound",
+          "callee": "OnRoundStarted?.Invoke",
+          "lineNumber": 654
+        },
+        {
+          "caller": "ServerJudgeAndBroadcastRoundResult",
+          "callee": "TryGetAliveRunner",
+          "lineNumber": 659
+        },
+        {
+          "caller": "ServerJudgeAndBroadcastRoundResult",
+          "callee": "RpsHandUtility.Judge",
+          "lineNumber": 664
+        },
+        {
+          "caller": "ServerJudgeAndBroadcastRoundResult",
+          "callee": "GetServerExtendedFingersMask",
+          "lineNumber": 664
+        },
+        {
+          "caller": "ServerJudgeAndBroadcastRoundResult",
+          "callee": "BroadcastRoundResult",
+          "lineNumber": 665
+        },
+        {
+          "caller": "GetServerExtendedFingersMask",
+          "callee": "TryGetAliveRunner",
+          "lineNumber": 676
+        },
+        {
+          "caller": "GetServerExtendedFingersMask",
+          "callee": "GetActivePlayers",
+          "lineNumber": 683
+        },
+        {
+          "caller": "GetServerExtendedFingersMask",
+          "callee": "players.TryGet",
+          "lineNumber": 685
+        },
+        {
+          "caller": "ResetServerFingerExtendedStates",
+          "callee": "TryGetAliveRunner",
+          "lineNumber": 698
+        },
+        {
+          "caller": "ResetServerFingerExtendedStates",
+          "callee": "GetActivePlayers",
+          "lineNumber": 705
+        },
+        {
+          "caller": "ResetServerFingerExtendedStates",
+          "callee": "players.TryGet",
+          "lineNumber": 707
+        },
+        {
+          "caller": "BroadcastRoundResult",
+          "callee": "BroadcastInGamePayload",
+          "lineNumber": 722
+        },
+        {
+          "caller": "BroadcastRoundResult",
+          "callee": "OnRoundResultReceived?.Invoke",
+          "lineNumber": 723
+        },
+        {
+          "caller": "BroadcastInGamePayload",
+          "callee": "TryGetAliveRunner",
+          "lineNumber": 728
+        },
+        {
+          "caller": "BroadcastInGamePayload",
+          "callee": "runner.SendReliableDataToPlayer",
+          "lineNumber": 740
+        },
+        {
+          "caller": "AppendFloat",
+          "callee": "new List<byte>",
+          "lineNumber": 746
+        },
+        {
+          "caller": "AppendFloat",
+          "callee": "buffer.AddRange",
+          "lineNumber": 747
+        },
+        {
+          "caller": "AppendFloat",
+          "callee": "buffer.AddRange",
+          "lineNumber": 748
+        },
+        {
+          "caller": "AppendFloat",
+          "callee": "BitConverter.GetBytes",
+          "lineNumber": 748
+        },
+        {
+          "caller": "AppendFloat",
+          "callee": "buffer.ToArray",
+          "lineNumber": 749
+        },
+        {
+          "caller": "HandleInGameDataChanged",
+          "callee": "App.Game.Players.TryGetLocal",
+          "lineNumber": 766
+        },
+        {
+          "caller": "HandleInGameDataChanged",
+          "callee": "OnFingerAssignmentsReceived?.Invoke",
+          "lineNumber": 770
+        },
+        {
+          "caller": "HandleInGameRpsData",
+          "callee": "BitConverter.ToSingle",
+          "lineNumber": 791
+        },
+        {
+          "caller": "HandleInGameRpsData",
+          "callee": "OnRoundStarted?.Invoke",
+          "lineNumber": 792
+        },
+        {
+          "caller": "HandleInGameRpsData",
+          "callee": "OnRoundResultReceived?.Invoke",
+          "lineNumber": 802
+        },
+        {
+          "caller": "HandleInGameRpsData",
+          "callee": "OnStageSelected?.Invoke",
+          "lineNumber": 812
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 49,
+        "functionCount": 62,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Management/PlayerManager.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 322,
+      "nonEmptyLines": 263,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 49,
+          "endLine": 60,
+          "params": []
+        },
+        {
+          "name": "OnDestroy",
+          "startLine": 62,
+          "endLine": 66,
+          "params": []
+        },
+        {
+          "name": "HandlePlayerDataChanged",
+          "startLine": 68,
+          "endLine": 71,
+          "params": []
+        },
+        {
+          "name": "TryGetLocal",
+          "startLine": 73,
+          "endLine": 83,
+          "params": [
+            "player"
+          ]
+        },
+        {
+          "name": "TryGet",
+          "startLine": 85,
+          "endLine": 96,
+          "params": [
+            "playerRef",
+            "player"
+          ]
+        },
+        {
+          "name": "ServerEnsurePlayerObjectsCoroutine",
+          "startLine": 99,
+          "endLine": 129,
+          "params": []
+        },
+        {
+          "name": "SpawnAsyncCoroutine",
+          "startLine": 131,
+          "endLine": 167,
+          "params": [
+            "runner",
+            "player"
+          ]
+        },
+        {
+          "name": "Spawn",
+          "startLine": 169,
+          "endLine": 191,
+          "params": [
+            "runner",
+            "player"
+          ]
+        },
+        {
+          "name": "Despawn",
+          "startLine": 193,
+          "endLine": 205,
+          "params": [
+            "runner",
+            "player"
+          ]
+        },
+        {
+          "name": "TryGetHost",
+          "startLine": 207,
+          "endLine": 228,
+          "params": [
+            "host"
+          ]
+        },
+        {
+          "name": "BuildLobbyPlayers",
+          "startLine": 231,
+          "endLine": 267,
+          "params": []
+        },
+        {
+          "name": "AddLocalLobbyFallback",
+          "startLine": 269,
+          "endLine": 285,
+          "params": [
+            "players"
+          ]
+        },
+        {
+          "name": "ResolveDisplayName",
+          "startLine": 287,
+          "endLine": 299,
+          "params": [
+            "playerRef",
+            "playerId",
+            "isLocal"
+          ]
+        },
+        {
+          "name": "ResolveHostPlayer",
+          "startLine": 301,
+          "endLine": 321,
+          "params": [
+            "runner",
+            "activePlayers"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "PlayerManager",
+          "startLine": 12,
+          "endLine": 322,
+          "methods": [
+            "Awake",
+            "OnDestroy",
+            "HandlePlayerDataChanged",
+            "TryGetLocal",
+            "TryGet",
+            "ServerEnsurePlayerObjectsCoroutine",
+            "SpawnAsyncCoroutine",
+            "Spawn",
+            "Despawn",
+            "TryGetHost",
+            "BuildLobbyPlayers",
+            "AddLocalLobbyFallback",
+            "ResolveDisplayName",
+            "ResolveHostPlayer"
+          ],
+          "properties": [
+            "MAX_HP",
+            "PlayerPrefabResource",
+            "_playerPrefab",
+            "Network",
+            "LocalAssignedFinger",
+            "LocalDisplayName",
+            "IsLocalReady"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "MAX_HP",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "LocalAssignedFinger",
+          "line": 26,
+          "isDefault": false
+        },
+        {
+          "name": "LocalDisplayName",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "IsLocalReady",
+          "line": 46,
+          "isDefault": false
+        },
+        {
+          "name": "TryGetLocal",
+          "line": 73,
+          "isDefault": false
+        },
+        {
+          "name": "TryGet",
+          "line": 85,
+          "isDefault": false
+        },
+        {
+          "name": "ServerEnsurePlayerObjectsCoroutine",
+          "line": 99,
+          "isDefault": false
+        },
+        {
+          "name": "Spawn",
+          "line": 169,
+          "isDefault": false
+        },
+        {
+          "name": "Despawn",
+          "line": 193,
+          "isDefault": false
+        },
+        {
+          "name": "TryGetHost",
+          "line": 207,
+          "isDefault": false
+        },
+        {
+          "name": "BuildLobbyPlayers",
+          "line": 231,
+          "isDefault": false
+        },
+        {
+          "name": "PlayerManager",
+          "line": 12,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 51
+        },
+        {
+          "caller": "Awake",
+          "callee": "Resources.Load<NetworkObject>",
+          "lineNumber": 55
+        },
+        {
+          "caller": "HandlePlayerDataChanged",
+          "callee": "OnPlayersChanged?.Invoke",
+          "lineNumber": 70
+        },
+        {
+          "caller": "TryGetLocal",
+          "callee": "Network.TryGetAliveRunner",
+          "lineNumber": 77
+        },
+        {
+          "caller": "TryGetLocal",
+          "callee": "TryGet",
+          "lineNumber": 82
+        },
+        {
+          "caller": "TryGet",
+          "callee": "Network.TryGetAliveRunner",
+          "lineNumber": 89
+        },
+        {
+          "caller": "TryGet",
+          "callee": "runner.GetPlayerObject",
+          "lineNumber": 94
+        },
+        {
+          "caller": "TryGet",
+          "callee": "playerObject.TryGetComponent",
+          "lineNumber": 95
+        },
+        {
+          "caller": "ServerEnsurePlayerObjectsCoroutine",
+          "callee": "Network.TryGetAliveRunner",
+          "lineNumber": 101
+        },
+        {
+          "caller": "ServerEnsurePlayerObjectsCoroutine",
+          "callee": "Debug.LogError",
+          "lineNumber": 108
+        },
+        {
+          "caller": "ServerEnsurePlayerObjectsCoroutine",
+          "callee": "Network.GetActivePlayers",
+          "lineNumber": 120
+        },
+        {
+          "caller": "ServerEnsurePlayerObjectsCoroutine",
+          "callee": "runner.GetPlayerObject",
+          "lineNumber": 122
+        },
+        {
+          "caller": "ServerEnsurePlayerObjectsCoroutine",
+          "callee": "SpawnAsyncCoroutine",
+          "lineNumber": 127
+        },
+        {
+          "caller": "SpawnAsyncCoroutine",
+          "callee": "runner.GetPlayerObject",
+          "lineNumber": 133
+        },
+        {
+          "caller": "SpawnAsyncCoroutine",
+          "callee": "runner.SpawnAsync",
+          "lineNumber": 141
+        },
+        {
+          "caller": "SpawnAsyncCoroutine",
+          "callee": "obj.TryGetComponent",
+          "lineNumber": 146
+        },
+        {
+          "caller": "SpawnAsyncCoroutine",
+          "callee": "Debug.LogError",
+          "lineNumber": 159
+        },
+        {
+          "caller": "SpawnAsyncCoroutine",
+          "callee": "runner.SetPlayerObject",
+          "lineNumber": 165
+        },
+        {
+          "caller": "Spawn",
+          "callee": "runner.GetPlayerObject",
+          "lineNumber": 171
+        },
+        {
+          "caller": "Spawn",
+          "callee": "runner.Spawn",
+          "lineNumber": 179
+        },
+        {
+          "caller": "Spawn",
+          "callee": "obj.TryGetComponent",
+          "lineNumber": 184
+        },
+        {
+          "caller": "Spawn",
+          "callee": "runner.SetPlayerObject",
+          "lineNumber": 190
+        },
+        {
+          "caller": "Despawn",
+          "callee": "runner.GetPlayerObject",
+          "lineNumber": 200
+        },
+        {
+          "caller": "Despawn",
+          "callee": "runner.Despawn",
+          "lineNumber": 203
+        },
+        {
+          "caller": "TryGetHost",
+          "callee": "Network.TryGetAliveRunner",
+          "lineNumber": 210
+        },
+        {
+          "caller": "TryGetHost",
+          "callee": "TryGet",
+          "lineNumber": 214
+        },
+        {
+          "caller": "TryGetHost",
+          "callee": "Network.GetActivePlayers",
+          "lineNumber": 218
+        },
+        {
+          "caller": "TryGetHost",
+          "callee": "TryGet",
+          "lineNumber": 227
+        },
+        {
+          "caller": "BuildLobbyPlayers",
+          "callee": "new List<LobbyPlayer>",
+          "lineNumber": 233
+        },
+        {
+          "caller": "BuildLobbyPlayers",
+          "callee": "Network.GetActivePlayers",
+          "lineNumber": 240
+        },
+        {
+          "caller": "BuildLobbyPlayers",
+          "callee": "AddLocalLobbyFallback",
+          "lineNumber": 243
+        },
+        {
+          "caller": "BuildLobbyPlayers",
+          "callee": "Network.TryGetAliveRunner",
+          "lineNumber": 247
+        },
+        {
+          "caller": "BuildLobbyPlayers",
+          "callee": "ResolveHostPlayer",
+          "lineNumber": 252
+        },
+        {
+          "caller": "BuildLobbyPlayers",
+          "callee": "Network.GetLocalPlayerId",
+          "lineNumber": 253
+        },
+        {
+          "caller": "BuildLobbyPlayers",
+          "callee": "playerRef.PlayerId.ToString",
+          "lineNumber": 257
+        },
+        {
+          "caller": "BuildLobbyPlayers",
+          "callee": "ResolveDisplayName",
+          "lineNumber": 260
+        },
+        {
+          "caller": "BuildLobbyPlayers",
+          "callee": "TryGet",
+          "lineNumber": 261
+        },
+        {
+          "caller": "BuildLobbyPlayers",
+          "callee": "players.Add",
+          "lineNumber": 263
+        },
+        {
+          "caller": "BuildLobbyPlayers",
+          "callee": "new LobbyPlayer",
+          "lineNumber": 263
+        },
+        {
+          "caller": "AddLocalLobbyFallback",
+          "callee": "Network.GetLocalPlayerId",
+          "lineNumber": 276
+        },
+        {
+          "caller": "AddLocalLobbyFallback",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 277
+        },
+        {
+          "caller": "AddLocalLobbyFallback",
+          "callee": "players.Add",
+          "lineNumber": 284
+        },
+        {
+          "caller": "AddLocalLobbyFallback",
+          "callee": "new LobbyPlayer",
+          "lineNumber": 284
+        },
+        {
+          "caller": "ResolveDisplayName",
+          "callee": "TryGet",
+          "lineNumber": 289
+        },
+        {
+          "caller": "ResolveDisplayName",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 292
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 12,
+        "functionCount": 14,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Management/SceneManagerBase.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 16,
+      "nonEmptyLines": 14,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 6,
+          "endLine": 10,
+          "params": []
+        },
+        {
+          "name": "MoveToNextScene",
+          "startLine": 12,
+          "endLine": 15,
+          "params": [
+            "nextScene"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "SceneManagerBase",
+          "startLine": 4,
+          "endLine": 16,
+          "methods": [
+            "Awake",
+            "MoveToNextScene"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "MoveToNextScene",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "SceneManagerBase",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "Debug.Log",
+          "lineNumber": 8
+        },
+        {
+          "caller": "Awake",
+          "callee": "GetType",
+          "lineNumber": 8
+        },
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 9
+        },
+        {
+          "caller": "MoveToNextScene",
+          "callee": "App.LoadScene",
+          "lineNumber": 14
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 1
+      }
+    }
+  ]
+}

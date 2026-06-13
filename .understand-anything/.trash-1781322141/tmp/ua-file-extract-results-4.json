@@ -1,0 +1,1912 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 14,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "Assets/02. Scripts/UI/PanelBase.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 60,
+      "nonEmptyLines": 47,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 19,
+          "endLine": 28,
+          "params": []
+        },
+        {
+          "name": "RegisterToUIManager",
+          "startLine": 30,
+          "endLine": 39,
+          "params": []
+        },
+        {
+          "name": "OpenPanel",
+          "startLine": 41,
+          "endLine": 49,
+          "params": []
+        },
+        {
+          "name": "ClosePanel",
+          "startLine": 51,
+          "endLine": 59,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "PanelBase",
+          "startLine": 5,
+          "endLine": 60,
+          "methods": [
+            "Awake",
+            "RegisterToUIManager",
+            "OpenPanel",
+            "ClosePanel"
+          ],
+          "properties": [
+            "_panelGameObject",
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "PanelType"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IsOpened",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "CanCloseWithESC",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "IsStackable",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "UIType",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "PanelType",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "OpenPanel",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "ClosePanel",
+          "line": 51,
+          "isDefault": false
+        },
+        {
+          "name": "PanelBase",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "_panelGameObject.SetActive",
+          "lineNumber": 26
+        },
+        {
+          "caller": "Awake",
+          "callee": "RegisterToUIManager",
+          "lineNumber": 27
+        },
+        {
+          "caller": "RegisterToUIManager",
+          "callee": "Debug.LogError",
+          "lineNumber": 34
+        },
+        {
+          "caller": "RegisterToUIManager",
+          "callee": "GetType",
+          "lineNumber": 34
+        },
+        {
+          "caller": "RegisterToUIManager",
+          "callee": "App.UI.Current.RegisterPanel",
+          "lineNumber": 38
+        },
+        {
+          "caller": "OpenPanel",
+          "callee": "App.UI.Current.PushUIStack",
+          "lineNumber": 45
+        },
+        {
+          "caller": "OpenPanel",
+          "callee": "_panelGameObject.SetActive",
+          "lineNumber": 48
+        },
+        {
+          "caller": "ClosePanel",
+          "callee": "App.UI.Current.PopUIStack",
+          "lineNumber": 55
+        },
+        {
+          "caller": "ClosePanel",
+          "callee": "_panelGameObject.SetActive",
+          "lineNumber": 58
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 8,
+        "functionCount": 4,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/SlotHoverScale.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 43,
+      "nonEmptyLines": 35,
+      "functions": [
+        {
+          "name": "Start",
+          "startLine": 17,
+          "endLine": 20,
+          "params": []
+        },
+        {
+          "name": "OnPointerEnter",
+          "startLine": 22,
+          "endLine": 25,
+          "params": [
+            "eventData"
+          ]
+        },
+        {
+          "name": "OnPointerExit",
+          "startLine": 27,
+          "endLine": 30,
+          "params": [
+            "eventData"
+          ]
+        },
+        {
+          "name": "Play",
+          "startLine": 32,
+          "endLine": 36,
+          "params": [
+            "_target",
+            "_ease"
+          ]
+        },
+        {
+          "name": "OnDisable",
+          "startLine": 38,
+          "endLine": 42,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "SlotHoverScale",
+          "startLine": 5,
+          "endLine": 43,
+          "methods": [
+            "Start",
+            "OnPointerEnter",
+            "OnPointerExit",
+            "Play",
+            "OnDisable"
+          ],
+          "properties": [
+            "hoverScaleMultiplier",
+            "scaleDuration",
+            "originalScale",
+            "scaleTween"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "OnPointerEnter",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "OnPointerExit",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "SlotHoverScale",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "OnPointerEnter",
+          "callee": "Play",
+          "lineNumber": 24
+        },
+        {
+          "caller": "OnPointerExit",
+          "callee": "Play",
+          "lineNumber": 29
+        },
+        {
+          "caller": "Play",
+          "callee": "scaleTween?.Kill",
+          "lineNumber": 34
+        },
+        {
+          "caller": "Play",
+          "callee": "transform.DOScale(_target, scaleDuration).SetEase(_ease).SetUpdate",
+          "lineNumber": 35
+        },
+        {
+          "caller": "Play",
+          "callee": "transform.DOScale(_target, scaleDuration).SetEase",
+          "lineNumber": 35
+        },
+        {
+          "caller": "Play",
+          "callee": "transform.DOScale",
+          "lineNumber": 35
+        },
+        {
+          "caller": "OnDisable",
+          "callee": "scaleTween?.Kill",
+          "lineNumber": 40
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 5,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/TitlePanel.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 76,
+      "nonEmptyLines": 59,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 23,
+          "endLine": 35,
+          "params": []
+        },
+        {
+          "name": "OnDestroy",
+          "startLine": 37,
+          "endLine": 40,
+          "params": []
+        },
+        {
+          "name": "OnConnectClicked",
+          "startLine": 42,
+          "endLine": 64,
+          "params": []
+        },
+        {
+          "name": "SetInteractable",
+          "startLine": 66,
+          "endLine": 70,
+          "params": [
+            "interactable"
+          ]
+        },
+        {
+          "name": "SetStatus",
+          "startLine": 72,
+          "endLine": 75,
+          "params": [
+            "message"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "TitlePanel",
+          "startLine": 6,
+          "endLine": 76,
+          "methods": [
+            "Awake",
+            "OnDestroy",
+            "OnConnectClicked",
+            "SetInteractable",
+            "SetStatus"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "nicknameInput",
+            "connectButton",
+            "statusText",
+            "_titleManager",
+            "_isConnecting"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IsOpened",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "CanCloseWithESC",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "IsStackable",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "UIType",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "TitlePanel",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 25
+        },
+        {
+          "caller": "Awake",
+          "callee": "string.IsNullOrWhiteSpace",
+          "lineNumber": 29
+        },
+        {
+          "caller": "Awake",
+          "callee": "connectButton.onClick.AddListener",
+          "lineNumber": 34
+        },
+        {
+          "caller": "OnDestroy",
+          "callee": "connectButton.onClick.RemoveListener",
+          "lineNumber": 39
+        },
+        {
+          "caller": "OnConnectClicked",
+          "callee": "SetInteractable",
+          "lineNumber": 51
+        },
+        {
+          "caller": "OnConnectClicked",
+          "callee": "SetStatus",
+          "lineNumber": 52
+        },
+        {
+          "caller": "OnConnectClicked",
+          "callee": "_titleManager.Connect",
+          "lineNumber": 54
+        },
+        {
+          "caller": "OnConnectClicked",
+          "callee": "SetInteractable",
+          "lineNumber": 57
+        },
+        {
+          "caller": "OnConnectClicked",
+          "callee": "SetStatus",
+          "lineNumber": 61
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 5,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Util/App.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 139,
+      "nonEmptyLines": 111,
+      "functions": [
+        {
+          "name": "BootstrapScene",
+          "startLine": 74,
+          "endLine": 78,
+          "params": [
+            "scene"
+          ]
+        },
+        {
+          "name": "LoadScene",
+          "startLine": 80,
+          "endLine": 96,
+          "params": [
+            "sceneName"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "App",
+          "startLine": 7,
+          "endLine": 139,
+          "methods": [
+            "BootstrapScene",
+            "LoadScene"
+          ],
+          "properties": [
+            "_uiManager",
+            "_sceneManager",
+            "_titleManager",
+            "_soundManager",
+            "_assetManager",
+            "_inputManager",
+            "_lobbyManager",
+            "_playerManager",
+            "_inGameManager",
+            "_networkManager",
+            "_dataManager",
+            "_fps",
+            "Platform",
+            "IsWindows",
+            "IsIOS",
+            "IsAndroid",
+            "IsStandalone",
+            "IsMobile",
+            "OnSceneLoad",
+            "OnSceneLoaded",
+            "OnQuit",
+            "PrevScene",
+            "CurrentScene",
+            "IsSceneLoading",
+            "IsGameScene"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Platform",
+          "line": 31,
+          "isDefault": false
+        },
+        {
+          "name": "IsWindows",
+          "line": 33,
+          "isDefault": false
+        },
+        {
+          "name": "IsIOS",
+          "line": 40,
+          "isDefault": false
+        },
+        {
+          "name": "IsAndroid",
+          "line": 46,
+          "isDefault": false
+        },
+        {
+          "name": "IsStandalone",
+          "line": 52,
+          "isDefault": false
+        },
+        {
+          "name": "IsMobile",
+          "line": 53,
+          "isDefault": false
+        },
+        {
+          "name": "OnSceneLoad",
+          "line": 57,
+          "isDefault": false
+        },
+        {
+          "name": "OnSceneLoaded",
+          "line": 59,
+          "isDefault": false
+        },
+        {
+          "name": "OnQuit",
+          "line": 61,
+          "isDefault": false
+        },
+        {
+          "name": "PrevScene",
+          "line": 65,
+          "isDefault": false
+        },
+        {
+          "name": "CurrentScene",
+          "line": 66,
+          "isDefault": false
+        },
+        {
+          "name": "IsSceneLoading",
+          "line": 67,
+          "isDefault": false
+        },
+        {
+          "name": "IsGameScene",
+          "line": 69,
+          "isDefault": false
+        },
+        {
+          "name": "BootstrapScene",
+          "line": 74,
+          "isDefault": false
+        },
+        {
+          "name": "LoadScene",
+          "line": 80,
+          "isDefault": false
+        },
+        {
+          "name": "App",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "LoadScene",
+          "callee": "OnSceneLoad?.Invoke",
+          "lineNumber": 82
+        },
+        {
+          "caller": "LoadScene",
+          "callee": "Debug.LogException",
+          "lineNumber": 85
+        },
+        {
+          "caller": "LoadScene",
+          "callee": "AppHelper.LoadScene",
+          "lineNumber": 90
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 16,
+        "functionCount": 2,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Util/AppHelper.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 134,
+      "nonEmptyLines": 112,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 43,
+          "endLine": 55,
+          "params": []
+        },
+        {
+          "name": "Start",
+          "startLine": 58,
+          "endLine": 69,
+          "params": []
+        },
+        {
+          "name": "Update",
+          "startLine": 71,
+          "endLine": 78,
+          "params": []
+        },
+        {
+          "name": "LoadScene",
+          "startLine": 80,
+          "endLine": 83,
+          "params": [
+            "sceneName",
+            "mode"
+          ]
+        },
+        {
+          "name": "OnSceneLoad",
+          "startLine": 85,
+          "endLine": 88,
+          "params": [
+            "sceneName"
+          ]
+        },
+        {
+          "name": "OnSceneLoaded",
+          "startLine": 90,
+          "endLine": 100,
+          "params": [
+            "scene",
+            "mode"
+          ]
+        },
+        {
+          "name": "OnQuit",
+          "startLine": 102,
+          "endLine": 118,
+          "params": []
+        },
+        {
+          "name": "SetFrameLimit",
+          "startLine": 120,
+          "endLine": 132,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "Singleton",
+          "startLine": 8,
+          "endLine": 18,
+          "methods": [],
+          "properties": [
+            "_instance",
+            "Instance"
+          ]
+        },
+        {
+          "name": "AppHelper",
+          "startLine": 20,
+          "endLine": 133,
+          "methods": [
+            "Awake",
+            "Start",
+            "Update",
+            "LoadScene",
+            "OnSceneLoad",
+            "OnSceneLoaded",
+            "OnQuit",
+            "SetFrameLimit"
+          ],
+          "properties": [
+            "SceneTargetFrameRate",
+            "_shouldQuit",
+            "_canQuit",
+            "CanQuit"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Instance",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "Singleton",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "CanQuit",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "LoadScene",
+          "line": 80,
+          "isDefault": false
+        },
+        {
+          "name": "OnSceneLoad",
+          "line": 85,
+          "isDefault": false
+        },
+        {
+          "name": "OnSceneLoaded",
+          "line": 90,
+          "isDefault": false
+        },
+        {
+          "name": "OnQuit",
+          "line": 102,
+          "isDefault": false
+        },
+        {
+          "name": "SetFrameLimit",
+          "line": 120,
+          "isDefault": false
+        },
+        {
+          "name": "AppHelper",
+          "line": 20,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "DontDestroyOnLoad",
+          "lineNumber": 47
+        },
+        {
+          "caller": "Awake",
+          "callee": "DontDestroyOnLoad",
+          "lineNumber": 51
+        },
+        {
+          "caller": "Awake",
+          "callee": "SetFrameLimit",
+          "lineNumber": 54
+        },
+        {
+          "caller": "Update",
+          "callee": "Application.Quit",
+          "lineNumber": 75
+        },
+        {
+          "caller": "LoadScene",
+          "callee": "SceneManager.LoadScene",
+          "lineNumber": 82
+        },
+        {
+          "caller": "OnSceneLoad",
+          "callee": "DOTween.KillAll",
+          "lineNumber": 87
+        },
+        {
+          "caller": "OnSceneLoaded",
+          "callee": "SetFrameLimit",
+          "lineNumber": 92
+        },
+        {
+          "caller": "OnSceneLoaded",
+          "callee": "Enum.GetNames",
+          "lineNumber": 94
+        },
+        {
+          "caller": "OnSceneLoaded",
+          "callee": "App.BootstrapScene",
+          "lineNumber": 97
+        },
+        {
+          "caller": "OnSceneLoaded",
+          "callee": "App.OnSceneLoaded?.Invoke",
+          "lineNumber": 98
+        },
+        {
+          "caller": "OnQuit",
+          "callee": "App.OnQuit?.Invoke",
+          "lineNumber": 109
+        },
+        {
+          "caller": "OnQuit",
+          "callee": "Debug.LogException",
+          "lineNumber": 112
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 9,
+        "functionCount": 8,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Util/Enums.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 163,
+      "nonEmptyLines": 143,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Util/FrameChecker.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 95,
+      "nonEmptyLines": 80,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 16,
+          "endLine": 26,
+          "params": []
+        },
+        {
+          "name": "OnEnable",
+          "startLine": 28,
+          "endLine": 33,
+          "params": []
+        },
+        {
+          "name": "Setup",
+          "startLine": 35,
+          "endLine": 40,
+          "params": []
+        },
+        {
+          "name": "Update",
+          "startLine": 42,
+          "endLine": 51,
+          "params": []
+        },
+        {
+          "name": "UpdateStyle",
+          "startLine": 53,
+          "endLine": 66,
+          "params": []
+        },
+        {
+          "name": "UpdateText",
+          "startLine": 68,
+          "endLine": 77,
+          "params": []
+        },
+        {
+          "name": "OnGUI",
+          "startLine": 79,
+          "endLine": 94,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "FrameChecker",
+          "startLine": 4,
+          "endLine": 95,
+          "methods": [
+            "Awake",
+            "OnEnable",
+            "Setup",
+            "Update",
+            "UpdateStyle",
+            "UpdateText",
+            "OnGUI"
+          ],
+          "properties": [
+            "updateInterval",
+            "style",
+            "rect",
+            "msec",
+            "fps",
+            "deltaTime",
+            "frameCount",
+            "text"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "FrameChecker",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 18
+        },
+        {
+          "caller": "Awake",
+          "callee": "UpdateStyle",
+          "lineNumber": 24
+        },
+        {
+          "caller": "Awake",
+          "callee": "Setup",
+          "lineNumber": 25
+        },
+        {
+          "caller": "OnEnable",
+          "callee": "UpdateText",
+          "lineNumber": 32
+        },
+        {
+          "caller": "Setup",
+          "callee": "UpdateText",
+          "lineNumber": 39
+        },
+        {
+          "caller": "UpdateStyle",
+          "callee": "new Rect",
+          "lineNumber": 55
+        },
+        {
+          "caller": "UpdateStyle",
+          "callee": "new GUIStyle",
+          "lineNumber": 56
+        },
+        {
+          "caller": "UpdateStyle",
+          "callee": "new Color",
+          "lineNumber": 65
+        },
+        {
+          "caller": "UpdateText",
+          "callee": "fps.ToString",
+          "lineNumber": 72
+        },
+        {
+          "caller": "UpdateText",
+          "callee": "msec.ToString",
+          "lineNumber": 72
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "GUI.Label",
+          "lineNumber": 88
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "UpdateText",
+          "lineNumber": 92
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "GUI.Label",
+          "lineNumber": 93
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 7,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Util/JsonHelper.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 81,
+      "nonEmptyLines": 72,
+      "functions": [
+        {
+          "name": "FromJson",
+          "startLine": 15,
+          "endLine": 28,
+          "params": [
+            "json"
+          ]
+        },
+        {
+          "name": "ToJson",
+          "startLine": 30,
+          "endLine": 35,
+          "params": [
+            "array"
+          ]
+        },
+        {
+          "name": "JsonToDictAsync",
+          "startLine": 37,
+          "endLine": 50,
+          "params": [
+            "json",
+            "dict"
+          ]
+        },
+        {
+          "name": "JsonToDictAsync",
+          "startLine": 52,
+          "endLine": 80,
+          "params": [
+            "json",
+            "dict"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "JsonHelper",
+          "startLine": 6,
+          "endLine": 81,
+          "methods": [
+            "FromJson",
+            "ToJson",
+            "JsonToDictAsync",
+            "JsonToDictAsync"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "FromJson",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "ToJson",
+          "line": 30,
+          "isDefault": false
+        },
+        {
+          "name": "JsonToDictAsync",
+          "line": 37,
+          "isDefault": false
+        },
+        {
+          "name": "JsonToDictAsync",
+          "line": 52,
+          "isDefault": false
+        },
+        {
+          "name": "JsonHelper",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "FromJson",
+          "callee": "JsonUtility.FromJson<Wrapper<T>>",
+          "lineNumber": 26
+        },
+        {
+          "caller": "ToJson",
+          "callee": "new Wrapper<T>",
+          "lineNumber": 32
+        },
+        {
+          "caller": "ToJson",
+          "callee": "JsonUtility.ToJson",
+          "lineNumber": 34
+        },
+        {
+          "caller": "JsonToDictAsync",
+          "callee": "Task.Run",
+          "lineNumber": 39
+        },
+        {
+          "caller": "JsonToDictAsync",
+          "callee": "FromJson<T>",
+          "lineNumber": 41
+        },
+        {
+          "caller": "JsonToDictAsync",
+          "callee": "dict.Clear",
+          "lineNumber": 42
+        },
+        {
+          "caller": "JsonToDictAsync",
+          "callee": "dict.EnsureCapacity",
+          "lineNumber": 43
+        },
+        {
+          "caller": "JsonToDictAsync",
+          "callee": "dict.Add",
+          "lineNumber": 47
+        },
+        {
+          "caller": "JsonToDictAsync",
+          "callee": "Task.Run",
+          "lineNumber": 56
+        },
+        {
+          "caller": "JsonToDictAsync",
+          "callee": "FromJson<TValue>",
+          "lineNumber": 58
+        },
+        {
+          "caller": "JsonToDictAsync",
+          "callee": "dict.Clear",
+          "lineNumber": 59
+        },
+        {
+          "caller": "JsonToDictAsync",
+          "callee": "dict.EnsureCapacity",
+          "lineNumber": 60
+        },
+        {
+          "caller": "JsonToDictAsync",
+          "callee": "data.Code?.Trim",
+          "lineNumber": 64
+        },
+        {
+          "caller": "JsonToDictAsync",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 65
+        },
+        {
+          "caller": "JsonToDictAsync",
+          "callee": "Enum.TryParse",
+          "lineNumber": 70
+        },
+        {
+          "caller": "JsonToDictAsync",
+          "callee": "Debug.LogWarning",
+          "lineNumber": 76
+        },
+        {
+          "caller": "JsonToDictAsync",
+          "callee": "nameof",
+          "lineNumber": 76
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 4,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 59,
+      "nonEmptyLines": 51,
+      "functions": [
+        {
+          "name": "Judge",
+          "startLine": 19,
+          "endLine": 28,
+          "params": [
+            "mask"
+          ]
+        },
+        {
+          "name": "CreateRandomAssignments",
+          "startLine": 33,
+          "endLine": 49,
+          "params": [
+            "playerIds",
+            "random"
+          ]
+        },
+        {
+          "name": "Shuffle",
+          "startLine": 51,
+          "endLine": 58,
+          "params": [
+            "array",
+            "random"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "RpsHandUtility",
+          "startLine": 8,
+          "endLine": 59,
+          "methods": [
+            "Judge",
+            "CreateRandomAssignments",
+            "Shuffle"
+          ],
+          "properties": [
+            "AssignableFingers"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Judge",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "CreateRandomAssignments",
+          "line": 33,
+          "isDefault": false
+        },
+        {
+          "name": "RpsHandUtility",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "CreateRandomAssignments",
+          "callee": "new Random",
+          "lineNumber": 35
+        },
+        {
+          "caller": "CreateRandomAssignments",
+          "callee": "AssignableFingers.Clone",
+          "lineNumber": 37
+        },
+        {
+          "caller": "CreateRandomAssignments",
+          "callee": "Shuffle",
+          "lineNumber": 38
+        },
+        {
+          "caller": "CreateRandomAssignments",
+          "callee": "new Dictionary<int, EFingerType>",
+          "lineNumber": 40
+        },
+        {
+          "caller": "CreateRandomAssignments",
+          "callee": "Math.Min",
+          "lineNumber": 41
+        },
+        {
+          "caller": "Shuffle",
+          "callee": "random.Next",
+          "lineNumber": 55
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 160,
+      "nonEmptyLines": 126,
+      "functions": [
+        {
+          "name": "ShowWindow",
+          "startLine": 13,
+          "endLine": 17,
+          "params": []
+        },
+        {
+          "name": "OnGUI",
+          "startLine": 19,
+          "endLine": 35,
+          "params": []
+        },
+        {
+          "name": "HandleDragAndDrop",
+          "startLine": 37,
+          "endLine": 62,
+          "params": []
+        },
+        {
+          "name": "GenerateFromJson",
+          "startLine": 64,
+          "endLine": 110,
+          "params": [
+            "_jsonAsset"
+          ]
+        },
+        {
+          "name": "FindSprite",
+          "startLine": 112,
+          "endLine": 135,
+          "params": [
+            "_spriteName"
+          ]
+        },
+        {
+          "name": "EnsureFolderExists",
+          "startLine": 137,
+          "endLine": 151,
+          "params": [
+            "_folderPath"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "HandSpriteDataGeneratorWindow",
+          "startLine": 5,
+          "endLine": 160,
+          "methods": [
+            "ShowWindow",
+            "OnGUI",
+            "HandleDragAndDrop",
+            "GenerateFromJson",
+            "FindSprite",
+            "EnsureFolderExists"
+          ],
+          "properties": [
+            "DEFAULT_SPRITE_FOLDER",
+            "DEFAULT_OUTPUT_FOLDER",
+            "spriteFolder",
+            "outputFolder"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ShowWindow",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "HandSpriteDataGeneratorWindow",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ShowWindow",
+          "callee": "GetWindow<HandSpriteDataGeneratorWindow>",
+          "lineNumber": 16
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "EditorGUILayout.LabelField",
+          "lineNumber": 21
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "EditorGUILayout.Space",
+          "lineNumber": 22
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "EditorGUILayout.TextField",
+          "lineNumber": 24
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "EditorGUILayout.TextField",
+          "lineNumber": 25
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "EditorGUILayout.Space",
+          "lineNumber": 27
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "HandleDragAndDrop",
+          "lineNumber": 28
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "EditorGUILayout.HelpBox",
+          "lineNumber": 30
+        },
+        {
+          "caller": "HandleDragAndDrop",
+          "callee": "GUILayoutUtility.GetRect",
+          "lineNumber": 40
+        },
+        {
+          "caller": "HandleDragAndDrop",
+          "callee": "GUILayout.ExpandWidth",
+          "lineNumber": 40
+        },
+        {
+          "caller": "HandleDragAndDrop",
+          "callee": "GUI.Box",
+          "lineNumber": 41
+        },
+        {
+          "caller": "HandleDragAndDrop",
+          "callee": "dropArea.Contains",
+          "lineNumber": 43
+        },
+        {
+          "caller": "HandleDragAndDrop",
+          "callee": "currentEvent.Use",
+          "lineNumber": 49
+        },
+        {
+          "caller": "HandleDragAndDrop",
+          "callee": "DragAndDrop.AcceptDrag",
+          "lineNumber": 53
+        },
+        {
+          "caller": "HandleDragAndDrop",
+          "callee": "GenerateFromJson",
+          "lineNumber": 57
+        },
+        {
+          "caller": "HandleDragAndDrop",
+          "callee": "currentEvent.Use",
+          "lineNumber": 59
+        },
+        {
+          "caller": "GenerateFromJson",
+          "callee": "JsonUtility.FromJson<HandSpriteJson>",
+          "lineNumber": 66
+        },
+        {
+          "caller": "GenerateFromJson",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 68
+        },
+        {
+          "caller": "GenerateFromJson",
+          "callee": "Debug.LogError",
+          "lineNumber": 70
+        },
+        {
+          "caller": "GenerateFromJson",
+          "callee": "System.Enum.TryParse",
+          "lineNumber": 74
+        },
+        {
+          "caller": "GenerateFromJson",
+          "callee": "Debug.LogError",
+          "lineNumber": 76
+        },
+        {
+          "caller": "GenerateFromJson",
+          "callee": "Debug.LogError",
+          "lineNumber": 82
+        },
+        {
+          "caller": "GenerateFromJson",
+          "callee": "EnsureFolderExists",
+          "lineNumber": 86
+        },
+        {
+          "caller": "GenerateFromJson",
+          "callee": "AssetDatabase.LoadAssetAtPath<HandSpriteData>",
+          "lineNumber": 89
+        },
+        {
+          "caller": "GenerateFromJson",
+          "callee": "CreateInstance<HandSpriteData>",
+          "lineNumber": 93
+        },
+        {
+          "caller": "GenerateFromJson",
+          "callee": "FindSprite",
+          "lineNumber": 95
+        },
+        {
+          "caller": "GenerateFromJson",
+          "callee": "FindSprite",
+          "lineNumber": 99
+        },
+        {
+          "caller": "GenerateFromJson",
+          "callee": "data.Setup",
+          "lineNumber": 101
+        },
+        {
+          "caller": "GenerateFromJson",
+          "callee": "AssetDatabase.CreateAsset",
+          "lineNumber": 104
+        },
+        {
+          "caller": "GenerateFromJson",
+          "callee": "EditorUtility.SetDirty",
+          "lineNumber": 106
+        },
+        {
+          "caller": "GenerateFromJson",
+          "callee": "AssetDatabase.SaveAssets",
+          "lineNumber": 107
+        },
+        {
+          "caller": "GenerateFromJson",
+          "callee": "Debug.Log",
+          "lineNumber": 109
+        },
+        {
+          "caller": "FindSprite",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 114
+        },
+        {
+          "caller": "FindSprite",
+          "callee": "AssetDatabase.FindAssets",
+          "lineNumber": 116
+        },
+        {
+          "caller": "FindSprite",
+          "callee": "AssetDatabase.GUIDToAssetPath",
+          "lineNumber": 120
+        },
+        {
+          "caller": "FindSprite",
+          "callee": "AssetDatabase.LoadAllAssetRepresentationsAtPath",
+          "lineNumber": 122
+        },
+        {
+          "caller": "FindSprite",
+          "callee": "AssetDatabase.LoadAssetAtPath<Sprite>",
+          "lineNumber": 128
+        },
+        {
+          "caller": "FindSprite",
+          "callee": "Debug.LogWarning",
+          "lineNumber": 133
+        },
+        {
+          "caller": "EnsureFolderExists",
+          "callee": "AssetDatabase.IsValidFolder",
+          "lineNumber": 139
+        },
+        {
+          "caller": "EnsureFolderExists",
+          "callee": "_folderPath.Split",
+          "lineNumber": 141
+        },
+        {
+          "caller": "EnsureFolderExists",
+          "callee": "AssetDatabase.IsValidFolder",
+          "lineNumber": 147
+        },
+        {
+          "caller": "EnsureFolderExists",
+          "callee": "AssetDatabase.CreateFolder",
+          "lineNumber": 148
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 6,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/Editor/SceneFastLauncher.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 125,
+      "nonEmptyLines": 106,
+      "functions": [
+        {
+          "name": "ShowWindow",
+          "startLine": 11,
+          "endLine": 15,
+          "params": []
+        },
+        {
+          "name": "OnEnable",
+          "startLine": 17,
+          "endLine": 20,
+          "params": []
+        },
+        {
+          "name": "OnGUI",
+          "startLine": 22,
+          "endLine": 64,
+          "params": []
+        },
+        {
+          "name": "HandleDragAndDrop",
+          "startLine": 66,
+          "endLine": 93,
+          "params": []
+        },
+        {
+          "name": "SaveScenes",
+          "startLine": 95,
+          "endLine": 107,
+          "params": []
+        },
+        {
+          "name": "LoadScenes",
+          "startLine": 109,
+          "endLine": 124,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "SceneFastLauncher",
+          "startLine": 6,
+          "endLine": 125,
+          "methods": [
+            "ShowWindow",
+            "OnEnable",
+            "OnGUI",
+            "HandleDragAndDrop",
+            "SaveScenes",
+            "LoadScenes"
+          ],
+          "properties": [
+            "sceneAssets",
+            "scrollPosition"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ShowWindow",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "SceneFastLauncher",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ShowWindow",
+          "callee": "GetWindow<SceneFastLauncher>",
+          "lineNumber": 14
+        },
+        {
+          "caller": "OnEnable",
+          "callee": "LoadScenes",
+          "lineNumber": 19
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "HandleDragAndDrop",
+          "lineNumber": 24
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "EditorGUILayout.BeginScrollView",
+          "lineNumber": 26
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "sceneAssets.RemoveAt",
+          "lineNumber": 32
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "EditorGUILayout.BeginHorizontal",
+          "lineNumber": 37
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "GUILayout.Button",
+          "lineNumber": 39
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "GUILayout.Height",
+          "lineNumber": 39
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo",
+          "lineNumber": 41
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "AssetDatabase.GetAssetPath",
+          "lineNumber": 43
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "EditorSceneManager.OpenScene",
+          "lineNumber": 44
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "GUILayout.Button",
+          "lineNumber": 48
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "GUILayout.Width",
+          "lineNumber": 48
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "GUILayout.Height",
+          "lineNumber": 48
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "sceneAssets.RemoveAt",
+          "lineNumber": 50
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "SaveScenes",
+          "lineNumber": 51
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "Event.current.Use",
+          "lineNumber": 52
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "EditorGUILayout.EndHorizontal",
+          "lineNumber": 55
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "EditorGUILayout.EndScrollView",
+          "lineNumber": 58
+        },
+        {
+          "caller": "OnGUI",
+          "callee": "EditorGUILayout.HelpBox",
+          "lineNumber": 62
+        },
+        {
+          "caller": "HandleDragAndDrop",
+          "callee": "new Rect",
+          "lineNumber": 69
+        },
+        {
+          "caller": "HandleDragAndDrop",
+          "callee": "dropArea.Contains",
+          "lineNumber": 71
+        },
+        {
+          "caller": "HandleDragAndDrop",
+          "callee": "currentEvent.Use",
+          "lineNumber": 77
+        },
+        {
+          "caller": "HandleDragAndDrop",
+          "callee": "DragAndDrop.AcceptDrag",
+          "lineNumber": 81
+        },
+        {
+          "caller": "HandleDragAndDrop",
+          "callee": "sceneAssets.Contains",
+          "lineNumber": 84
+        },
+        {
+          "caller": "HandleDragAndDrop",
+          "callee": "sceneAssets.Add",
+          "lineNumber": 86
+        },
+        {
+          "caller": "HandleDragAndDrop",
+          "callee": "SaveScenes",
+          "lineNumber": 89
+        },
+        {
+          "caller": "HandleDragAndDrop",
+          "callee": "currentEvent.Use",
+          "lineNumber": 90
+        },
+        {
+          "caller": "SaveScenes",
+          "callee": "new List<string>",
+          "lineNumber": 97
+        },
+        {
+          "caller": "SaveScenes",
+          "callee": "paths.Add",
+          "lineNumber": 102
+        },
+        {
+          "caller": "SaveScenes",
+          "callee": "AssetDatabase.GetAssetPath",
+          "lineNumber": 102
+        },
+        {
+          "caller": "SaveScenes",
+          "callee": "string.Join",
+          "lineNumber": 105
+        },
+        {
+          "caller": "SaveScenes",
+          "callee": "EditorPrefs.SetString",
+          "lineNumber": 106
+        },
+        {
+          "caller": "LoadScenes",
+          "callee": "sceneAssets.Clear",
+          "lineNumber": 111
+        },
+        {
+          "caller": "LoadScenes",
+          "callee": "EditorPrefs.GetString",
+          "lineNumber": 112
+        },
+        {
+          "caller": "LoadScenes",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 113
+        },
+        {
+          "caller": "LoadScenes",
+          "callee": "savedData.Split",
+          "lineNumber": 115
+        },
+        {
+          "caller": "LoadScenes",
+          "callee": "AssetDatabase.LoadAssetAtPath<SceneAsset>",
+          "lineNumber": 118
+        },
+        {
+          "caller": "LoadScenes",
+          "callee": "sceneAssets.Add",
+          "lineNumber": 121
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 6,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "CLAUDE.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 5,
+      "nonEmptyLines": 4,
+      "sections": [
+        {
+          "heading": "Project Guidelines",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Comments",
+          "level": 2,
+          "line": 3
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 2
+      }
+    },
+    {
+      "path": "Packages/manifest.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 53,
+      "nonEmptyLines": 53,
+      "sections": [
+        {
+          "heading": "dependencies",
+          "level": 1,
+          "line": 2
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": "Packages/packages-lock.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 650,
+      "nonEmptyLines": 650,
+      "sections": [
+        {
+          "heading": "dependencies",
+          "level": 1,
+          "line": 2
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    }
+  ]
+}

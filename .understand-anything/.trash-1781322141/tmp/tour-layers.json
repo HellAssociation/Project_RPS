@@ -1,0 +1,37 @@
+[
+ {
+  "id": "layer:core-infrastructure",
+  "name": "Core & Infrastructure",
+  "description": "The App service-locator/bootstrap, project-wide enums, and shared helpers (JSON parsing, RPS judging, frame monitoring) that every other layer depends on."
+ },
+ {
+  "id": "layer:managers",
+  "name": "Managers",
+  "description": "App-driven singleton and per-scene managers (network, player, lobby, in-game, data, asset, sound, input, title) plus their ManagerBase/SceneManagerBase/UIManagerBase base classes that orchestrate the game's subsystems."
+ },
+ {
+  "id": "layer:networking",
+  "name": "Networking",
+  "description": "Photon Fusion lobby and session objects: the [Networked] PlayerNetworkObject, session/player state models, result wrappers, and lobby-code utilities for real-time multiplayer."
+ },
+ {
+  "id": "layer:gameplay",
+  "name": "Gameplay",
+  "description": "Core RPS gameplay domain: player/enemy hands, fingers, hand-sprite data, game-mode flags, and the HP-bar visual effect that drive match logic."
+ },
+ {
+  "id": "layer:ui-presentation",
+  "name": "UI & Presentation",
+  "description": "uGUI panels and reusable slot/modal widgets for the title, lobby, and in-game HUD, all built on the PanelBase lifecycle hub that self-registers with the UI managers."
+ },
+ {
+  "id": "layer:editor-tooling",
+  "name": "Editor Tooling",
+  "description": "Unity Editor utility windows for generating HandSpriteData ScriptableObjects from JSON and for fast scene launching during development."
+ },
+ {
+  "id": "layer:data-config",
+  "name": "Game Data & Project Config",
+  "description": "Game-balance JSON tables (boon, define, deviation, enemy, round) consumed by DataManager, Unity package manifests, and the CLAUDE.md project guideline document."
+ }
+]

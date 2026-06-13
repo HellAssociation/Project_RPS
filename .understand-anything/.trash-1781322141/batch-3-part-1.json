@@ -1,0 +1,1333 @@
+{
+  "nodes": [
+    {
+      "id": "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "type": "file",
+      "name": "SoundManager.cs",
+      "filePath": "Assets/02. Scripts/Management/SoundManager.cs",
+      "summary": "Audio system manager handling BGM crossfading, looping SFX, and a pooled one-shot SFX source set, loading and caching clips through the asset manager.",
+      "tags": [
+        "service",
+        "singleton",
+        "audio",
+        "object-pool",
+        "manager"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Uses Unity coroutines for BGM fade tweening and an AudioSource pool to avoid per-SFX allocations."
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/SoundManager.cs:SoundManager",
+      "type": "class",
+      "name": "SoundManager",
+      "filePath": "Assets/02. Scripts/Management/SoundManager.cs",
+      "lineRange": [
+        7,
+        287
+      ],
+      "summary": "CommonManagerBase singleton that plays/stops BGM with volume fades and dispatches pooled SFX, caching loaded AudioClips for reuse.",
+      "tags": [
+        "service",
+        "singleton",
+        "audio",
+        "manager"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/SoundManager.cs:PlayBGM",
+      "type": "function",
+      "name": "PlayBGM",
+      "filePath": "Assets/02. Scripts/Management/SoundManager.cs",
+      "lineRange": [
+        164,
+        199
+      ],
+      "summary": "Loads/caches a clip then crossfades the background music source from the current track to the requested one.",
+      "tags": [
+        "audio",
+        "coroutine",
+        "fade"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/SoundManager.cs:FadeBgmVolume",
+      "type": "function",
+      "name": "FadeBgmVolume",
+      "filePath": "Assets/02. Scripts/Management/SoundManager.cs",
+      "lineRange": [
+        265,
+        286
+      ],
+      "summary": "Coroutine that lerps the BGM source volume from one value to another over a duration, invoking a completion callback.",
+      "tags": [
+        "audio",
+        "coroutine",
+        "fade"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/SoundManager.cs:PlaySFX",
+      "type": "function",
+      "name": "PlaySFX",
+      "filePath": "Assets/02. Scripts/Management/SoundManager.cs",
+      "lineRange": [
+        242,
+        250
+      ],
+      "summary": "Loads the clip and plays it one-shot through a free pooled SFX AudioSource.",
+      "tags": [
+        "audio",
+        "object-pool"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/SoundManager.cs:GetFreeSFXSource",
+      "type": "function",
+      "name": "GetFreeSFXSource",
+      "filePath": "Assets/02. Scripts/Management/SoundManager.cs",
+      "lineRange": [
+        227,
+        240
+      ],
+      "summary": "Returns an idle AudioSource from the pool, growing the pool when all are busy.",
+      "tags": [
+        "audio",
+        "object-pool"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/SoundManager.cs:LoadAndCacheClip",
+      "type": "function",
+      "name": "LoadAndCacheClip",
+      "filePath": "Assets/02. Scripts/Management/SoundManager.cs",
+      "lineRange": [
+        150,
+        162
+      ],
+      "summary": "Returns a cached AudioClip or fetches it via the asset manager and stores it before invoking the callback.",
+      "tags": [
+        "audio",
+        "caching",
+        "asset-loading"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/SoundManager.cs:PlayLoopingSfx",
+      "type": "function",
+      "name": "PlayLoopingSfx",
+      "filePath": "Assets/02. Scripts/Management/SoundManager.cs",
+      "lineRange": [
+        94,
+        111
+      ],
+      "summary": "Loads a clip and plays it on the dedicated looping SFX source, replacing any current loop.",
+      "tags": [
+        "audio",
+        "loop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/TitleManager.cs",
+      "type": "file",
+      "name": "TitleManager.cs",
+      "filePath": "Assets/02. Scripts/Management/TitleManager.cs",
+      "summary": "Title-scene controller that validates the player nickname, connects to the photon cloud, and transitions to the lobby scene on success.",
+      "tags": [
+        "manager",
+        "scene-controller",
+        "networking",
+        "entry-point"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/TitleManager.cs:TitleManager",
+      "type": "class",
+      "name": "TitleManager",
+      "filePath": "Assets/02. Scripts/Management/TitleManager.cs",
+      "lineRange": [
+        5,
+        54
+      ],
+      "summary": "SceneManagerBase that drives the title screen: normalizes/saves the display name, initializes the network manager, and moves to the lobby scene.",
+      "tags": [
+        "manager",
+        "scene-controller",
+        "networking"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/TitleUIManager.cs",
+      "type": "file",
+      "name": "TitleUIManager.cs",
+      "filePath": "Assets/02. Scripts/Management/TitleUIManager.cs",
+      "summary": "Empty UIManagerBase subclass that registers and manages the title scene's panels.",
+      "tags": [
+        "manager",
+        "ui-manager",
+        "scene-ui"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/TitleUIManager.cs:TitleUIManager",
+      "type": "class",
+      "name": "TitleUIManager",
+      "filePath": "Assets/02. Scripts/Management/TitleUIManager.cs",
+      "lineRange": [
+        3,
+        5
+      ],
+      "summary": "Title-scene UI manager deriving all panel registration and stack behavior from UIManagerBase.",
+      "tags": [
+        "manager",
+        "ui-manager"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/UIManagerBase.cs",
+      "type": "file",
+      "name": "UIManagerBase.cs",
+      "filePath": "Assets/02. Scripts/Management/UIManagerBase.cs",
+      "summary": "Base UI manager that registers panels by type, maintains a panel dictionary and an ESC-closeable UI stack, and exposes open/close/get helpers.",
+      "tags": [
+        "manager",
+        "ui-manager",
+        "registry",
+        "base-class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/UIManagerBase.cs:UIManagerBase",
+      "type": "class",
+      "name": "UIManagerBase",
+      "filePath": "Assets/02. Scripts/Management/UIManagerBase.cs",
+      "lineRange": [
+        7,
+        110
+      ],
+      "summary": "Generic-typed UI manager base maintaining a panel registry and stack, with OpenPanel/ClosePanel/GetPanel helpers parameterized by PanelBase subtype.",
+      "tags": [
+        "manager",
+        "ui-manager",
+        "registry",
+        "base-class"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/UIManagerBase.cs:RegisterPanel",
+      "type": "function",
+      "name": "RegisterPanel",
+      "filePath": "Assets/02. Scripts/Management/UIManagerBase.cs",
+      "lineRange": [
+        33,
+        47
+      ],
+      "summary": "Adds a panel to the type-keyed dictionary, logging an error on duplicate registration.",
+      "tags": [
+        "registry",
+        "ui-manager"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/UIManagerBase.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "filePath": "Assets/02. Scripts/Management/UIManagerBase.cs",
+      "lineRange": [
+        20,
+        31
+      ],
+      "summary": "Closes the top stacked panel when ESC is pressed and the panel allows ESC-close.",
+      "tags": [
+        "input",
+        "ui-stack"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "type": "file",
+      "name": "ForbidHandShapePanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "summary": "In-game panel showing rock/paper/scissors cooldown indicators with DOTween animations for dim, flash, and completion punch effects.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "in-game",
+        "animation"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Per-hand cooldowns are tracked in parallel float fields and animated with DOTween sequences."
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs:ForbidHandShapePanel",
+      "type": "class",
+      "name": "ForbidHandShapePanel",
+      "filePath": "Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "lineRange": [
+        7,
+        136
+      ],
+      "summary": "PanelBase showing forbidden-hand-shape cooldowns per RPS hand, ticking timers each frame and animating slot states.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "animation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs:SetCooldown",
+      "type": "function",
+      "name": "SetCooldown",
+      "filePath": "Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "lineRange": [
+        63,
+        80
+      ],
+      "summary": "Starts a cooldown for a given hand by setting its remaining/total time and activating the matching slot.",
+      "tags": [
+        "cooldown",
+        "ui-panel"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs:CompleteSlot",
+      "type": "function",
+      "name": "CompleteSlot",
+      "filePath": "Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "lineRange": [
+        122,
+        135
+      ],
+      "summary": "Plays the cooldown-finished flash, fade, and punch-scale DOTween effects on a slot.",
+      "tags": [
+        "animation",
+        "ui-panel"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "type": "file",
+      "name": "HUDPanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "summary": "Heads-up display panel rendering player and enemy HP bars with animated drain, ghost-follow fills, and hit-shake feedback, driven by game events.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "in-game",
+        "hud",
+        "animation"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Combines DOTween fill tweens with manual ghost-bar coroutines to animate delayed HP drain."
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/HUDPanel.cs:HUDPanel",
+      "type": "class",
+      "name": "HUDPanel",
+      "filePath": "Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "lineRange": [
+        7,
+        216
+      ],
+      "summary": "PanelBase HUD subscribing to lives/HP/stage events and animating player and enemy health bars with drain, fill-in, and shake effects.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "hud",
+        "animation",
+        "event-handler"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/HUDPanel.cs:PlayFillIn",
+      "type": "function",
+      "name": "PlayFillIn",
+      "filePath": "Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "lineRange": [
+        73,
+        106
+      ],
+      "summary": "Resets and animates both HP bars filling from empty to full with eased ghost-follow tweens on stage open.",
+      "tags": [
+        "animation",
+        "hud"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/HUDPanel.cs:PlayEnemyDrain",
+      "type": "function",
+      "name": "PlayEnemyDrain",
+      "filePath": "Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "lineRange": [
+        120,
+        147
+      ],
+      "summary": "Animates the enemy HP bar draining to a target value with color flash, punch scale, and a ghost-follow coroutine.",
+      "tags": [
+        "animation",
+        "hud",
+        "coroutine"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/HUDPanel.cs:PlayDrain",
+      "type": "function",
+      "name": "PlayDrain",
+      "filePath": "Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "lineRange": [
+        166,
+        187
+      ],
+      "summary": "Animates the player HP bar draining with color flash, punch scale, hit shake, and a ghost-follow coroutine.",
+      "tags": [
+        "animation",
+        "hud",
+        "coroutine"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "type": "file",
+      "name": "IndicatePanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "summary": "Tooltip-style panel that shows a typed IndicateSlot following the mouse, used to display contextual name/description hints.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "in-game",
+        "tooltip"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/IndicatePanel.cs:IndicatePanel",
+      "type": "class",
+      "name": "IndicatePanel",
+      "filePath": "Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "lineRange": [
+        5,
+        70
+      ],
+      "summary": "PanelBase that maps IndicateType to IndicateSlot widgets and shows/hides the active slot at the cursor position.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "tooltip"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "type": "file",
+      "name": "StarforceModalContent.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "summary": "Networked starforce-style timing mini-game shown inside a modal, where each player stops a moving star in a success zone synchronized via the network manager.",
+      "tags": [
+        "component",
+        "modal-content",
+        "minigame",
+        "networking",
+        "in-game"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Synchronizes a host-assigned challenge and per-player results over the network, computing star positions from a shared simulation time."
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:StarforceModalContent",
+      "type": "class",
+      "name": "StarforceModalContent",
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "lineRange": [
+        17,
+        297
+      ],
+      "summary": "ModalContent driving a synchronized starforce timing mini-game: builds participants, assigns the challenge on the host, animates stars, and submits results via RPC.",
+      "tags": [
+        "modal-content",
+        "minigame",
+        "networking",
+        "event-handler"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "lineRange": [
+        75,
+        104
+      ],
+      "summary": "Each frame computes the shared ping-pong star ratio from simulation time, positions all stars, and handles local input.",
+      "tags": [
+        "minigame",
+        "networking",
+        "frame-loop"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:BuildParticipants",
+      "type": "function",
+      "name": "BuildParticipants",
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "lineRange": [
+        109,
+        132
+      ],
+      "summary": "Builds the sorted, capped list of participating player refs from the network's active players.",
+      "tags": [
+        "minigame",
+        "networking"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:ServerAssignChallenge",
+      "type": "function",
+      "name": "ServerAssignChallenge",
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "lineRange": [
+        153,
+        170
+      ],
+      "summary": "On the host, shuffles colors and assigns a randomized cycle duration challenge to each participant over the network.",
+      "tags": [
+        "minigame",
+        "networking",
+        "host-authority"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:SubmitLocalResult",
+      "type": "function",
+      "name": "SubmitLocalResult",
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "lineRange": [
+        203,
+        221
+      ],
+      "summary": "Stops the local star, marks completion, and broadcasts the local result via RPC, requesting close if everyone finished.",
+      "tags": [
+        "minigame",
+        "networking",
+        "rpc"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:HandleNetworkDataChanged",
+      "type": "function",
+      "name": "HandleNetworkDataChanged",
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "lineRange": [
+        223,
+        237
+      ],
+      "summary": "Reacts to networked state changes by caching timing and stopping remote stars whose results arrived.",
+      "tags": [
+        "minigame",
+        "networking",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs",
+      "type": "file",
+      "name": "StarforceStar.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs",
+      "summary": "Visual widget for a single starforce mini-game star, exposing reset, move, and stop operations on its image and rect transform.",
+      "tags": [
+        "component",
+        "widget",
+        "minigame"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs:StarforceStar",
+      "type": "class",
+      "name": "StarforceStar",
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs",
+      "lineRange": [
+        9,
+        50
+      ],
+      "summary": "MonoBehaviour star widget with visibility, color reset, horizontal move, and stopped-state handling controlled by the modal content.",
+      "tags": [
+        "component",
+        "widget",
+        "minigame"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/ModalContent.cs",
+      "type": "file",
+      "name": "ModalContent.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/ModalContent.cs",
+      "summary": "Abstract base for individual modal contents, defining Activate/Deactivate hooks and an OnRequestClose event for self-driven closing.",
+      "tags": [
+        "base-class",
+        "modal-content",
+        "type-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/ModalContent.cs:ModalContent",
+      "type": "class",
+      "name": "ModalContent",
+      "filePath": "Assets/02. Scripts/UI/Game/ModalContent.cs",
+      "lineRange": [
+        9,
+        17
+      ],
+      "summary": "Abstract MonoBehaviour base requiring Activate/Deactivate and raising OnRequestClose so the hosting ModalPanel can close it.",
+      "tags": [
+        "base-class",
+        "modal-content"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "type": "file",
+      "name": "ModalPanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "summary": "Panel that hosts registered ModalContent instances, showing one by type, blocking input while active, and closing on content request.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "modal",
+        "in-game"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/ModalPanel.cs:ModalPanel",
+      "type": "class",
+      "name": "ModalPanel",
+      "filePath": "Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "lineRange": [
+        5,
+        92
+      ],
+      "summary": "PanelBase managing a set of ModalContent children, activating one by generic type and toggling modal input blocking.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "modal"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/ModalPanel.cs:Show",
+      "type": "function",
+      "name": "Show",
+      "filePath": "Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "lineRange": [
+        44,
+        58
+      ],
+      "summary": "Hides any active content, activates the requested one, blocks input, and opens the panel.",
+      "tags": [
+        "modal",
+        "ui-panel"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "type": "file",
+      "name": "NextIconPanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "summary": "Panel showing the upcoming hand-position icons from a generated queue, recycling and sliding NextIconSlot widgets between positions on wave events.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "in-game",
+        "queue",
+        "animation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/NextIconPanel.cs:NextIconPanel",
+      "type": "class",
+      "name": "NextIconPanel",
+      "filePath": "Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "lineRange": [
+        6,
+        159
+      ],
+      "summary": "PanelBase managing a queue of upcoming hand positions and animating NextIconSlot widgets left/center/right on ready and wave events.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "queue",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/NextIconPanel.cs:GenerateQueue",
+      "type": "function",
+      "name": "GenerateQueue",
+      "filePath": "Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "lineRange": [
+        62,
+        89
+      ],
+      "summary": "Builds the randomized queue of upcoming hand positions for the icon preview.",
+      "tags": [
+        "queue",
+        "random"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/NextIconPanel.cs:HandleWaveStarted",
+      "type": "function",
+      "name": "HandleWaveStarted",
+      "filePath": "Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "lineRange": [
+        111,
+        121
+      ],
+      "summary": "Animates the current slot out left and the next slot into center when a wave starts, then recycles slots.",
+      "tags": [
+        "animation",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "type": "file",
+      "name": "OutcomePanel.cs",
+      "filePath": "Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "summary": "Panel that displays the round outcome (win/lose/draw) with distinct DOTween animation sequences, hiding itself at the next round start.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "in-game",
+        "animation",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/Game/OutcomePanel.cs:OutcomePanel",
+      "type": "class",
+      "name": "OutcomePanel",
+      "filePath": "Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "lineRange": [
+        6,
+        126
+      ],
+      "summary": "PanelBase showing the round result sprite with win/lose/draw DOTween sequences, subscribing to outcome and round-start events.",
+      "tags": [
+        "component",
+        "ui-panel",
+        "animation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/OutcomePanel.cs:PlayAnimation",
+      "type": "function",
+      "name": "PlayAnimation",
+      "filePath": "Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "lineRange": [
+        71,
+        83
+      ],
+      "summary": "Resets the image and dispatches to the win, lose, or draw animation based on the outcome.",
+      "tags": [
+        "animation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/Game/OutcomePanel.cs:PlayLoseAnimation",
+      "type": "function",
+      "name": "PlayLoseAnimation",
+      "filePath": "Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "lineRange": [
+        98,
+        113
+      ],
+      "summary": "Plays the multi-step lose feedback DOTween sequence with fade, anchored drop, and punch scale.",
+      "tags": [
+        "animation"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "target": "class:Assets/02. Scripts/Management/SoundManager.cs:SoundManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "target": "function:Assets/02. Scripts/Management/SoundManager.cs:PlayBGM",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "target": "function:Assets/02. Scripts/Management/SoundManager.cs:FadeBgmVolume",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "target": "function:Assets/02. Scripts/Management/SoundManager.cs:PlaySFX",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "target": "function:Assets/02. Scripts/Management/SoundManager.cs:GetFreeSFXSource",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "target": "function:Assets/02. Scripts/Management/SoundManager.cs:LoadAndCacheClip",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "target": "function:Assets/02. Scripts/Management/SoundManager.cs:PlayLoopingSfx",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/SoundManager.cs",
+      "target": "class:Assets/02. Scripts/Management/SoundManager.cs:SoundManager",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/SoundManager.cs:SoundManager",
+      "target": "function:Assets/02. Scripts/Management/SoundManager.cs:PlayBGM",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/SoundManager.cs:SoundManager",
+      "target": "function:Assets/02. Scripts/Management/SoundManager.cs:PlaySFX",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/TitleManager.cs",
+      "target": "class:Assets/02. Scripts/Management/TitleManager.cs:TitleManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/TitleManager.cs",
+      "target": "class:Assets/02. Scripts/Management/TitleManager.cs:TitleManager",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/TitleUIManager.cs",
+      "target": "class:Assets/02. Scripts/Management/TitleUIManager.cs:TitleUIManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/TitleUIManager.cs",
+      "target": "class:Assets/02. Scripts/Management/TitleUIManager.cs:TitleUIManager",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/TitleUIManager.cs:TitleUIManager",
+      "target": "class:Assets/02. Scripts/Management/UIManagerBase.cs:UIManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/TitleUIManager.cs",
+      "target": "file:Assets/02. Scripts/Management/UIManagerBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/UIManagerBase.cs",
+      "target": "class:Assets/02. Scripts/Management/UIManagerBase.cs:UIManagerBase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/UIManagerBase.cs",
+      "target": "function:Assets/02. Scripts/Management/UIManagerBase.cs:RegisterPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/UIManagerBase.cs",
+      "target": "function:Assets/02. Scripts/Management/UIManagerBase.cs:Update",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/UIManagerBase.cs",
+      "target": "class:Assets/02. Scripts/Management/UIManagerBase.cs:UIManagerBase",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/UIManagerBase.cs:UIManagerBase",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs:ForbidHandShapePanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs:SetCooldown",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs:CompleteSlot",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs:ForbidHandShapePanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs:ForbidHandShapePanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/HUDPanel.cs:HUDPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/HUDPanel.cs:PlayFillIn",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/HUDPanel.cs:PlayEnemyDrain",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/HUDPanel.cs:PlayDrain",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/HUDPanel.cs:HUDPanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/HUDPanel.cs:HUDPanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/IndicatePanel.cs:IndicatePanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/IndicatePanel.cs:IndicatePanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/IndicatePanel.cs:IndicatePanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "target": "file:Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/IndicatePanel.cs:IndicatePanel",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs:IndicateSlot",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:StarforceModalContent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:Update",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:BuildParticipants",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:ServerAssignChallenge",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:SubmitLocalResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:HandleNetworkDataChanged",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:StarforceModalContent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:StarforceModalContent",
+      "target": "class:Assets/02. Scripts/UI/Game/ModalContent.cs:ModalContent",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "target": "file:Assets/02. Scripts/UI/Game/ModalContent.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "target": "file:Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:StarforceModalContent",
+      "target": "class:Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs:StarforceStar",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs:StarforceStar",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs:StarforceStar",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ModalContent.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/ModalContent.cs:ModalContent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ModalContent.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/ModalContent.cs:ModalContent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/ModalPanel.cs:ModalPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/ModalPanel.cs:Show",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/ModalPanel.cs:ModalPanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/ModalPanel.cs:ModalPanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/Game/ModalContent.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/ModalPanel.cs:ModalPanel",
+      "target": "class:Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs:StarforceModalContent",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/NextIconPanel.cs:NextIconPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/NextIconPanel.cs:GenerateQueue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/NextIconPanel.cs:HandleWaveStarted",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/NextIconPanel.cs:NextIconPanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/NextIconPanel.cs:NextIconPanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "target": "file:Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/NextIconPanel.cs:NextIconPanel",
+      "target": "class:Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs:NextIconSlot",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/OutcomePanel.cs:OutcomePanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/OutcomePanel.cs:PlayAnimation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "target": "function:Assets/02. Scripts/UI/Game/OutcomePanel.cs:PlayLoseAnimation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/Game/OutcomePanel.cs:OutcomePanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/Game/OutcomePanel.cs:OutcomePanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "target": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

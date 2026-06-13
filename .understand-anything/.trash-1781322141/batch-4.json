@@ -1,0 +1,699 @@
+{
+  "nodes": [
+    {
+      "id": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "type": "file",
+      "name": "PanelBase.cs",
+      "filePath": "Assets/02. Scripts/UI/PanelBase.cs",
+      "summary": "Abstract base class for all UI panels, handling self-registration with the UI manager and open/close lifecycle including UI-stack push/pop. Acts as the foundational UI hub inherited by every concrete panel.",
+      "tags": ["component", "ui", "base-class", "abstract", "lifecycle"],
+      "complexity": "simple",
+      "languageNotes": "Uses [DefaultExecutionOrder] attribute and abstract auto-properties to enforce a panel contract on subclasses."
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "class",
+      "name": "PanelBase",
+      "filePath": "Assets/02. Scripts/UI/PanelBase.cs",
+      "lineRange": [5, 60],
+      "summary": "Abstract MonoBehaviour defining the panel contract (IsOpened, CanCloseWithESC, IsStackable, UIType) plus virtual OpenPanel/ClosePanel that coordinate with the global UI manager stack.",
+      "tags": ["component", "ui", "abstract", "base-class"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/PanelBase.cs:OpenPanel",
+      "type": "function",
+      "name": "OpenPanel",
+      "filePath": "Assets/02. Scripts/UI/PanelBase.cs",
+      "lineRange": [41, 49],
+      "summary": "Activates the panel GameObject and, when stackable, pushes the panel onto the UI manager's stack.",
+      "tags": ["ui", "lifecycle", "event-handler"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/PanelBase.cs:ClosePanel",
+      "type": "function",
+      "name": "ClosePanel",
+      "filePath": "Assets/02. Scripts/UI/PanelBase.cs",
+      "lineRange": [51, 59],
+      "summary": "Deactivates the panel GameObject and, when stackable, pops the panel off the UI manager's stack.",
+      "tags": ["ui", "lifecycle", "event-handler"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/SlotHoverScale.cs",
+      "type": "file",
+      "name": "SlotHoverScale.cs",
+      "filePath": "Assets/02. Scripts/UI/SlotHoverScale.cs",
+      "summary": "UI behaviour that scales a slot element up on pointer hover and back on exit using DOTween animations, implementing Unity pointer event interfaces.",
+      "tags": ["component", "ui", "animation", "event-handler"],
+      "complexity": "simple",
+      "languageNotes": "Implements IPointerEnterHandler/IPointerExitHandler and uses DOTween's DOScale with SetUpdate(true) for time-scale-independent tweening."
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/SlotHoverScale.cs:SlotHoverScale",
+      "type": "class",
+      "name": "SlotHoverScale",
+      "filePath": "Assets/02. Scripts/UI/SlotHoverScale.cs",
+      "lineRange": [5, 43],
+      "summary": "MonoBehaviour implementing hover-driven scale tweening for UI slots, cleaning up the active tween on disable.",
+      "tags": ["component", "ui", "animation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/UI/TitlePanel.cs",
+      "type": "file",
+      "name": "TitlePanel.cs",
+      "filePath": "Assets/02. Scripts/UI/TitlePanel.cs",
+      "summary": "Title-screen panel that collects a nickname and triggers a connection through TitleManager, managing button interactability and status text during the connect flow.",
+      "tags": ["component", "ui", "api-handler", "event-handler"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/UI/TitlePanel.cs:TitlePanel",
+      "type": "class",
+      "name": "TitlePanel",
+      "filePath": "Assets/02. Scripts/UI/TitlePanel.cs",
+      "lineRange": [6, 76],
+      "summary": "Concrete PanelBase subclass for the title screen that wires the connect button to TitleManager.Connect and reflects connection state in the UI.",
+      "tags": ["component", "ui", "event-handler"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/UI/TitlePanel.cs:OnConnectClicked",
+      "type": "function",
+      "name": "OnConnectClicked",
+      "filePath": "Assets/02. Scripts/UI/TitlePanel.cs",
+      "lineRange": [42, 64],
+      "summary": "Handles the connect button click by disabling input, showing a connecting status, and invoking TitleManager.Connect with a result callback.",
+      "tags": ["event-handler", "ui", "networking"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Util/App.cs",
+      "type": "file",
+      "name": "App.cs",
+      "filePath": "Assets/02. Scripts/Util/App.cs",
+      "summary": "Central service locator and bootstrap singleton exposing all game managers, platform checks, scene state, and global scene-load events via nested static accessor classes.",
+      "tags": ["service", "singleton", "entry-point", "service-locator"],
+      "complexity": "complex",
+      "languageNotes": "Uses nested static classes (UI, SceneManager, Game, Data, Utility) as namespaced accessors over a single Singleton instance."
+    },
+    {
+      "id": "class:Assets/02. Scripts/Util/App.cs:App",
+      "type": "class",
+      "name": "App",
+      "filePath": "Assets/02. Scripts/Util/App.cs",
+      "lineRange": [7, 139],
+      "summary": "Singleton aggregating every game manager and global static state (platform, scene, events), serving as the project-wide service locator and scene-load coordinator.",
+      "tags": ["service", "singleton", "service-locator"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Util/App.cs:LoadScene",
+      "type": "function",
+      "name": "LoadScene",
+      "filePath": "Assets/02. Scripts/Util/App.cs",
+      "lineRange": [80, 96],
+      "summary": "Fires the OnSceneLoad event, delegates the actual load to AppHelper.LoadScene, and updates previous/current scene tracking.",
+      "tags": ["scene-management", "event-handler"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "type": "file",
+      "name": "AppHelper.cs",
+      "filePath": "Assets/02. Scripts/Util/AppHelper.cs",
+      "summary": "MonoBehaviour bootstrap that persists across scenes, drives scene loading and frame-rate limiting, and bridges Unity scene callbacks into App's static events; also defines the generic Singleton base.",
+      "tags": ["service", "bootstrap", "scene-management", "singleton"],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Util/AppHelper.cs:Singleton",
+      "type": "class",
+      "name": "Singleton",
+      "filePath": "Assets/02. Scripts/Util/AppHelper.cs",
+      "lineRange": [8, 18],
+      "summary": "Generic lazy-instantiating singleton base providing a static Instance accessor for non-MonoBehaviour types like App.",
+      "tags": ["singleton", "base-class", "generic"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Util/AppHelper.cs:AppHelper",
+      "type": "class",
+      "name": "AppHelper",
+      "filePath": "Assets/02. Scripts/Util/AppHelper.cs",
+      "lineRange": [20, 133],
+      "summary": "DontDestroyOnLoad MonoBehaviour that manages frame-limit configuration, scene load/unload, and quit handling, forwarding scene events to the App service locator.",
+      "tags": ["service", "bootstrap", "scene-management"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Util/AppHelper.cs:OnSceneLoaded",
+      "type": "function",
+      "name": "OnSceneLoaded",
+      "filePath": "Assets/02. Scripts/Util/AppHelper.cs",
+      "lineRange": [90, 100],
+      "summary": "Scene-loaded callback that re-applies the frame limit, bootstraps the loaded scene into App, and invokes App.OnSceneLoaded.",
+      "tags": ["event-handler", "scene-management"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Util/AppHelper.cs:SetFrameLimit",
+      "type": "function",
+      "name": "SetFrameLimit",
+      "filePath": "Assets/02. Scripts/Util/AppHelper.cs",
+      "lineRange": [120, 132],
+      "summary": "Configures Application target frame rate and vSync based on the scene's target frame rate setting.",
+      "tags": ["utility", "performance"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Util/Enums.cs",
+      "type": "file",
+      "name": "Enums.cs",
+      "filePath": "Assets/02. Scripts/Util/Enums.cs",
+      "summary": "Central definition file for project-wide enums (scenes, UI types, finger/hand types, execution order, etc.) under the SystemEnums namespace, referenced across the entire codebase.",
+      "tags": ["type-definition", "enum", "shared", "configuration"],
+      "complexity": "moderate",
+      "languageNotes": "Groups all shared enum types in a single SystemEnums namespace to give every other script a common vocabulary."
+    },
+    {
+      "id": "file:Assets/02. Scripts/Util/FrameChecker.cs",
+      "type": "file",
+      "name": "FrameChecker.cs",
+      "filePath": "Assets/02. Scripts/Util/FrameChecker.cs",
+      "summary": "On-screen FPS and millisecond-per-frame overlay rendered via OnGUI, with color-coded styling based on performance thresholds.",
+      "tags": ["utility", "monitoring", "performance", "ui"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Util/FrameChecker.cs:FrameChecker",
+      "type": "class",
+      "name": "FrameChecker",
+      "filePath": "Assets/02. Scripts/Util/FrameChecker.cs",
+      "lineRange": [4, 95],
+      "summary": "CommonManagerBase subclass that samples frame timing each Update and draws an FPS/ms overlay through OnGUI.",
+      "tags": ["monitoring", "performance", "ui"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Util/JsonHelper.cs",
+      "type": "file",
+      "name": "JsonHelper.cs",
+      "filePath": "Assets/02. Scripts/Util/JsonHelper.cs",
+      "summary": "Generic JSON (de)serialization helper wrapping Unity JsonUtility for arrays and providing async parsing into dictionaries, used by the data layer.",
+      "tags": ["utility", "serialization", "json", "data-model"],
+      "complexity": "moderate",
+      "languageNotes": "Uses a generic Wrapper<T> struct to work around JsonUtility's inability to serialize top-level arrays, plus Task.Run for off-thread parsing."
+    },
+    {
+      "id": "class:Assets/02. Scripts/Util/JsonHelper.cs:JsonHelper",
+      "type": "class",
+      "name": "JsonHelper",
+      "filePath": "Assets/02. Scripts/Util/JsonHelper.cs",
+      "lineRange": [6, 81],
+      "summary": "Static helper exposing FromJson/ToJson array wrappers and async JsonToDictAsync overloads for parsing JSON into keyed dictionaries.",
+      "tags": ["utility", "serialization", "json"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Util/JsonHelper.cs:JsonToDictAsync",
+      "type": "function",
+      "name": "JsonToDictAsync",
+      "filePath": "Assets/02. Scripts/Util/JsonHelper.cs",
+      "lineRange": [52, 80],
+      "summary": "Asynchronously parses a JSON array into a dictionary keyed by an enum parsed from each item's Code field, logging warnings on parse failures.",
+      "tags": ["serialization", "async", "data-pipeline"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "type": "file",
+      "name": "RpsHandUtility.cs",
+      "filePath": "Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "summary": "Static utility encapsulating rock-paper-scissors judging rules and random finger-assignment/shuffle logic for game rounds.",
+      "tags": ["utility", "game-logic", "validation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Util/RpsHandUtility.cs:RpsHandUtility",
+      "type": "class",
+      "name": "RpsHandUtility",
+      "filePath": "Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "lineRange": [8, 59],
+      "summary": "Static class providing Judge for RPS outcome evaluation and CreateRandomAssignments/Shuffle for randomized finger-to-player assignments.",
+      "tags": ["utility", "game-logic"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Util/RpsHandUtility.cs:CreateRandomAssignments",
+      "type": "function",
+      "name": "CreateRandomAssignments",
+      "filePath": "Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "lineRange": [33, 49],
+      "summary": "Builds a randomized mapping of player ids to finger types by cloning and shuffling the assignable-fingers set.",
+      "tags": ["utility", "game-logic", "randomization"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "type": "file",
+      "name": "HandSpriteDataGeneratorWindow.cs",
+      "filePath": "Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "summary": "Unity Editor tool window that generates HandSpriteData ScriptableObjects from a dropped JSON definition, resolving sprites and creating output assets.",
+      "tags": ["editor-tool", "tooling", "asset-pipeline", "build-system"],
+      "complexity": "complex",
+      "languageNotes": "EditorWindow-based tooling using AssetDatabase APIs and drag-and-drop handling; lives under Assets/Editor so it is excluded from runtime builds."
+    },
+    {
+      "id": "class:Assets/Editor/HandSpriteDataGeneratorWindow.cs:HandSpriteDataGeneratorWindow",
+      "type": "class",
+      "name": "HandSpriteDataGeneratorWindow",
+      "filePath": "Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "lineRange": [5, 160],
+      "summary": "EditorWindow that accepts a dropped JSON asset and generates a HandSpriteData ScriptableObject by resolving named sprites and writing the asset to disk.",
+      "tags": ["editor-tool", "tooling", "asset-pipeline"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/Editor/HandSpriteDataGeneratorWindow.cs:GenerateFromJson",
+      "type": "function",
+      "name": "GenerateFromJson",
+      "filePath": "Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "lineRange": [64, 110],
+      "summary": "Parses the dropped JSON into HandSpriteJson, resolves each sprite, populates a HandSpriteData asset, and saves it via AssetDatabase.",
+      "tags": ["editor-tool", "asset-pipeline", "serialization"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/Editor/HandSpriteDataGeneratorWindow.cs:FindSprite",
+      "type": "function",
+      "name": "FindSprite",
+      "filePath": "Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "lineRange": [112, 135],
+      "summary": "Searches the configured sprite folder for a sprite matching the given name, checking sub-asset representations before falling back to a direct load.",
+      "tags": ["editor-tool", "asset-pipeline", "utility"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/Editor/SceneFastLauncher.cs",
+      "type": "file",
+      "name": "SceneFastLauncher.cs",
+      "filePath": "Assets/Editor/SceneFastLauncher.cs",
+      "summary": "Unity Editor utility window for quickly opening project scenes from a drag-and-drop list, persisting the scene set in EditorPrefs.",
+      "tags": ["editor-tool", "tooling", "productivity"],
+      "complexity": "complex",
+      "languageNotes": "EditorWindow tool persisting state via EditorPrefs and opening scenes through EditorSceneManager."
+    },
+    {
+      "id": "class:Assets/Editor/SceneFastLauncher.cs:SceneFastLauncher",
+      "type": "class",
+      "name": "SceneFastLauncher",
+      "filePath": "Assets/Editor/SceneFastLauncher.cs",
+      "lineRange": [6, 125],
+      "summary": "EditorWindow maintaining a persisted list of SceneAssets and providing one-click open buttons with drag-and-drop registration.",
+      "tags": ["editor-tool", "tooling", "productivity"],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": "CLAUDE.md",
+      "summary": "Project guideline document instructing contributors and AI agents to avoid comments by default and keep any necessary comment to one short English line.",
+      "tags": ["documentation", "guidelines", "conventions"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Packages/manifest.json",
+      "type": "config",
+      "name": "manifest.json",
+      "filePath": "Packages/manifest.json",
+      "summary": "Unity Package Manager manifest declaring the project's direct package dependencies and registry configuration.",
+      "tags": ["configuration", "dependencies", "package-management", "build-system"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Packages/packages-lock.json",
+      "type": "config",
+      "name": "packages-lock.json",
+      "filePath": "Packages/packages-lock.json",
+      "summary": "Unity Package Manager lockfile pinning resolved versions, sources, and dependency hashes for reproducible package restoration.",
+      "tags": ["configuration", "dependencies", "lockfile", "package-management"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "target": "function:Assets/02. Scripts/UI/PanelBase.cs:OpenPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "target": "function:Assets/02. Scripts/UI/PanelBase.cs:ClosePanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "target": "class:Assets/02. Scripts/Util/App.cs:App",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/PanelBase.cs",
+      "target": "file:Assets/02. Scripts/Util/Enums.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/SlotHoverScale.cs",
+      "target": "class:Assets/02. Scripts/UI/SlotHoverScale.cs:SlotHoverScale",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/SlotHoverScale.cs",
+      "target": "class:Assets/02. Scripts/UI/SlotHoverScale.cs:SlotHoverScale",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/TitlePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/TitlePanel.cs:TitlePanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/TitlePanel.cs",
+      "target": "function:Assets/02. Scripts/UI/TitlePanel.cs:OnConnectClicked",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/TitlePanel.cs",
+      "target": "class:Assets/02. Scripts/UI/TitlePanel.cs:TitlePanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/UI/TitlePanel.cs:TitlePanel",
+      "target": "class:Assets/02. Scripts/UI/PanelBase.cs:PanelBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/TitlePanel.cs",
+      "target": "class:Assets/02. Scripts/Util/App.cs:App",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/UI/TitlePanel.cs",
+      "target": "file:Assets/02. Scripts/Util/Enums.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/App.cs",
+      "target": "class:Assets/02. Scripts/Util/App.cs:App",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/App.cs",
+      "target": "function:Assets/02. Scripts/Util/App.cs:LoadScene",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/App.cs",
+      "target": "class:Assets/02. Scripts/Util/App.cs:App",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:Assets/02. Scripts/Util/App.cs:App",
+      "target": "class:Assets/02. Scripts/Util/AppHelper.cs:Singleton",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "function:Assets/02. Scripts/Util/App.cs:LoadScene",
+      "target": "function:Assets/02. Scripts/Util/AppHelper.cs:SetFrameLimit",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/App.cs",
+      "target": "class:Assets/02. Scripts/Util/AppHelper.cs:AppHelper",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/App.cs",
+      "target": "class:Assets/02. Scripts/Util/FrameChecker.cs:FrameChecker",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/App.cs",
+      "target": "file:Assets/02. Scripts/Util/Enums.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "target": "class:Assets/02. Scripts/Util/AppHelper.cs:Singleton",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "target": "class:Assets/02. Scripts/Util/AppHelper.cs:AppHelper",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "target": "function:Assets/02. Scripts/Util/AppHelper.cs:OnSceneLoaded",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "target": "function:Assets/02. Scripts/Util/AppHelper.cs:SetFrameLimit",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "target": "class:Assets/02. Scripts/Util/AppHelper.cs:AppHelper",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "target": "class:Assets/02. Scripts/Util/AppHelper.cs:Singleton",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:Assets/02. Scripts/Util/AppHelper.cs:OnSceneLoaded",
+      "target": "function:Assets/02. Scripts/Util/App.cs:LoadScene",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "target": "class:Assets/02. Scripts/Util/App.cs:App",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/AppHelper.cs",
+      "target": "file:Assets/02. Scripts/Util/Enums.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/FrameChecker.cs",
+      "target": "class:Assets/02. Scripts/Util/FrameChecker.cs:FrameChecker",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/FrameChecker.cs",
+      "target": "class:Assets/02. Scripts/Util/FrameChecker.cs:FrameChecker",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/JsonHelper.cs",
+      "target": "class:Assets/02. Scripts/Util/JsonHelper.cs:JsonHelper",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/JsonHelper.cs",
+      "target": "function:Assets/02. Scripts/Util/JsonHelper.cs:JsonToDictAsync",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/JsonHelper.cs",
+      "target": "class:Assets/02. Scripts/Util/JsonHelper.cs:JsonHelper",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/JsonHelper.cs",
+      "target": "file:Assets/02. Scripts/Util/Enums.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "target": "class:Assets/02. Scripts/Util/RpsHandUtility.cs:RpsHandUtility",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "target": "function:Assets/02. Scripts/Util/RpsHandUtility.cs:CreateRandomAssignments",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "target": "class:Assets/02. Scripts/Util/RpsHandUtility.cs:RpsHandUtility",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "target": "file:Assets/02. Scripts/Util/Enums.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "target": "class:Assets/Editor/HandSpriteDataGeneratorWindow.cs:HandSpriteDataGeneratorWindow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "target": "function:Assets/Editor/HandSpriteDataGeneratorWindow.cs:GenerateFromJson",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "target": "function:Assets/Editor/HandSpriteDataGeneratorWindow.cs:FindSprite",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "target": "class:Assets/Editor/HandSpriteDataGeneratorWindow.cs:HandSpriteDataGeneratorWindow",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:Assets/Editor/SceneFastLauncher.cs",
+      "target": "class:Assets/Editor/SceneFastLauncher.cs:SceneFastLauncher",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/Editor/SceneFastLauncher.cs",
+      "target": "class:Assets/Editor/SceneFastLauncher.cs:SceneFastLauncher",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "file:Assets/02. Scripts/Util/App.cs",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:Packages/manifest.json",
+      "target": "file:Assets/02. Scripts/Util/App.cs",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:Packages/packages-lock.json",
+      "target": "config:Packages/manifest.json",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

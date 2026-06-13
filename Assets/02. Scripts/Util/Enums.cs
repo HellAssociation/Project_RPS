@@ -54,6 +54,8 @@ namespace SystemEnums
     {
         WaitingForRoundSelect,
         WaitingForSetup,
+        CardVoting,
+        BossIntro,
         AssignmentsReady,
         WaveInput,
         WaveJudging,
@@ -98,6 +100,8 @@ namespace SystemEnums
         Wave,
         Indicate,
         Modal,
+        CardVote,
+        Boss,
     }
 
     /// <summary>
@@ -129,11 +133,21 @@ namespace SystemEnums
         BGM_NEWS,
     }
 
+    public enum EEffect
+    {
+        None,
+        CameraImpulse,
+    }
+
     public enum EInGameRpsMessage : byte
     {
         StartRound = 1,
         RoundResult = 2,
         StageSelected = 3,
+        CardsApplied = 4,
+        CardOffer = 5,
+        CardVoteResult = 6,
+        BossIntro = 7,
     }
 
     public enum EBoon { BOON_A, BOON_B, BOON_C }
@@ -146,6 +160,19 @@ namespace SystemEnums
         DEFINE_PLAYER_DEFAULT_DAMAGE,
         DEFINE_PLAYER_DEFAULT_TIMER,
     }
+
+    /// <summary>RunState가 수정자 파이프라인으로 해석하는 스탯 종류.</summary>
+    public enum EStat
+    {
+        PlayerMaxHp,
+        PlayerDamage,
+        WaveTimer,
+        EnemyHpMultiplier,
+    }
+
+    public enum EModifierOp { Add, Mul }
+
+    public enum ECardKind : byte { Boon, Deviation }
 
     public enum EEnemyType
     {

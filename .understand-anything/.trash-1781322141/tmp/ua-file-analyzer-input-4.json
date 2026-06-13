@@ -1,0 +1,20 @@
+{
+  "projectRoot": "/Users/hyeonjun/Project_RPS",
+  "batchFiles": [
+    {"path": "Assets/02. Scripts/UI/PanelBase.cs", "language": "csharp", "sizeLines": 60, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/SlotHoverScale.cs", "language": "csharp", "sizeLines": 43, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/TitlePanel.cs", "language": "csharp", "sizeLines": 76, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Util/App.cs", "language": "csharp", "sizeLines": 139, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Util/AppHelper.cs", "language": "csharp", "sizeLines": 134, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Util/Enums.cs", "language": "csharp", "sizeLines": 163, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Util/FrameChecker.cs", "language": "csharp", "sizeLines": 95, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Util/JsonHelper.cs", "language": "csharp", "sizeLines": 81, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Util/RpsHandUtility.cs", "language": "csharp", "sizeLines": 59, "fileCategory": "code"},
+    {"path": "Assets/Editor/HandSpriteDataGeneratorWindow.cs", "language": "csharp", "sizeLines": 160, "fileCategory": "code"},
+    {"path": "Assets/Editor/SceneFastLauncher.cs", "language": "csharp", "sizeLines": 124, "fileCategory": "code"},
+    {"path": "CLAUDE.md", "language": "markdown", "sizeLines": 5, "fileCategory": "docs"},
+    {"path": "Packages/manifest.json", "language": "json", "sizeLines": 53, "fileCategory": "config"},
+    {"path": "Packages/packages-lock.json", "language": "json", "sizeLines": 650, "fileCategory": "config"}
+  ],
+  "batchImportData": {}
+}

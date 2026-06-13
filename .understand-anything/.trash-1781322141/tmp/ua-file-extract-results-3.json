@@ -1,0 +1,5380 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 25,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "Assets/02. Scripts/Management/SoundManager.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 287,
+      "nonEmptyLines": 242,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 41,
+          "endLine": 46,
+          "params": []
+        },
+        {
+          "name": "OnDestroy",
+          "startLine": 48,
+          "endLine": 51,
+          "params": []
+        },
+        {
+          "name": "StopBgmFadeCoroutine",
+          "startLine": 53,
+          "endLine": 60,
+          "params": []
+        },
+        {
+          "name": "StartBgmFadeIn",
+          "startLine": 62,
+          "endLine": 74,
+          "params": [
+            "audioClip",
+            "clipEnum"
+          ]
+        },
+        {
+          "name": "ApplyForceMute",
+          "startLine": 76,
+          "endLine": 92,
+          "params": []
+        },
+        {
+          "name": "PlayLoopingSfx",
+          "startLine": 94,
+          "endLine": 111,
+          "params": [
+            "clip"
+          ]
+        },
+        {
+          "name": "StopLoopingSfx",
+          "startLine": 113,
+          "endLine": 121,
+          "params": []
+        },
+        {
+          "name": "InitAudioSources",
+          "startLine": 123,
+          "endLine": 136,
+          "params": []
+        },
+        {
+          "name": "CreateSFXSource",
+          "startLine": 138,
+          "endLine": 148,
+          "params": []
+        },
+        {
+          "name": "LoadAndCacheClip",
+          "startLine": 150,
+          "endLine": 162,
+          "params": [
+            "clip",
+            "onLoaded"
+          ]
+        },
+        {
+          "name": "PlayBGM",
+          "startLine": 164,
+          "endLine": 199,
+          "params": [
+            "clip"
+          ]
+        },
+        {
+          "name": "StopBGM",
+          "startLine": 201,
+          "endLine": 217,
+          "params": []
+        },
+        {
+          "name": "StopBGMImmediate",
+          "startLine": 219,
+          "endLine": 225,
+          "params": []
+        },
+        {
+          "name": "GetFreeSFXSource",
+          "startLine": 227,
+          "endLine": 240,
+          "params": []
+        },
+        {
+          "name": "PlaySFX",
+          "startLine": 242,
+          "endLine": 250,
+          "params": [
+            "clip"
+          ]
+        },
+        {
+          "name": "StopAllSFX",
+          "startLine": 252,
+          "endLine": 263,
+          "params": []
+        },
+        {
+          "name": "FadeBgmVolume",
+          "startLine": 265,
+          "endLine": 286,
+          "params": [
+            "from",
+            "to",
+            "duration",
+            "onComplete"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "SoundManager",
+          "startLine": 7,
+          "endLine": 287,
+          "methods": [
+            "Awake",
+            "OnDestroy",
+            "StopBgmFadeCoroutine",
+            "StartBgmFadeIn",
+            "ApplyForceMute",
+            "PlayLoopingSfx",
+            "StopLoopingSfx",
+            "InitAudioSources",
+            "CreateSFXSource",
+            "LoadAndCacheClip",
+            "PlayBGM",
+            "StopBGM",
+            "StopBGMImmediate",
+            "GetFreeSFXSource",
+            "PlaySFX",
+            "StopAllSFX",
+            "FadeBgmVolume"
+          ],
+          "properties": [
+            "InitialSFXPoolSize",
+            "_forceMute",
+            "_bgmSource",
+            "_sfxSourcePrefab",
+            "_clipCache",
+            "_sfxPool",
+            "_loopingSfxSource",
+            "BgmFadeDuration",
+            "_bgmFadeCoroutine",
+            "_activeBgmClip",
+            "ForceMute"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ForceMute",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "PlayLoopingSfx",
+          "line": 94,
+          "isDefault": false
+        },
+        {
+          "name": "StopLoopingSfx",
+          "line": 113,
+          "isDefault": false
+        },
+        {
+          "name": "PlayBGM",
+          "line": 164,
+          "isDefault": false
+        },
+        {
+          "name": "StopBGM",
+          "line": 201,
+          "isDefault": false
+        },
+        {
+          "name": "StopBGMImmediate",
+          "line": 219,
+          "isDefault": false
+        },
+        {
+          "name": "PlaySFX",
+          "line": 242,
+          "isDefault": false
+        },
+        {
+          "name": "StopAllSFX",
+          "line": 252,
+          "isDefault": false
+        },
+        {
+          "name": "SoundManager",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 43
+        },
+        {
+          "caller": "Awake",
+          "callee": "InitAudioSources",
+          "lineNumber": 44
+        },
+        {
+          "caller": "Awake",
+          "callee": "ApplyForceMute",
+          "lineNumber": 45
+        },
+        {
+          "caller": "OnDestroy",
+          "callee": "StopBgmFadeCoroutine",
+          "lineNumber": 50
+        },
+        {
+          "caller": "StopBgmFadeCoroutine",
+          "callee": "StopCoroutine",
+          "lineNumber": 57
+        },
+        {
+          "caller": "StartBgmFadeIn",
+          "callee": "_bgmSource.Play",
+          "lineNumber": 72
+        },
+        {
+          "caller": "StartBgmFadeIn",
+          "callee": "StartCoroutine",
+          "lineNumber": 73
+        },
+        {
+          "caller": "StartBgmFadeIn",
+          "callee": "FadeBgmVolume",
+          "lineNumber": 73
+        },
+        {
+          "caller": "PlayLoopingSfx",
+          "callee": "LoadAndCacheClip",
+          "lineNumber": 96
+        },
+        {
+          "caller": "PlayLoopingSfx",
+          "callee": "_loopingSfxSource.Stop",
+          "lineNumber": 105
+        },
+        {
+          "caller": "PlayLoopingSfx",
+          "callee": "_loopingSfxSource.Play",
+          "lineNumber": 109
+        },
+        {
+          "caller": "StopLoopingSfx",
+          "callee": "_loopingSfxSource.Stop",
+          "lineNumber": 117
+        },
+        {
+          "caller": "InitAudioSources",
+          "callee": "_sfxPool.Add",
+          "lineNumber": 127
+        },
+        {
+          "caller": "InitAudioSources",
+          "callee": "CreateSFXSource",
+          "lineNumber": 127
+        },
+        {
+          "caller": "InitAudioSources",
+          "callee": "new GameObject",
+          "lineNumber": 130
+        },
+        {
+          "caller": "InitAudioSources",
+          "callee": "loopingGo.transform.SetParent",
+          "lineNumber": 131
+        },
+        {
+          "caller": "InitAudioSources",
+          "callee": "loopingGo.AddComponent<AudioSource>",
+          "lineNumber": 132
+        },
+        {
+          "caller": "CreateSFXSource",
+          "callee": "Instantiate",
+          "lineNumber": 140
+        },
+        {
+          "caller": "CreateSFXSource",
+          "callee": "go.GetComponent<AudioSource>",
+          "lineNumber": 141
+        },
+        {
+          "caller": "LoadAndCacheClip",
+          "callee": "_clipCache.TryGetValue",
+          "lineNumber": 152
+        },
+        {
+          "caller": "LoadAndCacheClip",
+          "callee": "onLoaded?.Invoke",
+          "lineNumber": 154
+        },
+        {
+          "caller": "LoadAndCacheClip",
+          "callee": "App.SystemManager.Asset.GetAudioClip",
+          "lineNumber": 158
+        },
+        {
+          "caller": "LoadAndCacheClip",
+          "callee": "onLoaded?.Invoke",
+          "lineNumber": 161
+        },
+        {
+          "caller": "PlayBGM",
+          "callee": "LoadAndCacheClip",
+          "lineNumber": 171
+        },
+        {
+          "caller": "PlayBGM",
+          "callee": "StopBgmFadeCoroutine",
+          "lineNumber": 183
+        },
+        {
+          "caller": "PlayBGM",
+          "callee": "StartCoroutine",
+          "lineNumber": 187
+        },
+        {
+          "caller": "PlayBGM",
+          "callee": "FadeBgmVolume",
+          "lineNumber": 187
+        },
+        {
+          "caller": "PlayBGM",
+          "callee": "_bgmSource.Stop",
+          "lineNumber": 189
+        },
+        {
+          "caller": "PlayBGM",
+          "callee": "StartBgmFadeIn",
+          "lineNumber": 191
+        },
+        {
+          "caller": "PlayBGM",
+          "callee": "StartBgmFadeIn",
+          "lineNumber": 196
+        },
+        {
+          "caller": "StopBGM",
+          "callee": "StopBgmFadeCoroutine",
+          "lineNumber": 203
+        },
+        {
+          "caller": "StopBGM",
+          "callee": "StartCoroutine",
+          "lineNumber": 211
+        },
+        {
+          "caller": "StopBGM",
+          "callee": "FadeBgmVolume",
+          "lineNumber": 211
+        },
+        {
+          "caller": "StopBGM",
+          "callee": "_bgmSource.Stop",
+          "lineNumber": 213
+        },
+        {
+          "caller": "StopBGMImmediate",
+          "callee": "StopBgmFadeCoroutine",
+          "lineNumber": 221
+        },
+        {
+          "caller": "StopBGMImmediate",
+          "callee": "_bgmSource.Stop",
+          "lineNumber": 222
+        },
+        {
+          "caller": "GetFreeSFXSource",
+          "callee": "CreateSFXSource",
+          "lineNumber": 237
+        },
+        {
+          "caller": "GetFreeSFXSource",
+          "callee": "_sfxPool.Add",
+          "lineNumber": 238
+        },
+        {
+          "caller": "PlaySFX",
+          "callee": "LoadAndCacheClip",
+          "lineNumber": 244
+        },
+        {
+          "caller": "PlaySFX",
+          "callee": "GetFreeSFXSource().PlayOneShot",
+          "lineNumber": 248
+        },
+        {
+          "caller": "PlaySFX",
+          "callee": "GetFreeSFXSource",
+          "lineNumber": 248
+        },
+        {
+          "caller": "StopAllSFX",
+          "callee": "source.Stop",
+          "lineNumber": 258
+        },
+        {
+          "caller": "StopAllSFX",
+          "callee": "StopLoopingSfx",
+          "lineNumber": 262
+        },
+        {
+          "caller": "FadeBgmVolume",
+          "callee": "onComplete?.Invoke",
+          "lineNumber": 269
+        },
+        {
+          "caller": "FadeBgmVolume",
+          "callee": "Mathf.Clamp01",
+          "lineNumber": 278
+        },
+        {
+          "caller": "FadeBgmVolume",
+          "callee": "Mathf.Lerp",
+          "lineNumber": 279
+        },
+        {
+          "caller": "FadeBgmVolume",
+          "callee": "onComplete?.Invoke",
+          "lineNumber": 284
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 9,
+        "functionCount": 17,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Management/TitleManager.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 54,
+      "nonEmptyLines": 43,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 13,
+          "endLine": 18,
+          "params": []
+        },
+        {
+          "name": "Connect",
+          "startLine": 20,
+          "endLine": 43,
+          "params": [
+            "displayName",
+            "onComplete"
+          ]
+        },
+        {
+          "name": "Complete",
+          "startLine": 45,
+          "endLine": 53,
+          "params": [
+            "result",
+            "onComplete"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "TitleManager",
+          "startLine": 5,
+          "endLine": 54,
+          "methods": [
+            "Awake",
+            "Connect",
+            "Complete"
+          ],
+          "properties": [
+            "defaultMaxPlayers",
+            "minPlayersToStart",
+            "requireAllReady",
+            "IsCloudConnected"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IsCloudConnected",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "Connect",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "TitleManager",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 15
+        },
+        {
+          "caller": "Awake",
+          "callee": "PlayerProfile.Load",
+          "lineNumber": 17
+        },
+        {
+          "caller": "Connect",
+          "callee": "string.IsNullOrWhiteSpace",
+          "lineNumber": 24
+        },
+        {
+          "caller": "Connect",
+          "callee": "Complete",
+          "lineNumber": 26
+        },
+        {
+          "caller": "Connect",
+          "callee": "LobbyRequestResult.Fail",
+          "lineNumber": 26
+        },
+        {
+          "caller": "Connect",
+          "callee": "PlayerProfile.NormalizeDisplayName",
+          "lineNumber": 30
+        },
+        {
+          "caller": "Connect",
+          "callee": "PlayerProfile.SaveDisplayName",
+          "lineNumber": 31
+        },
+        {
+          "caller": "Connect",
+          "callee": "network.Initialize",
+          "lineNumber": 33
+        },
+        {
+          "caller": "Connect",
+          "callee": "network.ConnectToCloud",
+          "lineNumber": 34
+        },
+        {
+          "caller": "Connect",
+          "callee": "MoveToNextScene",
+          "lineNumber": 38
+        },
+        {
+          "caller": "Connect",
+          "callee": "Complete",
+          "lineNumber": 41
+        },
+        {
+          "caller": "Complete",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 47
+        },
+        {
+          "caller": "Complete",
+          "callee": "Debug.LogError",
+          "lineNumber": 49
+        },
+        {
+          "caller": "Complete",
+          "callee": "onComplete?.Invoke",
+          "lineNumber": 52
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Management/TitleUIManager.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 5,
+      "nonEmptyLines": 4,
+      "classes": [
+        {
+          "name": "TitleUIManager",
+          "startLine": 3,
+          "endLine": 5,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "TitleUIManager",
+          "line": 3,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/Management/UIManagerBase.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 110,
+      "nonEmptyLines": 92,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 13,
+          "endLine": 18,
+          "params": []
+        },
+        {
+          "name": "Update",
+          "startLine": 20,
+          "endLine": 31,
+          "params": []
+        },
+        {
+          "name": "RegisterPanel",
+          "startLine": 33,
+          "endLine": 47,
+          "params": [
+            "panel"
+          ]
+        },
+        {
+          "name": "PushUIStack",
+          "startLine": 49,
+          "endLine": 57,
+          "params": [
+            "panel"
+          ]
+        },
+        {
+          "name": "PopUIStack",
+          "startLine": 59,
+          "endLine": 65,
+          "params": [
+            "panel"
+          ]
+        },
+        {
+          "name": "TryGetPanel",
+          "startLine": 67,
+          "endLine": 77,
+          "params": [
+            "panel"
+          ]
+        },
+        {
+          "name": "GetPanel",
+          "startLine": 79,
+          "endLine": 87,
+          "params": []
+        },
+        {
+          "name": "OpenPanel",
+          "startLine": 89,
+          "endLine": 98,
+          "params": []
+        },
+        {
+          "name": "ClosePanel",
+          "startLine": 100,
+          "endLine": 109,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "UIManagerBase",
+          "startLine": 7,
+          "endLine": 110,
+          "methods": [
+            "Awake",
+            "Update",
+            "RegisterPanel",
+            "PushUIStack",
+            "PopUIStack",
+            "TryGetPanel",
+            "GetPanel",
+            "OpenPanel",
+            "ClosePanel"
+          ],
+          "properties": [
+            "_panelDictionary",
+            "_panelStack"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "RegisterPanel",
+          "line": 33,
+          "isDefault": false
+        },
+        {
+          "name": "PushUIStack",
+          "line": 49,
+          "isDefault": false
+        },
+        {
+          "name": "PopUIStack",
+          "line": 59,
+          "isDefault": false
+        },
+        {
+          "name": "TryGetPanel",
+          "line": 67,
+          "isDefault": false
+        },
+        {
+          "name": "GetPanel",
+          "line": 79,
+          "isDefault": false
+        },
+        {
+          "name": "OpenPanel",
+          "line": 89,
+          "isDefault": false
+        },
+        {
+          "name": "ClosePanel",
+          "line": 100,
+          "isDefault": false
+        },
+        {
+          "name": "UIManagerBase",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 15
+        },
+        {
+          "caller": "Update",
+          "callee": "_panelStack.TryPeek",
+          "lineNumber": 27
+        },
+        {
+          "caller": "Update",
+          "callee": "top.ClosePanel",
+          "lineNumber": 29
+        },
+        {
+          "caller": "RegisterPanel",
+          "callee": "_panelDictionary.ContainsKey",
+          "lineNumber": 40
+        },
+        {
+          "caller": "RegisterPanel",
+          "callee": "panel.GetType",
+          "lineNumber": 40
+        },
+        {
+          "caller": "RegisterPanel",
+          "callee": "Debug.LogError",
+          "lineNumber": 42
+        },
+        {
+          "caller": "RegisterPanel",
+          "callee": "panel.GetType",
+          "lineNumber": 42
+        },
+        {
+          "caller": "RegisterPanel",
+          "callee": "_panelDictionary.Add",
+          "lineNumber": 46
+        },
+        {
+          "caller": "RegisterPanel",
+          "callee": "panel.GetType",
+          "lineNumber": 46
+        },
+        {
+          "caller": "PushUIStack",
+          "callee": "_panelStack.Push",
+          "lineNumber": 56
+        },
+        {
+          "caller": "PopUIStack",
+          "callee": "_panelStack.Pop",
+          "lineNumber": 63
+        },
+        {
+          "caller": "TryGetPanel",
+          "callee": "_panelDictionary.TryGetValue",
+          "lineNumber": 69
+        },
+        {
+          "caller": "GetPanel",
+          "callee": "TryGetPanel",
+          "lineNumber": 81
+        },
+        {
+          "caller": "GetPanel",
+          "callee": "new InvalidOperationException",
+          "lineNumber": 86
+        },
+        {
+          "caller": "GetPanel",
+          "callee": "GetType",
+          "lineNumber": 86
+        },
+        {
+          "caller": "OpenPanel",
+          "callee": "TryGetPanel",
+          "lineNumber": 91
+        },
+        {
+          "caller": "OpenPanel",
+          "callee": "panel.OpenPanel",
+          "lineNumber": 93
+        },
+        {
+          "caller": "ClosePanel",
+          "callee": "TryGetPanel",
+          "lineNumber": 102
+        },
+        {
+          "caller": "ClosePanel",
+          "callee": "panel.ClosePanel",
+          "lineNumber": 104
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 8,
+        "functionCount": 9,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 136,
+      "nonEmptyLines": 116,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 37,
+          "endLine": 43,
+          "params": []
+        },
+        {
+          "name": "SetCooldown",
+          "startLine": 63,
+          "endLine": 80,
+          "params": [
+            "hand",
+            "duration"
+          ]
+        },
+        {
+          "name": "InitSlot",
+          "startLine": 82,
+          "endLine": 89,
+          "params": [
+            "slot"
+          ]
+        },
+        {
+          "name": "ActivateSlot",
+          "startLine": 91,
+          "endLine": 101,
+          "params": [
+            "slot"
+          ]
+        },
+        {
+          "name": "TickSlot",
+          "startLine": 103,
+          "endLine": 120,
+          "params": [
+            "remaining",
+            "total",
+            "slot"
+          ]
+        },
+        {
+          "name": "CompleteSlot",
+          "startLine": 122,
+          "endLine": 135,
+          "params": [
+            "slot"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "ForbidHandShapePanel",
+          "startLine": 7,
+          "endLine": 136,
+          "methods": [
+            "Awake",
+            "SetCooldown",
+            "InitSlot",
+            "ActivateSlot",
+            "TickSlot",
+            "CompleteSlot"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "rock",
+            "paper",
+            "scissors",
+            "_rockRemaining",
+            "_rockTotal",
+            "_paperRemaining",
+            "_paperTotal",
+            "_scissorsRemaining",
+            "_scissorsTotal",
+            "DIM_COLOR",
+            "FILL_COLOR"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IsOpened",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "CanCloseWithESC",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "IsStackable",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "UIType",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "SetCooldown",
+          "line": 63,
+          "isDefault": false
+        },
+        {
+          "name": "ForbidHandShapePanel",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 39
+        },
+        {
+          "caller": "Awake",
+          "callee": "InitSlot",
+          "lineNumber": 40
+        },
+        {
+          "caller": "Awake",
+          "callee": "InitSlot",
+          "lineNumber": 41
+        },
+        {
+          "caller": "Awake",
+          "callee": "InitSlot",
+          "lineNumber": 42
+        },
+        {
+          "caller": "Update",
+          "callee": "UpdateTest",
+          "lineNumber": 48
+        },
+        {
+          "caller": "Update",
+          "callee": "TickSlot",
+          "lineNumber": 50
+        },
+        {
+          "caller": "Update",
+          "callee": "TickSlot",
+          "lineNumber": 51
+        },
+        {
+          "caller": "Update",
+          "callee": "TickSlot",
+          "lineNumber": 52
+        },
+        {
+          "caller": "UpdateTest",
+          "callee": "Input.GetKeyDown",
+          "lineNumber": 58
+        },
+        {
+          "caller": "UpdateTest",
+          "callee": "SetCooldown",
+          "lineNumber": 59
+        },
+        {
+          "caller": "SetCooldown",
+          "callee": "ActivateSlot",
+          "lineNumber": 69
+        },
+        {
+          "caller": "SetCooldown",
+          "callee": "ActivateSlot",
+          "lineNumber": 73
+        },
+        {
+          "caller": "SetCooldown",
+          "callee": "ActivateSlot",
+          "lineNumber": 77
+        },
+        {
+          "caller": "InitSlot",
+          "callee": "slot.coolDownText.gameObject.SetActive",
+          "lineNumber": 88
+        },
+        {
+          "caller": "ActivateSlot",
+          "callee": "slot.IconDim.DOKill",
+          "lineNumber": 93
+        },
+        {
+          "caller": "ActivateSlot",
+          "callee": "slot.Flash.DOKill",
+          "lineNumber": 94
+        },
+        {
+          "caller": "ActivateSlot",
+          "callee": "slot.HandShapeRect.DOKill",
+          "lineNumber": 95
+        },
+        {
+          "caller": "ActivateSlot",
+          "callee": "slot.coolDownText.gameObject.SetActive",
+          "lineNumber": 100
+        },
+        {
+          "caller": "TickSlot",
+          "callee": "CompleteSlot",
+          "lineNumber": 112
+        },
+        {
+          "caller": "TickSlot",
+          "callee": "remaining.ToString",
+          "lineNumber": 118
+        },
+        {
+          "caller": "TickSlot",
+          "callee": "Mathf.CeilToInt(remaining).ToString",
+          "lineNumber": 119
+        },
+        {
+          "caller": "TickSlot",
+          "callee": "Mathf.CeilToInt",
+          "lineNumber": 119
+        },
+        {
+          "caller": "CompleteSlot",
+          "callee": "slot.coolDownText.gameObject.SetActive",
+          "lineNumber": 125
+        },
+        {
+          "caller": "CompleteSlot",
+          "callee": "slot.IconDim.DOFade",
+          "lineNumber": 127
+        },
+        {
+          "caller": "CompleteSlot",
+          "callee": "DOTween.Sequence()\n            .Append(slot.Flash.DOFade(1f, 0.07f))\n            .Append",
+          "lineNumber": 130
+        },
+        {
+          "caller": "CompleteSlot",
+          "callee": "DOTween.Sequence()\n            .Append",
+          "lineNumber": 130
+        },
+        {
+          "caller": "CompleteSlot",
+          "callee": "DOTween.Sequence",
+          "lineNumber": 130
+        },
+        {
+          "caller": "CompleteSlot",
+          "callee": "slot.Flash.DOFade",
+          "lineNumber": 131
+        },
+        {
+          "caller": "CompleteSlot",
+          "callee": "slot.Flash.DOFade",
+          "lineNumber": 132
+        },
+        {
+          "caller": "CompleteSlot",
+          "callee": "slot.HandShapeRect.DOPunchScale",
+          "lineNumber": 134
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 6,
+        "functionCount": 6,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 216,
+      "nonEmptyLines": 177,
+      "functions": [
+        {
+          "name": "Start",
+          "startLine": 47,
+          "endLine": 57,
+          "params": []
+        },
+        {
+          "name": "OnDestroy",
+          "startLine": 59,
+          "endLine": 66,
+          "params": []
+        },
+        {
+          "name": "HandleStageOpened",
+          "startLine": 68,
+          "endLine": 71,
+          "params": [
+            "stageIndex"
+          ]
+        },
+        {
+          "name": "PlayFillIn",
+          "startLine": 73,
+          "endLine": 106,
+          "params": []
+        },
+        {
+          "name": "HandleLivesChanged",
+          "startLine": 108,
+          "endLine": 112,
+          "params": [
+            "lives"
+          ]
+        },
+        {
+          "name": "HandleEnemyHpChanged",
+          "startLine": 114,
+          "endLine": 118,
+          "params": [
+            "hp",
+            "maxHp"
+          ]
+        },
+        {
+          "name": "PlayEnemyDrain",
+          "startLine": 120,
+          "endLine": 147,
+          "params": [
+            "target"
+          ]
+        },
+        {
+          "name": "EnemyGhostDrainCoroutine",
+          "startLine": 149,
+          "endLine": 164,
+          "params": [
+            "target"
+          ]
+        },
+        {
+          "name": "PlayDrain",
+          "startLine": 166,
+          "endLine": 187,
+          "params": [
+            "target"
+          ]
+        },
+        {
+          "name": "PlayHitShake",
+          "startLine": 190,
+          "endLine": 198,
+          "params": []
+        },
+        {
+          "name": "GhostDrainCoroutine",
+          "startLine": 200,
+          "endLine": 215,
+          "params": [
+            "target"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "HUDPanel",
+          "startLine": 7,
+          "endLine": 216,
+          "methods": [
+            "Start",
+            "OnDestroy",
+            "HandleStageOpened",
+            "PlayFillIn",
+            "HandleLivesChanged",
+            "HandleEnemyHpChanged",
+            "PlayEnemyDrain",
+            "EnemyGhostDrainCoroutine",
+            "PlayDrain",
+            "PlayHitShake",
+            "GhostDrainCoroutine"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "playerHPImage",
+            "playerFollowHPImage",
+            "playerHPRect",
+            "enemyHPImage",
+            "enemyFollowHPImage",
+            "enemyHPRect",
+            "fillDuration",
+            "delaySeconds",
+            "ghostSpeed",
+            "enemyGhostSpeed",
+            "playerHudShakeRect",
+            "enemyShakeRect",
+            "shakeDuration",
+            "shakeStrength",
+            "shakeVibrato",
+            "_playerDelayed",
+            "_enemyDelayed",
+            "_hudShakeOrigin",
+            "_ghostCoroutine",
+            "_enemyGhostCoroutine",
+            "InGame"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IsOpened",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "CanCloseWithESC",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "IsStackable",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "UIType",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "HUDPanel",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "HandleStageOpened",
+          "callee": "PlayFillIn",
+          "lineNumber": 70
+        },
+        {
+          "caller": "PlayFillIn",
+          "callee": "StopCoroutine",
+          "lineNumber": 75
+        },
+        {
+          "caller": "PlayFillIn",
+          "callee": "StopCoroutine",
+          "lineNumber": 76
+        },
+        {
+          "caller": "PlayFillIn",
+          "callee": "playerHPImage.DOKill",
+          "lineNumber": 78
+        },
+        {
+          "caller": "PlayFillIn",
+          "callee": "playerFollowHPImage.DOKill",
+          "lineNumber": 79
+        },
+        {
+          "caller": "PlayFillIn",
+          "callee": "enemyHPImage.DOKill",
+          "lineNumber": 80
+        },
+        {
+          "caller": "PlayFillIn",
+          "callee": "enemyFollowHPImage.DOKill",
+          "lineNumber": 81
+        },
+        {
+          "caller": "PlayFillIn",
+          "callee": "playerHPImage.DOFillAmount(1f, fillDuration).SetEase",
+          "lineNumber": 92
+        },
+        {
+          "caller": "PlayFillIn",
+          "callee": "playerHPImage.DOFillAmount",
+          "lineNumber": 92
+        },
+        {
+          "caller": "PlayFillIn",
+          "callee": "playerFollowHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad)\n                .OnUpdate(() => _playerDelayed = playerFollowHPImage.fillAmount)\n                .OnComplete",
+          "lineNumber": 95
+        },
+        {
+          "caller": "PlayFillIn",
+          "callee": "playerFollowHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad)\n                .OnUpdate",
+          "lineNumber": 95
+        },
+        {
+          "caller": "PlayFillIn",
+          "callee": "playerFollowHPImage.DOFillAmount(1f, fillDuration).SetEase",
+          "lineNumber": 95
+        },
+        {
+          "caller": "PlayFillIn",
+          "callee": "playerFollowHPImage.DOFillAmount",
+          "lineNumber": 95
+        },
+        {
+          "caller": "PlayFillIn",
+          "callee": "enemyHPImage.DOFillAmount(1f, fillDuration).SetEase",
+          "lineNumber": 100
+        },
+        {
+          "caller": "PlayFillIn",
+          "callee": "enemyHPImage.DOFillAmount",
+          "lineNumber": 100
+        },
+        {
+          "caller": "PlayFillIn",
+          "callee": "enemyFollowHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad)\n                .OnUpdate(() => _enemyDelayed = enemyFollowHPImage.fillAmount)\n                .OnComplete",
+          "lineNumber": 103
+        },
+        {
+          "caller": "PlayFillIn",
+          "callee": "enemyFollowHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad)\n                .OnUpdate",
+          "lineNumber": 103
+        },
+        {
+          "caller": "PlayFillIn",
+          "callee": "enemyFollowHPImage.DOFillAmount(1f, fillDuration).SetEase",
+          "lineNumber": 103
+        },
+        {
+          "caller": "PlayFillIn",
+          "callee": "enemyFollowHPImage.DOFillAmount",
+          "lineNumber": 103
+        },
+        {
+          "caller": "HandleLivesChanged",
+          "callee": "PlayDrain",
+          "lineNumber": 111
+        },
+        {
+          "caller": "HandleEnemyHpChanged",
+          "callee": "PlayEnemyDrain",
+          "lineNumber": 117
+        },
+        {
+          "caller": "HandleEnemyHpChanged",
+          "callee": "Mathf.Max",
+          "lineNumber": 117
+        },
+        {
+          "caller": "PlayEnemyDrain",
+          "callee": "enemyHPImage.DOKill",
+          "lineNumber": 122
+        },
+        {
+          "caller": "PlayEnemyDrain",
+          "callee": "enemyFollowHPImage.DOKill",
+          "lineNumber": 123
+        },
+        {
+          "caller": "PlayEnemyDrain",
+          "callee": "StopCoroutine",
+          "lineNumber": 124
+        },
+        {
+          "caller": "PlayEnemyDrain",
+          "callee": "enemyHPImage.DOColor(Color.white, 0.05f).SetLoops",
+          "lineNumber": 137
+        },
+        {
+          "caller": "PlayEnemyDrain",
+          "callee": "enemyHPImage.DOColor",
+          "lineNumber": 137
+        },
+        {
+          "caller": "PlayEnemyDrain",
+          "callee": "enemyHPRect.DOKill",
+          "lineNumber": 142
+        },
+        {
+          "caller": "PlayEnemyDrain",
+          "callee": "enemyHPRect.DOPunchScale",
+          "lineNumber": 143
+        },
+        {
+          "caller": "PlayEnemyDrain",
+          "callee": "new Vector3",
+          "lineNumber": 143
+        },
+        {
+          "caller": "PlayEnemyDrain",
+          "callee": "StartCoroutine",
+          "lineNumber": 146
+        },
+        {
+          "caller": "PlayEnemyDrain",
+          "callee": "EnemyGhostDrainCoroutine",
+          "lineNumber": 146
+        },
+        {
+          "caller": "EnemyGhostDrainCoroutine",
+          "callee": "Mathf.Max",
+          "lineNumber": 157
+        },
+        {
+          "caller": "PlayDrain",
+          "callee": "playerHPImage.DOKill",
+          "lineNumber": 168
+        },
+        {
+          "caller": "PlayDrain",
+          "callee": "playerFollowHPImage.DOKill",
+          "lineNumber": 169
+        },
+        {
+          "caller": "PlayDrain",
+          "callee": "playerHPImage.DOColor(Color.white, 0.05f).SetLoops",
+          "lineNumber": 174
+        },
+        {
+          "caller": "PlayDrain",
+          "callee": "playerHPImage.DOColor",
+          "lineNumber": 174
+        },
+        {
+          "caller": "PlayDrain",
+          "callee": "playerHPRect.DOKill",
+          "lineNumber": 179
+        },
+        {
+          "caller": "PlayDrain",
+          "callee": "playerHPRect.DOPunchScale",
+          "lineNumber": 180
+        },
+        {
+          "caller": "PlayDrain",
+          "callee": "new Vector3",
+          "lineNumber": 180
+        },
+        {
+          "caller": "PlayDrain",
+          "callee": "PlayHitShake",
+          "lineNumber": 183
+        },
+        {
+          "caller": "PlayDrain",
+          "callee": "StopCoroutine",
+          "lineNumber": 185
+        },
+        {
+          "caller": "PlayDrain",
+          "callee": "StartCoroutine",
+          "lineNumber": 186
+        },
+        {
+          "caller": "PlayDrain",
+          "callee": "GhostDrainCoroutine",
+          "lineNumber": 186
+        },
+        {
+          "caller": "PlayHitShake",
+          "callee": "playerHudShakeRect.DOKill",
+          "lineNumber": 194
+        },
+        {
+          "caller": "PlayHitShake",
+          "callee": "playerHudShakeRect.DOShakeAnchorPos(shakeDuration, shakeStrength, shakeVibrato, 90f, false, true)\n            .OnComplete",
+          "lineNumber": 196
+        },
+        {
+          "caller": "PlayHitShake",
+          "callee": "playerHudShakeRect.DOShakeAnchorPos",
+          "lineNumber": 196
+        },
+        {
+          "caller": "GhostDrainCoroutine",
+          "callee": "Mathf.Max",
+          "lineNumber": 208
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 11,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 77,
+      "nonEmptyLines": 64,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 20,
+          "endLine": 25,
+          "params": []
+        },
+        {
+          "name": "InitSlots",
+          "startLine": 27,
+          "endLine": 39,
+          "params": []
+        },
+        {
+          "name": "Show",
+          "startLine": 41,
+          "endLine": 50,
+          "params": [
+            "type",
+            "name",
+            "description"
+          ]
+        },
+        {
+          "name": "Hide",
+          "startLine": 52,
+          "endLine": 57,
+          "params": []
+        },
+        {
+          "name": "SetMousePosition",
+          "startLine": 59,
+          "endLine": 69,
+          "params": [
+            "screenPos"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "IndicatePanel",
+          "startLine": 5,
+          "endLine": 70,
+          "methods": [
+            "Awake",
+            "InitSlots",
+            "Show",
+            "Hide",
+            "SetMousePosition"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "slots",
+            "slotTable",
+            "_activeSlot",
+            "_canvas"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IsOpened",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "CanCloseWithESC",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "IsStackable",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "UIType",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "Show",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "Hide",
+          "line": 52,
+          "isDefault": false
+        },
+        {
+          "name": "SetMousePosition",
+          "line": 59,
+          "isDefault": false
+        },
+        {
+          "name": "IndicatePanel",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 22
+        },
+        {
+          "caller": "Awake",
+          "callee": "GetComponentInParent<Canvas>",
+          "lineNumber": 23
+        },
+        {
+          "caller": "Awake",
+          "callee": "InitSlots",
+          "lineNumber": 24
+        },
+        {
+          "caller": "InitSlots",
+          "callee": "GetComponentsInChildren<IndicateSlot>",
+          "lineNumber": 30
+        },
+        {
+          "caller": "InitSlots",
+          "callee": "slot.Init",
+          "lineNumber": 35
+        },
+        {
+          "caller": "InitSlots",
+          "callee": "slotTable.ContainsKey",
+          "lineNumber": 36
+        },
+        {
+          "caller": "Show",
+          "callee": "_activeSlot.Hide",
+          "lineNumber": 44
+        },
+        {
+          "caller": "Show",
+          "callee": "slotTable.TryGetValue",
+          "lineNumber": 46
+        },
+        {
+          "caller": "Show",
+          "callee": "_activeSlot.Show",
+          "lineNumber": 49
+        },
+        {
+          "caller": "Hide",
+          "callee": "_activeSlot.Hide",
+          "lineNumber": 55
+        },
+        {
+          "caller": "SetMousePosition",
+          "callee": "RectTransformUtility.ScreenPointToLocalPointInRectangle",
+          "lineNumber": 64
+        },
+        {
+          "caller": "SetMousePosition",
+          "callee": "_activeSlot.SetPosition",
+          "lineNumber": 67
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 8,
+        "functionCount": 5,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 297,
+      "nonEmptyLines": 235,
+      "functions": [
+        {
+          "name": "Activate",
+          "startLine": 46,
+          "endLine": 64,
+          "params": []
+        },
+        {
+          "name": "Deactivate",
+          "startLine": 66,
+          "endLine": 73,
+          "params": []
+        },
+        {
+          "name": "Update",
+          "startLine": 75,
+          "endLine": 104,
+          "params": []
+        },
+        {
+          "name": "BuildParticipants",
+          "startLine": 109,
+          "endLine": 132,
+          "params": []
+        },
+        {
+          "name": "SetupStars",
+          "startLine": 134,
+          "endLine": 150,
+          "params": []
+        },
+        {
+          "name": "ServerAssignChallenge",
+          "startLine": 153,
+          "endLine": 170,
+          "params": []
+        },
+        {
+          "name": "TryCacheStartTime",
+          "startLine": 172,
+          "endLine": 179,
+          "params": []
+        },
+        {
+          "name": "TryCacheCycleSeconds",
+          "startLine": 182,
+          "endLine": 192,
+          "params": []
+        },
+        {
+          "name": "HandleLocalInput",
+          "startLine": 194,
+          "endLine": 201,
+          "params": [
+            "ratio",
+            "anchoredX"
+          ]
+        },
+        {
+          "name": "SubmitLocalResult",
+          "startLine": 203,
+          "endLine": 221,
+          "params": [
+            "result",
+            "ratio",
+            "anchoredX"
+          ]
+        },
+        {
+          "name": "HandleNetworkDataChanged",
+          "startLine": 223,
+          "endLine": 237,
+          "params": []
+        },
+        {
+          "name": "TryRequestCloseWhenAllFinished",
+          "startLine": 239,
+          "endLine": 250,
+          "params": []
+        },
+        {
+          "name": "RatioToAnchoredX",
+          "startLine": 252,
+          "endLine": 256,
+          "params": [
+            "ratio"
+          ]
+        },
+        {
+          "name": "IsRatioInSuccessZone",
+          "startLine": 258,
+          "endLine": 262,
+          "params": [
+            "ratio"
+          ]
+        },
+        {
+          "name": "EnsureZoneCached",
+          "startLine": 264,
+          "endLine": 278,
+          "params": []
+        },
+        {
+          "name": "GetColor",
+          "startLine": 280,
+          "endLine": 284,
+          "params": [
+            "color"
+          ]
+        },
+        {
+          "name": "ShuffleColors",
+          "startLine": 286,
+          "endLine": 296,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "StarforceModalContent",
+          "startLine": 17,
+          "endLine": 297,
+          "methods": [
+            "Activate",
+            "Deactivate",
+            "Update",
+            "BuildParticipants",
+            "SetupStars",
+            "ServerAssignChallenge",
+            "TryCacheStartTime",
+            "TryCacheCycleSeconds",
+            "HandleLocalInput",
+            "SubmitLocalResult",
+            "HandleNetworkDataChanged",
+            "TryRequestCloseWhenAllFinished",
+            "RatioToAnchoredX",
+            "IsRatioInSuccessZone",
+            "EnsureZoneCached",
+            "GetColor",
+            "ShuffleColors"
+          ],
+          "properties": [
+            "MAX_PARTICIPANTS",
+            "MIN_CYCLE_SECONDS",
+            "MAX_CYCLE_SECONDS",
+            "_trackRect",
+            "_successZoneRect",
+            "_stars",
+            "_starColors",
+            "_colorPool",
+            "_participants",
+            "_cycleSeconds",
+            "Network",
+            "Players",
+            "_isZoneCached",
+            "_zoneMinRatio",
+            "_zoneMaxRatio",
+            "_localSlotIndex",
+            "_startTime",
+            "_isLocalFinished",
+            "_hasRequestedClose",
+            "CurrentSimulationTime"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "MAX_PARTICIPANTS",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "Activate",
+          "line": 46,
+          "isDefault": false
+        },
+        {
+          "name": "Deactivate",
+          "line": 66,
+          "isDefault": false
+        },
+        {
+          "name": "StarforceModalContent",
+          "line": 17,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Activate",
+          "callee": "Array.Clear",
+          "lineNumber": 51
+        },
+        {
+          "caller": "Activate",
+          "callee": "BuildParticipants",
+          "lineNumber": 53
+        },
+        {
+          "caller": "Activate",
+          "callee": "SetupStars",
+          "lineNumber": 54
+        },
+        {
+          "caller": "Activate",
+          "callee": "ServerAssignChallenge",
+          "lineNumber": 58
+        },
+        {
+          "caller": "Activate",
+          "callee": "TryCacheStartTime",
+          "lineNumber": 61
+        },
+        {
+          "caller": "Deactivate",
+          "callee": "_participants.Clear",
+          "lineNumber": 70
+        },
+        {
+          "caller": "Update",
+          "callee": "TryCacheCycleSeconds",
+          "lineNumber": 82
+        },
+        {
+          "caller": "Update",
+          "callee": "Mathf.Max",
+          "lineNumber": 84
+        },
+        {
+          "caller": "Update",
+          "callee": "Mathf.PingPong",
+          "lineNumber": 91
+        },
+        {
+          "caller": "Update",
+          "callee": "RatioToAnchoredX",
+          "lineNumber": 92
+        },
+        {
+          "caller": "Update",
+          "callee": "_stars[i].MoveTo",
+          "lineNumber": 94
+        },
+        {
+          "caller": "Update",
+          "callee": "HandleLocalInput",
+          "lineNumber": 103
+        },
+        {
+          "caller": "BuildParticipants",
+          "callee": "_participants.Clear",
+          "lineNumber": 111
+        },
+        {
+          "caller": "BuildParticipants",
+          "callee": "Network.TryGetAliveRunner",
+          "lineNumber": 114
+        },
+        {
+          "caller": "BuildParticipants",
+          "callee": "new List<PlayerRef>",
+          "lineNumber": 119
+        },
+        {
+          "caller": "BuildParticipants",
+          "callee": "Network.GetActivePlayers",
+          "lineNumber": 119
+        },
+        {
+          "caller": "BuildParticipants",
+          "callee": "active.Sort",
+          "lineNumber": 120
+        },
+        {
+          "caller": "BuildParticipants",
+          "callee": "a.PlayerId.CompareTo",
+          "lineNumber": 120
+        },
+        {
+          "caller": "BuildParticipants",
+          "callee": "Mathf.Min",
+          "lineNumber": 122
+        },
+        {
+          "caller": "BuildParticipants",
+          "callee": "_participants.Add",
+          "lineNumber": 125
+        },
+        {
+          "caller": "SetupStars",
+          "callee": "_stars[i].SetVisible",
+          "lineNumber": 139
+        },
+        {
+          "caller": "SetupStars",
+          "callee": "Players.TryGet",
+          "lineNumber": 143
+        },
+        {
+          "caller": "SetupStars",
+          "callee": "GetColor",
+          "lineNumber": 144
+        },
+        {
+          "caller": "SetupStars",
+          "callee": "_stars[i].ResetStar",
+          "lineNumber": 147
+        },
+        {
+          "caller": "SetupStars",
+          "callee": "_stars[i].MoveTo",
+          "lineNumber": 148
+        },
+        {
+          "caller": "SetupStars",
+          "callee": "RatioToAnchoredX",
+          "lineNumber": 148
+        },
+        {
+          "caller": "ServerAssignChallenge",
+          "callee": "Network.TryGetAliveRunner",
+          "lineNumber": 155
+        },
+        {
+          "caller": "ServerAssignChallenge",
+          "callee": "ShuffleColors",
+          "lineNumber": 157
+        },
+        {
+          "caller": "ServerAssignChallenge",
+          "callee": "Players.TryGet",
+          "lineNumber": 162
+        },
+        {
+          "caller": "ServerAssignChallenge",
+          "callee": "UnityEngine.Random.Range",
+          "lineNumber": 168
+        },
+        {
+          "caller": "TryCacheStartTime",
+          "callee": "Players.TryGet",
+          "lineNumber": 175
+        },
+        {
+          "caller": "TryCacheCycleSeconds",
+          "callee": "Players.TryGet",
+          "lineNumber": 187
+        },
+        {
+          "caller": "HandleLocalInput",
+          "callee": "IsRatioInSuccessZone",
+          "lineNumber": 199
+        },
+        {
+          "caller": "HandleLocalInput",
+          "callee": "SubmitLocalResult",
+          "lineNumber": 200
+        },
+        {
+          "caller": "SubmitLocalResult",
+          "callee": "_stars[_localSlotIndex].Stop",
+          "lineNumber": 206
+        },
+        {
+          "caller": "SubmitLocalResult",
+          "callee": "Players.TryGetLocal",
+          "lineNumber": 208
+        },
+        {
+          "caller": "SubmitLocalResult",
+          "callee": "local.RPC_SetStarforceResult",
+          "lineNumber": 217
+        },
+        {
+          "caller": "SubmitLocalResult",
+          "callee": "TryRequestCloseWhenAllFinished",
+          "lineNumber": 220
+        },
+        {
+          "caller": "HandleNetworkDataChanged",
+          "callee": "TryCacheStartTime",
+          "lineNumber": 225
+        },
+        {
+          "caller": "HandleNetworkDataChanged",
+          "callee": "Players.TryGet",
+          "lineNumber": 230
+        },
+        {
+          "caller": "HandleNetworkDataChanged",
+          "callee": "_stars[i].Stop",
+          "lineNumber": 233
+        },
+        {
+          "caller": "HandleNetworkDataChanged",
+          "callee": "RatioToAnchoredX",
+          "lineNumber": 233
+        },
+        {
+          "caller": "HandleNetworkDataChanged",
+          "callee": "TryRequestCloseWhenAllFinished",
+          "lineNumber": 236
+        },
+        {
+          "caller": "TryRequestCloseWhenAllFinished",
+          "callee": "RequestClose",
+          "lineNumber": 249
+        },
+        {
+          "caller": "RatioToAnchoredX",
+          "callee": "Mathf.Lerp",
+          "lineNumber": 255
+        },
+        {
+          "caller": "RatioToAnchoredX",
+          "callee": "Mathf.Clamp01",
+          "lineNumber": 255
+        },
+        {
+          "caller": "IsRatioInSuccessZone",
+          "callee": "EnsureZoneCached",
+          "lineNumber": 260
+        },
+        {
+          "caller": "EnsureZoneCached",
+          "callee": "Mathf.Clamp01",
+          "lineNumber": 275
+        },
+        {
+          "caller": "EnsureZoneCached",
+          "callee": "Mathf.Clamp01",
+          "lineNumber": 276
+        },
+        {
+          "caller": "ShuffleColors",
+          "callee": "_colorPool.Clone",
+          "lineNumber": 288
+        },
+        {
+          "caller": "ShuffleColors",
+          "callee": "UnityEngine.Random.Range",
+          "lineNumber": 291
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 17,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 50,
+      "nonEmptyLines": 40,
+      "functions": [
+        {
+          "name": "SetVisible",
+          "startLine": 18,
+          "endLine": 18,
+          "params": [
+            "isVisible"
+          ]
+        },
+        {
+          "name": "ResetStar",
+          "startLine": 21,
+          "endLine": 26,
+          "params": [
+            "color"
+          ]
+        },
+        {
+          "name": "MoveTo",
+          "startLine": 28,
+          "endLine": 32,
+          "params": [
+            "anchoredX"
+          ]
+        },
+        {
+          "name": "Stop",
+          "startLine": 34,
+          "endLine": 44,
+          "params": [
+            "anchoredX"
+          ]
+        },
+        {
+          "name": "SetPositionX",
+          "startLine": 46,
+          "endLine": 49,
+          "params": [
+            "x"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "StarforceStar",
+          "startLine": 9,
+          "endLine": 50,
+          "methods": [
+            "SetVisible",
+            "ResetStar",
+            "MoveTo",
+            "Stop",
+            "SetPositionX"
+          ],
+          "properties": [
+            "STOPPED_ALPHA",
+            "_image",
+            "_rect",
+            "IsStopped"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IsStopped",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "SetVisible",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "ResetStar",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "MoveTo",
+          "line": 28,
+          "isDefault": false
+        },
+        {
+          "name": "Stop",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "StarforceStar",
+          "line": 9,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "SetVisible",
+          "callee": "gameObject.SetActive",
+          "lineNumber": 18
+        },
+        {
+          "caller": "MoveTo",
+          "callee": "SetPositionX",
+          "lineNumber": 31
+        },
+        {
+          "caller": "Stop",
+          "callee": "SetPositionX",
+          "lineNumber": 39
+        },
+        {
+          "caller": "SetPositionX",
+          "callee": "new Vector2",
+          "lineNumber": 48
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 6,
+        "functionCount": 5,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/ModalContent.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 17,
+      "nonEmptyLines": 14,
+      "functions": [
+        {
+          "name": "Activate",
+          "startLine": 13,
+          "endLine": 13,
+          "params": []
+        },
+        {
+          "name": "Deactivate",
+          "startLine": 14,
+          "endLine": 14,
+          "params": []
+        },
+        {
+          "name": "RequestClose",
+          "startLine": 16,
+          "endLine": 16,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "ModalContent",
+          "startLine": 9,
+          "endLine": 17,
+          "methods": [
+            "Activate",
+            "Deactivate",
+            "RequestClose"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "Activate",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "Deactivate",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "ModalContent",
+          "line": 9,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "RequestClose",
+          "callee": "OnRequestClose?.Invoke",
+          "lineNumber": 16
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 92,
+      "nonEmptyLines": 71,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 18,
+          "endLine": 27,
+          "params": []
+        },
+        {
+          "name": "TryShow",
+          "startLine": 29,
+          "endLine": 36,
+          "params": [
+            "content"
+          ]
+        },
+        {
+          "name": "ClosePanel",
+          "startLine": 38,
+          "endLine": 42,
+          "params": []
+        },
+        {
+          "name": "Show",
+          "startLine": 44,
+          "endLine": 58,
+          "params": [
+            "content"
+          ]
+        },
+        {
+          "name": "HideActive",
+          "startLine": 60,
+          "endLine": 70,
+          "params": []
+        },
+        {
+          "name": "HandleContentRequestedClose",
+          "startLine": 72,
+          "endLine": 72,
+          "params": []
+        },
+        {
+          "name": "FindContent",
+          "startLine": 83,
+          "endLine": 91,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "ModalPanel",
+          "startLine": 5,
+          "endLine": 92,
+          "methods": [
+            "Awake",
+            "TryShow",
+            "ClosePanel",
+            "Show",
+            "HideActive",
+            "HandleContentRequestedClose",
+            "FindContent"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "_contents",
+            "_active"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IsOpened",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "CanCloseWithESC",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "IsStackable",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "UIType",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "TryShow",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "ClosePanel",
+          "line": 38,
+          "isDefault": false
+        },
+        {
+          "name": "ModalPanel",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 20
+        },
+        {
+          "caller": "Awake",
+          "callee": "content.gameObject.SetActive",
+          "lineNumber": 25
+        },
+        {
+          "caller": "TryShow",
+          "callee": "FindContent<T>",
+          "lineNumber": 31
+        },
+        {
+          "caller": "TryShow",
+          "callee": "Show",
+          "lineNumber": 34
+        },
+        {
+          "caller": "ClosePanel",
+          "callee": "HideActive",
+          "lineNumber": 40
+        },
+        {
+          "caller": "ClosePanel",
+          "callee": "base.ClosePanel",
+          "lineNumber": 41
+        },
+        {
+          "caller": "Show",
+          "callee": "HideActive",
+          "lineNumber": 48
+        },
+        {
+          "caller": "Show",
+          "callee": "_active.gameObject.SetActive",
+          "lineNumber": 52
+        },
+        {
+          "caller": "Show",
+          "callee": "_active.Activate",
+          "lineNumber": 53
+        },
+        {
+          "caller": "Show",
+          "callee": "App.SystemManager.Input.SetBlockedByModal",
+          "lineNumber": 55
+        },
+        {
+          "caller": "Show",
+          "callee": "OpenPanel",
+          "lineNumber": 57
+        },
+        {
+          "caller": "HideActive",
+          "callee": "_active.Deactivate",
+          "lineNumber": 65
+        },
+        {
+          "caller": "HideActive",
+          "callee": "_active.gameObject.SetActive",
+          "lineNumber": 66
+        },
+        {
+          "caller": "HideActive",
+          "callee": "App.SystemManager.Input.SetBlockedByModal",
+          "lineNumber": 69
+        },
+        {
+          "caller": "HandleContentRequestedClose",
+          "callee": "ClosePanel",
+          "lineNumber": 72
+        },
+        {
+          "caller": "DebugShowStarforceModal",
+          "callee": "TryShow<StarforceModalContent>",
+          "lineNumber": 79
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 7,
+        "functionCount": 7,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 159,
+      "nonEmptyLines": 128,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 34,
+          "endLine": 39,
+          "params": []
+        },
+        {
+          "name": "Start",
+          "startLine": 41,
+          "endLine": 51,
+          "params": []
+        },
+        {
+          "name": "OnDestroy",
+          "startLine": 53,
+          "endLine": 60,
+          "params": []
+        },
+        {
+          "name": "GenerateQueue",
+          "startLine": 62,
+          "endLine": 89,
+          "params": []
+        },
+        {
+          "name": "LoadInitialSlots",
+          "startLine": 91,
+          "endLine": 103,
+          "params": []
+        },
+        {
+          "name": "HandleReadyStarted",
+          "startLine": 105,
+          "endLine": 109,
+          "params": []
+        },
+        {
+          "name": "HandleWaveStarted",
+          "startLine": 111,
+          "endLine": 121,
+          "params": [
+            "_"
+          ]
+        },
+        {
+          "name": "HandleWaveResultShown",
+          "startLine": 123,
+          "endLine": 123,
+          "params": []
+        },
+        {
+          "name": "RecycleAndSwap",
+          "startLine": 125,
+          "endLine": 133,
+          "params": []
+        },
+        {
+          "name": "LoadSlot",
+          "startLine": 135,
+          "endLine": 138,
+          "params": [
+            "slot",
+            "position"
+          ]
+        },
+        {
+          "name": "Dequeue",
+          "startLine": 140,
+          "endLine": 146,
+          "params": []
+        },
+        {
+          "name": "GetSprite",
+          "startLine": 148,
+          "endLine": 158,
+          "params": [
+            "handPosition"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "NextIconPanel",
+          "startLine": 6,
+          "endLine": 159,
+          "methods": [
+            "Awake",
+            "Start",
+            "OnDestroy",
+            "GenerateQueue",
+            "LoadInitialSlots",
+            "HandleReadyStarted",
+            "HandleWaveStarted",
+            "HandleWaveResultShown",
+            "RecycleAndSwap",
+            "LoadSlot",
+            "Dequeue",
+            "GetSprite"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "handPositionSprites",
+            "_slots",
+            "_tweenDuration",
+            "_queue",
+            "currentSlot",
+            "nextSlot",
+            "leftPosition",
+            "currentPosition",
+            "rightPosition",
+            "_currentHandPosition",
+            "CurrentHandPosition"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IsOpened",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "CanCloseWithESC",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "IsStackable",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "UIType",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "CurrentHandPosition",
+          "line": 32,
+          "isDefault": false
+        },
+        {
+          "name": "GetSprite",
+          "line": 148,
+          "isDefault": false
+        },
+        {
+          "name": "NextIconPanel",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 36
+        },
+        {
+          "caller": "Awake",
+          "callee": "slot.Init",
+          "lineNumber": 38
+        },
+        {
+          "caller": "Start",
+          "callee": "GenerateQueue",
+          "lineNumber": 43
+        },
+        {
+          "caller": "Start",
+          "callee": "LoadInitialSlots",
+          "lineNumber": 44
+        },
+        {
+          "caller": "GenerateQueue",
+          "callee": "_queue.Clear",
+          "lineNumber": 64
+        },
+        {
+          "caller": "GenerateQueue",
+          "callee": "Random.Range",
+          "lineNumber": 83
+        },
+        {
+          "caller": "GenerateQueue",
+          "callee": "_queue.Enqueue",
+          "lineNumber": 88
+        },
+        {
+          "caller": "LoadInitialSlots",
+          "callee": "LoadSlot",
+          "lineNumber": 96
+        },
+        {
+          "caller": "LoadInitialSlots",
+          "callee": "Dequeue",
+          "lineNumber": 96
+        },
+        {
+          "caller": "LoadInitialSlots",
+          "callee": "LoadSlot",
+          "lineNumber": 97
+        },
+        {
+          "caller": "LoadInitialSlots",
+          "callee": "Dequeue",
+          "lineNumber": 97
+        },
+        {
+          "caller": "HandleReadyStarted",
+          "callee": "currentSlot.Rect.DOKill",
+          "lineNumber": 107
+        },
+        {
+          "caller": "HandleReadyStarted",
+          "callee": "currentSlot.Rect.DOAnchorPos(currentPosition, _tweenDuration).SetEase",
+          "lineNumber": 108
+        },
+        {
+          "caller": "HandleReadyStarted",
+          "callee": "currentSlot.Rect.DOAnchorPos",
+          "lineNumber": 108
+        },
+        {
+          "caller": "HandleWaveStarted",
+          "callee": "currentSlot.Rect.DOKill",
+          "lineNumber": 115
+        },
+        {
+          "caller": "HandleWaveStarted",
+          "callee": "currentSlot.Rect.DOAnchorPos(leftPosition, _tweenDuration).SetEase(Ease.InOutQuad)\n            .OnComplete",
+          "lineNumber": 116
+        },
+        {
+          "caller": "HandleWaveStarted",
+          "callee": "currentSlot.Rect.DOAnchorPos(leftPosition, _tweenDuration).SetEase",
+          "lineNumber": 116
+        },
+        {
+          "caller": "HandleWaveStarted",
+          "callee": "currentSlot.Rect.DOAnchorPos",
+          "lineNumber": 116
+        },
+        {
+          "caller": "HandleWaveStarted",
+          "callee": "nextSlot.Rect.DOKill",
+          "lineNumber": 119
+        },
+        {
+          "caller": "HandleWaveStarted",
+          "callee": "nextSlot.Rect.DOAnchorPos(currentPosition, _tweenDuration).SetEase",
+          "lineNumber": 120
+        },
+        {
+          "caller": "HandleWaveStarted",
+          "callee": "nextSlot.Rect.DOAnchorPos",
+          "lineNumber": 120
+        },
+        {
+          "caller": "RecycleAndSwap",
+          "callee": "LoadSlot",
+          "lineNumber": 128
+        },
+        {
+          "caller": "RecycleAndSwap",
+          "callee": "Dequeue",
+          "lineNumber": 128
+        },
+        {
+          "caller": "LoadSlot",
+          "callee": "slot.SetSlot",
+          "lineNumber": 137
+        },
+        {
+          "caller": "LoadSlot",
+          "callee": "GetSprite",
+          "lineNumber": 137
+        },
+        {
+          "caller": "Dequeue",
+          "callee": "_queue.Dequeue",
+          "lineNumber": 142
+        },
+        {
+          "caller": "Dequeue",
+          "callee": "Random.Range",
+          "lineNumber": 145
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 7,
+        "functionCount": 12,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 126,
+      "nonEmptyLines": 108,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 21,
+          "endLine": 25,
+          "params": []
+        },
+        {
+          "name": "Start",
+          "startLine": 27,
+          "endLine": 35,
+          "params": []
+        },
+        {
+          "name": "OnDestroy",
+          "startLine": 37,
+          "endLine": 45,
+          "params": []
+        },
+        {
+          "name": "ShowOutcome",
+          "startLine": 47,
+          "endLine": 52,
+          "params": [
+            "outcome"
+          ]
+        },
+        {
+          "name": "HideOutcome",
+          "startLine": 54,
+          "endLine": 60,
+          "params": []
+        },
+        {
+          "name": "HideOutcomeOnRoundStart",
+          "startLine": 62,
+          "endLine": 62,
+          "params": [
+            "_"
+          ]
+        },
+        {
+          "name": "ResetImageState",
+          "startLine": 64,
+          "endLine": 69,
+          "params": []
+        },
+        {
+          "name": "PlayAnimation",
+          "startLine": 71,
+          "endLine": 83,
+          "params": [
+            "outcome"
+          ]
+        },
+        {
+          "name": "PlayWinAnimation",
+          "startLine": 86,
+          "endLine": 95,
+          "params": []
+        },
+        {
+          "name": "PlayLoseAnimation",
+          "startLine": 98,
+          "endLine": 113,
+          "params": []
+        },
+        {
+          "name": "PlayDrawAnimation",
+          "startLine": 116,
+          "endLine": 125,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "OutcomePanel",
+          "startLine": 6,
+          "endLine": 126,
+          "methods": [
+            "Awake",
+            "Start",
+            "OnDestroy",
+            "ShowOutcome",
+            "HideOutcome",
+            "HideOutcomeOnRoundStart",
+            "ResetImageState",
+            "PlayAnimation",
+            "PlayWinAnimation",
+            "PlayLoseAnimation",
+            "PlayDrawAnimation"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "outcomeImage",
+            "outcomeSprites",
+            "_originAnchoredPos"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IsOpened",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "CanCloseWithESC",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "IsStackable",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "UIType",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "OutcomePanel",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 23
+        },
+        {
+          "caller": "ShowOutcome",
+          "callee": "OpenPanel",
+          "lineNumber": 50
+        },
+        {
+          "caller": "ShowOutcome",
+          "callee": "PlayAnimation",
+          "lineNumber": 51
+        },
+        {
+          "caller": "HideOutcome",
+          "callee": "outcomeImage.DOKill",
+          "lineNumber": 56
+        },
+        {
+          "caller": "HideOutcome",
+          "callee": "outcomeImage.transform.DOKill",
+          "lineNumber": 57
+        },
+        {
+          "caller": "HideOutcome",
+          "callee": "ResetImageState",
+          "lineNumber": 58
+        },
+        {
+          "caller": "HideOutcome",
+          "callee": "ClosePanel",
+          "lineNumber": 59
+        },
+        {
+          "caller": "HideOutcomeOnRoundStart",
+          "callee": "HideOutcome",
+          "lineNumber": 62
+        },
+        {
+          "caller": "PlayAnimation",
+          "callee": "outcomeImage.DOKill",
+          "lineNumber": 73
+        },
+        {
+          "caller": "PlayAnimation",
+          "callee": "outcomeImage.transform.DOKill",
+          "lineNumber": 74
+        },
+        {
+          "caller": "PlayAnimation",
+          "callee": "ResetImageState",
+          "lineNumber": 75
+        },
+        {
+          "caller": "PlayAnimation",
+          "callee": "PlayWinAnimation",
+          "lineNumber": 79
+        },
+        {
+          "caller": "PlayAnimation",
+          "callee": "PlayLoseAnimation",
+          "lineNumber": 80
+        },
+        {
+          "caller": "PlayAnimation",
+          "callee": "PlayDrawAnimation",
+          "lineNumber": 81
+        },
+        {
+          "caller": "PlayWinAnimation",
+          "callee": "new Color",
+          "lineNumber": 89
+        },
+        {
+          "caller": "PlayWinAnimation",
+          "callee": "DOTween.Sequence",
+          "lineNumber": 91
+        },
+        {
+          "caller": "PlayWinAnimation",
+          "callee": "sequence.Append",
+          "lineNumber": 92
+        },
+        {
+          "caller": "PlayWinAnimation",
+          "callee": "outcomeImage.transform.DOScale(1.3f, 0.35f).SetEase",
+          "lineNumber": 92
+        },
+        {
+          "caller": "PlayWinAnimation",
+          "callee": "outcomeImage.transform.DOScale",
+          "lineNumber": 92
+        },
+        {
+          "caller": "PlayWinAnimation",
+          "callee": "sequence.Join",
+          "lineNumber": 93
+        },
+        {
+          "caller": "PlayWinAnimation",
+          "callee": "outcomeImage.DOFade",
+          "lineNumber": 93
+        },
+        {
+          "caller": "PlayWinAnimation",
+          "callee": "sequence.Append",
+          "lineNumber": 94
+        },
+        {
+          "caller": "PlayWinAnimation",
+          "callee": "outcomeImage.transform.DOScale(1f, 0.15f).SetEase",
+          "lineNumber": 94
+        },
+        {
+          "caller": "PlayWinAnimation",
+          "callee": "outcomeImage.transform.DOScale",
+          "lineNumber": 94
+        },
+        {
+          "caller": "PlayLoseAnimation",
+          "callee": "new Vector2",
+          "lineNumber": 100
+        },
+        {
+          "caller": "PlayLoseAnimation",
+          "callee": "new Color",
+          "lineNumber": 101
+        },
+        {
+          "caller": "PlayLoseAnimation",
+          "callee": "DOTween.Sequence",
+          "lineNumber": 103
+        },
+        {
+          "caller": "PlayLoseAnimation",
+          "callee": "sequence.Append",
+          "lineNumber": 104
+        },
+        {
+          "caller": "PlayLoseAnimation",
+          "callee": "outcomeImage.DOFade",
+          "lineNumber": 104
+        },
+        {
+          "caller": "PlayLoseAnimation",
+          "callee": "sequence.Append",
+          "lineNumber": 105
+        },
+        {
+          "caller": "PlayLoseAnimation",
+          "callee": "outcomeImage.rectTransform\n            .DOAnchorPos(_originAnchoredPos + new Vector2(0f, -15f), 0.38f)\n            .SetEase",
+          "lineNumber": 105
+        },
+        {
+          "caller": "PlayLoseAnimation",
+          "callee": "outcomeImage.rectTransform\n            .DOAnchorPos",
+          "lineNumber": 105
+        },
+        {
+          "caller": "PlayLoseAnimation",
+          "callee": "new Vector2",
+          "lineNumber": 106
+        },
+        {
+          "caller": "PlayLoseAnimation",
+          "callee": "sequence.Append",
+          "lineNumber": 108
+        },
+        {
+          "caller": "PlayLoseAnimation",
+          "callee": "outcomeImage.rectTransform\n            .DOAnchorPos(_originAnchoredPos, 0.15f)\n            .SetEase",
+          "lineNumber": 108
+        },
+        {
+          "caller": "PlayLoseAnimation",
+          "callee": "outcomeImage.rectTransform\n            .DOAnchorPos",
+          "lineNumber": 108
+        },
+        {
+          "caller": "PlayLoseAnimation",
+          "callee": "sequence.AppendCallback",
+          "lineNumber": 111
+        },
+        {
+          "caller": "PlayLoseAnimation",
+          "callee": "outcomeImage.transform.DOPunchScale",
+          "lineNumber": 112
+        },
+        {
+          "caller": "PlayLoseAnimation",
+          "callee": "new Vector3",
+          "lineNumber": 112
+        },
+        {
+          "caller": "PlayDrawAnimation",
+          "callee": "new Vector3",
+          "lineNumber": 118
+        },
+        {
+          "caller": "PlayDrawAnimation",
+          "callee": "new Color",
+          "lineNumber": 119
+        },
+        {
+          "caller": "PlayDrawAnimation",
+          "callee": "DOTween.Sequence",
+          "lineNumber": 121
+        },
+        {
+          "caller": "PlayDrawAnimation",
+          "callee": "sequence.Append",
+          "lineNumber": 122
+        },
+        {
+          "caller": "PlayDrawAnimation",
+          "callee": "outcomeImage.transform.DOScale(1f, 0.35f).SetEase",
+          "lineNumber": 122
+        },
+        {
+          "caller": "PlayDrawAnimation",
+          "callee": "outcomeImage.transform.DOScale",
+          "lineNumber": 122
+        },
+        {
+          "caller": "PlayDrawAnimation",
+          "callee": "sequence.Join",
+          "lineNumber": 123
+        },
+        {
+          "caller": "PlayDrawAnimation",
+          "callee": "outcomeImage.DOFade",
+          "lineNumber": 123
+        },
+        {
+          "caller": "PlayDrawAnimation",
+          "callee": "sequence.Append",
+          "lineNumber": 124
+        },
+        {
+          "caller": "PlayDrawAnimation",
+          "callee": "outcomeImage.transform.DOPunchScale",
+          "lineNumber": 124
+        },
+        {
+          "caller": "PlayDrawAnimation",
+          "callee": "new Vector3",
+          "lineNumber": 124
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 11,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 110,
+      "nonEmptyLines": 91,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 32,
+          "endLine": 37,
+          "params": []
+        },
+        {
+          "name": "Start",
+          "startLine": 39,
+          "endLine": 44,
+          "params": []
+        },
+        {
+          "name": "OnDestroy",
+          "startLine": 46,
+          "endLine": 49,
+          "params": []
+        },
+        {
+          "name": "OpenPanel",
+          "startLine": 51,
+          "endLine": 56,
+          "params": []
+        },
+        {
+          "name": "Update",
+          "startLine": 58,
+          "endLine": 80,
+          "params": []
+        },
+        {
+          "name": "RefreshHostName",
+          "startLine": 82,
+          "endLine": 90,
+          "params": []
+        },
+        {
+          "name": "RefreshHP",
+          "startLine": 92,
+          "endLine": 99,
+          "params": []
+        },
+        {
+          "name": "CacheStageSlots",
+          "startLine": 101,
+          "endLine": 109,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "StagePanel",
+          "startLine": 7,
+          "endLine": 110,
+          "methods": [
+            "Awake",
+            "Start",
+            "OnDestroy",
+            "OpenPanel",
+            "Update",
+            "RefreshHostName",
+            "RefreshHP",
+            "CacheStageSlots"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "stageSlots",
+            "hpImage",
+            "hpSprites",
+            "cursorRect",
+            "hostNameTMP",
+            "_canvas",
+            "Network",
+            "Players"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IsOpened",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "CanCloseWithESC",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "IsStackable",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "UIType",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "OpenPanel",
+          "line": 51,
+          "isDefault": false
+        },
+        {
+          "name": "StagePanel",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 34
+        },
+        {
+          "caller": "Awake",
+          "callee": "CacheStageSlots",
+          "lineNumber": 35
+        },
+        {
+          "caller": "Awake",
+          "callee": "GetComponentInParent<Canvas>",
+          "lineNumber": 36
+        },
+        {
+          "caller": "Start",
+          "callee": "RefreshHostName",
+          "lineNumber": 42
+        },
+        {
+          "caller": "Start",
+          "callee": "RefreshHP",
+          "lineNumber": 43
+        },
+        {
+          "caller": "OpenPanel",
+          "callee": "base.OpenPanel",
+          "lineNumber": 53
+        },
+        {
+          "caller": "OpenPanel",
+          "callee": "RefreshHostName",
+          "lineNumber": 54
+        },
+        {
+          "caller": "OpenPanel",
+          "callee": "RefreshHP",
+          "lineNumber": 55
+        },
+        {
+          "caller": "Update",
+          "callee": "Players.TryGetLocal",
+          "lineNumber": 62
+        },
+        {
+          "caller": "Update",
+          "callee": "Mouse.current.position.ReadValue",
+          "lineNumber": 64
+        },
+        {
+          "caller": "Update",
+          "callee": "new Vector2",
+          "lineNumber": 65
+        },
+        {
+          "caller": "Update",
+          "callee": "Players.TryGetHost",
+          "lineNumber": 68
+        },
+        {
+          "caller": "Update",
+          "callee": "RectTransformUtility.ScreenPointToLocalPointInRectangle",
+          "lineNumber": 73
+        },
+        {
+          "caller": "Update",
+          "callee": "_canvas.transform.TransformPoint",
+          "lineNumber": 76
+        },
+        {
+          "caller": "RefreshHostName",
+          "callee": "Players.TryGetHost",
+          "lineNumber": 85
+        },
+        {
+          "caller": "RefreshHostName",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 88
+        },
+        {
+          "caller": "RefreshHP",
+          "callee": "Mathf.Clamp",
+          "lineNumber": 97
+        },
+        {
+          "caller": "CacheStageSlots",
+          "callee": "GetComponentsInChildren<StageSlot>",
+          "lineNumber": 104
+        },
+        {
+          "caller": "CacheStageSlots",
+          "callee": "stageSlots[index].Init",
+          "lineNumber": 108
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 6,
+        "functionCount": 8,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/TimerPanel.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 59,
+      "nonEmptyLines": 51,
+      "functions": [
+        {
+          "name": "OnEnable",
+          "startLine": 22,
+          "endLine": 29,
+          "params": []
+        },
+        {
+          "name": "OnDisable",
+          "startLine": 31,
+          "endLine": 37,
+          "params": []
+        },
+        {
+          "name": "UpdateTimer",
+          "startLine": 39,
+          "endLine": 49,
+          "params": [
+            "time"
+          ]
+        },
+        {
+          "name": "UpdateStage",
+          "startLine": 51,
+          "endLine": 58,
+          "params": [
+            "stageIndex"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "TimerPanel",
+          "startLine": 6,
+          "endLine": 59,
+          "methods": [
+            "OnEnable",
+            "OnDisable",
+            "UpdateTimer",
+            "UpdateStage"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "STAGE_TEXT",
+            "_timerTMP",
+            "_stageTMP",
+            "_sb"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IsOpened",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "CanCloseWithESC",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "IsStackable",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "UIType",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "TimerPanel",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "OnEnable",
+          "callee": "UpdateStage",
+          "lineNumber": 28
+        },
+        {
+          "caller": "UpdateTimer",
+          "callee": "_sb.Clear",
+          "lineNumber": 41
+        },
+        {
+          "caller": "UpdateTimer",
+          "callee": "Mathf.FloorToInt",
+          "lineNumber": 42
+        },
+        {
+          "caller": "UpdateTimer",
+          "callee": "Mathf.FloorToInt",
+          "lineNumber": 43
+        },
+        {
+          "caller": "UpdateTimer",
+          "callee": "_sb.Append",
+          "lineNumber": 44
+        },
+        {
+          "caller": "UpdateTimer",
+          "callee": "_sb.Append",
+          "lineNumber": 45
+        },
+        {
+          "caller": "UpdateTimer",
+          "callee": "_sb.Append",
+          "lineNumber": 46
+        },
+        {
+          "caller": "UpdateTimer",
+          "callee": "_sb.Append",
+          "lineNumber": 47
+        },
+        {
+          "caller": "UpdateTimer",
+          "callee": "_timerTMP.SetText",
+          "lineNumber": 48
+        },
+        {
+          "caller": "UpdateStage",
+          "callee": "_sb.Clear",
+          "lineNumber": 54
+        },
+        {
+          "caller": "UpdateStage",
+          "callee": "_sb.Append",
+          "lineNumber": 55
+        },
+        {
+          "caller": "UpdateStage",
+          "callee": "_sb.Append",
+          "lineNumber": 56
+        },
+        {
+          "caller": "UpdateStage",
+          "callee": "_stageTMP.SetText",
+          "lineNumber": 57
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 4,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 51,
+      "nonEmptyLines": 42,
+      "functions": [
+        {
+          "name": "Init",
+          "startLine": 13,
+          "endLine": 28,
+          "params": []
+        },
+        {
+          "name": "Show",
+          "startLine": 30,
+          "endLine": 39,
+          "params": [
+            "name",
+            "description"
+          ]
+        },
+        {
+          "name": "Hide",
+          "startLine": 41,
+          "endLine": 44,
+          "params": []
+        },
+        {
+          "name": "SetPosition",
+          "startLine": 46,
+          "endLine": 50,
+          "params": [
+            "anchoredPosition"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "IndicateSlot",
+          "startLine": 4,
+          "endLine": 51,
+          "methods": [
+            "Init",
+            "Show",
+            "Hide",
+            "SetPosition"
+          ],
+          "properties": [
+            "nameTMP",
+            "descriptionTMP",
+            "rect",
+            "indicateType",
+            "IndicateType"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IndicateType",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "Init",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "Show",
+          "line": 30,
+          "isDefault": false
+        },
+        {
+          "name": "Hide",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "SetPosition",
+          "line": 46,
+          "isDefault": false
+        },
+        {
+          "name": "IndicateSlot",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Init",
+          "callee": "GetComponent<RectTransform>",
+          "lineNumber": 16
+        },
+        {
+          "caller": "Init",
+          "callee": "Debug.LogError",
+          "lineNumber": 21
+        },
+        {
+          "caller": "Init",
+          "callee": "Debug.LogError",
+          "lineNumber": 24
+        },
+        {
+          "caller": "Init",
+          "callee": "gameObject.SetActive",
+          "lineNumber": 26
+        },
+        {
+          "caller": "Show",
+          "callee": "gameObject.SetActive",
+          "lineNumber": 32
+        },
+        {
+          "caller": "Hide",
+          "callee": "gameObject.SetActive",
+          "lineNumber": 43
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 6,
+        "functionCount": 4,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 28,
+      "nonEmptyLines": 23,
+      "functions": [
+        {
+          "name": "Init",
+          "startLine": 13,
+          "endLine": 20,
+          "params": []
+        },
+        {
+          "name": "SetSlot",
+          "startLine": 22,
+          "endLine": 27,
+          "params": [
+            "handPosition",
+            "sprite"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "NextIconSlot",
+          "startLine": 5,
+          "endLine": 28,
+          "methods": [
+            "Init",
+            "SetSlot"
+          ],
+          "properties": [
+            "_rect",
+            "_iconImage",
+            "Rect",
+            "HandPosition"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Rect",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "HandPosition",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "Init",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "SetSlot",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "NextIconSlot",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Init",
+          "callee": "GetComponent<RectTransform>",
+          "lineNumber": 16
+        },
+        {
+          "caller": "Init",
+          "callee": "GetComponentInChildren<Image>",
+          "lineNumber": 19
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 2,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 42,
+      "nonEmptyLines": 34,
+      "functions": [
+        {
+          "name": "Init",
+          "startLine": 14,
+          "endLine": 35,
+          "params": [
+            "stageIndex"
+          ]
+        },
+        {
+          "name": "OnClickButton",
+          "startLine": 37,
+          "endLine": 41,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "StageSlot",
+          "startLine": 5,
+          "endLine": 42,
+          "methods": [
+            "Init",
+            "OnClickButton"
+          ],
+          "properties": [
+            "rect",
+            "rockImage",
+            "stageTMP",
+            "_stageIndex",
+            "button",
+            "STAGE_TEXT"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Init",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "StageSlot",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Init",
+          "callee": "GetComponent<RectTransform>",
+          "lineNumber": 19
+        },
+        {
+          "caller": "Init",
+          "callee": "GetComponentInChildren<TextMeshProUGUI>",
+          "lineNumber": 22
+        },
+        {
+          "caller": "Init",
+          "callee": "GetComponent<Button>",
+          "lineNumber": 25
+        },
+        {
+          "caller": "Init",
+          "callee": "Debug.LogError",
+          "lineNumber": 29
+        },
+        {
+          "caller": "Init",
+          "callee": "button.onClick.AddListener",
+          "lineNumber": 33
+        },
+        {
+          "caller": "OnClickButton",
+          "callee": "App.SystemManager.Network.ServerBroadcastStageSelected",
+          "lineNumber": 40
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 41,
+      "nonEmptyLines": 34,
+      "functions": [
+        {
+          "name": "Start",
+          "startLine": 10,
+          "endLine": 18,
+          "params": []
+        },
+        {
+          "name": "OnPointerEnter",
+          "startLine": 20,
+          "endLine": 28,
+          "params": [
+            "eventData"
+          ]
+        },
+        {
+          "name": "OnPointerMove",
+          "startLine": 30,
+          "endLine": 34,
+          "params": [
+            "eventData"
+          ]
+        },
+        {
+          "name": "OnPointerExit",
+          "startLine": 36,
+          "endLine": 40,
+          "params": [
+            "eventData"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "Tooltip",
+          "startLine": 4,
+          "endLine": 41,
+          "methods": [
+            "Start",
+            "OnPointerEnter",
+            "OnPointerMove",
+            "OnPointerExit"
+          ],
+          "properties": [
+            "indicateType",
+            "_indicatePanel"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "OnPointerEnter",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "OnPointerMove",
+          "line": 30,
+          "isDefault": false
+        },
+        {
+          "name": "OnPointerExit",
+          "line": 36,
+          "isDefault": false
+        },
+        {
+          "name": "Tooltip",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Start",
+          "callee": "App.UI.InGame.TryGetPanel",
+          "lineNumber": 12
+        },
+        {
+          "caller": "Start",
+          "callee": "Debug.LogWarning",
+          "lineNumber": 15
+        },
+        {
+          "caller": "OnPointerEnter",
+          "callee": "_indicatePanel.Show",
+          "lineNumber": 27
+        },
+        {
+          "caller": "OnPointerMove",
+          "callee": "_indicatePanel.SetMousePosition",
+          "lineNumber": 33
+        },
+        {
+          "caller": "OnPointerExit",
+          "callee": "_indicatePanel.Hide",
+          "lineNumber": 39
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 4,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 61,
+      "nonEmptyLines": 49,
+      "functions": [
+        {
+          "name": "Init",
+          "startLine": 16,
+          "endLine": 25,
+          "params": [
+            "_waveType"
+          ]
+        },
+        {
+          "name": "MarkDefeated",
+          "startLine": 27,
+          "endLine": 42,
+          "params": []
+        },
+        {
+          "name": "Clear",
+          "startLine": 44,
+          "endLine": 53,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "WaveSlot",
+          "startLine": 5,
+          "endLine": 54,
+          "methods": [
+            "Init",
+            "MarkDefeated",
+            "Clear"
+          ],
+          "properties": [
+            "rect",
+            "waveBallImage",
+            "delteImage",
+            "BOSS_SCALE",
+            "waveType",
+            "_originalBallColor"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Init",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "MarkDefeated",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "Clear",
+          "line": 44,
+          "isDefault": false
+        },
+        {
+          "name": "WaveSlot",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Init",
+          "callee": "delteImage.gameObject.SetActive",
+          "lineNumber": 21
+        },
+        {
+          "caller": "MarkDefeated",
+          "callee": "rect.DOKill",
+          "lineNumber": 29
+        },
+        {
+          "caller": "MarkDefeated",
+          "callee": "rect.DOPunchScale",
+          "lineNumber": 30
+        },
+        {
+          "caller": "MarkDefeated",
+          "callee": "waveBallImage.DOKill",
+          "lineNumber": 32
+        },
+        {
+          "caller": "MarkDefeated",
+          "callee": "waveBallImage.DOColor",
+          "lineNumber": 33
+        },
+        {
+          "caller": "MarkDefeated",
+          "callee": "new Color",
+          "lineNumber": 34
+        },
+        {
+          "caller": "MarkDefeated",
+          "callee": "delteImage.gameObject.SetActive",
+          "lineNumber": 36
+        },
+        {
+          "caller": "MarkDefeated",
+          "callee": "delteImage.transform.DOKill",
+          "lineNumber": 37
+        },
+        {
+          "caller": "MarkDefeated",
+          "callee": "DOTween.Sequence()\n            .Append(delteImage.transform.DOScale(1f, 0.18f).SetEase(Ease.OutBack))\n            .Append",
+          "lineNumber": 39
+        },
+        {
+          "caller": "MarkDefeated",
+          "callee": "DOTween.Sequence()\n            .Append",
+          "lineNumber": 39
+        },
+        {
+          "caller": "MarkDefeated",
+          "callee": "DOTween.Sequence",
+          "lineNumber": 39
+        },
+        {
+          "caller": "MarkDefeated",
+          "callee": "delteImage.transform.DOScale(1f, 0.18f).SetEase",
+          "lineNumber": 40
+        },
+        {
+          "caller": "MarkDefeated",
+          "callee": "delteImage.transform.DOScale",
+          "lineNumber": 40
+        },
+        {
+          "caller": "MarkDefeated",
+          "callee": "delteImage.transform.DOPunchScale",
+          "lineNumber": 41
+        },
+        {
+          "caller": "Clear",
+          "callee": "rect.DOKill",
+          "lineNumber": 46
+        },
+        {
+          "caller": "Clear",
+          "callee": "waveBallImage.DOKill",
+          "lineNumber": 47
+        },
+        {
+          "caller": "Clear",
+          "callee": "delteImage.transform.DOKill",
+          "lineNumber": 48
+        },
+        {
+          "caller": "Clear",
+          "callee": "delteImage.gameObject.SetActive",
+          "lineNumber": 50
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 3,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 71,
+      "nonEmptyLines": 57,
+      "functions": [
+        {
+          "name": "OpenPanel",
+          "startLine": 21,
+          "endLine": 25,
+          "params": []
+        },
+        {
+          "name": "PlayIntroSequence",
+          "startLine": 27,
+          "endLine": 54,
+          "params": []
+        },
+        {
+          "name": "SetHidden",
+          "startLine": 56,
+          "endLine": 60,
+          "params": [
+            "img"
+          ]
+        },
+        {
+          "name": "Stamp",
+          "startLine": 62,
+          "endLine": 70,
+          "params": [
+            "img"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "VersusPanel",
+          "startLine": 6,
+          "endLine": 71,
+          "methods": [
+            "OpenPanel",
+            "PlayIntroSequence",
+            "SetHidden",
+            "Stamp"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "readyImage",
+            "fightImage",
+            "_isAnimating",
+            "IsAnimating"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IsOpened",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "CanCloseWithESC",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "IsStackable",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "UIType",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "IsAnimating",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "OpenPanel",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "VersusPanel",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "OpenPanel",
+          "callee": "base.OpenPanel",
+          "lineNumber": 23
+        },
+        {
+          "caller": "OpenPanel",
+          "callee": "PlayIntroSequence",
+          "lineNumber": 24
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "readyImage.DOKill",
+          "lineNumber": 31
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "fightImage.DOKill",
+          "lineNumber": 32
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "readyImage.transform.DOKill",
+          "lineNumber": 33
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "fightImage.transform.DOKill",
+          "lineNumber": 34
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "SetHidden",
+          "lineNumber": 36
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "SetHidden",
+          "lineNumber": 37
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "DOTween.Sequence",
+          "lineNumber": 39
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "sequence.AppendCallback",
+          "lineNumber": 41
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "Stamp",
+          "lineNumber": 41
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "sequence.AppendInterval",
+          "lineNumber": 42
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "sequence.Append",
+          "lineNumber": 43
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "readyImage.DOFade",
+          "lineNumber": 43
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "sequence.AppendCallback",
+          "lineNumber": 45
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "Stamp",
+          "lineNumber": 45
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "sequence.AppendInterval",
+          "lineNumber": 46
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "sequence.Append",
+          "lineNumber": 47
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "fightImage.DOFade",
+          "lineNumber": 47
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "sequence.OnComplete",
+          "lineNumber": 49
+        },
+        {
+          "caller": "PlayIntroSequence",
+          "callee": "ClosePanel",
+          "lineNumber": 52
+        },
+        {
+          "caller": "SetHidden",
+          "callee": "new Color",
+          "lineNumber": 58
+        },
+        {
+          "caller": "Stamp",
+          "callee": "new Color",
+          "lineNumber": 65
+        },
+        {
+          "caller": "Stamp",
+          "callee": "img.transform.DOScale(1f, 0.08f).SetEase(Ease.OutExpo)\n            .OnComplete",
+          "lineNumber": 67
+        },
+        {
+          "caller": "Stamp",
+          "callee": "img.transform.DOScale(1f, 0.08f).SetEase",
+          "lineNumber": 67
+        },
+        {
+          "caller": "Stamp",
+          "callee": "img.transform.DOScale",
+          "lineNumber": 67
+        },
+        {
+          "caller": "Stamp",
+          "callee": "img.transform.DOPunchScale",
+          "lineNumber": 69
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 7,
+        "functionCount": 4,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/WavePanel.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 64,
+      "nonEmptyLines": 54,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 17,
+          "endLine": 21,
+          "params": []
+        },
+        {
+          "name": "Start",
+          "startLine": 23,
+          "endLine": 29,
+          "params": []
+        },
+        {
+          "name": "OnDestroy",
+          "startLine": 31,
+          "endLine": 37,
+          "params": []
+        },
+        {
+          "name": "HandleStageOpened",
+          "startLine": 39,
+          "endLine": 44,
+          "params": [
+            "stageIndex"
+          ]
+        },
+        {
+          "name": "InitSlots",
+          "startLine": 46,
+          "endLine": 54,
+          "params": []
+        },
+        {
+          "name": "HandleOutcome",
+          "startLine": 56,
+          "endLine": 63,
+          "params": [
+            "outcome"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "WavePanel",
+          "startLine": 4,
+          "endLine": 64,
+          "methods": [
+            "Awake",
+            "Start",
+            "OnDestroy",
+            "HandleStageOpened",
+            "InitSlots",
+            "HandleOutcome"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "slots",
+            "_markedCount"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IsOpened",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "CanCloseWithESC",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "IsStackable",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "UIType",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "WavePanel",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 19
+        },
+        {
+          "caller": "Awake",
+          "callee": "InitSlots",
+          "lineNumber": 20
+        },
+        {
+          "caller": "HandleStageOpened",
+          "callee": "slot.Clear",
+          "lineNumber": 43
+        },
+        {
+          "caller": "InitSlots",
+          "callee": "slots[i].Init",
+          "lineNumber": 52
+        },
+        {
+          "caller": "HandleOutcome",
+          "callee": "slots[_markedCount].MarkDefeated",
+          "lineNumber": 61
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 6,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 317,
+      "nonEmptyLines": 130,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 49,
+          "endLine": 71,
+          "params": []
+        },
+        {
+          "name": "Start",
+          "startLine": 75,
+          "endLine": 81,
+          "params": []
+        },
+        {
+          "name": "OnDestroy",
+          "startLine": 85,
+          "endLine": 103,
+          "params": []
+        },
+        {
+          "name": "OnCreateRoomClicked",
+          "startLine": 107,
+          "endLine": 157,
+          "params": []
+        },
+        {
+          "name": "OnJoinRoomClicked",
+          "startLine": 161,
+          "endLine": 225,
+          "params": []
+        },
+        {
+          "name": "OnQuickJoinClicked",
+          "startLine": 229,
+          "endLine": 279,
+          "params": []
+        },
+        {
+          "name": "SetInteractable",
+          "startLine": 283,
+          "endLine": 303,
+          "params": [
+            "interactable"
+          ]
+        },
+        {
+          "name": "SetStatus",
+          "startLine": 307,
+          "endLine": 313,
+          "params": [
+            "message"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "LobbyEntryPanel",
+          "startLine": 11,
+          "endLine": 315,
+          "methods": [
+            "Awake",
+            "Start",
+            "OnDestroy",
+            "OnCreateRoomClicked",
+            "OnJoinRoomClicked",
+            "OnQuickJoinClicked",
+            "SetInteractable",
+            "SetStatus"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "createRoomButton",
+            "joinCodeInput",
+            "joinRoomButton",
+            "quickJoinButton",
+            "statusText",
+            "_lobbyManager",
+            "_isBusy"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IsOpened",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "CanCloseWithESC",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "IsStackable",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "UIType",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "LobbyEntryPanel",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 53
+        },
+        {
+          "caller": "Awake",
+          "callee": "createRoomButton.onClick.AddListener",
+          "lineNumber": 57
+        },
+        {
+          "caller": "Awake",
+          "callee": "joinRoomButton.onClick.AddListener",
+          "lineNumber": 59
+        },
+        {
+          "caller": "Awake",
+          "callee": "quickJoinButton.onClick.AddListener",
+          "lineNumber": 67
+        },
+        {
+          "caller": "OnDestroy",
+          "callee": "createRoomButton.onClick.RemoveListener",
+          "lineNumber": 89
+        },
+        {
+          "caller": "OnDestroy",
+          "callee": "joinRoomButton.onClick.RemoveListener",
+          "lineNumber": 91
+        },
+        {
+          "caller": "OnDestroy",
+          "callee": "quickJoinButton.onClick.RemoveListener",
+          "lineNumber": 99
+        },
+        {
+          "caller": "OnCreateRoomClicked",
+          "callee": "SetInteractable",
+          "lineNumber": 123
+        },
+        {
+          "caller": "OnCreateRoomClicked",
+          "callee": "SetStatus",
+          "lineNumber": 125
+        },
+        {
+          "caller": "OnCreateRoomClicked",
+          "callee": "_lobbyManager.CreateSession",
+          "lineNumber": 129
+        },
+        {
+          "caller": "OnCreateRoomClicked",
+          "callee": "SetInteractable",
+          "lineNumber": 135
+        },
+        {
+          "caller": "OnCreateRoomClicked",
+          "callee": "SetStatus",
+          "lineNumber": 143
+        },
+        {
+          "caller": "OnCreateRoomClicked",
+          "callee": "SetStatus",
+          "lineNumber": 151
+        },
+        {
+          "caller": "OnJoinRoomClicked",
+          "callee": "string.IsNullOrWhiteSpace",
+          "lineNumber": 177
+        },
+        {
+          "caller": "OnJoinRoomClicked",
+          "callee": "SetStatus",
+          "lineNumber": 181
+        },
+        {
+          "caller": "OnJoinRoomClicked",
+          "callee": "SetInteractable",
+          "lineNumber": 191
+        },
+        {
+          "caller": "OnJoinRoomClicked",
+          "callee": "SetStatus",
+          "lineNumber": 193
+        },
+        {
+          "caller": "OnJoinRoomClicked",
+          "callee": "_lobbyManager.JoinSession",
+          "lineNumber": 197
+        },
+        {
+          "caller": "OnJoinRoomClicked",
+          "callee": "SetInteractable",
+          "lineNumber": 203
+        },
+        {
+          "caller": "OnJoinRoomClicked",
+          "callee": "SetStatus",
+          "lineNumber": 211
+        },
+        {
+          "caller": "OnJoinRoomClicked",
+          "callee": "SetStatus",
+          "lineNumber": 219
+        },
+        {
+          "caller": "OnQuickJoinClicked",
+          "callee": "SetInteractable",
+          "lineNumber": 245
+        },
+        {
+          "caller": "OnQuickJoinClicked",
+          "callee": "SetStatus",
+          "lineNumber": 247
+        },
+        {
+          "caller": "OnQuickJoinClicked",
+          "callee": "_lobbyManager.QuickJoinSession",
+          "lineNumber": 251
+        },
+        {
+          "caller": "OnQuickJoinClicked",
+          "callee": "SetInteractable",
+          "lineNumber": 257
+        },
+        {
+          "caller": "OnQuickJoinClicked",
+          "callee": "SetStatus",
+          "lineNumber": 265
+        },
+        {
+          "caller": "OnQuickJoinClicked",
+          "callee": "SetStatus",
+          "lineNumber": 273
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 8,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/LobbyPlayerListItem.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 31,
+      "nonEmptyLines": 26,
+      "functions": [
+        {
+          "name": "Bind",
+          "startLine": 11,
+          "endLine": 22,
+          "params": [
+            "player"
+          ]
+        },
+        {
+          "name": "SetReady",
+          "startLine": 24,
+          "endLine": 30,
+          "params": [
+            "isReady"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "LobbyPlayerListItem",
+          "startLine": 5,
+          "endLine": 31,
+          "methods": [
+            "Bind",
+            "SetReady"
+          ],
+          "properties": [
+            "nameText",
+            "hostBadge",
+            "readyBadge"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Bind",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "SetReady",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "LobbyPlayerListItem",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Bind",
+          "callee": "hostBadge.SetActive",
+          "lineNumber": 18
+        },
+        {
+          "caller": "Bind",
+          "callee": "SetReady",
+          "lineNumber": 21
+        },
+        {
+          "caller": "SetReady",
+          "callee": "readyBadge.gameObject.SetActive",
+          "lineNumber": 28
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 2,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+      "language": "csharp",
+      "fileCategory": "code",
+      "totalLines": 194,
+      "nonEmptyLines": 160,
+      "functions": [
+        {
+          "name": "Awake",
+          "startLine": 34,
+          "endLine": 42,
+          "params": []
+        },
+        {
+          "name": "Start",
+          "startLine": 44,
+          "endLine": 48,
+          "params": []
+        },
+        {
+          "name": "OnDestroy",
+          "startLine": 50,
+          "endLine": 60,
+          "params": []
+        },
+        {
+          "name": "InitializeModeDropdown",
+          "startLine": 62,
+          "endLine": 69,
+          "params": []
+        },
+        {
+          "name": "OnModeDropdownChanged",
+          "startLine": 71,
+          "endLine": 74,
+          "params": [
+            "index"
+          ]
+        },
+        {
+          "name": "HandleLobbyError",
+          "startLine": 76,
+          "endLine": 82,
+          "params": [
+            "message"
+          ]
+        },
+        {
+          "name": "OnLeaveRoomClicked",
+          "startLine": 84,
+          "endLine": 87,
+          "params": []
+        },
+        {
+          "name": "OnReadyOrStartClicked",
+          "startLine": 89,
+          "endLine": 126,
+          "params": []
+        },
+        {
+          "name": "RefreshContent",
+          "startLine": 128,
+          "endLine": 139,
+          "params": []
+        },
+        {
+          "name": "RefreshModeDisplay",
+          "startLine": 141,
+          "endLine": 149,
+          "params": []
+        },
+        {
+          "name": "RefreshActionButton",
+          "startLine": 151,
+          "endLine": 163,
+          "params": []
+        },
+        {
+          "name": "SetStatus",
+          "startLine": 165,
+          "endLine": 168,
+          "params": [
+            "message"
+          ]
+        },
+        {
+          "name": "RefreshPlayerList",
+          "startLine": 170,
+          "endLine": 183,
+          "params": [
+            "players"
+          ]
+        },
+        {
+          "name": "ClearPlayerList",
+          "startLine": 185,
+          "endLine": 193,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "LobbyRoomPanel",
+          "startLine": 8,
+          "endLine": 194,
+          "methods": [
+            "Awake",
+            "Start",
+            "OnDestroy",
+            "InitializeModeDropdown",
+            "OnModeDropdownChanged",
+            "HandleLobbyError",
+            "OnLeaveRoomClicked",
+            "OnReadyOrStartClicked",
+            "RefreshContent",
+            "RefreshModeDisplay",
+            "RefreshActionButton",
+            "SetStatus",
+            "RefreshPlayerList",
+            "ClearPlayerList"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "roomCodeText",
+            "playerListRoot",
+            "playerListItemPrefab",
+            "leaveRoomButton",
+            "readyOrStartButton",
+            "readyOrStartButtonLabel",
+            "statusText",
+            "gameModeDropDown",
+            "indicateModeText",
+            "_spawnedItems",
+            "_lobbyManager",
+            "_isStartingGame",
+            "_selectedMode"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IsOpened",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "CanCloseWithESC",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "IsStackable",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "UIType",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "RefreshContent",
+          "line": 128,
+          "isDefault": false
+        },
+        {
+          "name": "LobbyRoomPanel",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Awake",
+          "callee": "base.Awake",
+          "lineNumber": 36
+        },
+        {
+          "caller": "Awake",
+          "callee": "leaveRoomButton.onClick.AddListener",
+          "lineNumber": 38
+        },
+        {
+          "caller": "Awake",
+          "callee": "readyOrStartButton.onClick.AddListener",
+          "lineNumber": 39
+        },
+        {
+          "caller": "Awake",
+          "callee": "gameModeDropDown.onValueChanged.AddListener",
+          "lineNumber": 40
+        },
+        {
+          "caller": "Awake",
+          "callee": "InitializeModeDropdown",
+          "lineNumber": 41
+        },
+        {
+          "caller": "OnDestroy",
+          "callee": "leaveRoomButton.onClick.RemoveListener",
+          "lineNumber": 57
+        },
+        {
+          "caller": "OnDestroy",
+          "callee": "readyOrStartButton.onClick.RemoveListener",
+          "lineNumber": 58
+        },
+        {
+          "caller": "OnDestroy",
+          "callee": "gameModeDropDown.onValueChanged.RemoveListener",
+          "lineNumber": 59
+        },
+        {
+          "caller": "InitializeModeDropdown",
+          "callee": "gameModeDropDown.ClearOptions",
+          "lineNumber": 64
+        },
+        {
+          "caller": "InitializeModeDropdown",
+          "callee": "new List<TMP_Dropdown.OptionData>",
+          "lineNumber": 65
+        },
+        {
+          "caller": "InitializeModeDropdown",
+          "callee": "Enum.GetValues",
+          "lineNumber": 66
+        },
+        {
+          "caller": "InitializeModeDropdown",
+          "callee": "options.Add",
+          "lineNumber": 67
+        },
+        {
+          "caller": "InitializeModeDropdown",
+          "callee": "mode.ToString",
+          "lineNumber": 67
+        },
+        {
+          "caller": "InitializeModeDropdown",
+          "callee": "gameModeDropDown.AddOptions",
+          "lineNumber": 68
+        },
+        {
+          "caller": "OnModeDropdownChanged",
+          "callee": "Enum.GetValues",
+          "lineNumber": 73
+        },
+        {
+          "caller": "HandleLobbyError",
+          "callee": "string.IsNullOrEmpty",
+          "lineNumber": 78
+        },
+        {
+          "caller": "OnLeaveRoomClicked",
+          "callee": "App.SceneManager.Lobby.LeaveSession",
+          "lineNumber": 86
+        },
+        {
+          "caller": "OnReadyOrStartClicked",
+          "callee": "_lobbyManager.CanStartGame",
+          "lineNumber": 98
+        },
+        {
+          "caller": "OnReadyOrStartClicked",
+          "callee": "SetStatus",
+          "lineNumber": 100
+        },
+        {
+          "caller": "OnReadyOrStartClicked",
+          "callee": "RefreshActionButton",
+          "lineNumber": 105
+        },
+        {
+          "caller": "OnReadyOrStartClicked",
+          "callee": "SetStatus",
+          "lineNumber": 106
+        },
+        {
+          "caller": "OnReadyOrStartClicked",
+          "callee": "_lobbyManager.StartGame",
+          "lineNumber": 109
+        },
+        {
+          "caller": "OnReadyOrStartClicked",
+          "callee": "SetStatus",
+          "lineNumber": 115
+        },
+        {
+          "caller": "OnReadyOrStartClicked",
+          "callee": "RefreshActionButton",
+          "lineNumber": 116
+        },
+        {
+          "caller": "OnReadyOrStartClicked",
+          "callee": "_lobbyManager.SetLocalReady",
+          "lineNumber": 124
+        },
+        {
+          "caller": "OnReadyOrStartClicked",
+          "callee": "RefreshActionButton",
+          "lineNumber": 125
+        },
+        {
+          "caller": "RefreshContent",
+          "callee": "RefreshPlayerList",
+          "lineNumber": 136
+        },
+        {
+          "caller": "RefreshContent",
+          "callee": "RefreshActionButton",
+          "lineNumber": 137
+        },
+        {
+          "caller": "RefreshContent",
+          "callee": "RefreshModeDisplay",
+          "lineNumber": 138
+        },
+        {
+          "caller": "RefreshModeDisplay",
+          "callee": "gameModeDropDown.gameObject.SetActive",
+          "lineNumber": 144
+        },
+        {
+          "caller": "RefreshModeDisplay",
+          "callee": "indicateModeText.gameObject.SetActive",
+          "lineNumber": 145
+        },
+        {
+          "caller": "RefreshModeDisplay",
+          "callee": "_selectedMode.ToString",
+          "lineNumber": 148
+        },
+        {
+          "caller": "RefreshActionButton",
+          "callee": "_lobbyManager.CanStartGame",
+          "lineNumber": 156
+        },
+        {
+          "caller": "RefreshPlayerList",
+          "callee": "ClearPlayerList",
+          "lineNumber": 172
+        },
+        {
+          "caller": "RefreshPlayerList",
+          "callee": "Instantiate",
+          "lineNumber": 176
+        },
+        {
+          "caller": "RefreshPlayerList",
+          "callee": "item.gameObject.SetActive",
+          "lineNumber": 177
+        },
+        {
+          "caller": "RefreshPlayerList",
+          "callee": "item.Bind",
+          "lineNumber": 178
+        },
+        {
+          "caller": "RefreshPlayerList",
+          "callee": "_spawnedItems.Add",
+          "lineNumber": 179
+        },
+        {
+          "caller": "RefreshPlayerList",
+          "callee": "LayoutRebuilder.ForceRebuildLayoutImmediate",
+          "lineNumber": 182
+        },
+        {
+          "caller": "ClearPlayerList",
+          "callee": "Destroy",
+          "lineNumber": 189
+        },
+        {
+          "caller": "ClearPlayerList",
+          "callee": "_spawnedItems.Clear",
+          "lineNumber": 192
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 6,
+        "functionCount": 14,
+        "classCount": 1
+      }
+    }
+  ]
+}

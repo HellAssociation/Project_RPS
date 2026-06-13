@@ -1,0 +1,31 @@
+{
+  "projectRoot": "/Users/hyeonjun/Project_RPS",
+  "batchFiles": [
+    {"path": "Assets/02. Scripts/Management/SoundManager.cs", "language": "csharp", "sizeLines": 287, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Management/TitleManager.cs", "language": "csharp", "sizeLines": 54, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Management/TitleUIManager.cs", "language": "csharp", "sizeLines": 5, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Management/UIManagerBase.cs", "language": "csharp", "sizeLines": 110, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs", "language": "csharp", "sizeLines": 136, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/Game/HUDPanel.cs", "language": "csharp", "sizeLines": 216, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/Game/IndicatePanel.cs", "language": "csharp", "sizeLines": 77, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs", "language": "csharp", "sizeLines": 297, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs", "language": "csharp", "sizeLines": 50, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/Game/ModalContent.cs", "language": "csharp", "sizeLines": 17, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/Game/ModalPanel.cs", "language": "csharp", "sizeLines": 92, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/Game/NextIconPanel.cs", "language": "csharp", "sizeLines": 159, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/Game/OutcomePanel.cs", "language": "csharp", "sizeLines": 126, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/Game/StagePanel.cs", "language": "csharp", "sizeLines": 110, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/Game/TimerPanel.cs", "language": "csharp", "sizeLines": 59, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs", "language": "csharp", "sizeLines": 51, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs", "language": "csharp", "sizeLines": 28, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs", "language": "csharp", "sizeLines": 42, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs", "language": "csharp", "sizeLines": 41, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs", "language": "csharp", "sizeLines": 61, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/Game/VersusPanel.cs", "language": "csharp", "sizeLines": 71, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/Game/WavePanel.cs", "language": "csharp", "sizeLines": 64, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/LobbyEntryPanel.cs", "language": "csharp", "sizeLines": 317, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/LobbyPlayerListItem.cs", "language": "csharp", "sizeLines": 31, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/UI/LobbyRoomPanel.cs", "language": "csharp", "sizeLines": 194, "fileCategory": "code"}
+  ],
+  "batchImportData": {}
+}

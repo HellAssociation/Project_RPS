@@ -31,6 +31,12 @@ public class PlayerNetworkObject : NetworkBehaviour
     [Networked] public float StarforceStartTime { get; set; }
     [Networked] public float StarforceCycleSeconds { get; set; }
 
+    /// <summary>현재 카드 투표 선택(카드 인덱스). <see cref="NO_VOTE"/>면 미투표.</summary>
+    [Networked] public int CardVote { get; set; }
+
+    /// <summary>카드 투표 미참여(무효표) 센티넬.</summary>
+    public const int NO_VOTE = -1;
+
     ChangeDetector _changeDetector;
 
     public int PlayerId => Object != null && Object.InputAuthority.IsRealPlayer
@@ -86,6 +92,7 @@ public class PlayerNetworkObject : NetworkBehaviour
                 case nameof(StarforceStopRatio):
                 case nameof(StarforceStartTime):
                 case nameof(StarforceCycleSeconds):
+                case nameof(CardVote):
                     inGameChanged = true;
                     break;
             }
@@ -149,5 +156,11 @@ public class PlayerNetworkObject : NetworkBehaviour
     {
         StarforceResult = result;
         StarforceStopRatio = stopRatio;
+    }
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    public void RPC_SetCardVote(int choice)
+    {
+        CardVote = choice;
     }
 }

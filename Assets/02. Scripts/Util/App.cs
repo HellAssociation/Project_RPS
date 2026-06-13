@@ -11,6 +11,7 @@ public class App : Singleton<App>
     private readonly SceneManagerBase _sceneManager;
     private readonly TitleManager _titleManager;
     private readonly SoundManager _soundManager;
+    private readonly EffectManager _effectManager;
     private readonly AssetManager _assetManager;
     private readonly InputManager _inputManager;
     private readonly LobbyManager _lobbyManager;
@@ -99,6 +100,7 @@ public class App : Singleton<App>
     public static class SystemManager
     {
         public static SoundManager Sound => Instance._soundManager;
+        public static EffectManager Effect => Instance._effectManager;
         public static AssetManager Asset => Instance._assetManager;
         public static InputManager Input => Instance._inputManager;
         public static NetworkManager Network => Instance._networkManager;

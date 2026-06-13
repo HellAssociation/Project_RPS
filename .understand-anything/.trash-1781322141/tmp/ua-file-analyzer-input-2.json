@@ -1,0 +1,31 @@
+{
+  "projectRoot": "/Users/hyeonjun/Project_RPS",
+  "batchFiles": [
+    {"path": "Assets/02. Scripts/Effect/HPBarController.cs", "language": "csharp", "sizeLines": 69, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs", "language": "csharp", "sizeLines": 50, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/FusionLobby/LobbyPlayer.cs", "language": "csharp", "sizeLines": 20, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/FusionLobby/LobbyRequestResult.cs", "language": "csharp", "sizeLines": 21, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/FusionLobby/LobbySession.cs", "language": "csharp", "sizeLines": 78, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs", "language": "csharp", "sizeLines": 153, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/FusionLobby/PlayerProfile.cs", "language": "csharp", "sizeLines": 50, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Game/Hand/EnemyHand.cs", "language": "csharp", "sizeLines": 150, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Game/Hand/Finger.cs", "language": "csharp", "sizeLines": 54, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Game/Hand/Hand.cs", "language": "csharp", "sizeLines": 94, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Game/Hand/HandSpriteData.cs", "language": "csharp", "sizeLines": 47, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Game/Hand/PlayerHand.cs", "language": "csharp", "sizeLines": 43, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Game/ModeData.cs", "language": "csharp", "sizeLines": 7, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Management/AssetManager.cs", "language": "csharp", "sizeLines": 39, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Management/DataManager.cs", "language": "csharp", "sizeLines": 100, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Management/GameData.cs", "language": "csharp", "sizeLines": 68, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Management/InGameManager.cs", "language": "csharp", "sizeLines": 441, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Management/InGameUIManager.cs", "language": "csharp", "sizeLines": 7, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Management/InputManager.cs", "language": "csharp", "sizeLines": 126, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Management/LobbyManager.cs", "language": "csharp", "sizeLines": 203, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Management/LobbyUIManager.cs", "language": "csharp", "sizeLines": 11, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Management/ManagerBase.cs", "language": "csharp", "sizeLines": 64, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Management/NetworkManager.cs", "language": "csharp", "sizeLines": 818, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Management/PlayerManager.cs", "language": "csharp", "sizeLines": 322, "fileCategory": "code"},
+    {"path": "Assets/02. Scripts/Management/SceneManagerBase.cs", "language": "csharp", "sizeLines": 16, "fileCategory": "code"}
+  ],
+  "batchImportData": {}
+}

@@ -69,20 +69,21 @@ public class EnemyHand : Hand
             _randomCoroutine = null;
         }
 
-        EHandPosition slotPosition = GetFrontSlotPosition();
+        EHandPosition display  = GetFrontDisplayPosition();
+        EHandPosition resolved = GetFrontResolvedPosition();
 
-        if (slotPosition == EHandPosition.Random)
+        if (display == EHandPosition.Random)
         {
-            _randomCoroutine = StartCoroutine(RandomCycleCoroutine(duration));
+            _randomCoroutine = StartCoroutine(RandomCycleCoroutine(duration, resolved));
         }
         else
         {
-            ApplyHandPosition(slotPosition);
-            App.SceneManager.InGame?.SetEnemyHandPosition(slotPosition);
+            ApplyHandPosition(resolved);
+            App.SceneManager.InGame?.SetEnemyHandPosition(resolved);
         }
     }
 
-    IEnumerator RandomCycleCoroutine(float totalDuration)
+    IEnumerator RandomCycleCoroutine(float totalDuration, EHandPosition locked)
     {
         float elapsed = 0f;
         float lockAt = Mathf.Max(0f, totalDuration - LOCK_BEFORE_END);
@@ -94,20 +95,30 @@ public class EnemyHand : Hand
             elapsed += RANDOM_CYCLE_INTERVAL;
         }
 
-        EHandPosition locked = VALID_POSITIONS[Random.Range(0, VALID_POSITIONS.Length)];
         ApplyHandPosition(locked);
         App.SceneManager.InGame?.SetEnemyHandPosition(locked);
         _randomCoroutine = null;
     }
 
     // Reads the current front slot from NextIconPanel via UIManager
-    static EHandPosition GetFrontSlotPosition()
+    static EHandPosition GetFrontDisplayPosition()
     {
         InGameUIManager ui = App.UI.InGame;
         if (ui == null) return EHandPosition.Rock;
 
         if (ui.TryGetPanel(out NextIconPanel panel))
             return panel.CurrentHandPosition;
+
+        return EHandPosition.Rock;
+    }
+
+    static EHandPosition GetFrontResolvedPosition()
+    {
+        InGameUIManager ui = App.UI.InGame;
+        if (ui == null) return EHandPosition.Rock;
+
+        if (ui.TryGetPanel(out NextIconPanel panel))
+            return panel.CurrentResolvedHandPosition;
 
         return EHandPosition.Rock;
     }

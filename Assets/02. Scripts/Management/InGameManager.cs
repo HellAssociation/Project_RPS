@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using SystemEnums;
 using UnityEngine;
 
@@ -9,57 +10,28 @@ public class InGameManager : SceneManagerBase
     public const int WAVES_PER_ROUND = 10;
     public const int MAX_ROUNDS = 10;
     public const int ENEMY_DAMAGE = 40;
+    public const int CARDS_PER_VOTE = 3;
 
     const float BETWEEN_WAVE_DELAY = 1f;
+    const float VOTE_SECONDS = 10f;
+    const float VOTE_REVEAL_SECONDS = 1.5f;
+    const float BOSS_INTRO_SECONDS = 3f;
 
-    static DataManager Data => App.Data.BaseData;
+    readonly RunState _run = new();
 
-    public int MaxLives
-    {
-        get
-        {
-            if (Data != null && Data.TryGetDefine(EDefine.DEFINE_PLAYER_DEFAULT_HP, out DefineData d))
-                return d.value;
-            return PlayerManager.MAX_HP;
-        }
-    }
+    System.Random _voteRng;
+    readonly int[] _voteTally = new int[CARDS_PER_VOTE];
+    readonly List<int> _voteWinners = new(CARDS_PER_VOTE);
+    readonly List<CardRef> _voteChosen = new(2);
 
-    float GetWaveDuration(int round)
-    {
-        float baseDuration = (Data != null && Data.TryGetDefine(EDefine.DEFINE_PLAYER_DEFAULT_TIMER, out DefineData timer))
-            ? timer.value : 3f;
-        if (Data != null && Data.TryGetRound((ERound)(round - 1), out RoundData rd))
-            baseDuration += rd.roundTimer;
-        return baseDuration;
-    }
+    public int MaxLives => _run.MaxLives;
 
-    int PlayerDamage
-    {
-        get
-        {
-            if (Data != null && Data.TryGetDefine(EDefine.DEFINE_PLAYER_DEFAULT_DAMAGE, out DefineData d))
-                return d.value;
-            return 100;
-        }
-    }
-
-    int GetEnemyMaxHp(int round)
-    {
-        int baseHp = MaxLives;
-        if (Data != null && Data.TryGetRound((ERound)(round - 1), out RoundData rd))
-            return Mathf.RoundToInt(baseHp * rd.roundHPMultiflier);
-        return baseHp;
-    }
-
-    void InitEnemyHp()
-    {
-        _enemyMaxHp = GetEnemyMaxHp(_currentRound);
-        _enemyHp    = _enemyMaxHp;
-    }
     const float SLIDE_DURATION = 0.5f;
 
     static readonly WaitForSeconds WAIT_OUTCOME = new(BETWEEN_WAVE_DELAY);
     static readonly WaitForSeconds WAIT_SLIDE   = new(SLIDE_DURATION);
+    static readonly WaitForSeconds WAIT_VOTE_REVEAL = new(VOTE_REVEAL_SECONDS);
+    static readonly WaitForSeconds WAIT_BOSS_INTRO  = new(BOSS_INTRO_SECONDS);
 
     NetworkManager Network => App.SystemManager.Network;
     PlayerManager Players  => App.Game.Players;
@@ -70,12 +42,8 @@ public class InGameManager : SceneManagerBase
     Coroutine _betweenWaveCoroutine;
     bool _hostSetupStarted;
 
-    int _currentRound;
-    int _wonWavesInRound;
-    int _lives;
-    int _enemyHp;
-    int _enemyMaxHp;
     int _selectedStageIndex;
+    int _enemySeed;
     EHandPosition _enemyHandPosition;
     StagePanel _stagePanel;
     VersusPanel _versusPanel;
@@ -86,10 +54,11 @@ public class InGameManager : SceneManagerBase
     public EFingerType LocalAssignedFinger => Players.LocalAssignedFinger;
     public bool LocalFingerExtended => Input.IsFingerExtended;
     public EHandPosition LastHandPosition { get; private set; } = EHandPosition.Invalid;
-    public int CurrentRound => _currentRound;
-    public int WonWavesInRound => _wonWavesInRound;
-    public int Lives => _lives;
+    public int CurrentRound => _run.CurrentRound;
+    public int WonWavesInRound => _run.WonWavesInRound;
+    public int Lives => _run.Lives;
     public int SelectedStageIndex => _selectedStageIndex;
+    public int EnemySeed => _enemySeed;
 
     public event Action<EFingerType> OnLocalAssignedFingerChanged;
     public event Action<bool>        OnLocalFingerExtendedChanged;
@@ -116,6 +85,7 @@ public class InGameManager : SceneManagerBase
         Network.OnRoundStarted              += HandleWaveStarted;
         Network.OnRoundResultReceived       += HandleWaveResultReceived;
         Network.OnStageSelected             += HandleRoundSelected;
+        Network.OnCardsApplied              += HandleCardsApplied;
     }
 
     void OnDisable()
@@ -127,6 +97,7 @@ public class InGameManager : SceneManagerBase
         Network.OnRoundStarted              -= HandleWaveStarted;
         Network.OnRoundResultReceived       -= HandleWaveResultReceived;
         Network.OnStageSelected             -= HandleRoundSelected;
+        Network.OnCardsApplied              -= HandleCardsApplied;
     }
 
     void Start()
@@ -161,11 +132,7 @@ public class InGameManager : SceneManagerBase
         }
 
         _hostSetupStarted  = false;
-        _currentRound      = 1;
-        _wonWavesInRound   = 0;
-        _lives             = MaxLives;
-        _enemyHp           = 0;
-        _enemyMaxHp        = 0;
+        _run.Reset();
         _enemyHandPosition = EHandPosition.Invalid;
         Phase              = EInGamePhase.WaitingForRoundSelect;
         LastHandPosition   = EHandPosition.Invalid;
@@ -186,9 +153,10 @@ public class InGameManager : SceneManagerBase
         yield return Players.ServerEnsurePlayerObjectsCoroutine();
     }
 
-    void HandleRoundSelected(int stageIndex)
+    void HandleRoundSelected(int stageIndex, int seed)
     {
         _selectedStageIndex = stageIndex;
+        _enemySeed          = seed;
 
         if (ModeData.IsSingleControl)
             Input.RandomizeSingleControlBindings();
@@ -214,6 +182,8 @@ public class InGameManager : SceneManagerBase
     {
         yield return Players.ServerEnsurePlayerObjectsCoroutine();
 
+        yield return HostCardVoteSequenceCoroutine();
+
         Network.ServerInitializeFingerAssignments();
         yield return null;
 
@@ -222,7 +192,7 @@ public class InGameManager : SceneManagerBase
         if (_versusPanel != null)
             yield return new WaitWhile(() => _versusPanel.IsAnimating);
 
-        Network.ServerStartRound(GetWaveDuration(_currentRound));
+        Network.ServerStartRound(_run.GetWaveDuration(_run.CurrentRound));
         _hostSetupCoroutine = null;
     }
 
@@ -240,7 +210,7 @@ public class InGameManager : SceneManagerBase
             return;
 
         Phase = EInGamePhase.AssignmentsReady;
-        InitEnemyHp();
+        _run.InitEnemyHp();
         OnLocalAssignedFingerChanged?.Invoke(LocalAssignedFinger);
         OnReadyStarted?.Invoke();
         if (_versusPanel != null) _versusPanel.OpenPanel();
@@ -313,7 +283,7 @@ public class InGameManager : SceneManagerBase
     {
         LastHandPosition = handPosition;
 
-        EOutcome outcome = DetermineOutcome(handPosition, _enemyHandPosition);
+        EOutcome outcome = OutcomeResolver.Resolve(handPosition, _enemyHandPosition);
         Phase = EInGamePhase.WaveComplete;
         OnOutcomeDetermined?.Invoke(outcome);
         OnWaveJudged?.Invoke(handPosition);
@@ -324,18 +294,18 @@ public class InGameManager : SceneManagerBase
         switch (outcome)
         {
             case EOutcome.Win:
-                _enemyHp -= PlayerDamage;
-                OnEnemyHpChanged?.Invoke(Mathf.Max(_enemyHp, 0), _enemyMaxHp);
-                if (_enemyHp <= 0)
-                    _wonWavesInRound++;
-                if (_wonWavesInRound >= WAVES_PER_ROUND)
+                _run.EnemyHp -= _run.PlayerDamage;
+                OnEnemyHpChanged?.Invoke(Mathf.Max(_run.EnemyHp, 0), _run.EnemyMaxHp);
+                if (_run.EnemyHp <= 0)
+                    _run.WonWavesInRound++;
+                if (_run.WonWavesInRound >= WAVES_PER_ROUND)
                     isRoundClear = true;
                 break;
 
             case EOutcome.Lose:
-                _lives -= ENEMY_DAMAGE;
-                OnLivesChanged?.Invoke(_lives);
-                if (_lives <= 0)
+                _run.Lives -= ENEMY_DAMAGE;
+                OnLivesChanged?.Invoke(_run.Lives);
+                if (_run.Lives <= 0)
                 {
                     Phase       = EInGamePhase.GameOver;
                     isGameOver  = true;
@@ -353,10 +323,14 @@ public class InGameManager : SceneManagerBase
         yield return WAIT_OUTCOME;
         OnWaveResultShown?.Invoke();
 
-        if (!isRoundClear && !isGameOver && _enemyHp <= 0)
+        // Boss (every round's 10th enemy) appears the moment the 9th enemy is killed and the next HP bar fills.
+        bool bossAppearing = false;
+
+        if (!isRoundClear && !isGameOver && _run.EnemyHp <= 0)
         {
-            _enemyHp = _enemyMaxHp;
-            OnEnemyHpChanged?.Invoke(_enemyHp, _enemyMaxHp);
+            bossAppearing = _run.WonWavesInRound == WAVES_PER_ROUND - 1;
+            _run.EnemyHp = _run.EnemyMaxHp;
+            OnEnemyHpChanged?.Invoke(_run.EnemyHp, _run.EnemyMaxHp);
         }
 
         if (isGameOver)
@@ -366,13 +340,11 @@ public class InGameManager : SceneManagerBase
             OnLocalFingerMaskChanged?.Invoke(EFingerType.None);
             OnGameOver?.Invoke();
 
-            _lives           = MaxLives;
-            _wonWavesInRound = 0;
-            _currentRound    = 1;
+            _run.Reset();
             _hostSetupStarted = false;
             Phase            = EInGamePhase.WaitingForRoundSelect;
-            OnLivesChanged?.Invoke(_lives);
-            OnCurrentRoundChanged?.Invoke(_currentRound);
+            OnLivesChanged?.Invoke(_run.Lives);
+            OnCurrentRoundChanged?.Invoke(_run.CurrentRound);
 
             if (_stagePanel != null) _stagePanel.OpenPanel();
             _betweenWaveCoroutine = null;
@@ -381,10 +353,10 @@ public class InGameManager : SceneManagerBase
 
         if (isRoundClear)
         {
-            int clearedRound = _currentRound;
-            _currentRound++;
-            _wonWavesInRound = 0;
-            OnCurrentRoundChanged?.Invoke(_currentRound);
+            int clearedRound = _run.CurrentRound;
+            _run.CurrentRound++;
+            _run.WonWavesInRound = 0;
+            OnCurrentRoundChanged?.Invoke(_run.CurrentRound);
             OnRoundClear?.Invoke(clearedRound);
         }
 
@@ -394,7 +366,7 @@ public class InGameManager : SceneManagerBase
 
         if (isRoundClear)
         {
-            if (_currentRound > MAX_ROUNDS)
+            if (_run.CurrentRound > MAX_ROUNDS)
             {
                 Phase = EInGamePhase.RoundClear;
                 _betweenWaveCoroutine = null;
@@ -404,16 +376,93 @@ public class InGameManager : SceneManagerBase
             Phase             = EInGamePhase.WaitingForSetup;
             _hostSetupStarted = false;
             yield return Players.ServerEnsurePlayerObjectsCoroutine();
+            yield return HostCardVoteSequenceCoroutine();
             Network.ServerInitializeFingerAssignments();
             yield return null;
             ApplyAssignmentsReady();
         }
 
+        if (bossAppearing)
+        {
+            Phase = EInGamePhase.BossIntro;
+            ApplyBossRule(_run.CurrentRound);
+            Network.ServerBroadcastBossIntro(_run.CurrentRound);
+            yield return WAIT_BOSS_INTRO;
+        }
+
         if (_versusPanel != null && _versusPanel.IsAnimating)
             yield return new WaitWhile(() => _versusPanel.IsAnimating);
 
-        Network.ServerStartRound(GetWaveDuration(_currentRound));
+        Network.ServerStartRound(_run.GetWaveDuration(_run.CurrentRound));
         _betweenWaveCoroutine = null;
+    }
+
+    /// <summary>Boss special-rule hook (placeholder). Real effects (IRoundRule / EnemyData) come later.</summary>
+    void ApplyBossRule(int round)
+    {
+#if UNITY_EDITOR
+        Debug.Log($"[InGameManager] 보스 등장 — Round {round} (효과 placeholder)");
+#endif
+    }
+
+    IEnumerator HostCardVoteSequenceCoroutine()
+    {
+        if (!Network.IsServerHost) yield break;
+
+        Phase = EInGamePhase.CardVoting;
+        _voteRng ??= new System.Random();
+        _voteChosen.Clear();
+
+        yield return HostSingleVoteCoroutine(ECardKind.Boon, _run.BoonDeck);
+        yield return HostSingleVoteCoroutine(ECardKind.Deviation, _run.DeviationDeck);
+
+        if (_voteChosen.Count > 0)
+            Network.ServerApplyCards(_voteChosen);
+
+        Phase = EInGamePhase.WaitingForSetup;
+    }
+
+    IEnumerator HostSingleVoteCoroutine(ECardKind kind, CardDeck deck)
+    {
+        int[] offered = deck.Draw(CARDS_PER_VOTE, _voteRng);
+        if (offered.Length == 0) yield break;
+
+        Network.ServerResetCardVotes();
+        Network.ServerBroadcastCardOffer(kind, offered, VOTE_SECONDS);
+
+        float remaining = VOTE_SECONDS;
+        while (remaining > 0f && !Network.AllPlayersVoted())
+        {
+            remaining -= Time.deltaTime;
+            yield return null;
+        }
+
+        int chosenIndex = ResolveVote(offered);
+        Network.ServerBroadcastCardResult(kind, chosenIndex);
+        if (chosenIndex >= 0)
+            _voteChosen.Add(new CardRef(kind, chosenIndex));
+
+        yield return WAIT_VOTE_REVEAL;
+    }
+
+    int ResolveVote(int[] offered)
+    {
+        Network.CollectCardVotes(offered, _voteTally);
+
+        int max = 0;
+        for (int i = 0; i < offered.Length; i++)
+            if (_voteTally[i] > max) max = _voteTally[i];
+
+        // 전원 무투표 → 완전 무작위.
+        if (max == 0)
+            return offered[_voteRng.Next(offered.Length)];
+
+        // 최다 득표(동점 포함) 후보 중 무작위 추첨.
+        _voteWinners.Clear();
+        for (int i = 0; i < offered.Length; i++)
+            if (_voteTally[i] == max) _voteWinners.Add(offered[i]);
+
+        return _voteWinners[_voteRng.Next(_voteWinners.Count)];
     }
 
     public void SetEnemyHandPosition(EHandPosition position)
@@ -421,21 +470,11 @@ public class InGameManager : SceneManagerBase
         _enemyHandPosition = position;
     }
 
-    static EOutcome DetermineOutcome(EHandPosition player, EHandPosition enemy)
+    void HandleCardsApplied(IReadOnlyList<CardRef> cards)
     {
-        bool playerInvalid = player == EHandPosition.Invalid;
-        bool enemyInvalid  = enemy == EHandPosition.Invalid || enemy == EHandPosition.Random;
+        if (cards == null) return;
 
-        if (playerInvalid && enemyInvalid) return EOutcome.Draw;
-        if (playerInvalid) return EOutcome.Lose;
-        if (enemyInvalid)  return EOutcome.Win;
-
-        if (player == enemy) return EOutcome.Draw;
-
-        bool win = (player == EHandPosition.Rock     && enemy == EHandPosition.Scissors) ||
-                   (player == EHandPosition.Paper    && enemy == EHandPosition.Rock)     ||
-                   (player == EHandPosition.Scissors && enemy == EHandPosition.Paper);
-
-        return win ? EOutcome.Win : EOutcome.Lose;
+        for (int i = 0; i < cards.Count; i++)
+            CardSystem.Apply(_run, cards[i]);
     }
 }

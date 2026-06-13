@@ -571,7 +571,11 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
     public event Action OnFingerAssignmentsReceived;
     public event Action<float> OnRoundStarted;
     public event Action<EHandPosition> OnRoundResultReceived;
-    public event Action<int> OnStageSelected;
+    public event Action<int, int> OnStageSelected;
+    public event Action<IReadOnlyList<CardRef>> OnCardsApplied;
+    public event Action<ECardKind, int[], float> OnCardOfferReceived;
+    public event Action<ECardKind, int> OnCardVoteResult;
+    public event Action<int> OnBossIntro;
 
     /// <summary>호스트가 각 플레이어의 손가락 배정을 [Networked] 값으로 기록합니다.</summary>
     public void ServerInitializeFingerAssignments()
@@ -631,8 +635,147 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
     public void ServerBroadcastStageSelected(int stageIndex)
     {
         if (!IsServerHost) return;
-        BroadcastInGamePayload(new byte[] { (byte)EInGameRpsMessage.StageSelected, (byte)stageIndex });
-        OnStageSelected?.Invoke(stageIndex);
+
+        // Host-authoritative seed so every client derives the same enemy hand sequence.
+        int seed = new System.Random().Next();
+        byte[] payload = { (byte)EInGameRpsMessage.StageSelected, (byte)stageIndex };
+        payload = AppendInt(payload, seed);
+
+        BroadcastInGamePayload(payload);
+        OnStageSelected?.Invoke(stageIndex, seed);
+    }
+
+    /// <summary>호스트가 적용 확정한 카드 목록을 브로드캐스트합니다. 모든 클라가 동일 효과를 RunState에 적용합니다.</summary>
+    public void ServerApplyCards(IReadOnlyList<CardRef> cards)
+    {
+        if (!IsServerHost || cards == null) return;
+
+        var payload = new List<byte>(2 + cards.Count * 2)
+        {
+            (byte)EInGameRpsMessage.CardsApplied,
+            (byte)cards.Count,
+        };
+        foreach (CardRef card in cards)
+        {
+            payload.Add((byte)card.Kind);
+            payload.Add((byte)card.Index);
+        }
+
+        BroadcastInGamePayload(payload.ToArray());
+        OnCardsApplied?.Invoke(cards);
+    }
+
+    /// <summary>호스트가 이번 투표에 제시할 카드(종류+인덱스 목록)와 제한시간을 브로드캐스트합니다.</summary>
+    public void ServerBroadcastCardOffer(ECardKind kind, int[] indices, float duration)
+    {
+        if (!IsServerHost || indices == null) return;
+
+        var payload = new List<byte>(7 + indices.Length)
+        {
+            (byte)EInGameRpsMessage.CardOffer,
+            (byte)kind,
+        };
+        payload.AddRange(BitConverter.GetBytes(duration));
+        payload.Add((byte)indices.Length);
+        foreach (int index in indices) payload.Add((byte)index);
+
+        BroadcastInGamePayload(payload.ToArray());
+        OnCardOfferReceived?.Invoke(kind, indices, duration);
+    }
+
+    /// <summary>로컬 플레이어의 카드 투표를 [Networked] 값으로 반영합니다. (라이브 집계는 모든 클라가 직접 읽음)</summary>
+    public void ClientSendCardVote(int choice)
+    {
+        if (!App.IsGameScene || !TryGetAliveRunner(out NetworkRunner runner) || !runner.IsRunning)
+            return;
+
+        if (!App.Game.Players.TryGetLocal(out PlayerNetworkObject playerObject))
+            return;
+
+        if (runner.IsServer)
+            playerObject.CardVote = choice;
+        else
+            playerObject.RPC_SetCardVote(choice);
+    }
+
+    /// <summary>새 투표 시작 시 호스트가 모든 플레이어의 투표를 무효표로 초기화합니다.</summary>
+    public void ServerResetCardVotes()
+    {
+        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer) return;
+
+        PlayerManager players = App.Game.Players;
+        foreach (PlayerRef player in GetActivePlayers())
+        {
+            if (players.TryGet(player, out PlayerNetworkObject playerObject))
+                playerObject.CardVote = PlayerNetworkObject.NO_VOTE;
+        }
+    }
+
+    /// <summary>활성 플레이어 전원이 투표를 마쳤는지(조기 확정 판정용).</summary>
+    public bool AllPlayersVoted()
+    {
+        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer) return false;
+
+        PlayerManager players = App.Game.Players;
+        bool any = false;
+        foreach (PlayerRef player in GetActivePlayers())
+        {
+            if (!players.TryGet(player, out PlayerNetworkObject playerObject))
+                continue;
+            any = true;
+            if (playerObject.CardVote == PlayerNetworkObject.NO_VOTE)
+                return false;
+        }
+        return any;
+    }
+
+    /// <summary>제시된 카드 인덱스별 득표수를 집계합니다. 인덱스 순서는 offered와 동일.</summary>
+    public void CollectCardVotes(int[] offered, int[] tallyBuffer)
+    {
+        for (int i = 0; i < tallyBuffer.Length; i++) tallyBuffer[i] = 0;
+        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsRunning) return;
+
+        PlayerManager players = App.Game.Players;
+        foreach (PlayerRef player in GetActivePlayers())
+        {
+            if (!players.TryGet(player, out PlayerNetworkObject playerObject)) continue;
+            int vote = playerObject.CardVote;
+            for (int i = 0; i < offered.Length; i++)
+            {
+                if (offered[i] == vote) { tallyBuffer[i]++; break; }
+            }
+        }
+    }
+
+    /// <summary>투표 확정 카드를 브로드캐스트합니다. chosenIndex == -1이면 해당 투표 없음.</summary>
+    public void ServerBroadcastCardResult(ECardKind kind, int chosenIndex)
+    {
+        if (!IsServerHost) return;
+
+        byte[] payload =
+        {
+            (byte)EInGameRpsMessage.CardVoteResult,
+            (byte)kind,
+            (byte)(chosenIndex < 0 ? 255 : chosenIndex),
+        };
+
+        BroadcastInGamePayload(payload);
+        OnCardVoteResult?.Invoke(kind, chosenIndex);
+    }
+
+    /// <summary>보스(매 라운드 10번째 적) 등장을 브로드캐스트합니다.</summary>
+    public void ServerBroadcastBossIntro(int round)
+    {
+        if (!IsServerHost) return;
+
+        byte[] payload =
+        {
+            (byte)EInGameRpsMessage.BossIntro,
+            (byte)round,
+        };
+
+        BroadcastInGamePayload(payload);
+        OnBossIntro?.Invoke(round);
     }
 
     public void ServerStartRound(float durationSeconds)
@@ -749,6 +892,14 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
         return buffer.ToArray();
     }
 
+    static byte[] AppendInt(byte[] payload, int value)
+    {
+        var buffer = new List<byte>(payload.Length + 4);
+        buffer.AddRange(payload);
+        buffer.AddRange(BitConverter.GetBytes(value));
+        return buffer.ToArray();
+    }
+
     /// <summary>씬 재진입 시 로컬 배정 알림 상태를 초기화합니다.</summary>
     public void ResetInGameRoundNotification()
     {
@@ -803,13 +954,80 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
                 break;
 
             case EInGameRpsMessage.StageSelected:
-                if (data.Count < 2)
+                if (data.Count < 6)
                 {
                     return;
                 }
 
                 int stageIndex = data.Array[data.Offset + 1];
-                OnStageSelected?.Invoke(stageIndex);
+                int stageSeed = BitConverter.ToInt32(data.Array, data.Offset + 2);
+                OnStageSelected?.Invoke(stageIndex, stageSeed);
+                break;
+
+            case EInGameRpsMessage.CardsApplied:
+                if (data.Count < 2)
+                {
+                    return;
+                }
+
+                int cardCount = data.Array[data.Offset + 1];
+                if (data.Count < 2 + cardCount * 2)
+                {
+                    return;
+                }
+
+                var cards = new List<CardRef>(cardCount);
+                for (int i = 0; i < cardCount; i++)
+                {
+                    var kind = (ECardKind)data.Array[data.Offset + 2 + i * 2];
+                    int index = data.Array[data.Offset + 3 + i * 2];
+                    cards.Add(new CardRef(kind, index));
+                }
+
+                OnCardsApplied?.Invoke(cards);
+                break;
+
+            case EInGameRpsMessage.CardOffer:
+                if (data.Count < 7)
+                {
+                    return;
+                }
+
+                var offerKind = (ECardKind)data.Array[data.Offset + 1];
+                float offerDuration = BitConverter.ToSingle(data.Array, data.Offset + 2);
+                int offerCount = data.Array[data.Offset + 6];
+                if (data.Count < 7 + offerCount)
+                {
+                    return;
+                }
+
+                var offered = new int[offerCount];
+                for (int i = 0; i < offerCount; i++)
+                    offered[i] = data.Array[data.Offset + 7 + i];
+
+                OnCardOfferReceived?.Invoke(offerKind, offered, offerDuration);
+                break;
+
+            case EInGameRpsMessage.CardVoteResult:
+                if (data.Count < 3)
+                {
+                    return;
+                }
+
+                var resultKind = (ECardKind)data.Array[data.Offset + 1];
+                byte resultByte = data.Array[data.Offset + 2];
+                int chosenIndex = resultByte == 255 ? -1 : resultByte;
+                OnCardVoteResult?.Invoke(resultKind, chosenIndex);
+                break;
+
+            case EInGameRpsMessage.BossIntro:
+                if (data.Count < 2)
+                {
+                    return;
+                }
+
+                int bossRound = data.Array[data.Offset + 1];
+                OnBossIntro?.Invoke(bossRound);
                 break;
         }
     }

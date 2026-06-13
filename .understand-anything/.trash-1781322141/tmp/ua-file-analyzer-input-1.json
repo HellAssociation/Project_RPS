@@ -1,0 +1,11 @@
+{
+  "projectRoot": "/Users/hyeonjun/Project_RPS",
+  "batchFiles": [
+    {"path": "Assets/07. Data/Json/BoonData.json", "language": "json", "sizeLines": 37, "fileCategory": "config"},
+    {"path": "Assets/07. Data/Json/DefineData.json", "language": "json", "sizeLines": 16, "fileCategory": "config"},
+    {"path": "Assets/07. Data/Json/DeviationData.json", "language": "json", "sizeLines": 37, "fileCategory": "config"},
+    {"path": "Assets/07. Data/Json/EnemyData.json", "language": "json", "sizeLines": 121, "fileCategory": "config"},
+    {"path": "Assets/07. Data/Json/RoundData.json", "language": "json", "sizeLines": 61, "fileCategory": "config"}
+  ],
+  "batchImportData": {}
+}

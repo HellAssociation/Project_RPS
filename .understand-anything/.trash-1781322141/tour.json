@@ -1,0 +1,77 @@
+[
+  {
+    "order": 1,
+    "title": "Project Conventions & Entry Point",
+    "description": "There is no README, so start with CLAUDE.md, the project's contributor guideline (no comments by default; any necessary comment is one short English line). With conventions in mind, the conceptual entry point is App.cs, a service-locator/bootstrap singleton that exposes every game manager, platform checks, scene state, and global scene-load events through nested static accessor classes. Because Unity instantiates MonoBehaviours rather than calling a main(), this composition root is the closest thing to a program entry point and the lens through which the rest of the codebase is wired together.",
+    "nodeIds": ["document:CLAUDE.md", "file:Assets/02. Scripts/Util/App.cs"]
+  },
+  {
+    "order": 2,
+    "title": "Core Vocabulary & Shared Helpers",
+    "description": "Enums.cs is the most widely referenced foundation file (high fan-in): it centralizes project-wide enums for scenes, UI types, finger/hand types, and execution order under the SystemEnums namespace. Alongside it sit the shared utilities the whole game leans on: RpsHandUtility encodes the actual rock-paper-scissors win/lose rules and the random finger-assignment/shuffle logic, while JsonHelper wraps Unity's JsonUtility to async-parse JSON arrays into dictionaries for the data layer. Together these define the project's vocabulary and the two domain rules (RPS judging, JSON loading) that everything downstream depends on.",
+    "nodeIds": ["file:Assets/02. Scripts/Util/Enums.cs", "file:Assets/02. Scripts/Util/RpsHandUtility.cs", "file:Assets/02. Scripts/Util/JsonHelper.cs"]
+  },
+  {
+    "order": 3,
+    "title": "App Lifecycle Bootstrap",
+    "description": "Building on App.cs from Step 1, AppHelper.cs is the MonoBehaviour that gives the static App its runtime heartbeat: it persists across scenes, drives scene loading and frame-rate limiting, and bridges Unity's scene callbacks into App's static events. It also defines the generic Singleton<T> base used throughout the project. This file explains HOW the bootstrap actually runs inside Unity's lifecycle, complementing the static accessors you saw earlier.",
+    "nodeIds": ["file:Assets/02. Scripts/Util/AppHelper.cs"],
+    "languageLesson": "Unity's DontDestroyOnLoad keeps a GameObject alive across scene loads. A generic Singleton<T> base where T : MonoBehaviour gives each derived manager a typed static Instance without rewriting the boilerplate."
+  },
+  {
+    "order": 4,
+    "title": "The Manager Layer & Base Classes",
+    "description": "The Managers layer is how App's subsystems are orchestrated. ManagerBase.cs holds the registration infrastructure: a static ManagerHandler reflects over App's manager fields and injects instances, while DataManagerBase and CommonManagerBase self-register on Awake. SceneManagerBase extends that for per-scene controllers, logging scene context and providing MoveToNextScene transitions, and UIManagerBase registers panels by type and maintains an ESC-closeable UI stack. These base classes are the contract every concrete manager and scene controller in later steps inherits from.",
+    "nodeIds": ["file:Assets/02. Scripts/Management/ManagerBase.cs", "file:Assets/02. Scripts/Management/SceneManagerBase.cs", "file:Assets/02. Scripts/Management/UIManagerBase.cs"],
+    "languageLesson": "C# reflection lets ManagerHandler discover App's manager fields at runtime and inject instances, a lightweight dependency-injection pattern that avoids hand-wiring each manager into the service locator."
+  },
+  {
+    "order": 5,
+    "title": "Loading Game Data",
+    "description": "DataManager.cs (high fan-in) is a DataManagerBase manager that asynchronously loads JSON game-data tables from Addressables into typed dictionaries and exposes TryGet lookups. GameData.cs defines the serializable model classes (BoonData, DefineData, DeviationData, EnemyData, RoundData) that the JSON deserializes into, each keyed by Code and implementing IGameData. This is where the JsonHelper from Step 2 and the manager infrastructure from Step 4 come together to turn raw files into queryable balance data.",
+    "nodeIds": ["file:Assets/02. Scripts/Management/DataManager.cs", "file:Assets/02. Scripts/Management/GameData.cs"]
+  },
+  {
+    "order": 6,
+    "title": "Game-Balance Data Tables",
+    "description": "These JSON files are the tunable balance inputs DataManager loads at runtime. DefineData holds global constants (default HP, damage, round timer); RoundData defines the ten-round difficulty curve with cumulative timer deltas and an enemy-HP multiplier ramping to 4.0; EnemyData is the roster of ten enemy types with appearance round ranges; and BoonData/DeviationData define the perk and modifier records with position masks and value slots. Inspecting them shows how designers tune the game without touching code, mapping each table directly to the model classes from Step 5.",
+    "nodeIds": ["config:Assets/07. Data/Json/DefineData.json", "config:Assets/07. Data/Json/RoundData.json", "config:Assets/07. Data/Json/EnemyData.json", "config:Assets/07. Data/Json/BoonData.json", "config:Assets/07. Data/Json/DeviationData.json"]
+  },
+  {
+    "order": 7,
+    "title": "Networking with Photon Fusion",
+    "description": "NetworkManager.cs is the Photon Fusion hub (high fan-out): a CommonManagerBase implementing INetworkRunnerCallbacks that manages the NetworkRunner lifecycle, cloud connection, session create/join/start, finger-assignment sync, and round-result broadcasting. PlayerNetworkObject.cs is the replicated NetworkBehaviour holding [Networked] per-player state (display name, ready, assigned finger, cursor, starforce result) and exposing RPCs, using a ChangeDetector in Render to fire data-changed events. PlayerManager spawns, despawns, and resolves these objects and exposes local-player accessors to the rest of the game.",
+    "nodeIds": ["file:Assets/02. Scripts/Management/NetworkManager.cs", "file:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs", "file:Assets/02. Scripts/Management/PlayerManager.cs"],
+    "languageLesson": "Photon Fusion replicates [Networked] properties automatically and uses [Rpc] methods for remote calls. A ChangeDetector in the Render loop diffs networked state each frame so clients fire local events only when replicated values actually change."
+  },
+  {
+    "order": 8,
+    "title": "The Lobby Flow",
+    "description": "Before a match starts, players gather in a lobby built on the networking layer from Step 7. LobbyManager.cs is a SceneManagerBase that wraps NetworkManager session operations (create/join/quick-join/leave/start), manages ready state and display names, and refreshes lobby UI. LobbySession is the mutable state container tracking session code, players, host flag, and derived readiness/fullness, while LobbyCodeUtility generates and validates the alphanumeric session codes. This trio turns raw network sessions into a joinable, shareable room.",
+    "nodeIds": ["file:Assets/02. Scripts/Management/LobbyManager.cs", "file:Assets/02. Scripts/FusionLobby/LobbySession.cs", "file:Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs"]
+  },
+  {
+    "order": 9,
+    "title": "Gameplay Domain: Hands & Fingers",
+    "description": "This is the core RPS gameplay domain. Hand.cs is the abstract base MonoBehaviour that caches child Finger components and exposes open/close and hand-position helpers; PlayerHand tracks the local player's active finger and applies input-driven masks, while EnemyHand randomly cycles RPS positions via coroutine and reports its position to InGameManager. Finger.cs toggles a single finger's open/closed sprite. Notice how the RPS judging rules from RpsHandUtility (Step 2) and the assigned-finger state from PlayerNetworkObject (Step 7) converge here into the physical hand representation.",
+    "nodeIds": ["file:Assets/02. Scripts/Game/Hand/Hand.cs", "file:Assets/02. Scripts/Game/Hand/PlayerHand.cs", "file:Assets/02. Scripts/Game/Hand/EnemyHand.cs", "file:Assets/02. Scripts/Game/Hand/Finger.cs"]
+  },
+  {
+    "order": 10,
+    "title": "Match Flow Orchestration",
+    "description": "InGameManager.cs is the SceneManagerBase that drives the in-game match (high fan-out): wave timers, host setup, finger assignments, RPS outcome resolution, lives/HP tracking, and round transitions, coordinating NetworkManager, PlayerManager, and InputManager through events. InputManager reads keyboard input each frame for single- and multi-control finger modes, firing toggle and mask-change events that the player's hand consumes. This step ties the data, networking, and hand domains from earlier steps into the actual moment-to-moment match loop.",
+    "nodeIds": ["file:Assets/02. Scripts/Management/InGameManager.cs", "file:Assets/02. Scripts/Management/InputManager.cs"]
+  },
+  {
+    "order": 11,
+    "title": "UI Presentation Layer",
+    "description": "PanelBase.cs is the single most depended-upon file in the codebase (fan-in 12): the abstract base for every UI panel, handling self-registration with the UI manager and the open/close lifecycle including UI-stack push/pop. Built on it, HUDPanel renders animated player/enemy HP bars driven by game events, OutcomePanel plays win/lose/draw sequences, and on the lobby side LobbyEntryPanel handles create/join/quick-join flows wired to LobbyManager. Seeing PanelBase next to a concrete in-game and lobby panel shows how the entire presentation layer hangs off one lifecycle hub and reacts to the events emitted by the managers from Steps 8 and 10.",
+    "nodeIds": ["file:Assets/02. Scripts/UI/PanelBase.cs", "file:Assets/02. Scripts/UI/Game/HUDPanel.cs", "file:Assets/02. Scripts/UI/Game/OutcomePanel.cs", "file:Assets/02. Scripts/UI/LobbyEntryPanel.cs"]
+  },
+  {
+    "order": 12,
+    "title": "Editor Tooling (Closing Step)",
+    "description": "Finally, the Editor Tooling layer supports development rather than runtime. HandSpriteDataGeneratorWindow is a Unity Editor window that generates HandSpriteData ScriptableObjects from a dropped JSON definition, resolving sprites and creating output assets, and SceneFastLauncher is a drag-and-drop window for quickly opening project scenes, persisting the set in EditorPrefs. These close the tour by showing how the team automates asset generation and speeds up iteration, completing the picture from conventions to runtime to developer workflow.",
+    "nodeIds": ["file:Assets/Editor/HandSpriteDataGeneratorWindow.cs", "file:Assets/Editor/SceneFastLauncher.cs"]
+  }
+]

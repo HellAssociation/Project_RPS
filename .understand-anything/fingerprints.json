@@ -1,0 +1,7417 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "70233995e4c6c5199b2a5e7f33a9c89fb8236904",
+  "generatedAt": "2026-06-13T03:42:11.728Z",
+  "files": {
+    "Assets/02. Scripts/Effect/HPBarController.cs": {
+      "filePath": "Assets/02. Scripts/Effect/HPBarController.cs",
+      "contentHash": "cb934cd5d1d5f0e699dbb04f9c7dff9afd5a3844bc038975d9f2629d3fe09328",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "Update",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 17
+        },
+        {
+          "name": "SetHP",
+          "params": [
+            "current",
+            "max"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 21
+        }
+      ],
+      "classes": [
+        {
+          "name": "HPBarController",
+          "methods": [
+            "Awake",
+            "Update",
+            "SetHP"
+          ],
+          "properties": [
+            "delaySeconds",
+            "drainSpeed",
+            "_mat",
+            "_currentFill",
+            "_delayedFill",
+            "_drainTimer",
+            "_draining",
+            "PropFill",
+            "PropDelayed"
+          ],
+          "exported": true,
+          "lineCount": 66
+        }
+      ],
+      "imports": [
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.UI",
+          "specifiers": [
+            "UI"
+          ]
+        }
+      ],
+      "exports": [
+        "SetHP",
+        "HPBarController"
+      ],
+      "totalLines": 70,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs": {
+      "filePath": "Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs",
+      "contentHash": "9531d099d6fe5acb02ca79b2d1b0f900f10ef6c43a921ae0baa2d1d06427be2c",
+      "functions": [
+        {
+          "name": "GenerateCode",
+          "params": [
+            "length"
+          ],
+          "returnType": "string",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "IsValidCode",
+          "params": [
+            "code"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 23
+        },
+        {
+          "name": "NormalizeCode",
+          "params": [
+            "code"
+          ],
+          "returnType": "string",
+          "exported": true,
+          "lineCount": 4
+        }
+      ],
+      "classes": [
+        {
+          "name": "LobbyCodeUtility",
+          "methods": [
+            "GenerateCode",
+            "IsValidCode",
+            "NormalizeCode"
+          ],
+          "properties": [
+            "CodeChars",
+            "DefaultCodeLength"
+          ],
+          "exported": true,
+          "lineCount": 46
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "System.Text",
+          "specifiers": [
+            "Text"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "GenerateCode",
+        "IsValidCode",
+        "NormalizeCode",
+        "LobbyCodeUtility"
+      ],
+      "totalLines": 51,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/FusionLobby/LobbyPlayer.cs": {
+      "filePath": "Assets/02. Scripts/FusionLobby/LobbyPlayer.cs",
+      "contentHash": "cf0764e8f9e49e386e12b64326d520a948b22207caec5f68db6a6dded4bcff4b",
+      "functions": [
+        {
+          "name": "LobbyPlayer",
+          "params": [
+            "playerId",
+            "displayName",
+            "isHost",
+            "isLocal"
+          ],
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "classes": [
+        {
+          "name": "LobbyPlayer",
+          "methods": [
+            "LobbyPlayer"
+          ],
+          "properties": [
+            "PlayerId",
+            "DisplayName",
+            "IsHost",
+            "IsReady",
+            "IsLocal"
+          ],
+          "exported": true,
+          "lineCount": 18
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        }
+      ],
+      "exports": [
+        "PlayerId",
+        "DisplayName",
+        "IsHost",
+        "IsReady",
+        "IsLocal",
+        "LobbyPlayer",
+        "LobbyPlayer"
+      ],
+      "totalLines": 21,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/FusionLobby/LobbyRequestResult.cs": {
+      "filePath": "Assets/02. Scripts/FusionLobby/LobbyRequestResult.cs",
+      "contentHash": "7433c64d3bca56de7a578c70cba06bc0d12f5c245e0a1e7092501b8614850b08",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 22,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/FusionLobby/LobbySession.cs": {
+      "filePath": "Assets/02. Scripts/FusionLobby/LobbySession.cs",
+      "contentHash": "43cd625ca968e68a1739dd2e751cb12d4ec87888e3cba0db2f3b7c1008a7b2bc",
+      "functions": [
+        {
+          "name": "Reset",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "ApplyConnected",
+          "params": [
+            "sessionCode",
+            "maxPlayers",
+            "isHost",
+            "localPlayerId"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "SetState",
+          "params": [
+            "state"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "ReplacePlayers",
+          "params": [
+            "players"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "classes": [
+        {
+          "name": "LobbySession",
+          "methods": [
+            "Reset",
+            "ApplyConnected",
+            "SetState",
+            "ReplacePlayers"
+          ],
+          "properties": [
+            "_players",
+            "SessionCode",
+            "State",
+            "MaxPlayers",
+            "IsHost",
+            "LocalPlayerId",
+            "Players",
+            "PlayerCount",
+            "IsFull",
+            "AllClientsReady"
+          ],
+          "exported": true,
+          "lineCount": 74
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        }
+      ],
+      "exports": [
+        "SessionCode",
+        "State",
+        "MaxPlayers",
+        "IsHost",
+        "LocalPlayerId",
+        "Players",
+        "PlayerCount",
+        "IsFull",
+        "AllClientsReady",
+        "Reset",
+        "ApplyConnected",
+        "SetState",
+        "ReplacePlayers",
+        "LobbySession"
+      ],
+      "totalLines": 79,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs": {
+      "filePath": "Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "contentHash": "ce0ed54005ed207e07e0bd8f589c3fc19991099627af341af8acf9e9873c86d0",
+      "functions": [
+        {
+          "name": "Spawned",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "Render",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 64
+        },
+        {
+          "name": "Despawned",
+          "params": [
+            "runner",
+            "hasState"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "RPC_SetDisplayName",
+          "params": [
+            "displayName"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "RPC_SetReady",
+          "params": [
+            "isReady"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "RPC_SetFingerExtended",
+          "params": [
+            "isExtended"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "RPC_SetStarforceResult",
+          "params": [
+            "result",
+            "stopRatio"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "classes": [
+        {
+          "name": "PlayerNetworkObject",
+          "methods": [
+            "Spawned",
+            "Render",
+            "Despawned",
+            "RPC_SetDisplayName",
+            "RPC_SetReady",
+            "RPC_SetFingerExtended",
+            "RPC_SetStarforceResult"
+          ],
+          "properties": [
+            "DisplayName",
+            "IsReady",
+            "AssignedFinger",
+            "IsFingerExtended",
+            "CursorScreenPos",
+            "StarforceColor",
+            "StarforceResult",
+            "StarforceStopRatio",
+            "StarforceStartTime",
+            "StarforceCycleSeconds",
+            "_changeDetector",
+            "PlayerId"
+          ],
+          "exported": true,
+          "lineCount": 140
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "Fusion",
+          "specifiers": [
+            "Fusion"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "DisplayName",
+        "IsReady",
+        "AssignedFinger",
+        "IsFingerExtended",
+        "CursorScreenPos",
+        "StarforceColor",
+        "StarforceResult",
+        "StarforceStopRatio",
+        "StarforceStartTime",
+        "StarforceCycleSeconds",
+        "PlayerId",
+        "Spawned",
+        "Render",
+        "Despawned",
+        "RPC_SetDisplayName",
+        "RPC_SetReady",
+        "RPC_SetFingerExtended",
+        "RPC_SetStarforceResult",
+        "PlayerNetworkObject"
+      ],
+      "totalLines": 154,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/FusionLobby/PlayerProfile.cs": {
+      "filePath": "Assets/02. Scripts/FusionLobby/PlayerProfile.cs",
+      "contentHash": "af5de0196aad5cd267cb25e16fb096bc77809591c3c216a0f498a1550926202f",
+      "functions": [
+        {
+          "name": "Load",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "SaveDisplayName",
+          "params": [
+            "displayName"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "GetOrCreateUserId",
+          "params": [],
+          "returnType": "string",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "NormalizeDisplayName",
+          "params": [
+            "displayName"
+          ],
+          "returnType": "string",
+          "exported": true,
+          "lineCount": 10
+        }
+      ],
+      "classes": [
+        {
+          "name": "PlayerProfile",
+          "methods": [
+            "Load",
+            "SaveDisplayName",
+            "GetOrCreateUserId",
+            "NormalizeDisplayName"
+          ],
+          "properties": [
+            "KeyDisplayName",
+            "KeyUserId",
+            "DisplayName",
+            "UserId"
+          ],
+          "exported": true,
+          "lineCount": 45
+        }
+      ],
+      "imports": [
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "DisplayName",
+        "UserId",
+        "Load",
+        "SaveDisplayName",
+        "GetOrCreateUserId",
+        "NormalizeDisplayName",
+        "PlayerProfile"
+      ],
+      "totalLines": 51,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Game/Hand/EnemyHand.cs": {
+      "filePath": "Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "contentHash": "fd693efc1c4578a86a13d277db2431b8d71e76d7d8e6cf0f5ff9997796a7e80a",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "Start",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "OnDestroy",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "HandleStageOpened",
+          "params": [
+            "stageIndex"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "HandleRoundStarted",
+          "params": [
+            "duration"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 20
+        },
+        {
+          "name": "RandomCycleCoroutine",
+          "params": [
+            "totalDuration"
+          ],
+          "returnType": "IEnumerator",
+          "exported": false,
+          "lineCount": 17
+        },
+        {
+          "name": "GetFrontSlotPosition",
+          "params": [],
+          "returnType": "EHandPosition",
+          "exported": false,
+          "lineCount": 10
+        },
+        {
+          "name": "CacheHandSpriteData",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 14
+        },
+        {
+          "name": "ApplyHandSpriteData",
+          "params": [
+            "_handType"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 20
+        }
+      ],
+      "classes": [
+        {
+          "name": "EnemyHand",
+          "methods": [
+            "Awake",
+            "Start",
+            "OnDestroy",
+            "HandleStageOpened",
+            "HandleRoundStarted",
+            "RandomCycleCoroutine",
+            "GetFrontSlotPosition",
+            "CacheHandSpriteData",
+            "ApplyHandSpriteData"
+          ],
+          "properties": [
+            "VALID_POSITIONS",
+            "FINGER_TYPES",
+            "RANDOM_CYCLE_INTERVAL",
+            "LOCK_BEFORE_END",
+            "HAND_SPRITE_DATA_COUNT",
+            "handSpriteDataSet",
+            "handSpriteDataTable",
+            "_randomCoroutine"
+          ],
+          "exported": true,
+          "lineCount": 145
+        }
+      ],
+      "imports": [
+        {
+          "source": "System.Collections",
+          "specifiers": [
+            "Collections"
+          ]
+        },
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "ApplyHandSpriteData",
+        "EnemyHand"
+      ],
+      "totalLines": 151,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Game/Hand/Finger.cs": {
+      "filePath": "Assets/02. Scripts/Game/Hand/Finger.cs",
+      "contentHash": "6b0aaa74daf4f7ddbadaaa23daa7e083d464f284f6de09ef434ae2bf72248efb",
+      "functions": [
+        {
+          "name": "Init",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "SetOpen",
+          "params": [
+            "_isOpen"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "SetSpriteData",
+          "params": [
+            "_data"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "ChangeSprite",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        }
+      ],
+      "classes": [
+        {
+          "name": "Finger",
+          "methods": [
+            "Init",
+            "SetOpen",
+            "SetSpriteData",
+            "ChangeSprite"
+          ],
+          "properties": [
+            "fingerType",
+            "spriteRenderer",
+            "fingerSpriteData",
+            "FingerType",
+            "isOpen",
+            "IsOpen"
+          ],
+          "exported": true,
+          "lineCount": 37
+        }
+      ],
+      "imports": [
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "FingerType",
+        "IsOpen",
+        "Init",
+        "SetOpen",
+        "SetSpriteData",
+        "Finger"
+      ],
+      "totalLines": 55,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Game/Hand/Hand.cs": {
+      "filePath": "Assets/02. Scripts/Game/Hand/Hand.cs",
+      "contentHash": "fad1e1f0fea5e4c3922665598ec334afda98fd6193231d3e9290f247581d685c",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "CacheFingers",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 24
+        },
+        {
+          "name": "GetFinger",
+          "params": [
+            "_fingerType"
+          ],
+          "returnType": "Finger",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "SetHandSprite",
+          "params": [
+            "_sprite"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "ApplyHandPosition",
+          "params": [
+            "handPosition"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 10
+        },
+        {
+          "name": "CloseAll",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 6
+        }
+      ],
+      "classes": [
+        {
+          "name": "Hand",
+          "methods": [
+            "Awake",
+            "CacheFingers",
+            "GetFinger",
+            "SetHandSprite",
+            "ApplyHandPosition",
+            "CloseAll"
+          ],
+          "properties": [
+            "handSpriteRenderer",
+            "fingers",
+            "FINGER_COUNT",
+            "fingerTable"
+          ],
+          "exported": true,
+          "lineCount": 76
+        }
+      ],
+      "imports": [
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "Hand"
+      ],
+      "totalLines": 95,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Game/Hand/HandSpriteData.cs": {
+      "filePath": "Assets/02. Scripts/Game/Hand/HandSpriteData.cs",
+      "contentHash": "da253b14c3ac7f6c1c506e9fa9b7eaeab0d46a964ac0d75a18bc4c122ad691ac",
+      "functions": [
+        {
+          "name": "GetFingerSprite",
+          "params": [
+            "_fingerType",
+            "_isOpen"
+          ],
+          "returnType": "Sprite",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "FingerIndex",
+          "params": [
+            "_fingerType"
+          ],
+          "returnType": "int",
+          "exported": false,
+          "lineCount": 9
+        }
+      ],
+      "classes": [
+        {
+          "name": "HandSpriteData",
+          "methods": [
+            "GetFingerSprite",
+            "FingerIndex"
+          ],
+          "properties": [
+            "FINGER_SPRITE_COUNT",
+            "handId",
+            "handSprite",
+            "fingerSprites",
+            "HandId",
+            "HandSprite",
+            "FingerSprites"
+          ],
+          "exported": true,
+          "lineCount": 44
+        }
+      ],
+      "imports": [
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "FINGER_SPRITE_COUNT",
+        "HandId",
+        "HandSprite",
+        "FingerSprites",
+        "GetFingerSprite",
+        "HandSpriteData"
+      ],
+      "totalLines": 48,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Game/Hand/PlayerHand.cs": {
+      "filePath": "Assets/02. Scripts/Game/Hand/PlayerHand.cs",
+      "contentHash": "d8dfba9627a3a4cf5ed3181440edc6404e12143699058e3212b58a91a25431e5",
+      "functions": [
+        {
+          "name": "Start",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "OnDestroy",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "AssignActiveFinger",
+          "params": [
+            "_fingerType"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "SetActiveFingerOpen",
+          "params": [
+            "_isOpen"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "ApplyFingerMask",
+          "params": [
+            "mask"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 6
+        }
+      ],
+      "classes": [
+        {
+          "name": "PlayerHand",
+          "methods": [
+            "Start",
+            "OnDestroy",
+            "AssignActiveFinger",
+            "SetActiveFingerOpen",
+            "ApplyFingerMask"
+          ],
+          "properties": [
+            "activeFinger"
+          ],
+          "exported": true,
+          "lineCount": 40
+        }
+      ],
+      "imports": [
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "PlayerHand"
+      ],
+      "totalLines": 44,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Game/ModeData.cs": {
+      "filePath": "Assets/02. Scripts/Game/ModeData.cs",
+      "contentHash": "859a27a65a8675b7900d80f58e4a2d87ac974b618192097cb1def3c8832e46a8",
+      "functions": [],
+      "classes": [
+        {
+          "name": "ModeData",
+          "methods": [],
+          "properties": [
+            "IsSingleControl"
+          ],
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "imports": [
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        }
+      ],
+      "exports": [
+        "IsSingleControl",
+        "ModeData"
+      ],
+      "totalLines": 8,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Management/AssetManager.cs": {
+      "filePath": "Assets/02. Scripts/Management/AssetManager.cs",
+      "contentHash": "70b28aec6ce75f61bfe3cd370992b7afc600b2751ff4d4f42e4e84ed9c72660f",
+      "functions": [
+        {
+          "name": "GetAudioClip",
+          "params": [
+            "clip"
+          ],
+          "returnType": "AudioClip",
+          "exported": true,
+          "lineCount": 27
+        }
+      ],
+      "classes": [
+        {
+          "name": "AssetManager",
+          "methods": [
+            "GetAudioClip"
+          ],
+          "properties": [
+            "_audioCache"
+          ],
+          "exported": true,
+          "lineCount": 33
+        }
+      ],
+      "imports": [
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.AddressableAssets",
+          "specifiers": [
+            "AddressableAssets"
+          ]
+        },
+        {
+          "source": "UnityEngine.ResourceManagement.AsyncOperations",
+          "specifiers": [
+            "AsyncOperations"
+          ]
+        }
+      ],
+      "exports": [
+        "GetAudioClip",
+        "AssetManager"
+      ],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Management/DataManager.cs": {
+      "filePath": "Assets/02. Scripts/Management/DataManager.cs",
+      "contentHash": "882945deb11e43473fd1e4aaa1c8d47d89870cc86db5fa7069f5a9cbdaaffe80",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "LoadData",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "LoadAllDataCoroutine",
+          "params": [],
+          "returnType": "IEnumerator",
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "TryGetBoon",
+          "params": [
+            "key",
+            "data"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "TryGetDefine",
+          "params": [
+            "key",
+            "data"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "TryGetDeviation",
+          "params": [
+            "key",
+            "data"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "TryGetEnemy",
+          "params": [
+            "key",
+            "data"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "TryGetRound",
+          "params": [
+            "key",
+            "data"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "LoadDataToDictionaryAsync",
+          "params": [
+            "dataName",
+            "targetDictionary"
+          ],
+          "returnType": "IEnumerator",
+          "exported": false,
+          "lineCount": 36
+        },
+        {
+          "name": "NotifyLoadGroupFinished",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 8
+        }
+      ],
+      "classes": [
+        {
+          "name": "DataManager",
+          "methods": [
+            "Awake",
+            "LoadData",
+            "LoadAllDataCoroutine",
+            "TryGetBoon",
+            "TryGetDefine",
+            "TryGetDeviation",
+            "TryGetEnemy",
+            "TryGetRound",
+            "LoadDataToDictionaryAsync",
+            "NotifyLoadGroupFinished"
+          ],
+          "properties": [
+            "DataPathPrefix",
+            "LoadGroupCount",
+            "_finishedLoadGroups",
+            "_boonData",
+            "_defineData",
+            "_deviationData",
+            "_enemyData",
+            "_roundData"
+          ],
+          "exported": true,
+          "lineCount": 86
+        },
+        {
+          "name": "IGameData",
+          "methods": [],
+          "properties": [
+            "Code"
+          ],
+          "exported": true,
+          "lineCount": 4
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "System.Collections",
+          "specifiers": [
+            "Collections"
+          ]
+        },
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "System.Threading.Tasks",
+          "specifiers": [
+            "Tasks"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.AddressableAssets",
+          "specifiers": [
+            "AddressableAssets"
+          ]
+        },
+        {
+          "source": "UnityEngine.ResourceManagement.AsyncOperations",
+          "specifiers": [
+            "AsyncOperations"
+          ]
+        }
+      ],
+      "exports": [
+        "TryGetBoon",
+        "TryGetDefine",
+        "TryGetDeviation",
+        "TryGetEnemy",
+        "TryGetRound",
+        "DataManager",
+        "IGameData"
+      ],
+      "totalLines": 101,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Management/GameData.cs": {
+      "filePath": "Assets/02. Scripts/Management/GameData.cs",
+      "contentHash": "05096476be13c2ab788c83e696ca850c8606dcb57497e64418e1a543bcb83b84",
+      "functions": [],
+      "classes": [
+        {
+          "name": "BoonData",
+          "methods": [],
+          "properties": [
+            "index",
+            "code",
+            "name",
+            "description",
+            "position",
+            "value1",
+            "value2",
+            "value3",
+            "value4",
+            "value5",
+            "Code"
+          ],
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "DefineData",
+          "methods": [],
+          "properties": [
+            "index",
+            "code",
+            "value",
+            "Code"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "DeviationData",
+          "methods": [],
+          "properties": [
+            "index",
+            "code",
+            "name",
+            "description",
+            "position",
+            "value1",
+            "value2",
+            "value3",
+            "value4",
+            "value5",
+            "Code"
+          ],
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "EnemyData",
+          "methods": [],
+          "properties": [
+            "index",
+            "code",
+            "roundTimer",
+            "roundHPMultiflier",
+            "resource",
+            "appearMinRound",
+            "appearMaxRound",
+            "value1",
+            "value2",
+            "value3",
+            "Code"
+          ],
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "RoundData",
+          "methods": [],
+          "properties": [
+            "index",
+            "code",
+            "roundTimer",
+            "roundHPMultiflier",
+            "Code"
+          ],
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        }
+      ],
+      "exports": [
+        "index",
+        "code",
+        "name",
+        "description",
+        "position",
+        "value1",
+        "value2",
+        "value3",
+        "value4",
+        "value5",
+        "BoonData",
+        "index",
+        "code",
+        "value",
+        "DefineData",
+        "index",
+        "code",
+        "name",
+        "description",
+        "position",
+        "value1",
+        "value2",
+        "value3",
+        "value4",
+        "value5",
+        "DeviationData",
+        "index",
+        "code",
+        "roundTimer",
+        "roundHPMultiflier",
+        "resource",
+        "appearMinRound",
+        "appearMaxRound",
+        "value1",
+        "value2",
+        "value3",
+        "EnemyData",
+        "index",
+        "code",
+        "roundTimer",
+        "roundHPMultiflier",
+        "RoundData"
+      ],
+      "totalLines": 69,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Management/InGameManager.cs": {
+      "filePath": "Assets/02. Scripts/Management/InGameManager.cs",
+      "contentHash": "d423620089b44e6251e37f282d2083bb40c37364ef42c98f3e93339383215a49",
+      "functions": [
+        {
+          "name": "GetWaveDuration",
+          "params": [
+            "round"
+          ],
+          "returnType": "float",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "GetEnemyMaxHp",
+          "params": [
+            "round"
+          ],
+          "returnType": "int",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "InitEnemyHp",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "OnEnable",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 10
+        },
+        {
+          "name": "OnDisable",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 10
+        },
+        {
+          "name": "Start",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "CachePanels",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 16
+        },
+        {
+          "name": "BeginInGameSetup",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 22
+        },
+        {
+          "name": "HandleInGameSceneReady",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "EarlySpawnPlayerObjectsCoroutine",
+          "params": [],
+          "returnType": "IEnumerator",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "HandleRoundSelected",
+          "params": [
+            "stageIndex"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 14
+        },
+        {
+          "name": "TryBeginHostSetup",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "HostSetupCoroutine",
+          "params": [],
+          "returnType": "IEnumerator",
+          "exported": false,
+          "lineCount": 15
+        },
+        {
+          "name": "HandleFingerAssignmentsReceived",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "ApplyAssignmentsReady",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "HandleFingerToggled",
+          "params": [
+            "isExtended"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 12
+        },
+        {
+          "name": "HandleSingleControlMaskChanged",
+          "params": [
+            "mask"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "HandleWaveStarted",
+          "params": [
+            "durationSeconds"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "WaveTimerCoroutine",
+          "params": [
+            "durationSeconds"
+          ],
+          "returnType": "IEnumerator",
+          "exported": false,
+          "lineCount": 27
+        },
+        {
+          "name": "HandleWaveResultReceived",
+          "params": [
+            "handPosition"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 38
+        },
+        {
+          "name": "BetweenWavesCoroutine",
+          "params": [
+            "isRoundClear",
+            "isGameOver"
+          ],
+          "returnType": "IEnumerator",
+          "exported": false,
+          "lineCount": 67
+        },
+        {
+          "name": "SetEnemyHandPosition",
+          "params": [
+            "position"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "DetermineOutcome",
+          "params": [
+            "player",
+            "enemy"
+          ],
+          "returnType": "EOutcome",
+          "exported": false,
+          "lineCount": 17
+        }
+      ],
+      "classes": [
+        {
+          "name": "InGameManager",
+          "methods": [
+            "GetWaveDuration",
+            "GetEnemyMaxHp",
+            "InitEnemyHp",
+            "OnEnable",
+            "OnDisable",
+            "Start",
+            "CachePanels",
+            "BeginInGameSetup",
+            "HandleInGameSceneReady",
+            "EarlySpawnPlayerObjectsCoroutine",
+            "HandleRoundSelected",
+            "TryBeginHostSetup",
+            "HostSetupCoroutine",
+            "HandleFingerAssignmentsReceived",
+            "ApplyAssignmentsReady",
+            "HandleFingerToggled",
+            "HandleSingleControlMaskChanged",
+            "HandleWaveStarted",
+            "WaveTimerCoroutine",
+            "HandleWaveResultReceived",
+            "BetweenWavesCoroutine",
+            "SetEnemyHandPosition",
+            "DetermineOutcome"
+          ],
+          "properties": [
+            "WAVES_PER_ROUND",
+            "MAX_ROUNDS",
+            "ENEMY_DAMAGE",
+            "BETWEEN_WAVE_DELAY",
+            "Data",
+            "MaxLives",
+            "PlayerDamage",
+            "SLIDE_DURATION",
+            "WAIT_OUTCOME",
+            "WAIT_SLIDE",
+            "Network",
+            "Players",
+            "Input",
+            "_waveCoroutine",
+            "_hostSetupCoroutine",
+            "_betweenWaveCoroutine",
+            "_hostSetupStarted",
+            "_currentRound",
+            "_wonWavesInRound",
+            "_lives",
+            "_enemyHp",
+            "_enemyMaxHp",
+            "_selectedStageIndex",
+            "_enemyHandPosition",
+            "_stagePanel",
+            "_versusPanel",
+            "Phase",
+            "IsWaveActive",
+            "WaveTimeRemaining",
+            "LocalAssignedFinger",
+            "LocalFingerExtended",
+            "LastHandPosition",
+            "CurrentRound",
+            "WonWavesInRound",
+            "Lives",
+            "SelectedStageIndex"
+          ],
+          "exported": true,
+          "lineCount": 436
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "System.Collections",
+          "specifiers": [
+            "Collections"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "WAVES_PER_ROUND",
+        "MAX_ROUNDS",
+        "ENEMY_DAMAGE",
+        "MaxLives",
+        "Phase",
+        "IsWaveActive",
+        "WaveTimeRemaining",
+        "LocalAssignedFinger",
+        "LocalFingerExtended",
+        "LastHandPosition",
+        "CurrentRound",
+        "WonWavesInRound",
+        "Lives",
+        "SelectedStageIndex",
+        "SetEnemyHandPosition",
+        "InGameManager"
+      ],
+      "totalLines": 442,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Management/InGameUIManager.cs": {
+      "filePath": "Assets/02. Scripts/Management/InGameUIManager.cs",
+      "contentHash": "f45d4fabd695f36059c853940f3b35bb59b843209c6fe78ae8093e3d5687f231",
+      "functions": [],
+      "classes": [
+        {
+          "name": "InGameUIManager",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 4
+        }
+      ],
+      "imports": [
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "InGameUIManager"
+      ],
+      "totalLines": 8,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Management/InputManager.cs": {
+      "filePath": "Assets/02. Scripts/Management/InputManager.cs",
+      "contentHash": "3d0d3c71ec38393a22cb4f2e61f1eea3eccce566de6f1fc4d7e5240d6f2a20b8",
+      "functions": [
+        {
+          "name": "Update",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 17
+        },
+        {
+          "name": "HandleMultiControlInput",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "HandleSingleControlInput",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 16
+        },
+        {
+          "name": "SetEnabled",
+          "params": [
+            "enabled"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "SetBlockedByModal",
+          "params": [
+            "isBlocked"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "ToggleFinger",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "SetFingerExtended",
+          "params": [
+            "isExtended"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "RandomizeSingleControlBindings",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "ResetFingerState",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "classes": [
+        {
+          "name": "InputManager",
+          "methods": [
+            "Update",
+            "HandleMultiControlInput",
+            "HandleSingleControlInput",
+            "SetEnabled",
+            "SetBlockedByModal",
+            "ToggleFinger",
+            "SetFingerExtended",
+            "RandomizeSingleControlBindings",
+            "ResetFingerState"
+          ],
+          "properties": [
+            "IsEnabled",
+            "IsFingerExtended",
+            "ExtendedFingersMask",
+            "IsBlockedByModal",
+            "SingleControlKeyBindings"
+          ],
+          "exported": true,
+          "lineCount": 120
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.InputSystem",
+          "specifiers": [
+            "InputSystem"
+          ]
+        }
+      ],
+      "exports": [
+        "IsEnabled",
+        "IsFingerExtended",
+        "ExtendedFingersMask",
+        "IsBlockedByModal",
+        "SingleControlKeyBindings",
+        "SetEnabled",
+        "SetBlockedByModal",
+        "ToggleFinger",
+        "SetFingerExtended",
+        "RandomizeSingleControlBindings",
+        "ResetFingerState",
+        "InputManager"
+      ],
+      "totalLines": 127,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Management/LobbyManager.cs": {
+      "filePath": "Assets/02. Scripts/Management/LobbyManager.cs",
+      "contentHash": "60130b92a12863e926a233b29a1efa1b0f0000004ccf5cfed978ed5db0fb6a33",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "Start",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "OnDestroy",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "OnApplicationQuit",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "CreateSession",
+          "params": [
+            "sessionCode",
+            "onComplete"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "JoinSession",
+          "params": [
+            "sessionCode",
+            "onComplete"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "QuickJoinSession",
+          "params": [
+            "onComplete"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "LeaveSession",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "SetLocalDisplayName",
+          "params": [
+            "displayName"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "SetLocalReady",
+          "params": [
+            "isReady"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "StartGame",
+          "params": [
+            "targetScene",
+            "onComplete"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 16
+        },
+        {
+          "name": "CanStartGame",
+          "params": [],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "HandleLobbySessionUpdated",
+          "params": [
+            "session"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "RefreshLobbyUI",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 23
+        },
+        {
+          "name": "HandleLobbyError",
+          "params": [
+            "message"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "Complete",
+          "params": [
+            "result",
+            "onComplete"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 16
+        }
+      ],
+      "classes": [
+        {
+          "name": "LobbyManager",
+          "methods": [
+            "Awake",
+            "Start",
+            "OnDestroy",
+            "OnApplicationQuit",
+            "CreateSession",
+            "JoinSession",
+            "QuickJoinSession",
+            "LeaveSession",
+            "SetLocalDisplayName",
+            "SetLocalReady",
+            "StartGame",
+            "CanStartGame",
+            "HandleLobbySessionUpdated",
+            "RefreshLobbyUI",
+            "HandleLobbyError",
+            "Complete"
+          ],
+          "properties": [
+            "localDisplayName",
+            "defaultMaxPlayers",
+            "minPlayersToStart",
+            "requireAllReady",
+            "Network",
+            "Session",
+            "State",
+            "IsInLobby",
+            "IsHost",
+            "SessionCode",
+            "Players",
+            "LocalDisplayName",
+            "IsLocalReady",
+            "RequiresAllPlayersReady"
+          ],
+          "exported": true,
+          "lineCount": 195
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "Session",
+        "State",
+        "IsInLobby",
+        "IsHost",
+        "SessionCode",
+        "Players",
+        "LocalDisplayName",
+        "IsLocalReady",
+        "RequiresAllPlayersReady",
+        "CreateSession",
+        "JoinSession",
+        "QuickJoinSession",
+        "LeaveSession",
+        "SetLocalDisplayName",
+        "SetLocalReady",
+        "StartGame",
+        "CanStartGame",
+        "RefreshLobbyUI",
+        "LobbyManager"
+      ],
+      "totalLines": 204,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Management/LobbyUIManager.cs": {
+      "filePath": "Assets/02. Scripts/Management/LobbyUIManager.cs",
+      "contentHash": "bf67cbf26a499965d37afee17ddb08d6cd3c9a64c98df34b475d51e4f27407c8",
+      "functions": [
+        {
+          "name": "Start",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        }
+      ],
+      "classes": [
+        {
+          "name": "LobbyUIManager",
+          "methods": [
+            "Start"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "imports": [
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        }
+      ],
+      "exports": [
+        "LobbyUIManager"
+      ],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Management/ManagerBase.cs": {
+      "filePath": "Assets/02. Scripts/Management/ManagerBase.cs",
+      "contentHash": "eb84a64292c7d208f70fd3baf64280c6ec78b44b3d2d6066014707fddea4a84c",
+      "functions": [
+        {
+          "name": "ManagerHandler",
+          "params": [],
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "SetFieldValue",
+          "params": [
+            "type",
+            "manager"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 17
+        },
+        {
+          "name": "SetFieldValue",
+          "params": [
+            "manager"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "ManagerHandler",
+          "methods": [
+            "ManagerHandler",
+            "SetFieldValue",
+            "SetFieldValue"
+          ],
+          "properties": [
+            "_appFieldInfo"
+          ],
+          "exported": true,
+          "lineCount": 45
+        },
+        {
+          "name": "DataManagerBase",
+          "methods": [
+            "Awake"
+          ],
+          "properties": [
+            "IsDataLoaded"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "CommonManagerBase",
+          "methods": [
+            "Awake"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 4
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "System.Linq",
+          "specifiers": [
+            "Linq"
+          ]
+        },
+        {
+          "source": "System.Reflection",
+          "specifiers": [
+            "Reflection"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.Scripting",
+          "specifiers": [
+            "Scripting"
+          ]
+        }
+      ],
+      "exports": [
+        "ManagerHandler",
+        "IsDataLoaded",
+        "DataManagerBase",
+        "CommonManagerBase"
+      ],
+      "totalLines": 65,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Management/NetworkManager.cs": {
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "contentHash": "df2a5fdf58169cdbf61888a4191e7b674e51d3cad47c0c620793166ca0b8c624",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "OnEnable",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "OnDisable",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "OnDestroy",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "ConnectToCloud",
+          "params": [
+            "onComplete"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "Initialize",
+          "params": [
+            "localDisplayName",
+            "defaultMaxPlayers",
+            "minPlayersToStart",
+            "requireAllReady"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "CreateSession",
+          "params": [
+            "sessionCode",
+            "maxPlayers",
+            "onComplete"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "JoinSession",
+          "params": [
+            "sessionCode",
+            "onComplete"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "QuickJoinSession",
+          "params": [
+            "onComplete"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "LeaveSession",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "SetLocalReady",
+          "params": [
+            "isReady"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "SetLocalDisplayName",
+          "params": [
+            "displayName"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "StartGame",
+          "params": [
+            "targetScene",
+            "onComplete"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "Shutdown",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "GetActivePlayers",
+          "params": [],
+          "returnType": "IReadOnlyList<PlayerRef>",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "GetLocalPlayerId",
+          "params": [],
+          "returnType": "string",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "CanStartGame",
+          "params": [],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "ConnectToCloudCoroutine",
+          "params": [
+            "onComplete"
+          ],
+          "returnType": "IEnumerator",
+          "exported": false,
+          "lineCount": 18
+        },
+        {
+          "name": "StartSessionCoroutine",
+          "params": [
+            "gameMode",
+            "sessionName",
+            "maxPlayers",
+            "isHost",
+            "onComplete"
+          ],
+          "returnType": "IEnumerator",
+          "exported": false,
+          "lineCount": 44
+        },
+        {
+          "name": "ResolveSessionCode",
+          "params": [
+            "requestedCode"
+          ],
+          "returnType": "string",
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "LoadInGameSceneCoroutine",
+          "params": [
+            "targetScene",
+            "onComplete"
+          ],
+          "returnType": "IEnumerator",
+          "exported": false,
+          "lineCount": 23
+        },
+        {
+          "name": "LeaveSessionCoroutine",
+          "params": [],
+          "returnType": "IEnumerator",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "ShutdownSessionCoroutine",
+          "params": [
+            "disconnectCloud"
+          ],
+          "returnType": "IEnumerator",
+          "exported": false,
+          "lineCount": 18
+        },
+        {
+          "name": "EnsureCloudLobbyCoroutine",
+          "params": [
+            "rejoinAfterFailedStart"
+          ],
+          "returnType": "IEnumerator",
+          "exported": false,
+          "lineCount": 43
+        },
+        {
+          "name": "EnsureRunnerComponents",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 12
+        },
+        {
+          "name": "FormatStartGameError",
+          "params": [
+            "result",
+            "context"
+          ],
+          "returnType": "string",
+          "exported": false,
+          "lineCount": 14
+        },
+        {
+          "name": "GetStartGameErrorMessage",
+          "params": [
+            "shutdownReason"
+          ],
+          "returnType": "string",
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "TryGetAliveRunner",
+          "params": [
+            "runner"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "ApplyConnectedSession",
+          "params": [
+            "sessionCode",
+            "maxPlayers",
+            "isHost"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "RefreshSessionPlayers",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 10
+        },
+        {
+          "name": "OnPlayerJoined",
+          "params": [
+            "runner",
+            "player"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "OnPlayerLeft",
+          "params": [
+            "runner",
+            "player"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "OnShutdown",
+          "params": [
+            "runner",
+            "shutdownReason"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "OnConnectedToServer",
+          "params": [
+            "runner"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "OnDisconnectedFromServer",
+          "params": [
+            "runner",
+            "reason"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "OnReliableDataReceived",
+          "params": [
+            "runner",
+            "player",
+            "key",
+            "data"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "OnConnectRequest",
+          "params": [
+            "runner",
+            "request",
+            "token"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "OnConnectFailed",
+          "params": [
+            "runner",
+            "remoteAddress",
+            "reason"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "OnInput",
+          "params": [
+            "runner",
+            "input"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "OnInputMissing",
+          "params": [
+            "runner",
+            "player",
+            "input"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "OnSessionListUpdated",
+          "params": [
+            "runner",
+            "sessionList"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "OnCustomAuthenticationResponse",
+          "params": [
+            "runner",
+            "data"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "OnHostMigration",
+          "params": [
+            "runner",
+            "hostMigrationToken"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "OnReliableDataProgress",
+          "params": [
+            "runner",
+            "player",
+            "key",
+            "progress"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "OnSceneLoadDone",
+          "params": [
+            "runner"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "OnSceneLoadStart",
+          "params": [
+            "runner"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "OnObjectEnterAOI",
+          "params": [
+            "runner",
+            "obj",
+            "player"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "OnObjectExitAOI",
+          "params": [
+            "runner",
+            "obj",
+            "player"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "OnUserSimulationMessage",
+          "params": [
+            "runner",
+            "message"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "ServerInitializeFingerAssignments",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 30
+        },
+        {
+          "name": "ClientSendFingerState",
+          "params": [
+            "isExtended"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 21
+        },
+        {
+          "name": "ServerBroadcastStageSelected",
+          "params": [
+            "stageIndex"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "ServerStartRound",
+          "params": [
+            "durationSeconds"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "ServerJudgeAndBroadcastRoundResult",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "GetServerExtendedFingersMask",
+          "params": [],
+          "returnType": "EFingerType",
+          "exported": false,
+          "lineCount": 26
+        },
+        {
+          "name": "ResetServerFingerExtendedStates",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 17
+        },
+        {
+          "name": "BroadcastRoundResult",
+          "params": [
+            "handPosition"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "BroadcastInGamePayload",
+          "params": [
+            "payload"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 17
+        },
+        {
+          "name": "AppendFloat",
+          "params": [
+            "payload",
+            "value"
+          ],
+          "returnType": "byte[]",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "ResetInGameRoundNotification",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "HandleInGameDataChanged",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 15
+        },
+        {
+          "name": "HandleInGameRpsData",
+          "params": [
+            "runner",
+            "from",
+            "data"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 42
+        }
+      ],
+      "classes": [
+        {
+          "name": "NetworkManager",
+          "methods": [
+            "Awake",
+            "OnEnable",
+            "OnDisable",
+            "OnDestroy",
+            "ConnectToCloud",
+            "Initialize",
+            "CreateSession",
+            "JoinSession",
+            "QuickJoinSession",
+            "LeaveSession",
+            "SetLocalReady",
+            "SetLocalDisplayName",
+            "StartGame",
+            "Shutdown",
+            "GetActivePlayers",
+            "GetLocalPlayerId",
+            "CanStartGame",
+            "ConnectToCloudCoroutine",
+            "StartSessionCoroutine",
+            "ResolveSessionCode",
+            "LoadInGameSceneCoroutine",
+            "LeaveSessionCoroutine",
+            "ShutdownSessionCoroutine",
+            "EnsureCloudLobbyCoroutine",
+            "EnsureRunnerComponents",
+            "FormatStartGameError",
+            "GetStartGameErrorMessage",
+            "TryGetAliveRunner",
+            "ApplyConnectedSession",
+            "RefreshSessionPlayers",
+            "OnPlayerJoined",
+            "OnPlayerLeft",
+            "OnShutdown",
+            "OnConnectedToServer",
+            "OnDisconnectedFromServer",
+            "OnReliableDataReceived",
+            "OnConnectRequest",
+            "OnConnectFailed",
+            "OnInput",
+            "OnInputMissing",
+            "OnSessionListUpdated",
+            "OnCustomAuthenticationResponse",
+            "OnHostMigration",
+            "OnReliableDataProgress",
+            "OnSceneLoadDone",
+            "OnSceneLoadStart",
+            "OnObjectEnterAOI",
+            "OnObjectExitAOI",
+            "OnUserSimulationMessage",
+            "ServerInitializeFingerAssignments",
+            "ClientSendFingerState",
+            "ServerBroadcastStageSelected",
+            "ServerStartRound",
+            "ServerJudgeAndBroadcastRoundResult",
+            "GetServerExtendedFingersMask",
+            "ResetServerFingerExtendedStates",
+            "BroadcastRoundResult",
+            "BroadcastInGamePayload",
+            "AppendFloat",
+            "ResetInGameRoundNotification",
+            "HandleInGameDataChanged",
+            "HandleInGameRpsData"
+          ],
+          "properties": [
+            "MaxPlayers",
+            "SessionNotFoundMessage",
+            "_runner",
+            "_session",
+            "_localDisplayName",
+            "_defaultMaxPlayers",
+            "_minPlayersToStart",
+            "_requireAllReady",
+            "_isRestoringCloudLobby",
+            "_lastCloudConnectError",
+            "Runner",
+            "IsRunning",
+            "IsCloudConnected",
+            "Session",
+            "IsLocalReady",
+            "LocalDisplayName",
+            "IsServerHost",
+            "InGameRpsKey",
+            "_localAssignmentNotified"
+          ],
+          "exported": true,
+          "lineCount": 798
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "System.Collections",
+          "specifiers": [
+            "Collections"
+          ]
+        },
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "Fusion",
+          "specifiers": [
+            "Fusion"
+          ]
+        },
+        {
+          "source": "Fusion.Photon.Realtime",
+          "specifiers": [
+            "Realtime"
+          ]
+        },
+        {
+          "source": "Fusion.Sockets",
+          "specifiers": [
+            "Sockets"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.SceneManagement",
+          "specifiers": [
+            "SceneManagement"
+          ]
+        }
+      ],
+      "exports": [
+        "MaxPlayers",
+        "SessionNotFoundMessage",
+        "Runner",
+        "IsRunning",
+        "IsCloudConnected",
+        "Session",
+        "IsLocalReady",
+        "LocalDisplayName",
+        "IsServerHost",
+        "ConnectToCloud",
+        "Initialize",
+        "CreateSession",
+        "JoinSession",
+        "QuickJoinSession",
+        "LeaveSession",
+        "SetLocalReady",
+        "SetLocalDisplayName",
+        "StartGame",
+        "Shutdown",
+        "GetActivePlayers",
+        "GetLocalPlayerId",
+        "CanStartGame",
+        "TryGetAliveRunner",
+        "OnPlayerJoined",
+        "OnPlayerLeft",
+        "OnShutdown",
+        "OnConnectedToServer",
+        "OnDisconnectedFromServer",
+        "OnReliableDataReceived",
+        "OnConnectRequest",
+        "OnConnectFailed",
+        "OnInput",
+        "OnInputMissing",
+        "OnSessionListUpdated",
+        "OnCustomAuthenticationResponse",
+        "OnHostMigration",
+        "OnReliableDataProgress",
+        "OnSceneLoadDone",
+        "OnSceneLoadStart",
+        "OnObjectEnterAOI",
+        "OnObjectExitAOI",
+        "OnUserSimulationMessage",
+        "ServerInitializeFingerAssignments",
+        "ClientSendFingerState",
+        "ServerBroadcastStageSelected",
+        "ServerStartRound",
+        "ServerJudgeAndBroadcastRoundResult",
+        "ResetInGameRoundNotification",
+        "NetworkManager"
+      ],
+      "totalLines": 819,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Management/PlayerManager.cs": {
+      "filePath": "Assets/02. Scripts/Management/PlayerManager.cs",
+      "contentHash": "8bd873db784d2174c62c98ce6de5064c33cd9cb59be7413c467cc79907ab5ea6",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 12
+        },
+        {
+          "name": "OnDestroy",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "HandlePlayerDataChanged",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "TryGetLocal",
+          "params": [
+            "player"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "TryGet",
+          "params": [
+            "playerRef",
+            "player"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "ServerEnsurePlayerObjectsCoroutine",
+          "params": [],
+          "returnType": "IEnumerator",
+          "exported": true,
+          "lineCount": 31
+        },
+        {
+          "name": "SpawnAsyncCoroutine",
+          "params": [
+            "runner",
+            "player"
+          ],
+          "returnType": "IEnumerator",
+          "exported": false,
+          "lineCount": 37
+        },
+        {
+          "name": "Spawn",
+          "params": [
+            "runner",
+            "player"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 23
+        },
+        {
+          "name": "Despawn",
+          "params": [
+            "runner",
+            "player"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "TryGetHost",
+          "params": [
+            "host"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "BuildLobbyPlayers",
+          "params": [],
+          "returnType": "List<LobbyPlayer>",
+          "exported": true,
+          "lineCount": 37
+        },
+        {
+          "name": "AddLocalLobbyFallback",
+          "params": [
+            "players"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 17
+        },
+        {
+          "name": "ResolveDisplayName",
+          "params": [
+            "playerRef",
+            "playerId",
+            "isLocal"
+          ],
+          "returnType": "string",
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "ResolveHostPlayer",
+          "params": [
+            "runner",
+            "activePlayers"
+          ],
+          "returnType": "PlayerRef",
+          "exported": false,
+          "lineCount": 21
+        }
+      ],
+      "classes": [
+        {
+          "name": "PlayerManager",
+          "methods": [
+            "Awake",
+            "OnDestroy",
+            "HandlePlayerDataChanged",
+            "TryGetLocal",
+            "TryGet",
+            "ServerEnsurePlayerObjectsCoroutine",
+            "SpawnAsyncCoroutine",
+            "Spawn",
+            "Despawn",
+            "TryGetHost",
+            "BuildLobbyPlayers",
+            "AddLocalLobbyFallback",
+            "ResolveDisplayName",
+            "ResolveHostPlayer"
+          ],
+          "properties": [
+            "MAX_HP",
+            "PlayerPrefabResource",
+            "_playerPrefab",
+            "Network",
+            "LocalAssignedFinger",
+            "LocalDisplayName",
+            "IsLocalReady"
+          ],
+          "exported": true,
+          "lineCount": 311
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "System.Collections",
+          "specifiers": [
+            "Collections"
+          ]
+        },
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "Fusion",
+          "specifiers": [
+            "Fusion"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "MAX_HP",
+        "LocalAssignedFinger",
+        "LocalDisplayName",
+        "IsLocalReady",
+        "TryGetLocal",
+        "TryGet",
+        "ServerEnsurePlayerObjectsCoroutine",
+        "Spawn",
+        "Despawn",
+        "TryGetHost",
+        "BuildLobbyPlayers",
+        "PlayerManager"
+      ],
+      "totalLines": 323,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Management/SceneManagerBase.cs": {
+      "filePath": "Assets/02. Scripts/Management/SceneManagerBase.cs",
+      "contentHash": "d458e059b74050e8c19716a973561bdb13e26c4d67e5716d722506299467f0c0",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "MoveToNextScene",
+          "params": [
+            "nextScene"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        }
+      ],
+      "classes": [
+        {
+          "name": "SceneManagerBase",
+          "methods": [
+            "Awake",
+            "MoveToNextScene"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 13
+        }
+      ],
+      "imports": [
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "MoveToNextScene",
+        "SceneManagerBase"
+      ],
+      "totalLines": 17,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Management/SoundManager.cs": {
+      "filePath": "Assets/02. Scripts/Management/SoundManager.cs",
+      "contentHash": "abb4ff2b8d8d35c9d6cba7502bccaa3eeff33c5f419bbe6f5475ee0416397569",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "OnDestroy",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "StopBgmFadeCoroutine",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "StartBgmFadeIn",
+          "params": [
+            "audioClip",
+            "clipEnum"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "ApplyForceMute",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 17
+        },
+        {
+          "name": "PlayLoopingSfx",
+          "params": [
+            "clip"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "StopLoopingSfx",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "InitAudioSources",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 14
+        },
+        {
+          "name": "CreateSFXSource",
+          "params": [],
+          "returnType": "AudioSource",
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "LoadAndCacheClip",
+          "params": [
+            "clip",
+            "onLoaded"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "PlayBGM",
+          "params": [
+            "clip"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 36
+        },
+        {
+          "name": "StopBGM",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "StopBGMImmediate",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "GetFreeSFXSource",
+          "params": [],
+          "returnType": "AudioSource",
+          "exported": false,
+          "lineCount": 14
+        },
+        {
+          "name": "PlaySFX",
+          "params": [
+            "clip"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "StopAllSFX",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "FadeBgmVolume",
+          "params": [
+            "from",
+            "to",
+            "duration",
+            "onComplete"
+          ],
+          "returnType": "IEnumerator",
+          "exported": false,
+          "lineCount": 22
+        }
+      ],
+      "classes": [
+        {
+          "name": "SoundManager",
+          "methods": [
+            "Awake",
+            "OnDestroy",
+            "StopBgmFadeCoroutine",
+            "StartBgmFadeIn",
+            "ApplyForceMute",
+            "PlayLoopingSfx",
+            "StopLoopingSfx",
+            "InitAudioSources",
+            "CreateSFXSource",
+            "LoadAndCacheClip",
+            "PlayBGM",
+            "StopBGM",
+            "StopBGMImmediate",
+            "GetFreeSFXSource",
+            "PlaySFX",
+            "StopAllSFX",
+            "FadeBgmVolume"
+          ],
+          "properties": [
+            "InitialSFXPoolSize",
+            "_forceMute",
+            "_bgmSource",
+            "_sfxSourcePrefab",
+            "_clipCache",
+            "_sfxPool",
+            "_loopingSfxSource",
+            "BgmFadeDuration",
+            "_bgmFadeCoroutine",
+            "_activeBgmClip",
+            "ForceMute"
+          ],
+          "exported": true,
+          "lineCount": 281
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "System.Collections",
+          "specifiers": [
+            "Collections"
+          ]
+        },
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "ForceMute",
+        "PlayLoopingSfx",
+        "StopLoopingSfx",
+        "PlayBGM",
+        "StopBGM",
+        "StopBGMImmediate",
+        "PlaySFX",
+        "StopAllSFX",
+        "SoundManager"
+      ],
+      "totalLines": 288,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Management/TitleManager.cs": {
+      "filePath": "Assets/02. Scripts/Management/TitleManager.cs",
+      "contentHash": "fe86be6dc822b541e87b359dd0bf91aafa9ddc51a1c8024d52774c9474728668",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "Connect",
+          "params": [
+            "displayName",
+            "onComplete"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 24
+        },
+        {
+          "name": "Complete",
+          "params": [
+            "result",
+            "onComplete"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 9
+        }
+      ],
+      "classes": [
+        {
+          "name": "TitleManager",
+          "methods": [
+            "Awake",
+            "Connect",
+            "Complete"
+          ],
+          "properties": [
+            "defaultMaxPlayers",
+            "minPlayersToStart",
+            "requireAllReady",
+            "IsCloudConnected"
+          ],
+          "exported": true,
+          "lineCount": 50
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "IsCloudConnected",
+        "Connect",
+        "TitleManager"
+      ],
+      "totalLines": 55,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Management/TitleUIManager.cs": {
+      "filePath": "Assets/02. Scripts/Management/TitleUIManager.cs",
+      "contentHash": "12396ab1fbfdfbf7c24ca2ff528db23c26ccf833a8a9b13774d9d3bed0ef537b",
+      "functions": [],
+      "classes": [
+        {
+          "name": "TitleUIManager",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "imports": [
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "TitleUIManager"
+      ],
+      "totalLines": 6,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Management/UIManagerBase.cs": {
+      "filePath": "Assets/02. Scripts/Management/UIManagerBase.cs",
+      "contentHash": "6648b0055b87dfacf56cb14e40a5d8bb4ce34e7707cbba9fa76b51eba578586c",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "Update",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 12
+        },
+        {
+          "name": "RegisterPanel",
+          "params": [
+            "panel"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "PushUIStack",
+          "params": [
+            "panel"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "PopUIStack",
+          "params": [
+            "panel"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "TryGetPanel",
+          "params": [
+            "panel"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "GetPanel",
+          "params": [],
+          "returnType": "T",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "OpenPanel",
+          "params": [],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "ClosePanel",
+          "params": [],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 10
+        }
+      ],
+      "classes": [
+        {
+          "name": "UIManagerBase",
+          "methods": [
+            "Awake",
+            "Update",
+            "RegisterPanel",
+            "PushUIStack",
+            "PopUIStack",
+            "TryGetPanel",
+            "GetPanel",
+            "OpenPanel",
+            "ClosePanel"
+          ],
+          "properties": [
+            "_panelDictionary",
+            "_panelStack"
+          ],
+          "exported": true,
+          "lineCount": 104
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.InputSystem",
+          "specifiers": [
+            "InputSystem"
+          ]
+        }
+      ],
+      "exports": [
+        "RegisterPanel",
+        "PushUIStack",
+        "PopUIStack",
+        "TryGetPanel",
+        "GetPanel",
+        "OpenPanel",
+        "ClosePanel",
+        "UIManagerBase"
+      ],
+      "totalLines": 111,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs": {
+      "filePath": "Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "contentHash": "3a325d919c9ff0c744e2f36ce4158ff3f20bb81b93918f895e15d20e6cb10485",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "SetCooldown",
+          "params": [
+            "hand",
+            "duration"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "InitSlot",
+          "params": [
+            "slot"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "ActivateSlot",
+          "params": [
+            "slot"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "TickSlot",
+          "params": [
+            "remaining",
+            "total",
+            "slot"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 18
+        },
+        {
+          "name": "CompleteSlot",
+          "params": [
+            "slot"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 14
+        }
+      ],
+      "classes": [
+        {
+          "name": "ForbidHandShapePanel",
+          "methods": [
+            "Awake",
+            "SetCooldown",
+            "InitSlot",
+            "ActivateSlot",
+            "TickSlot",
+            "CompleteSlot"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "rock",
+            "paper",
+            "scissors",
+            "_rockRemaining",
+            "_rockTotal",
+            "_paperRemaining",
+            "_paperTotal",
+            "_scissorsRemaining",
+            "_scissorsTotal",
+            "DIM_COLOR",
+            "FILL_COLOR"
+          ],
+          "exported": true,
+          "lineCount": 130
+        }
+      ],
+      "imports": [
+        {
+          "source": "DG.Tweening",
+          "specifiers": [
+            "Tweening"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "TMPro",
+          "specifiers": [
+            "TMPro"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.UI",
+          "specifiers": [
+            "UI"
+          ]
+        }
+      ],
+      "exports": [
+        "IsOpened",
+        "CanCloseWithESC",
+        "IsStackable",
+        "UIType",
+        "SetCooldown",
+        "ForbidHandShapePanel"
+      ],
+      "totalLines": 137,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/Game/HUDPanel.cs": {
+      "filePath": "Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "contentHash": "090a9e1cfe163d9667cd6bfe22cde1e964a9b7de66da3fd2154cd0dfbbe86385",
+      "functions": [
+        {
+          "name": "Start",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "OnDestroy",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "HandleStageOpened",
+          "params": [
+            "stageIndex"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "PlayFillIn",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 34
+        },
+        {
+          "name": "HandleLivesChanged",
+          "params": [
+            "lives"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "HandleEnemyHpChanged",
+          "params": [
+            "hp",
+            "maxHp"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "PlayEnemyDrain",
+          "params": [
+            "target"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 28
+        },
+        {
+          "name": "EnemyGhostDrainCoroutine",
+          "params": [
+            "target"
+          ],
+          "returnType": "IEnumerator",
+          "exported": false,
+          "lineCount": 16
+        },
+        {
+          "name": "PlayDrain",
+          "params": [
+            "target"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 22
+        },
+        {
+          "name": "PlayHitShake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "GhostDrainCoroutine",
+          "params": [
+            "target"
+          ],
+          "returnType": "IEnumerator",
+          "exported": false,
+          "lineCount": 16
+        }
+      ],
+      "classes": [
+        {
+          "name": "HUDPanel",
+          "methods": [
+            "Start",
+            "OnDestroy",
+            "HandleStageOpened",
+            "PlayFillIn",
+            "HandleLivesChanged",
+            "HandleEnemyHpChanged",
+            "PlayEnemyDrain",
+            "EnemyGhostDrainCoroutine",
+            "PlayDrain",
+            "PlayHitShake",
+            "GhostDrainCoroutine"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "playerHPImage",
+            "playerFollowHPImage",
+            "playerHPRect",
+            "enemyHPImage",
+            "enemyFollowHPImage",
+            "enemyHPRect",
+            "fillDuration",
+            "delaySeconds",
+            "ghostSpeed",
+            "enemyGhostSpeed",
+            "playerHudShakeRect",
+            "enemyShakeRect",
+            "shakeDuration",
+            "shakeStrength",
+            "shakeVibrato",
+            "_playerDelayed",
+            "_enemyDelayed",
+            "_hudShakeOrigin",
+            "_ghostCoroutine",
+            "_enemyGhostCoroutine",
+            "InGame"
+          ],
+          "exported": true,
+          "lineCount": 210
+        }
+      ],
+      "imports": [
+        {
+          "source": "System.Collections",
+          "specifiers": [
+            "Collections"
+          ]
+        },
+        {
+          "source": "DG.Tweening",
+          "specifiers": [
+            "Tweening"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.UI",
+          "specifiers": [
+            "UI"
+          ]
+        }
+      ],
+      "exports": [
+        "IsOpened",
+        "CanCloseWithESC",
+        "IsStackable",
+        "UIType",
+        "HUDPanel"
+      ],
+      "totalLines": 217,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/Game/IndicatePanel.cs": {
+      "filePath": "Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "contentHash": "9966f2bc5af7443e35457ec40561bcd4adaf32c54b11bb7fa024efb78f04edc0",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "InitSlots",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "Show",
+          "params": [
+            "type",
+            "name",
+            "description"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "Hide",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "SetMousePosition",
+          "params": [
+            "screenPos"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "classes": [
+        {
+          "name": "IndicatePanel",
+          "methods": [
+            "Awake",
+            "InitSlots",
+            "Show",
+            "Hide",
+            "SetMousePosition"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "slots",
+            "slotTable",
+            "_activeSlot",
+            "_canvas"
+          ],
+          "exported": true,
+          "lineCount": 66
+        }
+      ],
+      "imports": [
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "IsOpened",
+        "CanCloseWithESC",
+        "IsStackable",
+        "UIType",
+        "Show",
+        "Hide",
+        "SetMousePosition",
+        "IndicatePanel"
+      ],
+      "totalLines": 78,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs": {
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "contentHash": "e07e74f14b4e49f2c7cfdb1db8b7b4c98ecf0a6a633e48b62038ff22e613fdad",
+      "functions": [
+        {
+          "name": "Activate",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "Deactivate",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "Update",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 30
+        },
+        {
+          "name": "BuildParticipants",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 24
+        },
+        {
+          "name": "SetupStars",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 17
+        },
+        {
+          "name": "ServerAssignChallenge",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 18
+        },
+        {
+          "name": "TryCacheStartTime",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "TryCacheCycleSeconds",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "HandleLocalInput",
+          "params": [
+            "ratio",
+            "anchoredX"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "SubmitLocalResult",
+          "params": [
+            "result",
+            "ratio",
+            "anchoredX"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 19
+        },
+        {
+          "name": "HandleNetworkDataChanged",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 15
+        },
+        {
+          "name": "TryRequestCloseWhenAllFinished",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 12
+        },
+        {
+          "name": "RatioToAnchoredX",
+          "params": [
+            "ratio"
+          ],
+          "returnType": "float",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "IsRatioInSuccessZone",
+          "params": [
+            "ratio"
+          ],
+          "returnType": "bool",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "EnsureZoneCached",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 15
+        },
+        {
+          "name": "GetColor",
+          "params": [
+            "color"
+          ],
+          "returnType": "Color",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "ShuffleColors",
+          "params": [],
+          "returnType": "EStarColor[]",
+          "exported": false,
+          "lineCount": 11
+        }
+      ],
+      "classes": [
+        {
+          "name": "StarforceModalContent",
+          "methods": [
+            "Activate",
+            "Deactivate",
+            "Update",
+            "BuildParticipants",
+            "SetupStars",
+            "ServerAssignChallenge",
+            "TryCacheStartTime",
+            "TryCacheCycleSeconds",
+            "HandleLocalInput",
+            "SubmitLocalResult",
+            "HandleNetworkDataChanged",
+            "TryRequestCloseWhenAllFinished",
+            "RatioToAnchoredX",
+            "IsRatioInSuccessZone",
+            "EnsureZoneCached",
+            "GetColor",
+            "ShuffleColors"
+          ],
+          "properties": [
+            "MAX_PARTICIPANTS",
+            "MIN_CYCLE_SECONDS",
+            "MAX_CYCLE_SECONDS",
+            "_trackRect",
+            "_successZoneRect",
+            "_stars",
+            "_starColors",
+            "_colorPool",
+            "_participants",
+            "_cycleSeconds",
+            "Network",
+            "Players",
+            "_isZoneCached",
+            "_zoneMinRatio",
+            "_zoneMaxRatio",
+            "_localSlotIndex",
+            "_startTime",
+            "_isLocalFinished",
+            "_hasRequestedClose",
+            "CurrentSimulationTime"
+          ],
+          "exported": true,
+          "lineCount": 281
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "Fusion",
+          "specifiers": [
+            "Fusion"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.InputSystem",
+          "specifiers": [
+            "InputSystem"
+          ]
+        }
+      ],
+      "exports": [
+        "MAX_PARTICIPANTS",
+        "Activate",
+        "Deactivate",
+        "StarforceModalContent"
+      ],
+      "totalLines": 298,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs": {
+      "filePath": "Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs",
+      "contentHash": "eaf8de2ef27900c2e6177f3212ede5aa91b3ac8b7e2cb38c895d27a807d41e06",
+      "functions": [
+        {
+          "name": "SetVisible",
+          "params": [
+            "isVisible"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "ResetStar",
+          "params": [
+            "color"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "MoveTo",
+          "params": [
+            "anchoredX"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "Stop",
+          "params": [
+            "anchoredX"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "SetPositionX",
+          "params": [
+            "x"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        }
+      ],
+      "classes": [
+        {
+          "name": "StarforceStar",
+          "methods": [
+            "SetVisible",
+            "ResetStar",
+            "MoveTo",
+            "Stop",
+            "SetPositionX"
+          ],
+          "properties": [
+            "STOPPED_ALPHA",
+            "_image",
+            "_rect",
+            "IsStopped"
+          ],
+          "exported": true,
+          "lineCount": 42
+        }
+      ],
+      "imports": [
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.UI",
+          "specifiers": [
+            "UI"
+          ]
+        }
+      ],
+      "exports": [
+        "IsStopped",
+        "SetVisible",
+        "ResetStar",
+        "MoveTo",
+        "Stop",
+        "StarforceStar"
+      ],
+      "totalLines": 51,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/Game/ModalContent.cs": {
+      "filePath": "Assets/02. Scripts/UI/Game/ModalContent.cs",
+      "contentHash": "6e04b23624e6e6c62b5f882d07fdad0f762ba04d7ff5a7064ab2470b13227d60",
+      "functions": [
+        {
+          "name": "Activate",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "Deactivate",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "RequestClose",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "ModalContent",
+          "methods": [
+            "Activate",
+            "Deactivate",
+            "RequestClose"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "Activate",
+        "Deactivate",
+        "ModalContent"
+      ],
+      "totalLines": 18,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/Game/ModalPanel.cs": {
+      "filePath": "Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "contentHash": "e04b1ae64b8635515cb762caaf0b34a25bead170b99cc588e5ae154bb8d4806c",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 10
+        },
+        {
+          "name": "TryShow",
+          "params": [
+            "content"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "ClosePanel",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "Show",
+          "params": [
+            "content"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 15
+        },
+        {
+          "name": "HideActive",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "HandleContentRequestedClose",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "FindContent",
+          "params": [],
+          "returnType": "T",
+          "exported": false,
+          "lineCount": 9
+        }
+      ],
+      "classes": [
+        {
+          "name": "ModalPanel",
+          "methods": [
+            "Awake",
+            "TryShow",
+            "ClosePanel",
+            "Show",
+            "HideActive",
+            "HandleContentRequestedClose",
+            "FindContent"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "_contents",
+            "_active"
+          ],
+          "exported": true,
+          "lineCount": 88
+        }
+      ],
+      "imports": [
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "IsOpened",
+        "CanCloseWithESC",
+        "IsStackable",
+        "UIType",
+        "TryShow",
+        "ClosePanel",
+        "ModalPanel"
+      ],
+      "totalLines": 93,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/Game/NextIconPanel.cs": {
+      "filePath": "Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "contentHash": "a8ee1cbbfa509bb9c65562da963e6eca2cad84b9cb86c008dc2fc5d4ec199564",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "Start",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "OnDestroy",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "GenerateQueue",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 28
+        },
+        {
+          "name": "LoadInitialSlots",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "HandleReadyStarted",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "HandleWaveStarted",
+          "params": [
+            "_"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "HandleWaveResultShown",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "RecycleAndSwap",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "LoadSlot",
+          "params": [
+            "slot",
+            "position"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "Dequeue",
+          "params": [],
+          "returnType": "EHandPosition",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "GetSprite",
+          "params": [
+            "handPosition"
+          ],
+          "returnType": "Sprite",
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "classes": [
+        {
+          "name": "NextIconPanel",
+          "methods": [
+            "Awake",
+            "Start",
+            "OnDestroy",
+            "GenerateQueue",
+            "LoadInitialSlots",
+            "HandleReadyStarted",
+            "HandleWaveStarted",
+            "HandleWaveResultShown",
+            "RecycleAndSwap",
+            "LoadSlot",
+            "Dequeue",
+            "GetSprite"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "handPositionSprites",
+            "_slots",
+            "_tweenDuration",
+            "_queue",
+            "currentSlot",
+            "nextSlot",
+            "leftPosition",
+            "currentPosition",
+            "rightPosition",
+            "_currentHandPosition",
+            "CurrentHandPosition"
+          ],
+          "exported": true,
+          "lineCount": 154
+        }
+      ],
+      "imports": [
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "DG.Tweening",
+          "specifiers": [
+            "Tweening"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "IsOpened",
+        "CanCloseWithESC",
+        "IsStackable",
+        "UIType",
+        "CurrentHandPosition",
+        "GetSprite",
+        "NextIconPanel"
+      ],
+      "totalLines": 160,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/Game/OutcomePanel.cs": {
+      "filePath": "Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "contentHash": "980fa02bbd7d831b8ae2b3eaa0efe1149b13d9571a0d46475a1e75ecd0fd5524",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "Start",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "OnDestroy",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "ShowOutcome",
+          "params": [
+            "outcome"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "HideOutcome",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "HideOutcomeOnRoundStart",
+          "params": [
+            "_"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "ResetImageState",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "PlayAnimation",
+          "params": [
+            "outcome"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "PlayWinAnimation",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 10
+        },
+        {
+          "name": "PlayLoseAnimation",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 16
+        },
+        {
+          "name": "PlayDrawAnimation",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 10
+        }
+      ],
+      "classes": [
+        {
+          "name": "OutcomePanel",
+          "methods": [
+            "Awake",
+            "Start",
+            "OnDestroy",
+            "ShowOutcome",
+            "HideOutcome",
+            "HideOutcomeOnRoundStart",
+            "ResetImageState",
+            "PlayAnimation",
+            "PlayWinAnimation",
+            "PlayLoseAnimation",
+            "PlayDrawAnimation"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "outcomeImage",
+            "outcomeSprites",
+            "_originAnchoredPos"
+          ],
+          "exported": true,
+          "lineCount": 121
+        }
+      ],
+      "imports": [
+        {
+          "source": "DG.Tweening",
+          "specifiers": [
+            "Tweening"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.UI",
+          "specifiers": [
+            "UI"
+          ]
+        }
+      ],
+      "exports": [
+        "IsOpened",
+        "CanCloseWithESC",
+        "IsStackable",
+        "UIType",
+        "OutcomePanel"
+      ],
+      "totalLines": 127,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/Game/StagePanel.cs": {
+      "filePath": "Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "contentHash": "4bc60ca116c45b62e67b671908b69533f46ef27a037b5263a5ae76e95575fc9b",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "Start",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "OnDestroy",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "OpenPanel",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "Update",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 23
+        },
+        {
+          "name": "RefreshHostName",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "RefreshHP",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "CacheStageSlots",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 9
+        }
+      ],
+      "classes": [
+        {
+          "name": "StagePanel",
+          "methods": [
+            "Awake",
+            "Start",
+            "OnDestroy",
+            "OpenPanel",
+            "Update",
+            "RefreshHostName",
+            "RefreshHP",
+            "CacheStageSlots"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "stageSlots",
+            "hpImage",
+            "hpSprites",
+            "cursorRect",
+            "hostNameTMP",
+            "_canvas",
+            "Network",
+            "Players"
+          ],
+          "exported": true,
+          "lineCount": 104
+        }
+      ],
+      "imports": [
+        {
+          "source": "TMPro",
+          "specifiers": [
+            "TMPro"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine.UI",
+          "specifiers": [
+            "UI"
+          ]
+        },
+        {
+          "source": "UnityEngine.InputSystem",
+          "specifiers": [
+            "InputSystem"
+          ]
+        }
+      ],
+      "exports": [
+        "IsOpened",
+        "CanCloseWithESC",
+        "IsStackable",
+        "UIType",
+        "OpenPanel",
+        "StagePanel"
+      ],
+      "totalLines": 111,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/Game/TimerPanel.cs": {
+      "filePath": "Assets/02. Scripts/UI/Game/TimerPanel.cs",
+      "contentHash": "fa28f31b081c426f3b907643869b439db7bcf614572028618691df3a7f234cd9",
+      "functions": [
+        {
+          "name": "OnEnable",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "OnDisable",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "UpdateTimer",
+          "params": [
+            "time"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "UpdateStage",
+          "params": [
+            "stageIndex"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 8
+        }
+      ],
+      "classes": [
+        {
+          "name": "TimerPanel",
+          "methods": [
+            "OnEnable",
+            "OnDisable",
+            "UpdateTimer",
+            "UpdateStage"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "STAGE_TEXT",
+            "_timerTMP",
+            "_stageTMP",
+            "_sb"
+          ],
+          "exported": true,
+          "lineCount": 54
+        }
+      ],
+      "imports": [
+        {
+          "source": "TMPro",
+          "specifiers": [
+            "TMPro"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "System.Text",
+          "specifiers": [
+            "Text"
+          ]
+        }
+      ],
+      "exports": [
+        "IsOpened",
+        "CanCloseWithESC",
+        "IsStackable",
+        "UIType",
+        "TimerPanel"
+      ],
+      "totalLines": 60,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs": {
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs",
+      "contentHash": "2ab1dfed82671b490caf7cd8c87e40ef56a094918ca2a834fa7a4c9d53f3aec6",
+      "functions": [
+        {
+          "name": "Init",
+          "params": [],
+          "returnType": "IndicateType",
+          "exported": true,
+          "lineCount": 16
+        },
+        {
+          "name": "Show",
+          "params": [
+            "name",
+            "description"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "Hide",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "SetPosition",
+          "params": [
+            "anchoredPosition"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "classes": [
+        {
+          "name": "IndicateSlot",
+          "methods": [
+            "Init",
+            "Show",
+            "Hide",
+            "SetPosition"
+          ],
+          "properties": [
+            "nameTMP",
+            "descriptionTMP",
+            "rect",
+            "indicateType",
+            "IndicateType"
+          ],
+          "exported": true,
+          "lineCount": 48
+        }
+      ],
+      "imports": [
+        {
+          "source": "TMPro",
+          "specifiers": [
+            "TMPro"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "IndicateType",
+        "Init",
+        "Show",
+        "Hide",
+        "SetPosition",
+        "IndicateSlot"
+      ],
+      "totalLines": 52,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs": {
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs",
+      "contentHash": "1b9ce2a0034b1a19f6e3c6243b03680ec5078671fd7680acf5c849b010580573",
+      "functions": [
+        {
+          "name": "Init",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "SetSlot",
+          "params": [
+            "handPosition",
+            "sprite"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "classes": [
+        {
+          "name": "NextIconSlot",
+          "methods": [
+            "Init",
+            "SetSlot"
+          ],
+          "properties": [
+            "_rect",
+            "_iconImage",
+            "Rect",
+            "HandPosition"
+          ],
+          "exported": true,
+          "lineCount": 24
+        }
+      ],
+      "imports": [
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.UI",
+          "specifiers": [
+            "UI"
+          ]
+        }
+      ],
+      "exports": [
+        "Rect",
+        "HandPosition",
+        "Init",
+        "SetSlot",
+        "NextIconSlot"
+      ],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs": {
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+      "contentHash": "684ae3d7170fc9e833411b6092c42faa0c95983b1a78779d1d9582cc34596807",
+      "functions": [
+        {
+          "name": "Init",
+          "params": [
+            "stageIndex"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "OnClickButton",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        }
+      ],
+      "classes": [
+        {
+          "name": "StageSlot",
+          "methods": [
+            "Init",
+            "OnClickButton"
+          ],
+          "properties": [
+            "rect",
+            "rockImage",
+            "stageTMP",
+            "_stageIndex",
+            "button",
+            "STAGE_TEXT"
+          ],
+          "exported": true,
+          "lineCount": 38
+        }
+      ],
+      "imports": [
+        {
+          "source": "TMPro",
+          "specifiers": [
+            "TMPro"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.UI",
+          "specifiers": [
+            "UI"
+          ]
+        }
+      ],
+      "exports": [
+        "Init",
+        "StageSlot"
+      ],
+      "totalLines": 43,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs": {
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs",
+      "contentHash": "a8bd70912822f14227c8eae89b2c5079462547d22c393b81be1c5d8c045efc72",
+      "functions": [
+        {
+          "name": "Start",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "OnPointerEnter",
+          "params": [
+            "eventData"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "OnPointerMove",
+          "params": [
+            "eventData"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "OnPointerExit",
+          "params": [
+            "eventData"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "classes": [
+        {
+          "name": "Tooltip",
+          "methods": [
+            "Start",
+            "OnPointerEnter",
+            "OnPointerMove",
+            "OnPointerExit"
+          ],
+          "properties": [
+            "indicateType",
+            "_indicatePanel"
+          ],
+          "exported": true,
+          "lineCount": 38
+        }
+      ],
+      "imports": [
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.EventSystems",
+          "specifiers": [
+            "EventSystems"
+          ]
+        }
+      ],
+      "exports": [
+        "OnPointerEnter",
+        "OnPointerMove",
+        "OnPointerExit",
+        "Tooltip"
+      ],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs": {
+      "filePath": "Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "contentHash": "476753061e6e0887d12b83a9428b06768942ce8f27db7f3fa44aa39a322ac593",
+      "functions": [
+        {
+          "name": "Init",
+          "params": [
+            "_waveType"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "MarkDefeated",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 16
+        },
+        {
+          "name": "Clear",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 10
+        }
+      ],
+      "classes": [
+        {
+          "name": "WaveSlot",
+          "methods": [
+            "Init",
+            "MarkDefeated",
+            "Clear"
+          ],
+          "properties": [
+            "rect",
+            "waveBallImage",
+            "delteImage",
+            "BOSS_SCALE",
+            "waveType",
+            "_originalBallColor"
+          ],
+          "exported": true,
+          "lineCount": 50
+        }
+      ],
+      "imports": [
+        {
+          "source": "DG.Tweening",
+          "specifiers": [
+            "Tweening"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.UI",
+          "specifiers": [
+            "UI"
+          ]
+        }
+      ],
+      "exports": [
+        "Init",
+        "MarkDefeated",
+        "Clear",
+        "WaveSlot"
+      ],
+      "totalLines": 62,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/Game/VersusPanel.cs": {
+      "filePath": "Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "contentHash": "813d0fe36165f5af5325672b6f49c2e7ea28c0ff0dd0fda80ccfbbb81ecabc5e",
+      "functions": [
+        {
+          "name": "OpenPanel",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "PlayIntroSequence",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 28
+        },
+        {
+          "name": "SetHidden",
+          "params": [
+            "img"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "Stamp",
+          "params": [
+            "img"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 9
+        }
+      ],
+      "classes": [
+        {
+          "name": "VersusPanel",
+          "methods": [
+            "OpenPanel",
+            "PlayIntroSequence",
+            "SetHidden",
+            "Stamp"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "readyImage",
+            "fightImage",
+            "_isAnimating",
+            "IsAnimating"
+          ],
+          "exported": true,
+          "lineCount": 66
+        }
+      ],
+      "imports": [
+        {
+          "source": "DG.Tweening",
+          "specifiers": [
+            "Tweening"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.UI",
+          "specifiers": [
+            "UI"
+          ]
+        }
+      ],
+      "exports": [
+        "IsOpened",
+        "CanCloseWithESC",
+        "IsStackable",
+        "UIType",
+        "IsAnimating",
+        "OpenPanel",
+        "VersusPanel"
+      ],
+      "totalLines": 72,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/Game/WavePanel.cs": {
+      "filePath": "Assets/02. Scripts/UI/Game/WavePanel.cs",
+      "contentHash": "ce027090e35ebd7d329dcc3cdd79599c527671882a821e37b86ae9ad5f746ee8",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "Start",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "OnDestroy",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "HandleStageOpened",
+          "params": [
+            "stageIndex"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "InitSlots",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "HandleOutcome",
+          "params": [
+            "outcome"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 8
+        }
+      ],
+      "classes": [
+        {
+          "name": "WavePanel",
+          "methods": [
+            "Awake",
+            "Start",
+            "OnDestroy",
+            "HandleStageOpened",
+            "InitSlots",
+            "HandleOutcome"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "slots",
+            "_markedCount"
+          ],
+          "exported": true,
+          "lineCount": 61
+        }
+      ],
+      "imports": [
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "IsOpened",
+        "CanCloseWithESC",
+        "IsStackable",
+        "UIType",
+        "WavePanel"
+      ],
+      "totalLines": 65,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/LobbyEntryPanel.cs": {
+      "filePath": "Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "contentHash": "7f2a34186695d142de61ce7155aa43124b7ad9370c5dedbc0f2a899d8382a533",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 23
+        },
+        {
+          "name": "Start",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "OnDestroy",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 19
+        },
+        {
+          "name": "OnCreateRoomClicked",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 51
+        },
+        {
+          "name": "OnJoinRoomClicked",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 65
+        },
+        {
+          "name": "OnQuickJoinClicked",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 51
+        },
+        {
+          "name": "SetInteractable",
+          "params": [
+            "interactable"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 21
+        },
+        {
+          "name": "SetStatus",
+          "params": [
+            "message"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 7
+        }
+      ],
+      "classes": [
+        {
+          "name": "LobbyEntryPanel",
+          "methods": [
+            "Awake",
+            "Start",
+            "OnDestroy",
+            "OnCreateRoomClicked",
+            "OnJoinRoomClicked",
+            "OnQuickJoinClicked",
+            "SetInteractable",
+            "SetStatus"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "createRoomButton",
+            "joinCodeInput",
+            "joinRoomButton",
+            "quickJoinButton",
+            "statusText",
+            "_lobbyManager",
+            "_isBusy"
+          ],
+          "exported": true,
+          "lineCount": 305
+        }
+      ],
+      "imports": [
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "TMPro",
+          "specifiers": [
+            "TMPro"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.UI",
+          "specifiers": [
+            "UI"
+          ]
+        }
+      ],
+      "exports": [
+        "IsOpened",
+        "CanCloseWithESC",
+        "IsStackable",
+        "UIType",
+        "LobbyEntryPanel"
+      ],
+      "totalLines": 318,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/LobbyPlayerListItem.cs": {
+      "filePath": "Assets/02. Scripts/UI/LobbyPlayerListItem.cs",
+      "contentHash": "5929a77158b5872b50fbf4b6e217839cf643662d1b4f700fc27722c041e14681",
+      "functions": [
+        {
+          "name": "Bind",
+          "params": [
+            "player"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "SetReady",
+          "params": [
+            "isReady"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 7
+        }
+      ],
+      "classes": [
+        {
+          "name": "LobbyPlayerListItem",
+          "methods": [
+            "Bind",
+            "SetReady"
+          ],
+          "properties": [
+            "nameText",
+            "hostBadge",
+            "readyBadge"
+          ],
+          "exported": true,
+          "lineCount": 27
+        }
+      ],
+      "imports": [
+        {
+          "source": "TMPro",
+          "specifiers": [
+            "TMPro"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.UI",
+          "specifiers": [
+            "UI"
+          ]
+        }
+      ],
+      "exports": [
+        "Bind",
+        "SetReady",
+        "LobbyPlayerListItem"
+      ],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/LobbyRoomPanel.cs": {
+      "filePath": "Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+      "contentHash": "f7dae60410194eed1c9ab63d3f260557d42882dbf50253636558b8fa7d15d12c",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "Start",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "OnDestroy",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "InitializeModeDropdown",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "OnModeDropdownChanged",
+          "params": [
+            "index"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "HandleLobbyError",
+          "params": [
+            "message"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "OnLeaveRoomClicked",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "OnReadyOrStartClicked",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 38
+        },
+        {
+          "name": "RefreshContent",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "RefreshModeDisplay",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "RefreshActionButton",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "SetStatus",
+          "params": [
+            "message"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "RefreshPlayerList",
+          "params": [
+            "players"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 14
+        },
+        {
+          "name": "ClearPlayerList",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 9
+        }
+      ],
+      "classes": [
+        {
+          "name": "LobbyRoomPanel",
+          "methods": [
+            "Awake",
+            "Start",
+            "OnDestroy",
+            "InitializeModeDropdown",
+            "OnModeDropdownChanged",
+            "HandleLobbyError",
+            "OnLeaveRoomClicked",
+            "OnReadyOrStartClicked",
+            "RefreshContent",
+            "RefreshModeDisplay",
+            "RefreshActionButton",
+            "SetStatus",
+            "RefreshPlayerList",
+            "ClearPlayerList"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "roomCodeText",
+            "playerListRoot",
+            "playerListItemPrefab",
+            "leaveRoomButton",
+            "readyOrStartButton",
+            "readyOrStartButtonLabel",
+            "statusText",
+            "gameModeDropDown",
+            "indicateModeText",
+            "_spawnedItems",
+            "_lobbyManager",
+            "_isStartingGame",
+            "_selectedMode"
+          ],
+          "exported": true,
+          "lineCount": 187
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "TMPro",
+          "specifiers": [
+            "TMPro"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.UI",
+          "specifiers": [
+            "UI"
+          ]
+        }
+      ],
+      "exports": [
+        "IsOpened",
+        "CanCloseWithESC",
+        "IsStackable",
+        "UIType",
+        "RefreshContent",
+        "LobbyRoomPanel"
+      ],
+      "totalLines": 195,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/PanelBase.cs": {
+      "filePath": "Assets/02. Scripts/UI/PanelBase.cs",
+      "contentHash": "c2ce602f3b1769b55a167ad1741514e92a9ac4d02eb2308cc3e44b4fe994e25f",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 10
+        },
+        {
+          "name": "RegisterToUIManager",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 10
+        },
+        {
+          "name": "OpenPanel",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "ClosePanel",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "classes": [
+        {
+          "name": "PanelBase",
+          "methods": [
+            "Awake",
+            "RegisterToUIManager",
+            "OpenPanel",
+            "ClosePanel"
+          ],
+          "properties": [
+            "_panelGameObject",
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "PanelType"
+          ],
+          "exported": true,
+          "lineCount": 56
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "IsOpened",
+        "CanCloseWithESC",
+        "IsStackable",
+        "UIType",
+        "PanelType",
+        "OpenPanel",
+        "ClosePanel",
+        "PanelBase"
+      ],
+      "totalLines": 61,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/SlotHoverScale.cs": {
+      "filePath": "Assets/02. Scripts/UI/SlotHoverScale.cs",
+      "contentHash": "6117ce1cf5134489c93a60e790f4d78e620ac83393870e1dc6c676fc7ee0f9f8",
+      "functions": [
+        {
+          "name": "Start",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "OnPointerEnter",
+          "params": [
+            "eventData"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "OnPointerExit",
+          "params": [
+            "eventData"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "Play",
+          "params": [
+            "_target",
+            "_ease"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "OnDisable",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        }
+      ],
+      "classes": [
+        {
+          "name": "SlotHoverScale",
+          "methods": [
+            "Start",
+            "OnPointerEnter",
+            "OnPointerExit",
+            "Play",
+            "OnDisable"
+          ],
+          "properties": [
+            "hoverScaleMultiplier",
+            "scaleDuration",
+            "originalScale",
+            "scaleTween"
+          ],
+          "exported": true,
+          "lineCount": 39
+        }
+      ],
+      "imports": [
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.EventSystems",
+          "specifiers": [
+            "EventSystems"
+          ]
+        },
+        {
+          "source": "DG.Tweening",
+          "specifiers": [
+            "Tweening"
+          ]
+        }
+      ],
+      "exports": [
+        "OnPointerEnter",
+        "OnPointerExit",
+        "SlotHoverScale"
+      ],
+      "totalLines": 44,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/UI/TitlePanel.cs": {
+      "filePath": "Assets/02. Scripts/UI/TitlePanel.cs",
+      "contentHash": "1b53e87abedb7bd63cc553c7606eee854f67aadc7d9f6aa270ec80380fd0e68b",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "OnDestroy",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "OnConnectClicked",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 23
+        },
+        {
+          "name": "SetInteractable",
+          "params": [
+            "interactable"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "SetStatus",
+          "params": [
+            "message"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        }
+      ],
+      "classes": [
+        {
+          "name": "TitlePanel",
+          "methods": [
+            "Awake",
+            "OnDestroy",
+            "OnConnectClicked",
+            "SetInteractable",
+            "SetStatus"
+          ],
+          "properties": [
+            "IsOpened",
+            "CanCloseWithESC",
+            "IsStackable",
+            "UIType",
+            "nicknameInput",
+            "connectButton",
+            "statusText",
+            "_titleManager",
+            "_isConnecting"
+          ],
+          "exported": true,
+          "lineCount": 71
+        }
+      ],
+      "imports": [
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "TMPro",
+          "specifiers": [
+            "TMPro"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.UI",
+          "specifiers": [
+            "UI"
+          ]
+        }
+      ],
+      "exports": [
+        "IsOpened",
+        "CanCloseWithESC",
+        "IsStackable",
+        "UIType",
+        "TitlePanel"
+      ],
+      "totalLines": 77,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Util/App.cs": {
+      "filePath": "Assets/02. Scripts/Util/App.cs",
+      "contentHash": "b32ed43a9ab1078ed20bdf29d7137670e63672643f9e315a08145b2f52e56a43",
+      "functions": [
+        {
+          "name": "BootstrapScene",
+          "params": [
+            "scene"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "LoadScene",
+          "params": [
+            "sceneName"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 17
+        }
+      ],
+      "classes": [
+        {
+          "name": "App",
+          "methods": [
+            "BootstrapScene",
+            "LoadScene"
+          ],
+          "properties": [
+            "_uiManager",
+            "_sceneManager",
+            "_titleManager",
+            "_soundManager",
+            "_assetManager",
+            "_inputManager",
+            "_lobbyManager",
+            "_playerManager",
+            "_inGameManager",
+            "_networkManager",
+            "_dataManager",
+            "_fps",
+            "Platform",
+            "IsWindows",
+            "IsIOS",
+            "IsAndroid",
+            "IsStandalone",
+            "IsMobile",
+            "OnSceneLoad",
+            "OnSceneLoaded",
+            "OnQuit",
+            "PrevScene",
+            "CurrentScene",
+            "IsSceneLoading",
+            "IsGameScene"
+          ],
+          "exported": true,
+          "lineCount": 133
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.Events",
+          "specifiers": [
+            "Events"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        }
+      ],
+      "exports": [
+        "Platform",
+        "IsWindows",
+        "IsIOS",
+        "IsAndroid",
+        "IsStandalone",
+        "IsMobile",
+        "OnSceneLoad",
+        "OnSceneLoaded",
+        "OnQuit",
+        "PrevScene",
+        "CurrentScene",
+        "IsSceneLoading",
+        "IsGameScene",
+        "BootstrapScene",
+        "LoadScene",
+        "App"
+      ],
+      "totalLines": 140,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Util/AppHelper.cs": {
+      "filePath": "Assets/02. Scripts/Util/AppHelper.cs",
+      "contentHash": "49b4d0a12c4e9185ba6ee76a78897fc22fd0bd1de844611f30a8f04406c77194",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "Start",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 12
+        },
+        {
+          "name": "Update",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "LoadScene",
+          "params": [
+            "sceneName",
+            "mode"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "OnSceneLoad",
+          "params": [
+            "sceneName"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "OnSceneLoaded",
+          "params": [
+            "scene",
+            "mode"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "OnQuit",
+          "params": [],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "SetFrameLimit",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 13
+        }
+      ],
+      "classes": [
+        {
+          "name": "Singleton",
+          "methods": [],
+          "properties": [
+            "_instance",
+            "Instance"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "AppHelper",
+          "methods": [
+            "Awake",
+            "Start",
+            "Update",
+            "LoadScene",
+            "OnSceneLoad",
+            "OnSceneLoaded",
+            "OnQuit",
+            "SetFrameLimit"
+          ],
+          "properties": [
+            "SceneTargetFrameRate",
+            "_shouldQuit",
+            "_canQuit",
+            "CanQuit"
+          ],
+          "exported": true,
+          "lineCount": 114
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "System.Threading",
+          "specifiers": [
+            "Threading"
+          ]
+        },
+        {
+          "source": "DG.Tweening",
+          "specifiers": [
+            "Tweening"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.SceneManagement",
+          "specifiers": [
+            "SceneManagement"
+          ]
+        }
+      ],
+      "exports": [
+        "Instance",
+        "Singleton",
+        "CanQuit",
+        "LoadScene",
+        "OnSceneLoad",
+        "OnSceneLoaded",
+        "OnQuit",
+        "SetFrameLimit",
+        "AppHelper"
+      ],
+      "totalLines": 135,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Util/Enums.cs": {
+      "filePath": "Assets/02. Scripts/Util/Enums.cs",
+      "contentHash": "20f6d013d99ac27c05e5f959bf46cb0a27b623d053e5017eb9bf573789e6290c",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 164,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Util/FrameChecker.cs": {
+      "filePath": "Assets/02. Scripts/Util/FrameChecker.cs",
+      "contentHash": "f711ddea21d880ba9debfa5aaf3854b12ded66600545d0b30524d2cba11a3887",
+      "functions": [
+        {
+          "name": "Awake",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "OnEnable",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "Setup",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "Update",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 10
+        },
+        {
+          "name": "UpdateStyle",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 14
+        },
+        {
+          "name": "UpdateText",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 10
+        },
+        {
+          "name": "OnGUI",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 16
+        }
+      ],
+      "classes": [
+        {
+          "name": "FrameChecker",
+          "methods": [
+            "Awake",
+            "OnEnable",
+            "Setup",
+            "Update",
+            "UpdateStyle",
+            "UpdateText",
+            "OnGUI"
+          ],
+          "properties": [
+            "updateInterval",
+            "style",
+            "rect",
+            "msec",
+            "fps",
+            "deltaTime",
+            "frameCount",
+            "text"
+          ],
+          "exported": true,
+          "lineCount": 92
+        }
+      ],
+      "imports": [
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "System.Collections",
+          "specifiers": [
+            "Collections"
+          ]
+        }
+      ],
+      "exports": [
+        "FrameChecker"
+      ],
+      "totalLines": 96,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Util/JsonHelper.cs": {
+      "filePath": "Assets/02. Scripts/Util/JsonHelper.cs",
+      "contentHash": "adad3d5a2651772be43eaacb92017183229724337e8e5306f47e0754b26a3f0c",
+      "functions": [
+        {
+          "name": "FromJson",
+          "params": [
+            "json"
+          ],
+          "returnType": "T[]",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "ToJson",
+          "params": [
+            "array"
+          ],
+          "returnType": "string",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "JsonToDictAsync",
+          "params": [
+            "json",
+            "dict"
+          ],
+          "returnType": "Task",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "JsonToDictAsync",
+          "params": [
+            "json",
+            "dict"
+          ],
+          "returnType": "Task",
+          "exported": true,
+          "lineCount": 29
+        }
+      ],
+      "classes": [
+        {
+          "name": "JsonHelper",
+          "methods": [
+            "FromJson",
+            "ToJson",
+            "JsonToDictAsync",
+            "JsonToDictAsync"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 76
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "System.Threading.Tasks",
+          "specifiers": [
+            "Tasks"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        }
+      ],
+      "exports": [
+        "FromJson",
+        "ToJson",
+        "JsonToDictAsync",
+        "JsonToDictAsync",
+        "JsonHelper"
+      ],
+      "totalLines": 82,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/02. Scripts/Util/RpsHandUtility.cs": {
+      "filePath": "Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "contentHash": "484119f0371cf94ecaa6605664354cb7f22db33d4407768a25e0c36809bbe27b",
+      "functions": [
+        {
+          "name": "Judge",
+          "params": [
+            "mask"
+          ],
+          "returnType": "EHandPosition",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "CreateRandomAssignments",
+          "params": [
+            "playerIds",
+            "random"
+          ],
+          "returnType": "Dictionary<int, EFingerType>",
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "Shuffle",
+          "params": [
+            "array",
+            "random"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 8
+        }
+      ],
+      "classes": [
+        {
+          "name": "RpsHandUtility",
+          "methods": [
+            "Judge",
+            "CreateRandomAssignments",
+            "Shuffle"
+          ],
+          "properties": [
+            "AssignableFingers"
+          ],
+          "exported": true,
+          "lineCount": 52
+        }
+      ],
+      "imports": [
+        {
+          "source": "System",
+          "specifiers": [
+            "System"
+          ]
+        },
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "SystemEnums",
+          "specifiers": [
+            "SystemEnums"
+          ]
+        }
+      ],
+      "exports": [
+        "Judge",
+        "CreateRandomAssignments",
+        "RpsHandUtility"
+      ],
+      "totalLines": 60,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/07. Data/Json/BoonData.json": {
+      "filePath": "Assets/07. Data/Json/BoonData.json",
+      "contentHash": "154dfceca5976abd97885cb96ca4542fb89ea1c88751c8a58d0eb910b7a642c9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/07. Data/Json/DefineData.json": {
+      "filePath": "Assets/07. Data/Json/DefineData.json",
+      "contentHash": "270325cdc0f7a102dabead481eb440c4e6624f4aed48de589f83ab91cea5a44d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 17,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/07. Data/Json/DeviationData.json": {
+      "filePath": "Assets/07. Data/Json/DeviationData.json",
+      "contentHash": "154dfceca5976abd97885cb96ca4542fb89ea1c88751c8a58d0eb910b7a642c9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/07. Data/Json/EnemyData.json": {
+      "filePath": "Assets/07. Data/Json/EnemyData.json",
+      "contentHash": "4cd5f0316daf3f2ed64470b036a91ca3dc5f0486f8325d82558c8f8e90603495",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 122,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/07. Data/Json/RoundData.json": {
+      "filePath": "Assets/07. Data/Json/RoundData.json",
+      "contentHash": "832b9c36e4cf8a32b98e29363799cb0e07047483894f116a5ae429d069218558",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 62,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/Editor/HandSpriteDataGeneratorWindow.cs": {
+      "filePath": "Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "contentHash": "9236a6a0f28d5166b41447a0b40e8898f79f35a4aa774229c339505cc0f86715",
+      "functions": [
+        {
+          "name": "ShowWindow",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "OnGUI",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 17
+        },
+        {
+          "name": "HandleDragAndDrop",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 26
+        },
+        {
+          "name": "GenerateFromJson",
+          "params": [
+            "_jsonAsset"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 47
+        },
+        {
+          "name": "FindSprite",
+          "params": [
+            "_spriteName"
+          ],
+          "returnType": "Sprite",
+          "exported": false,
+          "lineCount": 24
+        },
+        {
+          "name": "EnsureFolderExists",
+          "params": [
+            "_folderPath"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 15
+        }
+      ],
+      "classes": [
+        {
+          "name": "HandSpriteDataGeneratorWindow",
+          "methods": [
+            "ShowWindow",
+            "OnGUI",
+            "HandleDragAndDrop",
+            "GenerateFromJson",
+            "FindSprite",
+            "EnsureFolderExists"
+          ],
+          "properties": [
+            "DEFAULT_SPRITE_FOLDER",
+            "DEFAULT_OUTPUT_FOLDER",
+            "spriteFolder",
+            "outputFolder"
+          ],
+          "exported": true,
+          "lineCount": 156
+        }
+      ],
+      "imports": [
+        {
+          "source": "UnityEditor",
+          "specifiers": [
+            "UnityEditor"
+          ]
+        },
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEngine.Object",
+          "specifiers": [
+            "Object"
+          ]
+        }
+      ],
+      "exports": [
+        "ShowWindow",
+        "HandSpriteDataGeneratorWindow"
+      ],
+      "totalLines": 161,
+      "hasStructuralAnalysis": true
+    },
+    "Assets/Editor/SceneFastLauncher.cs": {
+      "filePath": "Assets/Editor/SceneFastLauncher.cs",
+      "contentHash": "12c649c81be1df569e5694be6e4b68e356954e1d38857f3ec950862933883c17",
+      "functions": [
+        {
+          "name": "ShowWindow",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "OnEnable",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "OnGUI",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 43
+        },
+        {
+          "name": "HandleDragAndDrop",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 28
+        },
+        {
+          "name": "SaveScenes",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "LoadScenes",
+          "params": [],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 16
+        }
+      ],
+      "classes": [
+        {
+          "name": "SceneFastLauncher",
+          "methods": [
+            "ShowWindow",
+            "OnEnable",
+            "OnGUI",
+            "HandleDragAndDrop",
+            "SaveScenes",
+            "LoadScenes"
+          ],
+          "properties": [
+            "sceneAssets",
+            "scrollPosition"
+          ],
+          "exported": true,
+          "lineCount": 120
+        }
+      ],
+      "imports": [
+        {
+          "source": "UnityEngine",
+          "specifiers": [
+            "UnityEngine"
+          ]
+        },
+        {
+          "source": "UnityEditor",
+          "specifiers": [
+            "UnityEditor"
+          ]
+        },
+        {
+          "source": "UnityEditor.SceneManagement",
+          "specifiers": [
+            "SceneManagement"
+          ]
+        },
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        }
+      ],
+      "exports": [
+        "ShowWindow",
+        "SceneFastLauncher"
+      ],
+      "totalLines": 125,
+      "hasStructuralAnalysis": true
+    },
+    "CLAUDE.md": {
+      "filePath": "CLAUDE.md",
+      "contentHash": "33af9a7eb44d4b82f60c162cc354a83f2a868319b032dd7837246e9033190bbe",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": true
+    },
+    "Packages/manifest.json": {
+      "filePath": "Packages/manifest.json",
+      "contentHash": "1487ff8cb0fbf8237c055f0c7b5f69ffa998aaab6f945245fb3bd0810f4638d8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 54,
+      "hasStructuralAnalysis": true
+    },
+    "Packages/packages-lock.json": {
+      "filePath": "Packages/packages-lock.json",
+      "contentHash": "9d24d7d46bbe461078ef49ca014e464fff7bae49590d0c43c1431bd709a7c657",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 651,
+      "hasStructuralAnalysis": true
+    }
+  }
+}

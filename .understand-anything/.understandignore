@@ -1,0 +1,60 @@
+# .understandignore — focus analysis on user-authored game code only.
+# Syntax: gitignore-style. This Unity project bundles large third-party
+# asset-store packages and engine metadata that would drown the graph.
+
+# --- Unity engine / build output ---
+Library/
+Temp/
+Obj/
+obj/
+Build/
+Builds/
+Logs/
+UserSettings/
+MemoryCaptures/
+
+# --- Unity project metadata & generated solution files ---
+ProjectSettings/
+*.csproj
+*.sln
+*.meta
+
+# --- Unity binary/YAML asset formats (not source) ---
+*.asset
+*.prefab
+*.unity
+*.mat
+*.anim
+*.controller
+*.physicsMaterial2D
+*.shader
+*.shadergraph
+*.shadersubgraph
+*.inputactions
+*.spriteatlas
+*.fontsettings
+*.xlsx
+*.png
+*.jpg
+*.psd
+*.tga
+*.wav
+*.mp3
+*.ttf
+*.otf
+
+# --- Third-party asset-store packages (not user code) ---
+Assets/Photon/
+Assets/Plugins/
+Assets/TextMesh Pro/
+Assets/Settings/
+Assets/Resources/
+Assets/AddressableAssetsData/
+Assets/05. Data/
+Assets/01. Scenes/
+Assets/03. Prefab/
+Assets/04. Image/
+Assets/06. Fonts/
+
+# Keep: Assets/02. Scripts/ (game code), Assets/Editor/ (tooling),
+#       Assets/07. Data/Json/ (game data), Packages/manifest.json, CLAUDE.md

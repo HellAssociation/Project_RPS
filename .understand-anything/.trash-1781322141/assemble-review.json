@@ -1,0 +1,15 @@
+{
+  "fixedSectionOk": true,
+  "nodesRecovered": 0,
+  "edgesRestored": 0,
+  "crossBatchEdgesAdded": 2,
+  "typesRemapped": 0,
+  "complexityRemapped": 0,
+  "notes": [
+    "Merge report showed Input == Output (201 nodes, 273 edges) with an empty 'Could not fix' section; mechanical validation confirmed this: 0 missing ids, 0 duplicate ids, 0 unknown types, 0 unknown complexity values, 0 dangling edges, 0 id/type prefix mismatches.",
+    "All 27 inherits edges are correctly oriented (derived -> base). Key hub relationships survived: 13 panels -> PanelBase, managers -> CommonManagerBase/SceneManagerBase, SceneManagerBase -> CommonManagerBase, App -> Singleton, EnemyHand/PlayerHand -> Hand, TitleUIManager -> UIManagerBase.",
+    "Config hubs intact: all 5 game-data JSON files (Boon/Define/Deviation/Enemy/Round) -> DataManager.cs via 'configures'; manifest.json -> App.cs.",
+    "Found 2 isolated (degree-0) nodes that the file-analyzers emitted with no edges in their source batches: InGameUIManager.cs (batch-2-part-2) and ModeData.cs (batch-2-part-1). Source inspection confirmed both have real, non-speculative relationships, so edges were added: InGameUIManager -> UIManagerBase (inherits, w=0.9, mirrors TitleUIManager) and ModeData -> App (depends_on, w=0.6, uses App.CurrentScene/EScene). Graph now has 0 isolated nodes.",
+    "Import-map recovery (0 of 69) is expected and not a defect: this Unity C# project uses namespace 'using' declarations, not path-based imports; cross-file edges were derived by analyzers from source (inheritance, manager access, data references)."
+  ]
+}

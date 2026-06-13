@@ -1,0 +1,360 @@
+{
+  "projectRoot": "/Users/hyeonjun/Project_RPS",
+  "files": [
+    {
+      "path": ".understand-anything/.understandignore",
+      "language": "unknown",
+      "fileCategory": "code"
+    },
+    {
+      "path": ".understand-anything/config.json",
+      "language": "json",
+      "fileCategory": "config"
+    },
+    {
+      "path": "Assets/02. Scripts/Effect/HPBarController.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/FusionLobby/LobbyPlayer.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/FusionLobby/LobbyRequestResult.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/FusionLobby/LobbySession.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/FusionLobby/PlayerProfile.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Game/Hand/EnemyHand.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Game/Hand/Finger.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Game/Hand/Hand.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Game/Hand/HandSpriteData.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Game/Hand/PlayerHand.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Game/ModeData.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Management/AssetManager.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Management/DataManager.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Management/GameData.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Management/InGameManager.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Management/InGameUIManager.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Management/InputManager.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Management/LobbyManager.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Management/LobbyUIManager.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Management/ManagerBase.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Management/PlayerManager.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Management/SceneManagerBase.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Management/SoundManager.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Management/TitleManager.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Management/TitleUIManager.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Management/UIManagerBase.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/ForbidHandShapePanel.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/HUDPanel.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/IndicatePanel.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/Modal/StarforceModalContent.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/Modal/StarforceStar.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/ModalContent.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/ModalPanel.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/NextIconPanel.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/OutcomePanel.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/StagePanel.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/TimerPanel.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/UIContents/IndicateSlot.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/UIContents/NextIconSlot.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/UIContents/StageSlot.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/UIContents/Tooltip.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/UIContents/WaveSlot.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/VersusPanel.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/Game/WavePanel.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/LobbyEntryPanel.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/LobbyPlayerListItem.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/LobbyRoomPanel.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/PanelBase.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/SlotHoverScale.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/UI/TitlePanel.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Util/App.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Util/AppHelper.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Util/Enums.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Util/FrameChecker.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Util/JsonHelper.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/02. Scripts/Util/RpsHandUtility.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/07. Data/Json/BoonData.json",
+      "language": "json",
+      "fileCategory": "config"
+    },
+    {
+      "path": "Assets/07. Data/Json/DefineData.json",
+      "language": "json",
+      "fileCategory": "config"
+    },
+    {
+      "path": "Assets/07. Data/Json/DeviationData.json",
+      "language": "json",
+      "fileCategory": "config"
+    },
+    {
+      "path": "Assets/07. Data/Json/EnemyData.json",
+      "language": "json",
+      "fileCategory": "config"
+    },
+    {
+      "path": "Assets/07. Data/Json/RoundData.json",
+      "language": "json",
+      "fileCategory": "config"
+    },
+    {
+      "path": "Assets/Editor/HandSpriteDataGeneratorWindow.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "Assets/Editor/SceneFastLauncher.cs",
+      "language": "csharp",
+      "fileCategory": "code"
+    },
+    {
+      "path": "CLAUDE.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "Packages/manifest.json",
+      "language": "json",
+      "fileCategory": "config"
+    },
+    {
+      "path": "Packages/packages-lock.json",
+      "language": "json",
+      "fileCategory": "config"
+    }
+  ]
+}

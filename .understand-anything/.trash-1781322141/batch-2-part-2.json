@@ -1,0 +1,1236 @@
+{
+  "nodes": [
+    {
+      "id": "file:Assets/02. Scripts/Management/AssetManager.cs",
+      "type": "file",
+      "name": "AssetManager.cs",
+      "filePath": "Assets/02. Scripts/Management/AssetManager.cs",
+      "summary": "CommonManagerBase manager that loads and caches AudioClip assets through Addressables, keyed by an audio clip enum.",
+      "tags": [
+        "service",
+        "manager",
+        "assets",
+        "addressables"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/AssetManager.cs:GetAudioClip",
+      "type": "function",
+      "name": "GetAudioClip",
+      "filePath": "Assets/02. Scripts/Management/AssetManager.cs",
+      "lineRange": [
+        12,
+        38
+      ],
+      "summary": "Returns a cached AudioClip or synchronously loads it via Addressables, caching the result and warning on failure.",
+      "tags": [
+        "assets",
+        "addressables",
+        "caching"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/AssetManager.cs:AssetManager",
+      "type": "class",
+      "name": "AssetManager",
+      "filePath": "Assets/02. Scripts/Management/AssetManager.cs",
+      "lineRange": [
+        7,
+        39
+      ],
+      "summary": "Manager that caches and serves Addressables-loaded audio clips, registered on App via CommonManagerBase.",
+      "tags": [
+        "service",
+        "manager",
+        "assets"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "type": "file",
+      "name": "DataManager.cs",
+      "filePath": "Assets/02. Scripts/Management/DataManager.cs",
+      "summary": "DataManagerBase manager that asynchronously loads JSON game-data tables (boon, define, deviation, enemy, round) from Addressables into typed dictionaries and exposes TryGet lookups.",
+      "tags": [
+        "service",
+        "manager",
+        "data-loading",
+        "addressables"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/DataManager.cs:LoadDataToDictionaryAsync",
+      "type": "function",
+      "name": "LoadDataToDictionaryAsync",
+      "filePath": "Assets/02. Scripts/Management/DataManager.cs",
+      "lineRange": [
+        50,
+        85
+      ],
+      "summary": "Loads a named JSON TextAsset via Addressables, deserializes it into a keyed dictionary with JsonHelper, and reports load-group completion.",
+      "tags": [
+        "data-loading",
+        "addressables",
+        "serialization"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/DataManager.cs:LoadAllDataCoroutine",
+      "type": "function",
+      "name": "LoadAllDataCoroutine",
+      "filePath": "Assets/02. Scripts/Management/DataManager.cs",
+      "lineRange": [
+        34,
+        42
+      ],
+      "summary": "Coroutine that kicks off loading all game-data dictionaries and notifies when the load group finishes.",
+      "tags": [
+        "coroutine",
+        "data-loading"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/DataManager.cs:DataManager",
+      "type": "class",
+      "name": "DataManager",
+      "filePath": "Assets/02. Scripts/Management/DataManager.cs",
+      "lineRange": [
+        10,
+        95
+      ],
+      "summary": "Game-data manager that loads JSON tables into dictionaries and serves typed lookups for boon, define, deviation, enemy, and round data.",
+      "tags": [
+        "service",
+        "manager",
+        "data-loading"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/GameData.cs",
+      "type": "file",
+      "name": "GameData.cs",
+      "filePath": "Assets/02. Scripts/Management/GameData.cs",
+      "summary": "Serializable data-model classes (BoonData, DefineData, DeviationData, EnemyData, RoundData) deserialized from JSON and keyed by Code, implementing IGameData.",
+      "tags": [
+        "data-model",
+        "serialization",
+        "type-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/GameData.cs:EnemyData",
+      "type": "class",
+      "name": "EnemyData",
+      "filePath": "Assets/02. Scripts/Management/GameData.cs",
+      "lineRange": [
+        44,
+        58
+      ],
+      "summary": "Enemy configuration record (round timer, HP multiplier, resource, appearance range) keyed by Code.",
+      "tags": [
+        "data-model",
+        "serialization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/GameData.cs:RoundData",
+      "type": "class",
+      "name": "RoundData",
+      "filePath": "Assets/02. Scripts/Management/GameData.cs",
+      "lineRange": [
+        60,
+        68
+      ],
+      "summary": "Per-round configuration record carrying round timer and HP multiplier, keyed by Code.",
+      "tags": [
+        "data-model",
+        "serialization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "type": "file",
+      "name": "InGameManager.cs",
+      "filePath": "Assets/02. Scripts/Management/InGameManager.cs",
+      "summary": "SceneManagerBase scene controller driving the in-game match flow: wave timers, host setup, finger assignments, RPS outcome resolution, lives/HP tracking, and round transitions, coordinating NetworkManager, PlayerManager, and InputManager via events.",
+      "tags": [
+        "manager",
+        "scene-manager",
+        "game-logic",
+        "orchestration"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/InGameManager.cs:BetweenWavesCoroutine",
+      "type": "function",
+      "name": "BetweenWavesCoroutine",
+      "filePath": "Assets/02. Scripts/Management/InGameManager.cs",
+      "lineRange": [
+        351,
+        417
+      ],
+      "summary": "Coroutine handling the inter-wave interval: shows results, updates HP/lives, fires game-over or round-clear events, and on the host re-initializes finger assignments and starts the next round.",
+      "tags": [
+        "coroutine",
+        "game-logic",
+        "orchestration"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/InGameManager.cs:HandleWaveResultReceived",
+      "type": "function",
+      "name": "HandleWaveResultReceived",
+      "filePath": "Assets/02. Scripts/Management/InGameManager.cs",
+      "lineRange": [
+        312,
+        349
+      ],
+      "summary": "Processes a broadcast wave result, determines the RPS outcome, updates enemy HP and player lives, fires UI events, and starts the between-waves coroutine.",
+      "tags": [
+        "game-logic",
+        "event-handler",
+        "networking"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/InGameManager.cs:WaveTimerCoroutine",
+      "type": "function",
+      "name": "WaveTimerCoroutine",
+      "filePath": "Assets/02. Scripts/Management/InGameManager.cs",
+      "lineRange": [
+        284,
+        310
+      ],
+      "summary": "Coroutine that runs a wave countdown, enables/disables input, ticks UI timer events, and on the host judges and broadcasts the round result at expiry.",
+      "tags": [
+        "coroutine",
+        "game-logic",
+        "networking"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/InGameManager.cs:HostSetupCoroutine",
+      "type": "function",
+      "name": "HostSetupCoroutine",
+      "filePath": "Assets/02. Scripts/Management/InGameManager.cs",
+      "lineRange": [
+        213,
+        227
+      ],
+      "summary": "Host-only coroutine that ensures player objects are spawned, initializes finger assignments, waits for readiness, and starts the first round.",
+      "tags": [
+        "coroutine",
+        "game-logic",
+        "networking",
+        "host"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/InGameManager.cs:DetermineOutcome",
+      "type": "function",
+      "name": "DetermineOutcome",
+      "filePath": "Assets/02. Scripts/Management/InGameManager.cs",
+      "lineRange": [
+        424,
+        440
+      ],
+      "summary": "Pure helper that resolves the Rock-Paper-Scissors result between the player's and enemy's hand positions.",
+      "tags": [
+        "game-logic",
+        "rps",
+        "pure-function"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/InGameManager.cs:InGameManager",
+      "type": "class",
+      "name": "InGameManager",
+      "filePath": "Assets/02. Scripts/Management/InGameManager.cs",
+      "lineRange": [
+        6,
+        441
+      ],
+      "summary": "In-game scene manager orchestrating wave/round flow, host setup, RPS judging, and HP/lives state, exposing many gameplay events to the UI layer.",
+      "tags": [
+        "manager",
+        "scene-manager",
+        "game-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/InGameUIManager.cs",
+      "type": "file",
+      "name": "InGameUIManager.cs",
+      "filePath": "Assets/02. Scripts/Management/InGameUIManager.cs",
+      "summary": "Minimal in-game UI manager stub extending UIManagerBase, serving as the registration point for in-game UI panels.",
+      "tags": [
+        "manager",
+        "ui",
+        "stub"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/InputManager.cs",
+      "type": "file",
+      "name": "InputManager.cs",
+      "filePath": "Assets/02. Scripts/Management/InputManager.cs",
+      "summary": "CommonManagerBase manager reading keyboard input each frame for single- and multi-control finger modes, tracking the extended-finger mask and firing toggle/mask-change events.",
+      "tags": [
+        "manager",
+        "input",
+        "game-logic",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/InputManager.cs:RandomizeSingleControlBindings",
+      "type": "function",
+      "name": "RandomizeSingleControlBindings",
+      "filePath": "Assets/02. Scripts/Management/InputManager.cs",
+      "lineRange": [
+        100,
+        119
+      ],
+      "summary": "Randomly maps keyboard keys to finger types for single-control mode, rebuilding the binding dictionary each round.",
+      "tags": [
+        "input",
+        "game-logic",
+        "randomization"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/InputManager.cs:HandleSingleControlInput",
+      "type": "function",
+      "name": "HandleSingleControlInput",
+      "filePath": "Assets/02. Scripts/Management/InputManager.cs",
+      "lineRange": [
+        52,
+        67
+      ],
+      "summary": "Reads the randomized key bindings and emits the resulting single-control finger mask change event.",
+      "tags": [
+        "input",
+        "game-logic",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/InputManager.cs:InputManager",
+      "type": "class",
+      "name": "InputManager",
+      "filePath": "Assets/02. Scripts/Management/InputManager.cs",
+      "lineRange": [
+        7,
+        126
+      ],
+      "summary": "Input manager polling keys for finger control, supporting modal blocking and enable toggling, and broadcasting finger-toggle and mask-change events.",
+      "tags": [
+        "manager",
+        "input",
+        "game-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "type": "file",
+      "name": "LobbyManager.cs",
+      "filePath": "Assets/02. Scripts/Management/LobbyManager.cs",
+      "summary": "SceneManagerBase lobby scene controller wrapping NetworkManager session operations (create/join/quick-join/leave/start), managing ready state and display names, and refreshing lobby UI panels.",
+      "tags": [
+        "manager",
+        "scene-manager",
+        "lobby",
+        "networking"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/LobbyManager.cs:StartGame",
+      "type": "function",
+      "name": "StartGame",
+      "filePath": "Assets/02. Scripts/Management/LobbyManager.cs",
+      "lineRange": [
+        126,
+        141
+      ],
+      "summary": "Validates start preconditions then delegates to NetworkManager.StartGame to transition all clients to the target scene, completing with a result.",
+      "tags": [
+        "lobby",
+        "networking",
+        "game-flow"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/LobbyManager.cs:RefreshLobbyUI",
+      "type": "function",
+      "name": "RefreshLobbyUI",
+      "filePath": "Assets/02. Scripts/Management/LobbyManager.cs",
+      "lineRange": [
+        153,
+        175
+      ],
+      "summary": "Opens or closes the lobby entry/room panels based on session state and refreshes the room panel content from the current session.",
+      "tags": [
+        "lobby",
+        "ui",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/LobbyManager.cs:Complete",
+      "type": "function",
+      "name": "Complete",
+      "filePath": "Assets/02. Scripts/Management/LobbyManager.cs",
+      "lineRange": [
+        187,
+        202
+      ],
+      "summary": "Logs and invokes the completion callback for a lobby operation result, surfacing success or error messages.",
+      "tags": [
+        "lobby",
+        "result",
+        "callback"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/LobbyManager.cs:LobbyManager",
+      "type": "class",
+      "name": "LobbyManager",
+      "filePath": "Assets/02. Scripts/Management/LobbyManager.cs",
+      "lineRange": [
+        9,
+        203
+      ],
+      "summary": "Lobby scene manager exposing high-level session lifecycle operations over NetworkManager and keeping lobby UI in sync with session updates.",
+      "tags": [
+        "manager",
+        "scene-manager",
+        "lobby"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/LobbyUIManager.cs",
+      "type": "file",
+      "name": "LobbyUIManager.cs",
+      "filePath": "Assets/02. Scripts/Management/LobbyUIManager.cs",
+      "summary": "Minimal lobby UI manager extending UIManagerBase that triggers an initial lobby UI refresh on Start.",
+      "tags": [
+        "manager",
+        "ui",
+        "lobby",
+        "stub"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/ManagerBase.cs",
+      "type": "file",
+      "name": "ManagerBase.cs",
+      "filePath": "Assets/02. Scripts/Management/ManagerBase.cs",
+      "summary": "Defines the manager registration infrastructure: a static ManagerHandler that reflects App's manager fields and injects instances, plus DataManagerBase and CommonManagerBase base classes that self-register on Awake.",
+      "tags": [
+        "base-class",
+        "manager",
+        "dependency-injection",
+        "reflection"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses System.Reflection (BindingFlags, FieldInfo) to discover and assign manager singleton fields on the App container at runtime."
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/ManagerBase.cs:ManagerHandler",
+      "type": "class",
+      "name": "ManagerHandler",
+      "filePath": "Assets/02. Scripts/Management/ManagerBase.cs",
+      "lineRange": [
+        8,
+        52
+      ],
+      "summary": "Static reflection-based registry that maps manager types to App fields and injects manager instances into the App singleton.",
+      "tags": [
+        "dependency-injection",
+        "reflection",
+        "static"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/ManagerBase.cs:DataManagerBase",
+      "type": "class",
+      "name": "DataManagerBase",
+      "filePath": "Assets/02. Scripts/Management/ManagerBase.cs",
+      "lineRange": [
+        54,
+        59
+      ],
+      "summary": "MonoBehaviour base for data-loading managers that self-registers with ManagerHandler on Awake and tracks IsDataLoaded.",
+      "tags": [
+        "base-class",
+        "manager"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/ManagerBase.cs:CommonManagerBase",
+      "type": "class",
+      "name": "CommonManagerBase",
+      "filePath": "Assets/02. Scripts/Management/ManagerBase.cs",
+      "lineRange": [
+        61,
+        64
+      ],
+      "summary": "MonoBehaviour base for common managers that self-registers its instance with ManagerHandler on Awake.",
+      "tags": [
+        "base-class",
+        "manager"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "type": "file",
+      "name": "NetworkManager.cs",
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "summary": "The Photon Fusion networking hub (CommonManagerBase, INetworkRunnerCallbacks): manages NetworkRunner lifecycle, cloud connection, session create/join/start, finger-assignment sync, and round-result broadcasting over reliable data and [Networked] PlayerNetworkObject state.",
+      "tags": [
+        "manager",
+        "networking",
+        "photon-fusion",
+        "service"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Implements INetworkRunnerCallbacks (OnPlayerJoined/Left, OnShutdown, OnReliableDataReceived, etc.) and drives a Fusion NetworkRunner across coroutines for session and scene transitions."
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/NetworkManager.cs:StartSessionCoroutine",
+      "type": "function",
+      "name": "StartSessionCoroutine",
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "lineRange": [
+        265,
+        308
+      ],
+      "summary": "Coroutine that starts a Fusion NetworkRunner game (host or client) for a session, applying the connected session and reporting the result.",
+      "tags": [
+        "coroutine",
+        "networking",
+        "photon-fusion"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/NetworkManager.cs:EnsureCloudLobbyCoroutine",
+      "type": "function",
+      "name": "EnsureCloudLobbyCoroutine",
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "lineRange": [
+        373,
+        415
+      ],
+      "summary": "Coroutine that restores or re-joins the cloud lobby, recovering connection state after a failed start.",
+      "tags": [
+        "coroutine",
+        "networking",
+        "photon-fusion"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/NetworkManager.cs:ServerInitializeFingerAssignments",
+      "type": "function",
+      "name": "ServerInitializeFingerAssignments",
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "lineRange": [
+        577,
+        606
+      ],
+      "summary": "Host-side assignment of finger types to each connected PlayerNetworkObject at round start.",
+      "tags": [
+        "networking",
+        "photon-fusion",
+        "host",
+        "game-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/NetworkManager.cs:ClientSendFingerState",
+      "type": "function",
+      "name": "ClientSendFingerState",
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "lineRange": [
+        609,
+        629
+      ],
+      "summary": "Client-side push of the local player's extended-finger state to the host via the PlayerNetworkObject RPC.",
+      "tags": [
+        "networking",
+        "photon-fusion",
+        "rpc"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/NetworkManager.cs:ServerJudgeAndBroadcastRoundResult",
+      "type": "function",
+      "name": "ServerJudgeAndBroadcastRoundResult",
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "lineRange": [
+        657,
+        666
+      ],
+      "summary": "Host-side aggregation of the server finger mask into a round result that is broadcast to all clients.",
+      "tags": [
+        "networking",
+        "photon-fusion",
+        "host",
+        "game-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/NetworkManager.cs:HandleInGameRpsData",
+      "type": "function",
+      "name": "HandleInGameRpsData",
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "lineRange": [
+        774,
+        815
+      ],
+      "summary": "Parses an incoming reliable-data in-game RPS payload and dispatches the decoded round/hand result to the game layer.",
+      "tags": [
+        "networking",
+        "photon-fusion",
+        "serialization"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/NetworkManager.cs:StartGame",
+      "type": "function",
+      "name": "StartGame",
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "lineRange": [
+        182,
+        203
+      ],
+      "summary": "Loads the target in-game scene through Fusion and reports completion, formatting any start error.",
+      "tags": [
+        "networking",
+        "photon-fusion",
+        "game-flow"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/NetworkManager.cs:NetworkManager",
+      "type": "class",
+      "name": "NetworkManager",
+      "filePath": "Assets/02. Scripts/Management/NetworkManager.cs",
+      "lineRange": [
+        21,
+        818
+      ],
+      "summary": "Central Fusion networking manager owning the NetworkRunner and session lifecycle, implementing INetworkRunnerCallbacks and synchronizing finger assignments and round results.",
+      "tags": [
+        "manager",
+        "networking",
+        "photon-fusion"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "type": "file",
+      "name": "PlayerManager.cs",
+      "filePath": "Assets/02. Scripts/Management/PlayerManager.cs",
+      "summary": "CommonManagerBase manager that resolves, spawns, and despawns PlayerNetworkObjects, builds lobby player snapshots, and exposes local-player accessors for the game and UI layers.",
+      "tags": [
+        "manager",
+        "networking",
+        "player",
+        "photon-fusion"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/PlayerManager.cs:ServerEnsurePlayerObjectsCoroutine",
+      "type": "function",
+      "name": "ServerEnsurePlayerObjectsCoroutine",
+      "filePath": "Assets/02. Scripts/Management/PlayerManager.cs",
+      "lineRange": [
+        99,
+        129
+      ],
+      "summary": "Host-side coroutine ensuring every active session player has a spawned PlayerNetworkObject before a round starts.",
+      "tags": [
+        "coroutine",
+        "networking",
+        "host",
+        "player"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/PlayerManager.cs:BuildLobbyPlayers",
+      "type": "function",
+      "name": "BuildLobbyPlayers",
+      "filePath": "Assets/02. Scripts/Management/PlayerManager.cs",
+      "lineRange": [
+        231,
+        267
+      ],
+      "summary": "Builds the list of LobbyPlayer snapshots from active PlayerNetworkObjects for the lobby UI, including host and ready flags.",
+      "tags": [
+        "lobby",
+        "player",
+        "data-model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/PlayerManager.cs:SpawnAsyncCoroutine",
+      "type": "function",
+      "name": "SpawnAsyncCoroutine",
+      "filePath": "Assets/02. Scripts/Management/PlayerManager.cs",
+      "lineRange": [
+        131,
+        167
+      ],
+      "summary": "Coroutine that spawns a player's networked prefab and wires up the local PlayerNetworkObject reference when applicable.",
+      "tags": [
+        "coroutine",
+        "networking",
+        "player",
+        "spawn"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Assets/02. Scripts/Management/PlayerManager.cs:TryGetHost",
+      "type": "function",
+      "name": "TryGetHost",
+      "filePath": "Assets/02. Scripts/Management/PlayerManager.cs",
+      "lineRange": [
+        207,
+        228
+      ],
+      "summary": "Resolves the host's PlayerNetworkObject from the active runner, returning false when unavailable.",
+      "tags": [
+        "networking",
+        "player",
+        "lookup"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/PlayerManager.cs:PlayerManager",
+      "type": "class",
+      "name": "PlayerManager",
+      "filePath": "Assets/02. Scripts/Management/PlayerManager.cs",
+      "lineRange": [
+        12,
+        322
+      ],
+      "summary": "Player manager owning lookup, spawn/despawn, and lobby-snapshot building for PlayerNetworkObjects, bridging Fusion networked state to game and UI.",
+      "tags": [
+        "manager",
+        "networking",
+        "player"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:Assets/02. Scripts/Management/SceneManagerBase.cs",
+      "type": "file",
+      "name": "SceneManagerBase.cs",
+      "filePath": "Assets/02. Scripts/Management/SceneManagerBase.cs",
+      "summary": "Abstract base for per-scene managers extending CommonManagerBase, logging scene context on Awake and providing MoveToNextScene scene transitions via App.LoadScene.",
+      "tags": [
+        "base-class",
+        "manager",
+        "scene-manager"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:Assets/02. Scripts/Management/SceneManagerBase.cs:SceneManagerBase",
+      "type": "class",
+      "name": "SceneManagerBase",
+      "filePath": "Assets/02. Scripts/Management/SceneManagerBase.cs",
+      "lineRange": [
+        4,
+        16
+      ],
+      "summary": "Abstract scene-manager base offering MoveToNextScene and scene-context logging, extending CommonManagerBase.",
+      "tags": [
+        "base-class",
+        "manager",
+        "scene-manager"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:Assets/02. Scripts/Management/AssetManager.cs",
+      "target": "function:Assets/02. Scripts/Management/AssetManager.cs:GetAudioClip",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/AssetManager.cs",
+      "target": "class:Assets/02. Scripts/Management/AssetManager.cs:AssetManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/AssetManager.cs:AssetManager",
+      "target": "class:Assets/02. Scripts/Management/ManagerBase.cs:CommonManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "target": "function:Assets/02. Scripts/Management/DataManager.cs:LoadDataToDictionaryAsync",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "target": "function:Assets/02. Scripts/Management/DataManager.cs:LoadAllDataCoroutine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "target": "class:Assets/02. Scripts/Management/DataManager.cs:DataManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/DataManager.cs:DataManager",
+      "target": "class:Assets/02. Scripts/Management/ManagerBase.cs:DataManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "target": "file:Assets/02. Scripts/Management/GameData.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/GameData.cs",
+      "target": "class:Assets/02. Scripts/Management/GameData.cs:EnemyData",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/GameData.cs",
+      "target": "class:Assets/02. Scripts/Management/GameData.cs:RoundData",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "function:Assets/02. Scripts/Management/InGameManager.cs:BetweenWavesCoroutine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "function:Assets/02. Scripts/Management/InGameManager.cs:HandleWaveResultReceived",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "function:Assets/02. Scripts/Management/InGameManager.cs:WaveTimerCoroutine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "function:Assets/02. Scripts/Management/InGameManager.cs:HostSetupCoroutine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "function:Assets/02. Scripts/Management/InGameManager.cs:DetermineOutcome",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "class:Assets/02. Scripts/Management/InGameManager.cs:InGameManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/InGameManager.cs:InGameManager",
+      "target": "class:Assets/02. Scripts/Management/SceneManagerBase.cs:SceneManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "file:Assets/02. Scripts/Management/InputManager.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InGameManager.cs",
+      "target": "file:Assets/02. Scripts/Management/DataManager.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InputManager.cs",
+      "target": "function:Assets/02. Scripts/Management/InputManager.cs:RandomizeSingleControlBindings",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InputManager.cs",
+      "target": "function:Assets/02. Scripts/Management/InputManager.cs:HandleSingleControlInput",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/InputManager.cs",
+      "target": "class:Assets/02. Scripts/Management/InputManager.cs:InputManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/InputManager.cs:InputManager",
+      "target": "class:Assets/02. Scripts/Management/ManagerBase.cs:CommonManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "target": "function:Assets/02. Scripts/Management/LobbyManager.cs:StartGame",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "target": "function:Assets/02. Scripts/Management/LobbyManager.cs:RefreshLobbyUI",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "target": "function:Assets/02. Scripts/Management/LobbyManager.cs:Complete",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "target": "class:Assets/02. Scripts/Management/LobbyManager.cs:LobbyManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/LobbyManager.cs:LobbyManager",
+      "target": "class:Assets/02. Scripts/Management/SceneManagerBase.cs:SceneManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "target": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "target": "file:Assets/02. Scripts/FusionLobby/PlayerProfile.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "target": "file:Assets/02. Scripts/FusionLobby/LobbyRequestResult.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "target": "file:Assets/02. Scripts/FusionLobby/LobbySession.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/LobbyUIManager.cs",
+      "target": "file:Assets/02. Scripts/Management/LobbyManager.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/ManagerBase.cs",
+      "target": "class:Assets/02. Scripts/Management/ManagerBase.cs:ManagerHandler",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/ManagerBase.cs",
+      "target": "class:Assets/02. Scripts/Management/ManagerBase.cs:DataManagerBase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/ManagerBase.cs",
+      "target": "class:Assets/02. Scripts/Management/ManagerBase.cs:CommonManagerBase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "function:Assets/02. Scripts/Management/NetworkManager.cs:StartSessionCoroutine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "function:Assets/02. Scripts/Management/NetworkManager.cs:EnsureCloudLobbyCoroutine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "function:Assets/02. Scripts/Management/NetworkManager.cs:ServerInitializeFingerAssignments",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "function:Assets/02. Scripts/Management/NetworkManager.cs:ClientSendFingerState",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "function:Assets/02. Scripts/Management/NetworkManager.cs:ServerJudgeAndBroadcastRoundResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "function:Assets/02. Scripts/Management/NetworkManager.cs:HandleInGameRpsData",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "function:Assets/02. Scripts/Management/NetworkManager.cs:StartGame",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "class:Assets/02. Scripts/Management/NetworkManager.cs:NetworkManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/NetworkManager.cs:NetworkManager",
+      "target": "class:Assets/02. Scripts/Management/ManagerBase.cs:CommonManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "file:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "file:Assets/02. Scripts/FusionLobby/LobbySession.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "file:Assets/02. Scripts/FusionLobby/LobbyCodeUtility.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "target": "file:Assets/02. Scripts/FusionLobby/LobbyRequestResult.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "target": "function:Assets/02. Scripts/Management/PlayerManager.cs:ServerEnsurePlayerObjectsCoroutine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "target": "function:Assets/02. Scripts/Management/PlayerManager.cs:BuildLobbyPlayers",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "target": "function:Assets/02. Scripts/Management/PlayerManager.cs:SpawnAsyncCoroutine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "target": "function:Assets/02. Scripts/Management/PlayerManager.cs:TryGetHost",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "target": "class:Assets/02. Scripts/Management/PlayerManager.cs:PlayerManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/PlayerManager.cs:PlayerManager",
+      "target": "class:Assets/02. Scripts/Management/ManagerBase.cs:CommonManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "target": "file:Assets/02. Scripts/FusionLobby/PlayerNetworkObject.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "target": "file:Assets/02. Scripts/FusionLobby/LobbyPlayer.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/PlayerManager.cs",
+      "target": "file:Assets/02. Scripts/Management/NetworkManager.cs",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:Assets/02. Scripts/Management/SceneManagerBase.cs",
+      "target": "class:Assets/02. Scripts/Management/SceneManagerBase.cs:SceneManagerBase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:Assets/02. Scripts/Management/SceneManagerBase.cs:SceneManagerBase",
+      "target": "class:Assets/02. Scripts/Management/ManagerBase.cs:CommonManagerBase",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    }
+  ]
+}
