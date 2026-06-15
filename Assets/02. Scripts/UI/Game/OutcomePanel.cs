@@ -6,9 +6,6 @@ using UnityEngine.UI;
 public class OutcomePanel : PanelBase
 {
     #region [Function] Inheritance
-    public override bool IsOpened => _panelGameObject.activeSelf;
-    public override bool CanCloseWithESC => false;
-    public override bool IsStackable => false;
     public override EUIType UIType => EUIType.OutCome;
     #endregion
 

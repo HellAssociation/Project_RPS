@@ -22,17 +22,9 @@ public class FrameChecker : CommonManagerBase
         deltaTime = -1f;
 
         UpdateStyle();
-        Setup();
     }
 
     private void OnEnable()
-    {
-        frameCount = 1;
-        deltaTime = updateInterval;
-        UpdateText();
-    }
-
-    private void Setup()
     {
         frameCount = 1;
         deltaTime = updateInterval;

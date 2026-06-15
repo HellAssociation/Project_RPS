@@ -202,6 +202,40 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
         StartCoroutine(LoadInGameSceneCoroutine(targetScene, onComplete));
     }
 
+    // Dev-only: boot straight into a game scene via Fusion Single mode (no cloud login/matchmaking).
+    public void StartOfflineGame(EScene targetScene, Action<LobbyRequestResult> onComplete)
+    {
+        StartCoroutine(StartOfflineGameCoroutine(targetScene, onComplete));
+    }
+
+    IEnumerator StartOfflineGameCoroutine(EScene targetScene, Action<LobbyRequestResult> onComplete)
+    {
+        if (IsRunning)
+            yield return ShutdownSessionCoroutine(disconnectCloud: false);
+
+        var startTask = _runner.StartGame(new StartGameArgs
+        {
+            GameMode = GameMode.Single,
+            Scene = SceneRef.FromIndex((int)targetScene),
+            SceneManager = _runner.GetComponent<INetworkSceneManager>(),
+            ObjectProvider = _runner.GetComponent<INetworkObjectProvider>(),
+        });
+
+        yield return new WaitUntil(() => startTask.IsCompleted);
+
+        if (!startTask.Result.Ok)
+        {
+            onComplete?.Invoke(LobbyRequestResult.Fail(GetStartGameErrorMessage(startTask.Result.ShutdownReason)));
+            yield break;
+        }
+
+        _session.Reset();
+        _session.ApplyConnected("OFFLINE", maxPlayers: 1, isHost: true, GetLocalPlayerId());
+        _session.SetState(ELobbyState.Starting);
+        OnSessionUpdated?.Invoke(_session);
+        onComplete?.Invoke(LobbyRequestResult.Success());
+    }
+
     public void Shutdown()
     {
         _session.Reset();
@@ -460,6 +494,20 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
         return runner != null;
     }
 
+    bool TryGetServerRunner(out NetworkRunner runner)
+        => TryGetAliveRunner(out runner) && runner.IsServer;
+
+    // Invokes action on every active player's network object (host-side state writes/reads).
+    void ForEachActivePlayerObject(Action<PlayerNetworkObject> action)
+    {
+        PlayerManager players = App.Game.Players;
+        foreach (PlayerRef player in GetActivePlayers())
+        {
+            if (players.TryGet(player, out PlayerNetworkObject playerObject))
+                action(playerObject);
+        }
+    }
+
     void ApplyConnectedSession(string sessionCode, int maxPlayers, bool isHost)
     {
         _session.Reset();
@@ -580,7 +628,7 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
     /// <summary>호스트가 각 플레이어의 손가락 배정을 [Networked] 값으로 기록합니다.</summary>
     public void ServerInitializeFingerAssignments()
     {
-        if (!App.IsGameScene || !TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
+        if (!App.IsGameScene || !TryGetServerRunner(out _))
         {
             return;
         }
@@ -638,8 +686,11 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
 
         // Host-authoritative seed so every client derives the same enemy hand sequence.
         int seed = new System.Random().Next();
-        byte[] payload = { (byte)EInGameRpsMessage.StageSelected, (byte)stageIndex };
-        payload = AppendInt(payload, seed);
+        byte[] payload = new PayloadWriter()
+            .WriteByte((byte)EInGameRpsMessage.StageSelected)
+            .WriteByte((byte)stageIndex)
+            .WriteInt(seed)
+            .ToArray();
 
         BroadcastInGamePayload(payload);
         OnStageSelected?.Invoke(stageIndex, seed);
@@ -650,18 +701,13 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
     {
         if (!IsServerHost || cards == null) return;
 
-        var payload = new List<byte>(2 + cards.Count * 2)
-        {
-            (byte)EInGameRpsMessage.CardsApplied,
-            (byte)cards.Count,
-        };
+        var writer = new PayloadWriter()
+            .WriteByte((byte)EInGameRpsMessage.CardsApplied)
+            .WriteByte((byte)cards.Count);
         foreach (CardRef card in cards)
-        {
-            payload.Add((byte)card.Kind);
-            payload.Add((byte)card.Index);
-        }
+            writer.WriteByte((byte)card.Kind).WriteByte((byte)card.Index);
 
-        BroadcastInGamePayload(payload.ToArray());
+        BroadcastInGamePayload(writer.ToArray());
         OnCardsApplied?.Invoke(cards);
     }
 
@@ -670,16 +716,14 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
     {
         if (!IsServerHost || indices == null) return;
 
-        var payload = new List<byte>(7 + indices.Length)
-        {
-            (byte)EInGameRpsMessage.CardOffer,
-            (byte)kind,
-        };
-        payload.AddRange(BitConverter.GetBytes(duration));
-        payload.Add((byte)indices.Length);
-        foreach (int index in indices) payload.Add((byte)index);
+        var writer = new PayloadWriter()
+            .WriteByte((byte)EInGameRpsMessage.CardOffer)
+            .WriteByte((byte)kind)
+            .WriteFloat(duration)
+            .WriteByte((byte)indices.Length);
+        foreach (int index in indices) writer.WriteByte((byte)index);
 
-        BroadcastInGamePayload(payload.ToArray());
+        BroadcastInGamePayload(writer.ToArray());
         OnCardOfferReceived?.Invoke(kind, indices, duration);
     }
 
@@ -701,20 +745,14 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
     /// <summary>새 투표 시작 시 호스트가 모든 플레이어의 투표를 무효표로 초기화합니다.</summary>
     public void ServerResetCardVotes()
     {
-        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer) return;
-
-        PlayerManager players = App.Game.Players;
-        foreach (PlayerRef player in GetActivePlayers())
-        {
-            if (players.TryGet(player, out PlayerNetworkObject playerObject))
-                playerObject.CardVote = PlayerNetworkObject.NO_VOTE;
-        }
+        if (!TryGetServerRunner(out _)) return;
+        ForEachActivePlayerObject(playerObject => playerObject.CardVote = PlayerNetworkObject.NO_VOTE);
     }
 
     /// <summary>활성 플레이어 전원이 투표를 마쳤는지(조기 확정 판정용).</summary>
     public bool AllPlayersVoted()
     {
-        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer) return false;
+        if (!TryGetServerRunner(out _)) return false;
 
         PlayerManager players = App.Game.Players;
         bool any = false;
@@ -752,12 +790,11 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
     {
         if (!IsServerHost) return;
 
-        byte[] payload =
-        {
-            (byte)EInGameRpsMessage.CardVoteResult,
-            (byte)kind,
-            (byte)(chosenIndex < 0 ? 255 : chosenIndex),
-        };
+        byte[] payload = new PayloadWriter()
+            .WriteByte((byte)EInGameRpsMessage.CardVoteResult)
+            .WriteByte((byte)kind)
+            .WriteByte((byte)(chosenIndex < 0 ? 255 : chosenIndex))
+            .ToArray();
 
         BroadcastInGamePayload(payload);
         OnCardVoteResult?.Invoke(kind, chosenIndex);
@@ -768,11 +805,10 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
     {
         if (!IsServerHost) return;
 
-        byte[] payload =
-        {
-            (byte)EInGameRpsMessage.BossIntro,
-            (byte)round,
-        };
+        byte[] payload = new PayloadWriter()
+            .WriteByte((byte)EInGameRpsMessage.BossIntro)
+            .WriteByte((byte)round)
+            .ToArray();
 
         BroadcastInGamePayload(payload);
         OnBossIntro?.Invoke(round);
@@ -780,18 +816,17 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
 
     public void ServerStartRound(float durationSeconds)
     {
-        if (!App.IsGameScene || !TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
+        if (!App.IsGameScene || !TryGetServerRunner(out _))
         {
             return;
         }
 
         ResetServerFingerExtendedStates();
 
-        byte[] payload =
-        {
-            (byte)EInGameRpsMessage.StartRound,
-        };
-        payload = AppendFloat(payload, durationSeconds);
+        byte[] payload = new PayloadWriter()
+            .WriteByte((byte)EInGameRpsMessage.StartRound)
+            .WriteFloat(durationSeconds)
+            .ToArray();
 
         BroadcastInGamePayload(payload);
         OnRoundStarted?.Invoke(durationSeconds);
@@ -799,7 +834,7 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
 
     public void ServerJudgeAndBroadcastRoundResult()
     {
-        if (!App.IsGameScene || !TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
+        if (!App.IsGameScene || !TryGetServerRunner(out _))
         {
             return;
         }
@@ -814,53 +849,33 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
         if (ModeData.IsSingleControl)
             return App.SystemManager.Input.ExtendedFingersMask;
 
+        if (!TryGetServerRunner(out _))
+        {
+            return EFingerType.None;
+        }
+
         EFingerType mask = EFingerType.None;
-
-        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
+        ForEachActivePlayerObject(playerObject =>
         {
-            return mask;
-        }
-
-        PlayerManager players = App.Game.Players;
-
-        foreach (PlayerRef player in GetActivePlayers())
-        {
-            if (players.TryGet(player, out PlayerNetworkObject playerObject) &&
-                playerObject.AssignedFinger != EFingerType.None &&
-                playerObject.IsFingerExtended)
-            {
+            if (playerObject.AssignedFinger != EFingerType.None && playerObject.IsFingerExtended)
                 mask |= playerObject.AssignedFinger;
-            }
-        }
+        });
 
         return mask;
     }
 
     void ResetServerFingerExtendedStates()
     {
-        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
-        {
-            return;
-        }
-
-        PlayerManager players = App.Game.Players;
-
-        foreach (PlayerRef player in GetActivePlayers())
-        {
-            if (players.TryGet(player, out PlayerNetworkObject playerObject))
-            {
-                playerObject.IsFingerExtended = false;
-            }
-        }
+        if (!TryGetServerRunner(out _)) return;
+        ForEachActivePlayerObject(playerObject => playerObject.IsFingerExtended = false);
     }
 
     void BroadcastRoundResult(EHandPosition handPosition)
     {
-        byte[] payload =
-        {
-            (byte)EInGameRpsMessage.RoundResult,
-            (byte)handPosition,
-        };
+        byte[] payload = new PayloadWriter()
+            .WriteByte((byte)EInGameRpsMessage.RoundResult)
+            .WriteByte((byte)handPosition)
+            .ToArray();
 
         BroadcastInGamePayload(payload);
         OnRoundResultReceived?.Invoke(handPosition);
@@ -868,7 +883,7 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
 
     void BroadcastInGamePayload(byte[] payload)
     {
-        if (!TryGetAliveRunner(out NetworkRunner runner) || !runner.IsServer)
+        if (!TryGetServerRunner(out NetworkRunner runner))
         {
             return;
         }
@@ -882,22 +897,6 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
 
             runner.SendReliableDataToPlayer(player, InGameRpsKey, payload);
         }
-    }
-
-    static byte[] AppendFloat(byte[] payload, float value)
-    {
-        var buffer = new List<byte>(payload.Length + 4);
-        buffer.AddRange(payload);
-        buffer.AddRange(BitConverter.GetBytes(value));
-        return buffer.ToArray();
-    }
-
-    static byte[] AppendInt(byte[] payload, int value)
-    {
-        var buffer = new List<byte>(payload.Length + 4);
-        buffer.AddRange(payload);
-        buffer.AddRange(BitConverter.GetBytes(value));
-        return buffer.ToArray();
     }
 
     /// <summary>씬 재진입 시 로컬 배정 알림 상태를 초기화합니다.</summary>
@@ -929,58 +928,38 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
             return;
         }
 
-        var messageType = (EInGameRpsMessage)data.Array[data.Offset];
+        var reader = new PayloadReader(data);
+        var messageType = (EInGameRpsMessage)reader.ReadByte();
 
         switch (messageType)
         {
             case EInGameRpsMessage.StartRound:
-                if (data.Count < 5)
-                {
-                    return;
-                }
-
-                float duration = BitConverter.ToSingle(data.Array, data.Offset + 1);
-                OnRoundStarted?.Invoke(duration);
+                if (!reader.CanRead(4)) return;
+                OnRoundStarted?.Invoke(reader.ReadFloat());
                 break;
 
             case EInGameRpsMessage.RoundResult:
-                if (data.Count < 2)
-                {
-                    return;
-                }
-
-                var handPosition = (EHandPosition)data.Array[data.Offset + 1];
-                OnRoundResultReceived?.Invoke(handPosition);
+                if (!reader.CanRead(1)) return;
+                OnRoundResultReceived?.Invoke((EHandPosition)reader.ReadByte());
                 break;
 
             case EInGameRpsMessage.StageSelected:
-                if (data.Count < 6)
-                {
-                    return;
-                }
-
-                int stageIndex = data.Array[data.Offset + 1];
-                int stageSeed = BitConverter.ToInt32(data.Array, data.Offset + 2);
+                if (!reader.CanRead(1 + 4)) return;
+                int stageIndex = reader.ReadByte();
+                int stageSeed = reader.ReadInt();
                 OnStageSelected?.Invoke(stageIndex, stageSeed);
                 break;
 
             case EInGameRpsMessage.CardsApplied:
-                if (data.Count < 2)
-                {
-                    return;
-                }
-
-                int cardCount = data.Array[data.Offset + 1];
-                if (data.Count < 2 + cardCount * 2)
-                {
-                    return;
-                }
+                if (!reader.CanRead(1)) return;
+                int cardCount = reader.ReadByte();
+                if (!reader.CanRead(cardCount * 2)) return;
 
                 var cards = new List<CardRef>(cardCount);
                 for (int i = 0; i < cardCount; i++)
                 {
-                    var kind = (ECardKind)data.Array[data.Offset + 2 + i * 2];
-                    int index = data.Array[data.Offset + 3 + i * 2];
+                    var kind = (ECardKind)reader.ReadByte();
+                    int index = reader.ReadByte();
                     cards.Add(new CardRef(kind, index));
                 }
 
@@ -988,46 +967,30 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
                 break;
 
             case EInGameRpsMessage.CardOffer:
-                if (data.Count < 7)
-                {
-                    return;
-                }
-
-                var offerKind = (ECardKind)data.Array[data.Offset + 1];
-                float offerDuration = BitConverter.ToSingle(data.Array, data.Offset + 2);
-                int offerCount = data.Array[data.Offset + 6];
-                if (data.Count < 7 + offerCount)
-                {
-                    return;
-                }
+                if (!reader.CanRead(1 + 4 + 1)) return;
+                var offerKind = (ECardKind)reader.ReadByte();
+                float offerDuration = reader.ReadFloat();
+                int offerCount = reader.ReadByte();
+                if (!reader.CanRead(offerCount)) return;
 
                 var offered = new int[offerCount];
                 for (int i = 0; i < offerCount; i++)
-                    offered[i] = data.Array[data.Offset + 7 + i];
+                    offered[i] = reader.ReadByte();
 
                 OnCardOfferReceived?.Invoke(offerKind, offered, offerDuration);
                 break;
 
             case EInGameRpsMessage.CardVoteResult:
-                if (data.Count < 3)
-                {
-                    return;
-                }
-
-                var resultKind = (ECardKind)data.Array[data.Offset + 1];
-                byte resultByte = data.Array[data.Offset + 2];
+                if (!reader.CanRead(2)) return;
+                var resultKind = (ECardKind)reader.ReadByte();
+                byte resultByte = reader.ReadByte();
                 int chosenIndex = resultByte == 255 ? -1 : resultByte;
                 OnCardVoteResult?.Invoke(resultKind, chosenIndex);
                 break;
 
             case EInGameRpsMessage.BossIntro:
-                if (data.Count < 2)
-                {
-                    return;
-                }
-
-                int bossRound = data.Array[data.Offset + 1];
-                OnBossIntro?.Invoke(bossRound);
+                if (!reader.CanRead(1)) return;
+                OnBossIntro?.Invoke(reader.ReadByte());
                 break;
         }
     }

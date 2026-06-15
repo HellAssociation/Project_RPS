@@ -35,13 +35,5 @@ public class HandSpriteData : ScriptableObject
     }
 #endif
 
-    static int FingerIndex(EFingerType _fingerType) => _fingerType switch
-    {
-        EFingerType.Thumb => 0,
-        EFingerType.Index => 1,
-        EFingerType.Middle => 2,
-        EFingerType.Ring => 3,
-        EFingerType.Pinky => 4,
-        _ => -1,
-    };
+    static int FingerIndex(EFingerType _fingerType) => System.Array.IndexOf(RpsHandUtility.AllFingers, _fingerType);
 }

@@ -210,20 +210,7 @@ public class PlayerManager : CommonManagerBase
         if (Network == null || !Network.TryGetAliveRunner(out NetworkRunner runner) || !runner.IsRunning)
             return false;
 
-        if (runner.IsServer)
-            return TryGet(runner.LocalPlayer, out host);
-
-        int minId = int.MaxValue;
-        PlayerRef hostRef = default;
-        foreach (PlayerRef p in Network.GetActivePlayers())
-        {
-            if (p.PlayerId < minId)
-            {
-                minId = p.PlayerId;
-                hostRef = p;
-            }
-        }
-
+        PlayerRef hostRef = ResolveHostPlayer(runner, Network.GetActivePlayers());
         return hostRef.IsRealPlayer && TryGet(hostRef, out host);
     }
 
@@ -260,7 +247,7 @@ public class PlayerManager : CommonManagerBase
             string displayName = ResolveDisplayName(playerRef, playerId, isLocal);
             bool isReady = !isHost && TryGet(playerRef, out PlayerNetworkObject lobbyPlayer) && lobbyPlayer.IsReady;
 
-            players.Add(new LobbyPlayer(playerId, displayName, isHost, isLocal) { IsReady = isReady });
+            players.Add(new LobbyPlayer(playerId, displayName, isHost, isLocal, isReady));
         }
 
         return players;
@@ -281,7 +268,7 @@ public class PlayerManager : CommonManagerBase
 
         bool isHost = Network.Session.IsHost;
         bool isReady = !isHost && IsLocalReady;
-        players.Add(new LobbyPlayer(localId, LocalDisplayName, isHost, true) { IsReady = isReady });
+        players.Add(new LobbyPlayer(localId, LocalDisplayName, isHost, true, isReady));
     }
 
     string ResolveDisplayName(PlayerRef playerRef, string playerId, bool isLocal)

@@ -63,20 +63,17 @@ public abstract class Hand : MonoBehaviour
     protected void ApplyHandPosition(EHandPosition handPosition)
     {
         if (handPosition == EHandPosition.Invalid || handPosition == EHandPosition.Random) return;
+        ApplyFingerMask((EFingerType)(int)handPosition);
+    }
+
+    protected void ApplyFingerMask(EFingerType mask)
+    {
         if (fingerTable == null) return;
-
-        EFingerType mask = (EFingerType)(int)handPosition;
-
         foreach (var kvp in fingerTable)
             kvp.Value.SetOpen((mask & kvp.Key) != 0);
     }
 
-    protected void CloseAll()
-    {
-        if (fingerTable == null) return;
-        foreach (var kvp in fingerTable)
-            kvp.Value.SetOpen(false);
-    }
+    protected void CloseAll() => ApplyFingerMask(EFingerType.None);
 }
 
 public enum EEnemyHandType

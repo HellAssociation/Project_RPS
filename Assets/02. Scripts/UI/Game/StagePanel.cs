@@ -7,9 +7,6 @@ using UnityEngine.InputSystem;
 public class StagePanel : PanelBase
 {
     #region [Function] Inheritance
-    public override bool IsOpened => _panelGameObject.activeSelf;
-    public override bool CanCloseWithESC => false;
-    public override bool IsStackable => false;
     public override EUIType UIType => EUIType.Stage;
     #endregion
 
@@ -69,12 +66,8 @@ public class StagePanel : PanelBase
         {
             Vector2 n = hostObj.CursorScreenPos;
             Vector2 screenPos = new(n.x * Screen.width, n.y * Screen.height);
-            Camera cam = _canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _canvas.worldCamera;
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                (RectTransform)_canvas.transform, screenPos, cam, out Vector2 localPos))
-            {
+            if (TryGetCanvasLocalPoint(_canvas, screenPos, out Vector2 localPos))
                 cursorRect.position = _canvas.transform.TransformPoint(localPos);
-            }
         }
 
     }

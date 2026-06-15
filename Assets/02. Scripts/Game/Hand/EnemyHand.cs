@@ -12,15 +12,6 @@ public class EnemyHand : Hand
         EHandPosition.Scissors,
     };
 
-    static readonly EFingerType[] FINGER_TYPES =
-    {
-        EFingerType.Thumb,
-        EFingerType.Index,
-        EFingerType.Middle,
-        EFingerType.Ring,
-        EFingerType.Pinky,
-    };
-
     const float RANDOM_CYCLE_INTERVAL = 0.1f;
     const float LOCK_BEFORE_END = 1f;
     const int HAND_SPRITE_DATA_COUNT = 10;
@@ -148,7 +139,7 @@ public class EnemyHand : Hand
 
         SetHandSprite(data.HandSprite);
 
-        foreach (EFingerType fingerType in FINGER_TYPES)
+        foreach (EFingerType fingerType in RpsHandUtility.AllFingers)
         {
             Finger finger = GetFinger(fingerType);
             if (finger == null) continue;

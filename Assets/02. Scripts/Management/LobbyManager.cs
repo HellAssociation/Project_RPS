@@ -185,19 +185,5 @@ public class LobbyManager : SceneManagerBase
     }
 
     static void Complete(LobbyRequestResult result, Action<LobbyRequestResult> onComplete)
-    {
-        if (!result.IsSuccess && !string.IsNullOrEmpty(result.ErrorMessage))
-        {
-            if (result.ErrorMessage == NetworkManager.SessionNotFoundMessage)
-            {
-                Debug.Log($"[LobbyManager] {result.ErrorMessage}");
-            }
-            else
-            {
-                Debug.LogError($"[LobbyManager] {result.ErrorMessage}");
-            }
-        }
-
-        onComplete?.Invoke(result);
-    }
+        => CompleteRequest(result, onComplete, nameof(LobbyManager));
 }

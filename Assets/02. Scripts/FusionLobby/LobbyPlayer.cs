@@ -9,12 +9,12 @@ public class LobbyPlayer
     public bool IsReady;
     public bool IsLocal;
 
-    public LobbyPlayer(string playerId, string displayName, bool isHost, bool isLocal)
+    public LobbyPlayer(string playerId, string displayName, bool isHost, bool isLocal, bool isReady = false)
     {
         PlayerId = playerId;
         DisplayName = displayName;
         IsHost = isHost;
-        IsReady = false;
+        IsReady = isReady;
         IsLocal = isLocal;
     }
 }

@@ -33,14 +33,6 @@ public class PlayerHand : Hand
         if (Players != null) Players.OnPlayersChanged -= RefreshFromNetwork;
     }
 
-    // Single-control (1v1): local mask drives all five fingers.
-    void ApplyFingerMask(EFingerType mask)
-    {
-        if (fingerTable == null) return;
-        foreach (var kvp in fingerTable)
-            kvp.Value.SetOpen((mask & kvp.Key) != 0);
-    }
-
     // Multi-control (1v5): every client draws the shared hand from each player's networked finger state.
     void RefreshFromNetwork()
     {

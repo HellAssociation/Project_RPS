@@ -1,4 +1,3 @@
-using System.Collections;
 using DG.Tweening;
 using SystemEnums;
 using UnityEngine;
@@ -7,9 +6,6 @@ using UnityEngine.UI;
 public class HUDPanel : PanelBase
 {
     #region [Function] Inheritance
-    public override bool IsOpened => _panelGameObject.activeSelf;
-    public override bool CanCloseWithESC => false;
-    public override bool IsStackable => false;
     public override EUIType UIType => EUIType.HUD;
     #endregion
 
@@ -25,9 +21,16 @@ public class HUDPanel : PanelBase
 
     [Header("HP Bar")]
     [SerializeField] float fillDuration      = 1.7f;
-    [SerializeField] float delaySeconds      = 0.3f;
-    [SerializeField] float ghostSpeed        = 2.5f;
-    [SerializeField] float enemyGhostSpeed   = 6f;
+
+    [Header("HP Bar - Ghost Drain")]
+    [Tooltip("빨간 잔상 영역이 줄어들기 전까지 유지되는 시간(초)")]
+    [SerializeField] float ghostHoldSeconds         = 0.3f;
+    [Tooltip("플레이어 잔상이 다 줄어드는 데 걸리는 시간(초)")]
+    [SerializeField] float playerGhostDrainDuration = 0.4f;
+    [Tooltip("적 잔상이 다 줄어드는 데 걸리는 시간(초)")]
+    [SerializeField] float enemyGhostDrainDuration  = 0.25f;
+    [Tooltip("잔상이 줄어드는 Ease")]
+    [SerializeField] Ease  ghostDrainEase           = Ease.OutCubic;
 
     [Header("Hit Shake")]
     [SerializeField] RectTransform playerHudShakeRect;
@@ -36,11 +39,7 @@ public class HUDPanel : PanelBase
     [SerializeField] float shakeStrength  = 16f;
     [SerializeField] int   shakeVibrato   = 28;
 
-    float     _playerDelayed;
-    float     _enemyDelayed;
-    Vector2   _hudShakeOrigin;
-    Coroutine _ghostCoroutine;
-    Coroutine _enemyGhostCoroutine;
+    Vector2 _hudShakeOrigin;
 
     InGameManager InGame => App.SceneManager.InGame;
 
@@ -72,37 +71,20 @@ public class HUDPanel : PanelBase
 
     void PlayFillIn()
     {
-        if (_ghostCoroutine != null)      { StopCoroutine(_ghostCoroutine);      _ghostCoroutine      = null; }
-        if (_enemyGhostCoroutine != null) { StopCoroutine(_enemyGhostCoroutine); _enemyGhostCoroutine = null; }
-
         if (playerHPImage != null)       playerHPImage.DOKill();
         if (playerFollowHPImage != null) playerFollowHPImage.DOKill();
         if (enemyHPImage != null)        enemyHPImage.DOKill();
         if (enemyFollowHPImage != null)  enemyFollowHPImage.DOKill();
-
-        _playerDelayed = 0f;
-        _enemyDelayed  = 0f;
 
         if (playerHPImage != null)       playerHPImage.fillAmount       = 0f;
         if (playerFollowHPImage != null) playerFollowHPImage.fillAmount = 0f;
         if (enemyHPImage != null)        enemyHPImage.fillAmount        = 0f;
         if (enemyFollowHPImage != null)  enemyFollowHPImage.fillAmount  = 0f;
 
-        if (playerHPImage != null)
-            playerHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad);
-
-        if (playerFollowHPImage != null)
-            playerFollowHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad)
-                .OnUpdate(() => _playerDelayed = playerFollowHPImage.fillAmount)
-                .OnComplete(() => _playerDelayed = 1f);
-
-        if (enemyHPImage != null)
-            enemyHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad);
-
-        if (enemyFollowHPImage != null)
-            enemyFollowHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad)
-                .OnUpdate(() => _enemyDelayed = enemyFollowHPImage.fillAmount)
-                .OnComplete(() => _enemyDelayed = 1f);
+        if (playerHPImage != null)       playerHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad);
+        if (playerFollowHPImage != null) playerFollowHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad);
+        if (enemyHPImage != null)        enemyHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad);
+        if (enemyFollowHPImage != null)  enemyFollowHPImage.DOFillAmount(1f, fillDuration).SetEase(Ease.OutQuad);
     }
 
     void HandleLivesChanged(int lives)
@@ -121,46 +103,16 @@ public class HUDPanel : PanelBase
     {
         if (enemyHPImage != null)       enemyHPImage.DOKill();
         if (enemyFollowHPImage != null) enemyFollowHPImage.DOKill();
-        if (_enemyGhostCoroutine != null) { StopCoroutine(_enemyGhostCoroutine); _enemyGhostCoroutine = null; }
 
         if (target >= 1f)
         {
             if (enemyHPImage != null)       enemyHPImage.fillAmount       = 1f;
             if (enemyFollowHPImage != null) enemyFollowHPImage.fillAmount = 1f;
-            _enemyDelayed = 1f;
             return;
         }
 
-        if (enemyHPImage != null)
-        {
-            enemyHPImage.fillAmount = target;
-            enemyHPImage.DOColor(Color.white, 0.05f).SetLoops(2, LoopType.Yoyo);
-        }
-
-        if (enemyHPRect != null)
-        {
-            enemyHPRect.DOKill();
-            enemyHPRect.DOPunchScale(new Vector3(0.02f, 0.14f, 0f), 0.28f, 5, 0.3f);
-        }
-
-        _enemyGhostCoroutine = StartCoroutine(EnemyGhostDrainCoroutine(target));
-    }
-
-    IEnumerator EnemyGhostDrainCoroutine(float target)
-    {
-        float timer = delaySeconds;
-        while (timer > 0f) { timer -= Time.deltaTime; yield return null; }
-
-        while (_enemyDelayed > target)
-        {
-            _enemyDelayed -= enemyGhostSpeed * Time.deltaTime;
-            _enemyDelayed  = Mathf.Max(_enemyDelayed, target);
-            if (enemyFollowHPImage != null)
-                enemyFollowHPImage.fillAmount = _enemyDelayed;
-            yield return null;
-        }
-
-        _enemyGhostCoroutine = null;
+        FlashHpBar(enemyHPImage, enemyHPRect, target);
+        DrainGhost(enemyFollowHPImage, target, enemyGhostDrainDuration);
     }
 
     void PlayDrain(float target)
@@ -168,22 +120,25 @@ public class HUDPanel : PanelBase
         if (playerHPImage != null)       playerHPImage.DOKill();
         if (playerFollowHPImage != null) playerFollowHPImage.DOKill();
 
-        if (playerHPImage != null)
-        {
-            playerHPImage.fillAmount = target;
-            playerHPImage.DOColor(Color.white, 0.05f).SetLoops(2, LoopType.Yoyo);
-        }
-
-        if (playerHPRect != null)
-        {
-            playerHPRect.DOKill();
-            playerHPRect.DOPunchScale(new Vector3(0.02f, 0.14f, 0f), 0.28f, 5, 0.3f);
-        }
-
+        FlashHpBar(playerHPImage, playerHPRect, target);
         PlayHitShake();
 
-        if (_ghostCoroutine != null) StopCoroutine(_ghostCoroutine);
-        _ghostCoroutine = StartCoroutine(GhostDrainCoroutine(target));
+        DrainGhost(playerFollowHPImage, target, playerGhostDrainDuration);
+    }
+
+    void FlashHpBar(Image hpImage, RectTransform hpRect, float target)
+    {
+        if (hpImage != null)
+        {
+            hpImage.fillAmount = target;
+            hpImage.DOColor(Color.white, 0.05f).SetLoops(2, LoopType.Yoyo);
+        }
+
+        if (hpRect != null)
+        {
+            hpRect.DOKill();
+            hpRect.DOPunchScale(new Vector3(0.02f, 0.14f, 0f), 0.28f, 5, 0.3f);
+        }
     }
 
     // Tekken-style hit jolt: short, sharp shake on the HUD when the player takes damage
@@ -197,20 +152,13 @@ public class HUDPanel : PanelBase
             .OnComplete(() => playerHudShakeRect.anchoredPosition = _hudShakeOrigin);
     }
 
-    IEnumerator GhostDrainCoroutine(float target)
+    void DrainGhost(Image follow, float target, float duration)
     {
-        float timer = delaySeconds;
-        while (timer > 0f) { timer -= Time.deltaTime; yield return null; }
+        if (follow == null) return;
+        if (follow.fillAmount <= target) { follow.fillAmount = target; return; }
 
-        while (_playerDelayed > target)
-        {
-            _playerDelayed -= ghostSpeed * Time.deltaTime;
-            _playerDelayed  = Mathf.Max(_playerDelayed, target);
-            if (playerFollowHPImage != null)
-                playerFollowHPImage.fillAmount = _playerDelayed;
-            yield return null;
-        }
-
-        _ghostCoroutine = null;
+        follow.DOFillAmount(target, duration)
+              .SetDelay(ghostHoldSeconds)
+              .SetEase(ghostDrainEase);
     }
 }

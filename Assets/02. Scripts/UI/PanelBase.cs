@@ -6,11 +6,11 @@ using UnityEngine;
 public abstract class PanelBase : MonoBehaviour
 {
     [SerializeField] protected GameObject _panelGameObject;
-    public abstract bool IsOpened { get; }
+    public virtual bool IsOpened => _panelGameObject.activeSelf;
 
-    public abstract bool CanCloseWithESC { get; }
+    public virtual bool CanCloseWithESC => false;
 
-    public abstract bool IsStackable { get; }
+    public virtual bool IsStackable => false;
 
     public abstract EUIType UIType { get; }
 
@@ -56,5 +56,13 @@ public abstract class PanelBase : MonoBehaviour
         }
 
         _panelGameObject.SetActive(false);
+    }
+
+    // Converts a screen point to the canvas' local space (overlay canvases use a null camera).
+    protected static bool TryGetCanvasLocalPoint(Canvas canvas, Vector2 screenPos, out Vector2 localPos)
+    {
+        Camera cam = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
+        return RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            (RectTransform)canvas.transform, screenPos, cam, out localPos);
     }
 }

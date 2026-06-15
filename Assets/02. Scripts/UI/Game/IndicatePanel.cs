@@ -5,9 +5,6 @@ using UnityEngine;
 public class IndicatePanel : PanelBase
 {
     #region [Function] Inheritance
-    public override bool IsOpened => _panelGameObject.activeSelf;
-    public override bool CanCloseWithESC => false;
-    public override bool IsStackable => false;
     public override EUIType UIType => EUIType.Indicate;
     #endregion
 
@@ -60,12 +57,8 @@ public class IndicatePanel : PanelBase
     {
         if (_activeSlot == null || _canvas == null) return;
 
-        Camera cam = _canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _canvas.worldCamera;
-        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                (RectTransform)_canvas.transform, screenPos, cam, out Vector2 localPos))
-        {
+        if (TryGetCanvasLocalPoint(_canvas, screenPos, out Vector2 localPos))
             _activeSlot.SetPosition(localPos);
-        }
     }
 }
 

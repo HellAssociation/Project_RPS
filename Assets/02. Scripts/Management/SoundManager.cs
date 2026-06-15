@@ -18,7 +18,6 @@ public class SoundManager : CommonManagerBase
     [Header("SFX Pool")]
     [SerializeField] private GameObject _sfxSourcePrefab;
 
-    private readonly Dictionary<EAudioClip, AudioClip> _clipCache = new();
     private readonly List<AudioSource> _sfxPool = new();
     private AudioSource _loopingSfxSource;
 
@@ -93,7 +92,7 @@ public class SoundManager : CommonManagerBase
 
     public void PlayLoopingSfx(EAudioClip clip)
     {
-        LoadAndCacheClip(clip, audioClip =>
+        LoadClip(clip, audioClip =>
         {
             if (audioClip == null)
             {
@@ -147,18 +146,10 @@ public class SoundManager : CommonManagerBase
         return source;
     }
 
-    private void LoadAndCacheClip(EAudioClip clip, Action<AudioClip> onLoaded)
+    // AssetManager.GetAudioClip already caches; no second cache here.
+    private void LoadClip(EAudioClip clip, Action<AudioClip> onLoaded)
     {
-        if (_clipCache.TryGetValue(clip, out var cached))
-        {
-            onLoaded?.Invoke(cached);
-            return;
-        }
-
-        var audioClip = App.SystemManager.Asset.GetAudioClip(clip);
-        if (audioClip != null)
-            _clipCache[clip] = audioClip;
-        onLoaded?.Invoke(audioClip);
+        onLoaded?.Invoke(App.SystemManager.Asset.GetAudioClip(clip));
     }
 
     public void PlayBGM(EAudioClip clip)
@@ -168,7 +159,7 @@ public class SoundManager : CommonManagerBase
             return;
         }
 
-        LoadAndCacheClip(clip, audioClip =>
+        LoadClip(clip, audioClip =>
         {
             if (audioClip == null)
             {
@@ -208,17 +199,17 @@ public class SoundManager : CommonManagerBase
             return;
         }
 
-        _bgmFadeCoroutine = StartCoroutine(FadeBgmVolume(_bgmSource.volume, 0f, BgmFadeDuration, () =>
-        {
-            _bgmSource.Stop();
-            _activeBgmClip = EAudioClip.None;
-            _bgmSource.volume = 1f;
-        }));
+        _bgmFadeCoroutine = StartCoroutine(FadeBgmVolume(_bgmSource.volume, 0f, BgmFadeDuration, ResetBgmSource));
     }
 
     public void StopBGMImmediate()
     {
         StopBgmFadeCoroutine();
+        ResetBgmSource();
+    }
+
+    void ResetBgmSource()
+    {
         _bgmSource.Stop();
         _activeBgmClip = EAudioClip.None;
         _bgmSource.volume = 1f;
@@ -241,7 +232,7 @@ public class SoundManager : CommonManagerBase
 
     public void PlaySFX(EAudioClip clip)
     {
-        LoadAndCacheClip(clip, audioClip =>
+        LoadClip(clip, audioClip =>
         {
             if (audioClip == null) return;
 

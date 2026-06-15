@@ -7,7 +7,8 @@ using SystemEnums;
 /// </summary>
 public static class RpsHandUtility
 {
-    static readonly EFingerType[] AssignableFingers =
+    // Canonical Thumb -> Pinky order (index 0..4). Single source of truth for finger ordering.
+    public static readonly EFingerType[] AllFingers =
     {
         EFingerType.Thumb,
         EFingerType.Index,
@@ -34,8 +35,8 @@ public static class RpsHandUtility
     {
         random ??= new Random();
 
-        var fingers = (EFingerType[])AssignableFingers.Clone();
-        Shuffle(fingers, random);
+        var fingers = (EFingerType[])AllFingers.Clone();
+        CollectionUtility.Shuffle(fingers, random);
 
         var assignments = new Dictionary<int, EFingerType>();
         int assignCount = Math.Min(playerIds.Count, fingers.Length);
@@ -46,14 +47,5 @@ public static class RpsHandUtility
         }
 
         return assignments;
-    }
-
-    static void Shuffle(EFingerType[] array, Random random)
-    {
-        for (int i = array.Length - 1; i > 0; i--)
-        {
-            int j = random.Next(i + 1);
-            (array[i], array[j]) = (array[j], array[i]);
-        }
     }
 }

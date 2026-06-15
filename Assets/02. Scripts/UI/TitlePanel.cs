@@ -5,12 +5,6 @@ using UnityEngine.UI;
 
 public class TitlePanel : PanelBase
 {
-    public override bool IsOpened => _panelGameObject.activeSelf;
-
-    public override bool CanCloseWithESC => false;
-
-    public override bool IsStackable => false;
-
     public override EUIType UIType => EUIType.Title;
 
     [SerializeField] private TMP_InputField nicknameInput;

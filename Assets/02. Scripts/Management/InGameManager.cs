@@ -29,13 +29,13 @@ public class InGameManager : SceneManagerBase
     const float SLIDE_DURATION = 0.5f;
 
     static readonly WaitForSeconds WAIT_OUTCOME = new(BETWEEN_WAVE_DELAY);
-    static readonly WaitForSeconds WAIT_SLIDE   = new(SLIDE_DURATION);
+    static readonly WaitForSeconds WAIT_SLIDE = new(SLIDE_DURATION);
     static readonly WaitForSeconds WAIT_VOTE_REVEAL = new(VOTE_REVEAL_SECONDS);
-    static readonly WaitForSeconds WAIT_BOSS_INTRO  = new(BOSS_INTRO_SECONDS);
+    static readonly WaitForSeconds WAIT_BOSS_INTRO = new(BOSS_INTRO_SECONDS);
 
     NetworkManager Network => App.SystemManager.Network;
-    PlayerManager Players  => App.Game.Players;
-    InputManager Input     => App.SystemManager.Input;
+    PlayerManager Players => App.Game.Players;
+    InputManager Input => App.SystemManager.Input;
 
     Coroutine _waveCoroutine;
     Coroutine _hostSetupCoroutine;
@@ -61,43 +61,43 @@ public class InGameManager : SceneManagerBase
     public int EnemySeed => _enemySeed;
 
     public event Action<EFingerType> OnLocalAssignedFingerChanged;
-    public event Action<bool>        OnLocalFingerExtendedChanged;
+    public event Action<bool> OnLocalFingerExtendedChanged;
     public event Action<EFingerType> OnLocalFingerMaskChanged;
-    public event Action<float>       OnWaveTimerUpdated;
-    public event Action<int>         OnStageOpened;
-    public event Action              OnReadyStarted;
-    public event Action<float>       OnWaveStarted;
+    public event Action<float> OnWaveTimerUpdated;
+    public event Action<int> OnStageOpened;
+    public event Action OnReadyStarted;
+    public event Action<float> OnWaveStarted;
     public event Action<EHandPosition> OnWaveJudged;
-    public event Action<EOutcome>    OnOutcomeDetermined;
-    public event Action              OnWaveResultShown;
-    public event Action<int>         OnLivesChanged;
-    public event Action<int, int>    OnEnemyHpChanged;
-    public event Action<int>         OnCurrentRoundChanged;
-    public event Action<int>         OnRoundClear;
-    public event Action              OnGameOver;
+    public event Action<EOutcome> OnOutcomeDetermined;
+    public event Action OnWaveResultShown;
+    public event Action<int> OnLivesChanged;
+    public event Action<int, int> OnEnemyHpChanged;
+    public event Action<int> OnCurrentRoundChanged;
+    public event Action<int> OnRoundClear;
+    public event Action OnGameOver;
 
     void OnEnable()
     {
-        Input.OnFingerToggled               += HandleFingerToggled;
-        Input.OnSingleControlMaskChanged    += HandleSingleControlMaskChanged;
-        Network.OnInGameSceneReady          += HandleInGameSceneReady;
+        Input.OnFingerToggled += HandleFingerToggled;
+        Input.OnSingleControlMaskChanged += HandleSingleControlMaskChanged;
+        Network.OnInGameSceneReady += HandleInGameSceneReady;
         Network.OnFingerAssignmentsReceived += HandleFingerAssignmentsReceived;
-        Network.OnRoundStarted              += HandleWaveStarted;
-        Network.OnRoundResultReceived       += HandleWaveResultReceived;
-        Network.OnStageSelected             += HandleRoundSelected;
-        Network.OnCardsApplied              += HandleCardsApplied;
+        Network.OnRoundStarted += HandleWaveStarted;
+        Network.OnRoundResultReceived += HandleWaveResultReceived;
+        Network.OnStageSelected += HandleRoundSelected;
+        Network.OnCardsApplied += HandleCardsApplied;
     }
 
     void OnDisable()
     {
-        Input.OnFingerToggled               -= HandleFingerToggled;
-        Input.OnSingleControlMaskChanged    -= HandleSingleControlMaskChanged;
-        Network.OnInGameSceneReady          -= HandleInGameSceneReady;
+        Input.OnFingerToggled -= HandleFingerToggled;
+        Input.OnSingleControlMaskChanged -= HandleSingleControlMaskChanged;
+        Network.OnInGameSceneReady -= HandleInGameSceneReady;
         Network.OnFingerAssignmentsReceived -= HandleFingerAssignmentsReceived;
-        Network.OnRoundStarted              -= HandleWaveStarted;
-        Network.OnRoundResultReceived       -= HandleWaveResultReceived;
-        Network.OnStageSelected             -= HandleRoundSelected;
-        Network.OnCardsApplied              -= HandleCardsApplied;
+        Network.OnRoundStarted -= HandleWaveStarted;
+        Network.OnRoundResultReceived -= HandleWaveResultReceived;
+        Network.OnStageSelected -= HandleRoundSelected;
+        Network.OnCardsApplied -= HandleCardsApplied;
     }
 
     void Start()
@@ -131,15 +131,18 @@ public class InGameManager : SceneManagerBase
             _hostSetupCoroutine = null;
         }
 
-        _hostSetupStarted  = false;
+        _hostSetupStarted = false;
         _run.Reset();
         _enemyHandPosition = EHandPosition.Invalid;
-        Phase              = EInGamePhase.WaitingForRoundSelect;
-        LastHandPosition   = EHandPosition.Invalid;
-        WaveTimeRemaining  = 0f;
+        Phase = EInGamePhase.WaitingForRoundSelect;
+        LastHandPosition = EHandPosition.Invalid;
+        WaveTimeRemaining = 0f;
         Input.SetEnabled(false);
         Input.ResetFingerState();
         Network.ResetInGameRoundNotification();
+
+        App.UI.InGame.TryGetPanel(out _stagePanel);
+        _stagePanel.OpenPanel();
     }
 
     void HandleInGameSceneReady()
@@ -156,7 +159,7 @@ public class InGameManager : SceneManagerBase
     void HandleRoundSelected(int stageIndex, int seed)
     {
         _selectedStageIndex = stageIndex;
-        _enemySeed          = seed;
+        _enemySeed = seed;
 
         if (ModeData.IsSingleControl)
             Input.RandomizeSingleControlBindings();
@@ -174,26 +177,33 @@ public class InGameManager : SceneManagerBase
         if (_hostSetupStarted || !Network.IsServerHost || Phase != EInGamePhase.WaitingForSetup)
             return;
 
-        _hostSetupStarted   = true;
+        _hostSetupStarted = true;
         _hostSetupCoroutine = StartCoroutine(HostSetupCoroutine());
     }
 
     IEnumerator HostSetupCoroutine()
     {
+        yield return HostPrepareAssignmentsCoroutine();
+        yield return WaitVersusThenStartRound();
+        _hostSetupCoroutine = null;
+    }
+
+    // Host ritual shared by initial setup and post-round-clear: ensure objects -> card vote -> assign fingers -> ready.
+    IEnumerator HostPrepareAssignmentsCoroutine()
+    {
         yield return Players.ServerEnsurePlayerObjectsCoroutine();
-
         yield return HostCardVoteSequenceCoroutine();
-
         Network.ServerInitializeFingerAssignments();
         yield return null;
-
         ApplyAssignmentsReady();
+    }
 
+    IEnumerator WaitVersusThenStartRound()
+    {
         if (_versusPanel != null)
             yield return new WaitWhile(() => _versusPanel.IsAnimating);
 
         Network.ServerStartRound(_run.GetWaveDuration(_run.CurrentRound));
-        _hostSetupCoroutine = null;
     }
 
     void HandleFingerAssignmentsReceived()
@@ -253,7 +263,7 @@ public class InGameManager : SceneManagerBase
 
     IEnumerator WaveTimerCoroutine(float durationSeconds)
     {
-        Phase             = EInGamePhase.WaveInput;
+        Phase = EInGamePhase.WaveInput;
         WaveTimeRemaining = durationSeconds;
         _enemyHandPosition = EHandPosition.Invalid;
         Input.ResetFingerState();
@@ -289,7 +299,7 @@ public class InGameManager : SceneManagerBase
         OnWaveJudged?.Invoke(handPosition);
 
         bool isRoundClear = false;
-        bool isGameOver   = false;
+        bool isGameOver = false;
 
         switch (outcome)
         {
@@ -307,8 +317,8 @@ public class InGameManager : SceneManagerBase
                 OnLivesChanged?.Invoke(_run.Lives);
                 if (_run.Lives <= 0)
                 {
-                    Phase       = EInGamePhase.GameOver;
-                    isGameOver  = true;
+                    Phase = EInGamePhase.GameOver;
+                    isGameOver = true;
                 }
                 break;
         }
@@ -342,7 +352,7 @@ public class InGameManager : SceneManagerBase
 
             _run.Reset();
             _hostSetupStarted = false;
-            Phase            = EInGamePhase.WaitingForRoundSelect;
+            Phase = EInGamePhase.WaitingForRoundSelect;
             OnLivesChanged?.Invoke(_run.Lives);
             OnCurrentRoundChanged?.Invoke(_run.CurrentRound);
 
@@ -373,13 +383,9 @@ public class InGameManager : SceneManagerBase
                 yield break;
             }
 
-            Phase             = EInGamePhase.WaitingForSetup;
+            Phase = EInGamePhase.WaitingForSetup;
             _hostSetupStarted = false;
-            yield return Players.ServerEnsurePlayerObjectsCoroutine();
-            yield return HostCardVoteSequenceCoroutine();
-            Network.ServerInitializeFingerAssignments();
-            yield return null;
-            ApplyAssignmentsReady();
+            yield return HostPrepareAssignmentsCoroutine();
         }
 
         if (bossAppearing)
@@ -390,10 +396,7 @@ public class InGameManager : SceneManagerBase
             yield return WAIT_BOSS_INTRO;
         }
 
-        if (_versusPanel != null && _versusPanel.IsAnimating)
-            yield return new WaitWhile(() => _versusPanel.IsAnimating);
-
-        Network.ServerStartRound(_run.GetWaveDuration(_run.CurrentRound));
+        yield return WaitVersusThenStartRound();
         _betweenWaveCoroutine = null;
     }
 

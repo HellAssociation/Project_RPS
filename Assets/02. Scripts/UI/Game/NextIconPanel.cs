@@ -6,9 +6,6 @@ using UnityEngine;
 public class NextIconPanel : PanelBase
 {
     #region [Function] Inheritance
-    public override bool IsOpened => _panelGameObject.activeSelf;
-    public override bool CanCloseWithESC => false;
-    public override bool IsStackable => false;
     public override EUIType UIType => EUIType.NextIcon;
     #endregion
 
@@ -110,11 +107,7 @@ public class NextIconPanel : PanelBase
             EHandPosition.Paper,
         };
 
-        for (int i = pool.Length - 1; i > 0; i--)
-        {
-            int j = _rng.Next(i + 1);
-            (pool[i], pool[j]) = (pool[j], pool[i]);
-        }
+        CollectionUtility.Shuffle(pool, _rng);
 
         foreach (var pos in pool)
             _queue.Enqueue(MakeSlot(pos));

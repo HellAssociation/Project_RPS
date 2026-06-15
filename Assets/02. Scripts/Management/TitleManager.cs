@@ -43,12 +43,5 @@ public class TitleManager : SceneManagerBase
     }
 
     static void Complete(LobbyRequestResult result, Action<LobbyRequestResult> onComplete)
-    {
-        if (!result.IsSuccess && !string.IsNullOrEmpty(result.ErrorMessage))
-        {
-            Debug.LogError($"[TitleManager] {result.ErrorMessage}");
-        }
-
-        onComplete?.Invoke(result);
-    }
+        => CompleteRequest(result, onComplete, nameof(TitleManager));
 }
