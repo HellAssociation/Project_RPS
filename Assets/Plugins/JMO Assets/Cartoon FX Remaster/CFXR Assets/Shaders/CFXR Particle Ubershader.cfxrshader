@@ -265,7 +265,7 @@ Shader "Cartoon FX/Remaster/Particle Ubershader"
 				#pragma shader_feature_local_fragment _ _ALPHATEST_ON
 				#pragma shader_feature_local_fragment _ _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON _ALPHAMODULATE_ON _CFXR_ADDITIVE
 
-				#define CFXR_UPR
+				#define CFXR_URP
 				#define DISABLE_SOFT_PARTICLES
 				#define CFXR_UBERSHADER
 				#include "CFXR_PASSES.cginc"
