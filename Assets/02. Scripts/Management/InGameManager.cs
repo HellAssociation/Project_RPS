@@ -18,13 +18,19 @@ public class InGameManager : SceneManagerBase
     const float BOSS_INTRO_SECONDS = 3f;
 
     readonly RunState _run = new();
+    readonly CardEffectRuntime _effects = new();
+    int _lastEffectRound;
 
     System.Random _voteRng;
     readonly int[] _voteTally = new int[CARDS_PER_VOTE];
     readonly List<int> _voteWinners = new(CARDS_PER_VOTE);
     readonly List<CardRef> _voteChosen = new(2);
 
+    readonly List<CardRef> _acquiredCards = new();
+    readonly List<int> _acquiredCardRounds = new();
+
     public int MaxLives => _run.MaxLives;
+    public IReadOnlyList<CardRef> AcquiredCards => _acquiredCards;
 
     const float SLIDE_DURATION = 0.5f;
 
@@ -75,6 +81,7 @@ public class InGameManager : SceneManagerBase
     public event Action<int> OnCurrentRoundChanged;
     public event Action<int> OnRoundClear;
     public event Action OnGameOver;
+    public event Action OnAcquiredCardsChanged;
 
     void OnEnable()
     {
@@ -103,6 +110,7 @@ public class InGameManager : SceneManagerBase
     void Start()
     {
         CachePanels();
+        _effects.Bind(Input);
         BeginInGameSetup();
     }
 
@@ -133,6 +141,10 @@ public class InGameManager : SceneManagerBase
 
         _hostSetupStarted = false;
         _run.Reset();
+        _effects.Clear();
+        _lastEffectRound = 0;
+        _acquiredCards.Clear();
+        _acquiredCardRounds.Clear();
         _enemyHandPosition = EHandPosition.Invalid;
         Phase = EInGamePhase.WaitingForRoundSelect;
         LastHandPosition = EHandPosition.Invalid;
@@ -270,6 +282,14 @@ public class InGameManager : SceneManagerBase
         Input.SetEnabled(true);
         OnLocalFingerExtendedChanged?.Invoke(false);
         OnLocalFingerMaskChanged?.Invoke(EFingerType.None);
+
+        if (_lastEffectRound != _run.CurrentRound)
+        {
+            _lastEffectRound = _run.CurrentRound;
+            _effects.OnRoundBegin();
+        }
+        _effects.OnWaveBegin();
+
         OnWaveStarted?.Invoke(durationSeconds);
         OnWaveTimerUpdated?.Invoke(WaveTimeRemaining);
 
@@ -320,6 +340,10 @@ public class InGameManager : SceneManagerBase
                     Phase = EInGamePhase.GameOver;
                     isGameOver = true;
                 }
+                else
+                {
+                    RemoveCurrentRoundAugments();
+                }
                 break;
         }
 
@@ -351,6 +375,9 @@ public class InGameManager : SceneManagerBase
             OnGameOver?.Invoke();
 
             _run.Reset();
+            _effects.Clear();
+            _lastEffectRound = 0;
+            ClearAcquiredAugments();
             _hostSetupStarted = false;
             Phase = EInGamePhase.WaitingForRoundSelect;
             OnLivesChanged?.Invoke(_run.Lives);
@@ -478,6 +505,49 @@ public class InGameManager : SceneManagerBase
         if (cards == null) return;
 
         for (int i = 0; i < cards.Count; i++)
-            CardSystem.Apply(_run, cards[i]);
+        {
+            CardSystem.Apply(_run, cards[i], _effects);
+            _acquiredCards.Add(cards[i]);
+            _acquiredCardRounds.Add(_run.CurrentRound);
+        }
+
+        OnAcquiredCardsChanged?.Invoke();
+    }
+
+    // Removes the augments chosen during the current round and rebuilds the remaining effects.
+    void RemoveCurrentRoundAugments()
+    {
+        int round = _run.CurrentRound;
+        bool removed = false;
+
+        for (int i = _acquiredCards.Count - 1; i >= 0; i--)
+        {
+            if (_acquiredCardRounds[i] != round) continue;
+            _acquiredCards.RemoveAt(i);
+            _acquiredCardRounds.RemoveAt(i);
+            removed = true;
+        }
+
+        if (!removed) return;
+
+        RebuildEffects();
+        OnAcquiredCardsChanged?.Invoke();
+    }
+
+    void RebuildEffects()
+    {
+        _run.ClearModifiers();
+        _effects.Clear();
+        _lastEffectRound = 0;
+
+        for (int i = 0; i < _acquiredCards.Count; i++)
+            CardSystem.Apply(_run, _acquiredCards[i], _effects);
+    }
+
+    void ClearAcquiredAugments()
+    {
+        _acquiredCards.Clear();
+        _acquiredCardRounds.Clear();
+        OnAcquiredCardsChanged?.Invoke();
     }
 }

@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
@@ -44,7 +45,10 @@ TagManager:
   - name: Battle
     uniqueID: 2482927851
     locked: 0
-  - name: Overlay
+  - name: InGameUI
+    uniqueID: 4175265633
+    locked: 0
+  - name: OverlayUI
     uniqueID: 3835250957
     locked: 0
   m_RenderingLayers:
