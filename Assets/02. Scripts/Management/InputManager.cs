@@ -55,7 +55,7 @@ public class InputManager : CommonManagerBase
 
         foreach (KeyValuePair<EFingerType, Key> binding in SingleControlKeyBindings)
         {
-            if (Keyboard.current[binding.Value].wasPressedThisFrame)
+            if (WasDigitKeyPressed(binding.Value))
             {
                 ExtendedFingersMask ^= binding.Key;
                 changed = true;
@@ -65,6 +65,23 @@ public class InputManager : CommonManagerBase
         if (changed)
             OnSingleControlMaskChanged?.Invoke(ExtendedFingersMask);
     }
+
+    static bool WasDigitKeyPressed(Key digitKey)
+    {
+        Keyboard keyboard = Keyboard.current;
+        return keyboard[digitKey].wasPressedThisFrame
+            || keyboard[ToNumpadKey(digitKey)].wasPressedThisFrame;
+    }
+
+    static Key ToNumpadKey(Key digitKey) => digitKey switch
+    {
+        Key.Digit1 => Key.Numpad1,
+        Key.Digit2 => Key.Numpad2,
+        Key.Digit3 => Key.Numpad3,
+        Key.Digit4 => Key.Numpad4,
+        Key.Digit5 => Key.Numpad5,
+        _ => digitKey,
+    };
 
     public void SetEnabled(bool enabled)
     {

@@ -3007,17 +3007,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayrerHand
       objectReference: {fileID: 0}
-    - target: {fileID: 4404467582180267173, guid: 75459b8f88484244e91c182ee4a0ac50, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5779216533552983626, guid: 75459b8f88484244e91c182ee4a0ac50, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 5779216533552983626, guid: 75459b8f88484244e91c182ee4a0ac50, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 5779216533552983626, guid: 75459b8f88484244e91c182ee4a0ac50, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3051,8 +3047,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7068904170126833620, guid: 75459b8f88484244e91c182ee4a0ac50, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
