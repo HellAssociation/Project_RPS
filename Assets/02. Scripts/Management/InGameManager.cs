@@ -17,6 +17,10 @@ public class InGameManager : SceneManagerBase
     const float VOTE_REVEAL_SECONDS = 1.5f;
     const float BOSS_INTRO_SECONDS = 3f;
 
+    const float IMPACT_SLOW_TIME_SCALE = 0.25f;
+    const float IMPACT_SLOW_HOLD = 0.25f;
+    const float IMPACT_SLOW_RECOVER = 0.35f;
+
     readonly RunState _run = new();
     readonly CardEffectRuntime _effects = new();
     int _lastEffectRound;
@@ -27,7 +31,6 @@ public class InGameManager : SceneManagerBase
     readonly List<CardRef> _voteChosen = new(2);
 
     readonly List<CardRef> _acquiredCards = new();
-    readonly List<int> _acquiredCardRounds = new();
 
     public int MaxLives => _run.MaxLives;
     public IReadOnlyList<CardRef> AcquiredCards => _acquiredCards;
@@ -38,6 +41,7 @@ public class InGameManager : SceneManagerBase
     static readonly WaitForSeconds WAIT_SLIDE = new(SLIDE_DURATION);
     static readonly WaitForSeconds WAIT_VOTE_REVEAL = new(VOTE_REVEAL_SECONDS);
     static readonly WaitForSeconds WAIT_BOSS_INTRO = new(BOSS_INTRO_SECONDS);
+    static readonly WaitForSecondsRealtime WAIT_IMPACT_SLOW = new(IMPACT_SLOW_HOLD);
 
     NetworkManager Network => App.SystemManager.Network;
     PlayerManager Players => App.Game.Players;
@@ -46,7 +50,11 @@ public class InGameManager : SceneManagerBase
     Coroutine _waveCoroutine;
     Coroutine _hostSetupCoroutine;
     Coroutine _betweenWaveCoroutine;
+    Coroutine _slowMoCoroutine;
+    Action _pendingImpactFeedback;
+    bool _pendingKillSlowMo;
     bool _hostSetupStarted;
+    bool _rewardDone;
 
     int _selectedStageIndex;
     int _enemySeed;
@@ -78,9 +86,11 @@ public class InGameManager : SceneManagerBase
     public event Action OnWaveResultShown;
     public event Action<int> OnLivesChanged;
     public event Action<int, int> OnEnemyHpChanged;
+    public event Action<bool> OnEnemyAppeared;
     public event Action<int> OnCurrentRoundChanged;
     public event Action<int> OnRoundClear;
     public event Action OnGameOver;
+    public event Action OnGameClear;
     public event Action OnAcquiredCardsChanged;
 
     void OnEnable()
@@ -93,6 +103,9 @@ public class InGameManager : SceneManagerBase
         Network.OnRoundResultReceived += HandleWaveResultReceived;
         Network.OnStageSelected += HandleRoundSelected;
         Network.OnCardsApplied += HandleCardsApplied;
+        Network.OnRoundCleared += HandleRoundClear;
+        Network.OnRewardDone += HandleRewardDone;
+        HandImpactHitbox.OnImpactLanded += HandleImpactLanded;
     }
 
     void OnDisable()
@@ -105,12 +118,23 @@ public class InGameManager : SceneManagerBase
         Network.OnRoundResultReceived -= HandleWaveResultReceived;
         Network.OnStageSelected -= HandleRoundSelected;
         Network.OnCardsApplied -= HandleCardsApplied;
+        Network.OnRoundCleared -= HandleRoundClear;
+        Network.OnRewardDone -= HandleRewardDone;
+        HandImpactHitbox.OnImpactLanded -= HandleImpactLanded;
     }
 
     void Start()
     {
         CachePanels();
         _effects.Bind(Input);
+        StartCoroutine(WaitDataThenSetup());
+    }
+
+    IEnumerator WaitDataThenSetup()
+    {
+        DataManager data = App.Data.BaseData;
+        if (data != null && !data.IsDataLoaded)
+            yield return new WaitUntil(() => data.IsDataLoaded);
         BeginInGameSetup();
     }
 
@@ -144,7 +168,6 @@ public class InGameManager : SceneManagerBase
         _effects.Clear();
         _lastEffectRound = 0;
         _acquiredCards.Clear();
-        _acquiredCardRounds.Clear();
         _enemyHandPosition = EHandPosition.Invalid;
         Phase = EInGamePhase.WaitingForRoundSelect;
         LastHandPosition = EHandPosition.Invalid;
@@ -200,11 +223,10 @@ public class InGameManager : SceneManagerBase
         _hostSetupCoroutine = null;
     }
 
-    // Host ritual shared by initial setup and post-round-clear: ensure objects -> card vote -> assign fingers -> ready.
+    // Host ritual shared by initial setup and post-round-clear: ensure objects -> assign fingers -> ready.
     IEnumerator HostPrepareAssignmentsCoroutine()
     {
         yield return Players.ServerEnsurePlayerObjectsCoroutine();
-        yield return HostCardVoteSequenceCoroutine();
         Network.ServerInitializeFingerAssignments();
         yield return null;
         ApplyAssignmentsReady();
@@ -233,8 +255,10 @@ public class InGameManager : SceneManagerBase
 
         Phase = EInGamePhase.AssignmentsReady;
         _run.InitEnemyHp();
+        OnEnemyAppeared?.Invoke(false);
         OnLocalAssignedFingerChanged?.Invoke(LocalAssignedFinger);
         OnReadyStarted?.Invoke();
+        App.SystemManager.Sound.PlayBGM(EAudioClip.BGM_Battle);
         if (_versusPanel != null) _versusPanel.OpenPanel();
     }
 
@@ -320,51 +344,69 @@ public class InGameManager : SceneManagerBase
 
         bool isRoundClear = false;
         bool isGameOver = false;
+        bool enemyKilled = false;
 
         switch (outcome)
         {
             case EOutcome.Win:
                 _run.EnemyHp -= _run.PlayerDamage;
-                OnEnemyHpChanged?.Invoke(Mathf.Max(_run.EnemyHp, 0), _run.EnemyMaxHp);
                 if (_run.EnemyHp <= 0)
+                {
+                    enemyKilled = true;
                     _run.WonWavesInRound++;
+                }
                 if (_run.WonWavesInRound >= WAVES_PER_ROUND)
                     isRoundClear = true;
+                int enemyHp = Mathf.Max(_run.EnemyHp, 0);
+                int enemyMaxHp = _run.EnemyMaxHp;
+                ArmImpactFeedback(() => OnEnemyHpChanged?.Invoke(enemyHp, enemyMaxHp), enemyKilled);
                 break;
 
             case EOutcome.Lose:
                 _run.Lives -= ENEMY_DAMAGE;
-                OnLivesChanged?.Invoke(_run.Lives);
                 if (_run.Lives <= 0)
                 {
                     Phase = EInGamePhase.GameOver;
                     isGameOver = true;
                 }
-                else
-                {
-                    RemoveCurrentRoundAugments();
-                }
+                int lives = _run.Lives;
+                ArmImpactFeedback(() => OnLivesChanged?.Invoke(lives), isGameOver);
                 break;
         }
 
+        if (isRoundClear)
+        {
+            if (Network.IsServerHost)
+                Network.ServerRoundClear();
+            return;
+        }
+
         if (_betweenWaveCoroutine != null)
+        {
             StopCoroutine(_betweenWaveCoroutine);
-        _betweenWaveCoroutine = StartCoroutine(BetweenWavesCoroutine(isRoundClear, isGameOver));
+            CancelImpactSlowMotion();
+        }
+        _betweenWaveCoroutine = StartCoroutine(BetweenWavesCoroutine(isGameOver, enemyKilled));
     }
 
-    IEnumerator BetweenWavesCoroutine(bool isRoundClear, bool isGameOver)
+    IEnumerator BetweenWavesCoroutine(bool isGameOver, bool enemyKilled)
     {
         yield return WAIT_OUTCOME;
+        FlushPendingImpactFeedback();
         OnWaveResultShown?.Invoke();
+
+        if ((enemyKilled || isGameOver) && _versusPanel != null)
+            yield return _versusPanel.PlayKoSequence();
 
         // Boss (every round's 10th enemy) appears the moment the 9th enemy is killed and the next HP bar fills.
         bool bossAppearing = false;
 
-        if (!isRoundClear && !isGameOver && _run.EnemyHp <= 0)
+        if (!isGameOver && _run.EnemyHp <= 0)
         {
             bossAppearing = _run.WonWavesInRound == WAVES_PER_ROUND - 1;
             _run.EnemyHp = _run.EnemyMaxHp;
             OnEnemyHpChanged?.Invoke(_run.EnemyHp, _run.EnemyMaxHp);
+            OnEnemyAppeared?.Invoke(bossAppearing);
         }
 
         if (isGameOver)
@@ -373,6 +415,7 @@ public class InGameManager : SceneManagerBase
             OnLocalFingerExtendedChanged?.Invoke(false);
             OnLocalFingerMaskChanged?.Invoke(EFingerType.None);
             OnGameOver?.Invoke();
+            App.SystemManager.Sound.StopBGM();
 
             _run.Reset();
             _effects.Clear();
@@ -388,32 +431,13 @@ public class InGameManager : SceneManagerBase
             yield break;
         }
 
-        if (isRoundClear)
+        if (!Network.IsServerHost)
         {
-            int clearedRound = _run.CurrentRound;
-            _run.CurrentRound++;
-            _run.WonWavesInRound = 0;
-            OnCurrentRoundChanged?.Invoke(_run.CurrentRound);
-            OnRoundClear?.Invoke(clearedRound);
+            _betweenWaveCoroutine = null;
+            yield break;
         }
-
-        if (!Network.IsServerHost) yield break;
 
         yield return WAIT_SLIDE;
-
-        if (isRoundClear)
-        {
-            if (_run.CurrentRound > MAX_ROUNDS)
-            {
-                Phase = EInGamePhase.RoundClear;
-                _betweenWaveCoroutine = null;
-                yield break;
-            }
-
-            Phase = EInGamePhase.WaitingForSetup;
-            _hostSetupStarted = false;
-            yield return HostPrepareAssignmentsCoroutine();
-        }
 
         if (bossAppearing)
         {
@@ -424,6 +448,125 @@ public class InGameManager : SceneManagerBase
         }
 
         yield return WaitVersusThenStartRound();
+        _betweenWaveCoroutine = null;
+    }
+
+    void ArmImpactFeedback(Action feedback, bool killSlowMo)
+    {
+        _pendingImpactFeedback = feedback;
+        _pendingKillSlowMo = killSlowMo;
+    }
+
+    void HandleImpactLanded()
+    {
+        FlushPendingImpactFeedback();
+    }
+
+    void FlushPendingImpactFeedback()
+    {
+        if (_pendingImpactFeedback == null) return;
+
+        Action feedback = _pendingImpactFeedback;
+        bool killSlowMo = _pendingKillSlowMo;
+        _pendingImpactFeedback = null;
+        _pendingKillSlowMo = false;
+
+        feedback.Invoke();
+
+        if (killSlowMo)
+        {
+            if (_slowMoCoroutine != null) StopCoroutine(_slowMoCoroutine);
+            _slowMoCoroutine = StartCoroutine(PlayImpactSlowMotion());
+        }
+    }
+
+    void CancelImpactSlowMotion()
+    {
+        if (_slowMoCoroutine != null)
+        {
+            StopCoroutine(_slowMoCoroutine);
+            _slowMoCoroutine = null;
+        }
+        Time.timeScale = 1f;
+    }
+
+    IEnumerator PlayImpactSlowMotion()
+    {
+        Time.timeScale = IMPACT_SLOW_TIME_SCALE;
+        yield return WAIT_IMPACT_SLOW;
+
+        float t = 0f;
+        while (t < IMPACT_SLOW_RECOVER)
+        {
+            t += Time.unscaledDeltaTime;
+            Time.timeScale = Mathf.Lerp(IMPACT_SLOW_TIME_SCALE, 1f, t / IMPACT_SLOW_RECOVER);
+            yield return null;
+        }
+        Time.timeScale = 1f;
+        _slowMoCoroutine = null;
+    }
+
+    void HandleRoundClear()
+    {
+        _rewardDone = false;
+        if (_betweenWaveCoroutine != null)
+        {
+            StopCoroutine(_betweenWaveCoroutine);
+            CancelImpactSlowMotion();
+        }
+        _betweenWaveCoroutine = StartCoroutine(RoundClearCoroutine());
+    }
+
+    void HandleRewardDone()
+    {
+        _rewardDone = true;
+    }
+
+    IEnumerator RoundClearCoroutine()
+    {
+        Phase = EInGamePhase.RoundClear;
+
+        yield return WAIT_OUTCOME;
+        FlushPendingImpactFeedback();
+        OnWaveResultShown?.Invoke();
+
+        if (_versusPanel != null)
+            yield return _versusPanel.PlayKoSequence();
+
+        App.SystemManager.Sound.StopBGM();
+
+        int clearedRound = _run.CurrentRound;
+        if (clearedRound >= MAX_ROUNDS)
+        {
+            OnGameClear?.Invoke();
+            _betweenWaveCoroutine = null;
+            yield break;
+        }
+
+        _run.CurrentRound++;
+        _run.WonWavesInRound = 0;
+        OnCurrentRoundChanged?.Invoke(_run.CurrentRound);
+        OnRoundClear?.Invoke(clearedRound);
+
+        yield return WAIT_SLIDE;
+
+        if (Network.IsServerHost)
+        {
+            yield return HostCardVoteSequenceCoroutine();
+            Network.ServerRewardDone();
+        }
+        else
+        {
+            yield return new WaitUntil(() => _rewardDone);
+        }
+
+        Input.ResetFingerState();
+        OnLocalFingerExtendedChanged?.Invoke(false);
+        OnLocalFingerMaskChanged?.Invoke(EFingerType.None);
+
+        Phase = EInGamePhase.WaitingForRoundSelect;
+        _hostSetupStarted = false;
+        if (_stagePanel != null) _stagePanel.OpenPanel();
         _betweenWaveCoroutine = null;
     }
 
@@ -454,7 +597,9 @@ public class InGameManager : SceneManagerBase
 
     IEnumerator HostSingleVoteCoroutine(ECardKind kind, CardDeck deck)
     {
-        int[] offered = deck.Draw(CARDS_PER_VOTE, _voteRng);
+        int round = _run.CurrentRound;
+        int[] offered = deck.Draw(CARDS_PER_VOTE, _voteRng, index => IsCardAvailableAtRound(kind, index, round));
+        Debug.Log($"[DBG Vote] kind={kind} round={round} offered={offered.Length} deckRemaining={deck.RemainingCount}");
         if (offered.Length == 0) yield break;
 
         Network.ServerResetCardVotes();
@@ -473,6 +618,20 @@ public class InGameManager : SceneManagerBase
             _voteChosen.Add(new CardRef(kind, chosenIndex));
 
         yield return WAIT_VOTE_REVEAL;
+    }
+
+    static bool IsCardAvailableAtRound(ECardKind kind, int index, int round)
+    {
+        DataManager data = App.Data.BaseData;
+        if (data == null) return true;
+
+        if (kind == ECardKind.Boon && data.TryGetBoon((EBoon)index, out BoonData boon))
+            return boon.appearRound <= round;
+
+        if (kind == ECardKind.Deviation && data.TryGetDeviation((EDeviation)index, out DeviationData deviation))
+            return deviation.appearRound <= round;
+
+        return false;
     }
 
     int ResolveVote(int[] offered)
@@ -508,46 +667,14 @@ public class InGameManager : SceneManagerBase
         {
             CardSystem.Apply(_run, cards[i], _effects);
             _acquiredCards.Add(cards[i]);
-            _acquiredCardRounds.Add(_run.CurrentRound);
         }
 
         OnAcquiredCardsChanged?.Invoke();
-    }
-
-    // Removes the augments chosen during the current round and rebuilds the remaining effects.
-    void RemoveCurrentRoundAugments()
-    {
-        int round = _run.CurrentRound;
-        bool removed = false;
-
-        for (int i = _acquiredCards.Count - 1; i >= 0; i--)
-        {
-            if (_acquiredCardRounds[i] != round) continue;
-            _acquiredCards.RemoveAt(i);
-            _acquiredCardRounds.RemoveAt(i);
-            removed = true;
-        }
-
-        if (!removed) return;
-
-        RebuildEffects();
-        OnAcquiredCardsChanged?.Invoke();
-    }
-
-    void RebuildEffects()
-    {
-        _run.ClearModifiers();
-        _effects.Clear();
-        _lastEffectRound = 0;
-
-        for (int i = 0; i < _acquiredCards.Count; i++)
-            CardSystem.Apply(_run, _acquiredCards[i], _effects);
     }
 
     void ClearAcquiredAugments()
     {
         _acquiredCards.Clear();
-        _acquiredCardRounds.Clear();
         OnAcquiredCardsChanged?.Invoke();
     }
 }

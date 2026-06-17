@@ -1,13 +1,30 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using SystemEnums;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 [DefaultExecutionOrder((int)EExecutionOrder.BaseManagement)]
 public class SoundManager : CommonManagerBase
 {
     private const int InitialSFXPoolSize = 10;
+
+    public static readonly EAudioClip[] AttackSfx =
+    {
+        EAudioClip.SFX_Attack_01,
+        EAudioClip.SFX_Attack_02,
+        EAudioClip.SFX_Attack_03,
+    };
+
+    public static readonly EAudioClip[] KoSfx =
+    {
+        EAudioClip.SFX_KO_01,
+        EAudioClip.SFX_KO_02,
+        EAudioClip.SFX_KO_03,
+        EAudioClip.SFX_KO_04,
+    };
 
     [Header("Options")]
     [SerializeField] private bool _forceMute;
@@ -20,9 +37,10 @@ public class SoundManager : CommonManagerBase
 
     private readonly List<AudioSource> _sfxPool = new();
     private AudioSource _loopingSfxSource;
+    private readonly Dictionary<EAudioClip, AudioClip> _clipCache = new();
 
     const float BgmFadeDuration = 0.5f;
-    Coroutine _bgmFadeCoroutine;
+    Tween _bgmFadeTween;
     EAudioClip _activeBgmClip = EAudioClip.None;
 
     public bool ForceMute
@@ -46,15 +64,17 @@ public class SoundManager : CommonManagerBase
 
     void OnDestroy()
     {
-        StopBgmFadeCoroutine();
+        KillBgmFadeTween();
+        if (_bgmSource != null)
+            _bgmSource.DOKill();
     }
 
-    void StopBgmFadeCoroutine()
+    void KillBgmFadeTween()
     {
-        if (_bgmFadeCoroutine != null)
+        if (_bgmFadeTween != null)
         {
-            StopCoroutine(_bgmFadeCoroutine);
-            _bgmFadeCoroutine = null;
+            _bgmFadeTween.Kill();
+            _bgmFadeTween = null;
         }
     }
 
@@ -69,7 +89,7 @@ public class SoundManager : CommonManagerBase
         _activeBgmClip = clipEnum;
         _bgmSource.volume = 0f;
         _bgmSource.Play();
-        _bgmFadeCoroutine = StartCoroutine(FadeBgmVolume(0f, 1f, BgmFadeDuration, null));
+        _bgmFadeTween = _bgmSource.DOFade(1f, BgmFadeDuration).SetUpdate(true);
     }
 
     private void ApplyForceMute()
@@ -146,10 +166,29 @@ public class SoundManager : CommonManagerBase
         return source;
     }
 
-    // AssetManager.GetAudioClip already caches; no second cache here.
     private void LoadClip(EAudioClip clip, Action<AudioClip> onLoaded)
     {
-        onLoaded?.Invoke(App.SystemManager.Asset.GetAudioClip(clip));
+        onLoaded?.Invoke(GetClip(clip));
+    }
+
+    private AudioClip GetClip(EAudioClip clip)
+    {
+        if (clip == EAudioClip.None)
+            return null;
+
+        if (_clipCache.TryGetValue(clip, out AudioClip cached))
+            return cached;
+
+        string address = clip.ToString();
+        AsyncOperationHandle<AudioClip> handle = Addressables.LoadAssetAsync<AudioClip>(address);
+        AudioClip loaded = handle.WaitForCompletion();
+
+        if (loaded != null)
+            _clipCache[clip] = loaded;
+        else
+            Debug.LogWarning($"[SoundManager] 오디오 클립을 찾지 못했습니다: {address}");
+
+        return loaded;
     }
 
     public void PlayBGM(EAudioClip clip)
@@ -171,16 +210,17 @@ public class SoundManager : CommonManagerBase
                 return;
             }
 
-            StopBgmFadeCoroutine();
+            KillBgmFadeTween();
 
             if (_bgmSource.isPlaying)
             {
-                _bgmFadeCoroutine = StartCoroutine(FadeBgmVolume(_bgmSource.volume, 0f, BgmFadeDuration, () =>
-                {
-                    _bgmSource.Stop();
-                    _bgmSource.volume = 1f;
-                    StartBgmFadeIn(audioClip, clip);
-                }));
+                _bgmFadeTween = _bgmSource.DOFade(0f, BgmFadeDuration)
+                    .SetUpdate(true)
+                    .OnComplete(() =>
+                    {
+                        _bgmSource.Stop();
+                        StartBgmFadeIn(audioClip, clip);
+                    });
             }
             else
             {
@@ -191,7 +231,7 @@ public class SoundManager : CommonManagerBase
 
     public void StopBGM()
     {
-        StopBgmFadeCoroutine();
+        KillBgmFadeTween();
 
         if (!_bgmSource.isPlaying)
         {
@@ -199,12 +239,14 @@ public class SoundManager : CommonManagerBase
             return;
         }
 
-        _bgmFadeCoroutine = StartCoroutine(FadeBgmVolume(_bgmSource.volume, 0f, BgmFadeDuration, ResetBgmSource));
+        _bgmFadeTween = _bgmSource.DOFade(0f, BgmFadeDuration)
+            .SetUpdate(true)
+            .OnComplete(ResetBgmSource);
     }
 
     public void StopBGMImmediate()
     {
-        StopBgmFadeCoroutine();
+        KillBgmFadeTween();
         ResetBgmSource();
     }
 
@@ -240,6 +282,12 @@ public class SoundManager : CommonManagerBase
         });
     }
 
+    public void PlayRandomSFX(params EAudioClip[] clips)
+    {
+        if (clips == null || clips.Length == 0) return;
+        PlaySFX(clips[UnityEngine.Random.Range(0, clips.Length)]);
+    }
+
     public void StopAllSFX()
     {
         foreach (var source in _sfxPool)
@@ -251,28 +299,5 @@ public class SoundManager : CommonManagerBase
         }
 
         StopLoopingSfx();
-    }
-
-    IEnumerator FadeBgmVolume(float from, float to, float duration, Action onComplete)
-    {
-        if (duration <= 0f)
-        {
-            onComplete?.Invoke();
-            _bgmFadeCoroutine = null;
-            yield break;
-        }
-
-        float elapsed = 0f;
-        while (elapsed < duration)
-        {
-            elapsed += Time.unscaledDeltaTime;
-            float t = Mathf.Clamp01(elapsed / duration);
-            _bgmSource.volume = Mathf.Lerp(from, to, t);
-            yield return null;
-        }
-
-        _bgmSource.volume = to;
-        onComplete?.Invoke();
-        _bgmFadeCoroutine = null;
     }
 }

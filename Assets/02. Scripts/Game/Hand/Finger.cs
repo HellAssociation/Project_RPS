@@ -32,6 +32,12 @@ public class Finger : MonoBehaviour
         ChangeSprite();
     }
 
+    public void SetColor(Color _color)
+    {
+        if (spriteRenderer != null)
+            spriteRenderer.color = _color;
+    }
+
     void ChangeSprite()
     {
         if(spriteRenderer != null)

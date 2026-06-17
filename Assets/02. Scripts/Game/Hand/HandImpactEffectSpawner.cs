@@ -4,9 +4,7 @@ public class HandImpactEffectSpawner : MonoBehaviour
 {
     [SerializeField] GameObject impactEffectPrefab;
     [SerializeField] float cooldown = 0.12f;
-    [SerializeField] float destroyAfterSeconds = 2f;
-    [SerializeField] float rotationOffsetDegrees;
-    [SerializeField] float zOffset = -0.5f;
+    [SerializeField] Vector2 offset;
 
     float lastSpawnTime = -999f;
 
@@ -20,10 +18,9 @@ public class HandImpactEffectSpawner : MonoBehaviour
 
         lastSpawnTime = Time.time;
 
-        Vector3 position = new(impactPoint.x, impactPoint.y, zOffset);
-        Quaternion rotation = HandImpactUtility.GetRotation(direction, rotationOffsetDegrees);
-        GameObject instance = Instantiate(impactEffectPrefab, position, rotation);
-        Destroy(instance, destroyAfterSeconds);
+        Vector3 position = new(impactPoint.x + offset.x, impactPoint.y + offset.y, 0f);
+        Quaternion rotation = HandImpactUtility.GetRotation(direction, 0f);
+        Instantiate(impactEffectPrefab, position, rotation);
         return true;
     }
 }

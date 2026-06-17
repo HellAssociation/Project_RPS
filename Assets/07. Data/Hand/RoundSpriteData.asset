@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b9d487cec1a7694693becbd44123470, type: 3}
+  m_Name: RoundSpriteData
+  m_EditorClassIdentifier: 
+  appearances:
+  - type: 0
+    handSprite: {fileID: 21300000, guid: df7fde388b252b34b8b56d4d3eef09ac, type: 3}
+    fingerSprites:
+    - {fileID: 21300000, guid: 34dbce088e1fae74888419a574b8f280, type: 3}
+    - {fileID: 21300000, guid: 100eb865bd581d045b36c8a2653e83c3, type: 3}
+    - {fileID: 21300000, guid: 6a3402de9a4372b41ab7708e62bd5f03, type: 3}
+    - {fileID: 21300000, guid: 6f4fff738bbe07546aa43102c0f7d460, type: 3}
+    - {fileID: 21300000, guid: 16584bb0b81b0794facaa0830a36874c, type: 3}
+    - {fileID: 21300000, guid: 5828fbb18903ac64298e7c18f87e6d53, type: 3}
+    - {fileID: 21300000, guid: 96dcb7f21f48aa44a81780579da9679e, type: 3}
+    - {fileID: 21300000, guid: 548d12287ad461641b11122227a51d31, type: 3}
+    - {fileID: 21300000, guid: cc61ce6176dbc154fa6d146036de8380, type: 3}
+    - {fileID: 21300000, guid: ca69eb2b852aef745bd8541b03156de3, type: 3}
+  - type: 1
+    handSprite: {fileID: 21300000, guid: b246645adf931e441a067742e9ae60b1, type: 3}
+    fingerSprites:
+    - {fileID: 21300000, guid: a3a24ee23c4805641831c83f52f07cee, type: 3}
+    - {fileID: 21300000, guid: 31ce21127a8fbee4fb8ea59016850c60, type: 3}
+    - {fileID: 21300000, guid: a8e14951b2aa6424ab904a1c3b6533e7, type: 3}
+    - {fileID: 21300000, guid: 90a51e15e2acd944dbec1cb944bf42ab, type: 3}
+    - {fileID: 21300000, guid: bf3f0cd9de0ab98439d55351b5d5d690, type: 3}
+    - {fileID: 21300000, guid: 9ba58be9efc37864c93723a0881c9845, type: 3}
+    - {fileID: 21300000, guid: 99dcb25bcb5806d4baa9779ef4a94930, type: 3}
+    - {fileID: 21300000, guid: 1fa7ba2e7f468d343a81f507415f237d, type: 3}
+    - {fileID: 21300000, guid: 5cd744f50402f8147b0926a880026ebd, type: 3}
+    - {fileID: 21300000, guid: ac0c318c0897ab44fb63bb0a24d31437, type: 3}
+  - type: 2
+    handSprite: {fileID: 21300000, guid: 65fc79c3190059541b8aeab021f7db96, type: 3}
+    fingerSprites:
+    - {fileID: 21300000, guid: 55a55d622116eaf4e9153defeb6e32c3, type: 3}
+    - {fileID: 21300000, guid: 24c7987dc14b34140b586282fde4508c, type: 3}
+    - {fileID: 21300000, guid: 34695ea1611188b498f2606718af4eef, type: 3}
+    - {fileID: 21300000, guid: ce8ced8b9dd91fb488d3db8224445d00, type: 3}
+    - {fileID: 21300000, guid: 07391190e3c410f4b8e3630b9f095504, type: 3}
+    - {fileID: 21300000, guid: 557e974b842a4ae41bdf976faa98999c, type: 3}
+    - {fileID: 21300000, guid: fbb086759e89ff9439ba24e7285fcc2d, type: 3}
+    - {fileID: 21300000, guid: 186b840bbb3e99743818f1be373fdcce, type: 3}
+    - {fileID: 21300000, guid: 36f203ab23bb0944e91e00ca4b18b492, type: 3}
+    - {fileID: 21300000, guid: 25a9decd7955ca348838f80fbb7095aa, type: 3}
+  roundSprites:
+  - pool: 000000000100000002000000
+  - pool: 000000000100000002000000
+  - pool: 000000000100000002000000
+  - pool: 000000000100000002000000
+  - pool: 000000000100000002000000
+  - pool: 000000000100000002000000
+  - pool: 000000000100000002000000
+  - pool: 000000000100000002000000
+  - pool: 000000000100000002000000
+  - pool: 000000000100000002000000

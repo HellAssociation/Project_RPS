@@ -244,7 +244,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1812039445
   m_SortingLayer: 1
-  m_SortingOrder: 1
+  m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: c1f24b2867909544b9f2594a9c4de2e0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1441,7 +1441,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1812039445
   m_SortingLayer: 1
-  m_SortingOrder: 1
+  m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: 70cecb15bbac05045bea6573719686c9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1608,7 +1608,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1812039445
   m_SortingLayer: 1
-  m_SortingOrder: 1
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 794e1bc3df3eb0d41bebd9a02ddbf39a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1833,12 +1833,12 @@ MonoBehaviour:
   DebugActive: 0
   InScriptDrivenPause: 0
   FeedbacksList:
-  - rid: 8598776131284369780
-  - rid: 8598776131284369781
-  - rid: 8598776131284369782
-  - rid: 8598776131284369783
-  - rid: 8598776131284369784
-  - rid: 8598776131284369785
+  - rid: 8598776152510169255
+  - rid: 8598776152510169256
+  - rid: 8598776152510169257
+  - rid: 8598776152510169258
+  - rid: 8598776152510169259
+  - rid: 8598776152510169260
   KeepPlayModeChanges: 0
   PerformanceMode: 0
   RestoreInitialValuesOnDisable: 0
@@ -1850,11 +1850,11 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 8598776131284369780
+    - rid: 8598776152510169255
       type: {class: MMF_Position, ns: MoreMountains.Feedbacks, asm: MoreMountains.Tools}
       data:
         Active: 1
-        UniqueID: 1081250576
+        UniqueID: 1148648175
         Label: Position
         OriginalLabel: Position
         ChannelMode: 0
@@ -1871,7 +1871,7 @@ MonoBehaviour:
           NumberOfRepeats: 0
           RepeatForever: 0
           DelayBetweenRepeats: 1
-          PlayCount: 15
+          PlayCount: 7
           LimitPlayCount: 0
           MaxPlayCount: 3
           SetPlayCountToZeroOnReset: 0
@@ -2147,11 +2147,11 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-    - rid: 8598776131284369781
+    - rid: 8598776152510169256
       type: {class: MMF_PositionSpring, ns: MoreMountains.Feedbacks, asm: MoreMountains.Tools}
       data:
-        Active: 1
-        UniqueID: 1334539763
+        Active: 0
+        UniqueID: -869570859
         Label: Position Spring
         OriginalLabel: Position Spring
         ChannelMode: 0
@@ -2168,7 +2168,7 @@ MonoBehaviour:
           NumberOfRepeats: 0
           RepeatForever: 0
           DelayBetweenRepeats: 1
-          PlayCount: 33
+          PlayCount: 3
           LimitPlayCount: 0
           MaxPlayCount: 3
           SetPlayCountToZeroOnReset: 0
@@ -2237,11 +2237,11 @@ MonoBehaviour:
         BumpPositionMin: {x: 20, y: 0, z: 0}
         BumpPositionMax: {x: 20, y: 0, z: 0}
         ForceAbsolute: 0
-    - rid: 8598776131284369782
+    - rid: 8598776152510169257
       type: {class: MMF_CinemachineImpulse, ns: MoreMountains.FeedbacksForThirdParty, asm: MoreMountains.Tools}
       data:
         Active: 1
-        UniqueID: 1043219321
+        UniqueID: -59800390
         Label: Cinemachine Impulse
         OriginalLabel: Cinemachine Impulse
         ChannelMode: 0
@@ -2258,7 +2258,7 @@ MonoBehaviour:
           NumberOfRepeats: 0
           RepeatForever: 0
           DelayBetweenRepeats: 1
-          PlayCount: 15
+          PlayCount: 7
           LimitPlayCount: 0
           MaxPlayCount: 3
           SetPlayCountToZeroOnReset: 0
@@ -2354,11 +2354,11 @@ MonoBehaviour:
         Velocity: {x: 5, y: 5, z: 5}
         ClearImpulseOnStop: 0
         DrawGizmos: 0
-    - rid: 8598776131284369783
+    - rid: 8598776152510169258
       type: {class: MMF_CameraOrthographicSize, ns: MoreMountains.Feedbacks, asm: MoreMountains.Tools}
       data:
         Active: 1
-        UniqueID: 1394163622
+        UniqueID: 1004969003
         Label: Orthographic Size
         OriginalLabel: Orthographic Size
         ChannelMode: 1
@@ -2375,7 +2375,7 @@ MonoBehaviour:
           NumberOfRepeats: 0
           RepeatForever: 0
           DelayBetweenRepeats: 1
-          PlayCount: 15
+          PlayCount: 7
           LimitPlayCount: 0
           MaxPlayCount: 3
           SetPlayCountToZeroOnReset: 0
@@ -2476,11 +2476,11 @@ MonoBehaviour:
           m_RotationOrder: 4
         RemapOrthographicSizeZero: 6
         RemapOrthographicSizeOne: 5
-    - rid: 8598776131284369784
+    - rid: 8598776152510169259
       type: {class: MMF_HoldingPause, ns: MoreMountains.Feedbacks, asm: MoreMountains.Tools}
       data:
         Active: 1
-        UniqueID: -447957884
+        UniqueID: -1598099166
         Label: Holding Pause
         OriginalLabel: Holding Pause
         ChannelMode: 0
@@ -2497,7 +2497,7 @@ MonoBehaviour:
           NumberOfRepeats: 0
           RepeatForever: 0
           DelayBetweenRepeats: 1
-          PlayCount: 15
+          PlayCount: 7
           LimitPlayCount: 0
           MaxPlayCount: 3
           SetPlayCountToZeroOnReset: 0
@@ -2558,11 +2558,11 @@ MonoBehaviour:
         ScriptDriven: 0
         AutoResume: 0
         AutoResumeAfter: 0.25
-    - rid: 8598776131284369785
+    - rid: 8598776152510169260
       type: {class: MMF_Position, ns: MoreMountains.Feedbacks, asm: MoreMountains.Tools}
       data:
         Active: 1
-        UniqueID: -1022780745
+        UniqueID: 1381585353
         Label: Position
         OriginalLabel: Position
         ChannelMode: 0
@@ -2579,7 +2579,7 @@ MonoBehaviour:
           NumberOfRepeats: 0
           RepeatForever: 0
           DelayBetweenRepeats: 1
-          PlayCount: 15
+          PlayCount: 7
           LimitPlayCount: 0
           MaxPlayCount: 3
           SetPlayCountToZeroOnReset: 0
@@ -3073,6 +3073,9 @@ MonoBehaviour:
   - {fileID: 5491398580272968554}
   - {fileID: 8909832800697567197}
   - {fileID: 5607303553940092542}
+  side: 0
+  attackEffect: {fileID: 0}
+  hitEffect: {fileID: 0}
 --- !u!1 &7606436771254785203
 GameObject:
   m_ObjectHideFlags: 0
@@ -3150,7 +3153,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1812039445
   m_SortingLayer: 1
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 144d02ddc0c54014cb2fab3dda5e5087, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

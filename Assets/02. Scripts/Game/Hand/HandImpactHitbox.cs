@@ -8,6 +8,8 @@ public class HandImpactHitbox : MonoBehaviour
     [SerializeField] HandImpactEffectSpawner effectSpawner;
     [SerializeField] bool canSpawnImpact = true;
 
+    public static event System.Action OnImpactLanded;
+
     Collider2D hitbox;
     readonly HashSet<Collider2D> activeContacts = new();
 
@@ -55,6 +57,7 @@ public class HandImpactHitbox : MonoBehaviour
         activeContacts.Add(other);
         Vector2 impactPoint = HandImpactUtility.GetImpactPoint(Center, otherHitbox.Center);
         Vector2 direction = HandImpactUtility.GetDirection(Center, otherHitbox.Center);
-        effectSpawner.TrySpawn(impactPoint, direction);
+        if (effectSpawner.TrySpawn(impactPoint, direction))
+            OnImpactLanded?.Invoke();
     }
 }

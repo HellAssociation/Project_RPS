@@ -15,48 +15,43 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 9e3e3262a8c26a6498da977a33f07e93
   m_SerializeEntries:
+  - m_GUID: 0c2476a224d670845a2e1d299cee7e4f
+    m_Address: Card_Icon_Boon_Preparation
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 10fb4cfd92d134e658961a037aa07701
+    m_Address: Card_Icon_Deviation_Haste
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12133df1811e5614c9b0bee718438339
+    m_Address: SFX_Attack_03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1f1477a8e86c79d458a6fb64f6260296
+    m_Address: SFX_Attack_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 211d3e1592e5bc2409ed7a196eb27006
+    m_Address: SFX_Ready
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 215a2c72193b9a8448b871d39e295160
+    m_Address: Card_Icon_Deviation_TapDancer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2257e0160b47548e38eaf9cfb30691df
+    m_Address: Card_Icon_Deviation_KeyChaos
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2a8d4de561f97654a8eaa21969c1ca5a
     m_Address: Data_Round
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 46345128eb8a9f642b7f953d6a7d41e3
-    m_Address: Data_Define
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 696e5b3512b4f7e49b3a17504b494180
-    m_Address: Data_Deviation
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: afb5a43ae750be84487da4169e3e4f32
-    m_Address: Data_Boon
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b80484b8a0d50ec41b47eb2b8e4a31c4
-    m_Address: Data_Enemy
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 442fa707453d5a947b95546e65b324e8
-    m_Address: Data_String
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e175ecc56d26b6c4ea97cc2de201bfe5
-    m_Address: Card_Icon_Boon_Chance
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3bb738e00aba67a48b0331cc4af1a3be
-    m_Address: Card_Icon_Boon_FxxkU
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4d4292efaf25f804c9017d34e4f15fc0
-    m_Address: Card_Icon_Boon_Gunslinger
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -65,28 +60,58 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c6159eaf93f148c45b9978e7a8db6226
-    m_Address: Card_Icon_Boon_Insight
+  - m_GUID: 3bb738e00aba67a48b0331cc4af1a3be
+    m_Address: Card_Icon_Boon_FxxkU
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 96596e2a2e7978644bff2d5f75399e0e
-    m_Address: Card_Icon_Boon_PaperCounter
+  - m_GUID: 442fa707453d5a947b95546e65b324e8
+    m_Address: Data_String
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 0c2476a224d670845a2e1d299cee7e4f
-    m_Address: Card_Icon_Boon_Preparation
+  - m_GUID: 46345128eb8a9f642b7f953d6a7d41e3
+    m_Address: Data_Define
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 950f770f544d6be4d9030c7aa1688d75
-    m_Address: Card_Icon_Boon_Rockstar
+  - m_GUID: 47d67c5e70b14ea4bbe1a2b0da76ff90
+    m_Address: Card_Icon_Deviation_LightsOut
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cc0cc0876b72ac24ca3a01b8126b1fa6
-    m_Address: Card_Icon_Boon_ScissorsBreakRock
+  - m_GUID: 4d4292efaf25f804c9017d34e4f15fc0
+    m_Address: Card_Icon_Boon_Gunslinger
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4fa766ef739045d41a9326036b08ebd6
+    m_Address: SFX_Attack_02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 56ab3168b4c7b334192de4905e9f71d1
+    m_Address: SFX_KO_03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 696e5b3512b4f7e49b3a17504b494180
+    m_Address: Data_Deviation
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 72c607e3e6eb18d40b3f816a3834e4b7
+    m_Address: SFX_KO_04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 79f5be3a1837e4948a45c3710ee35f82
+    m_Address: SFX_Fight
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 83e4defd4c0b9b146ad2fc6980ded56e
+    m_Address: SFX_KO_01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -95,8 +120,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8b1b3a44ee0698e40ad23c0a9120eb2e
+    m_Address: BGM_Battle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8e402a571d02644418e908384385a4d8
     m_Address: Card_Icon_Deviation_ADHD
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 950f770f544d6be4d9030c7aa1688d75
+    m_Address: Card_Icon_Boon_Rockstar
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 96596e2a2e7978644bff2d5f75399e0e
+    m_Address: Card_Icon_Boon_PaperCounter
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -110,23 +150,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: afb5a43ae750be84487da4169e3e4f32
+    m_Address: Data_Boon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b80484b8a0d50ec41b47eb2b8e4a31c4
+    m_Address: Data_Enemy
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bb45a599103bd4a19873915ba28517a1
     m_Address: Card_Icon_Deviation_Fracture
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 10fb4cfd92d134e658961a037aa07701
-    m_Address: Card_Icon_Deviation_Haste
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2257e0160b47548e38eaf9cfb30691df
-    m_Address: Card_Icon_Deviation_KeyChaos
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 47d67c5e70b14ea4bbe1a2b0da76ff90
-    m_Address: Card_Icon_Deviation_LightsOut
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -135,13 +170,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c6159eaf93f148c45b9978e7a8db6226
+    m_Address: Card_Icon_Boon_Insight
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc0cc0876b72ac24ca3a01b8126b1fa6
+    m_Address: Card_Icon_Boon_ScissorsBreakRock
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dc31257b6f6c4bf41aa1fc76d9da1242
     m_Address: Card_Icon_Deviation_Mutation
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 215a2c72193b9a8448b871d39e295160
-    m_Address: Card_Icon_Deviation_TapDancer
+  - m_GUID: e175ecc56d26b6c4ea97cc2de201bfe5
+    m_Address: Card_Icon_Boon_Chance
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ef025058a4e7ee041aa6312f79d4606f
+    m_Address: SFX_KO_02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

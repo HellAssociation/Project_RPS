@@ -39,23 +39,17 @@ public class ForbidHandShapePanel : PanelBase
         InitSlot(scissors);
     }
 
-#if UNITY_EDITOR
     void Update()
     {
-        UpdateTest(); // TEST: delete this line when done
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.R))
+            SetCooldown(EHandPosition.Rock, 5f);
+#endif
 
         TickSlot(ref _rockRemaining,     _rockTotal,     rock);
         TickSlot(ref _paperRemaining,    _paperTotal,    paper);
         TickSlot(ref _scissorsRemaining, _scissorsTotal, scissors);
     }
-
-    // TEST: delete this method when done
-    void UpdateTest()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-            SetCooldown(EHandPosition.Rock, 5f);
-    }
-#endif
 
     public void SetCooldown(EHandPosition hand, float duration)
     {

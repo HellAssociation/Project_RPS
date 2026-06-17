@@ -6,8 +6,6 @@ public class PlayerHand : Hand
     NetworkManager Network => App.SystemManager.Network;
     PlayerManager Players  => App.Game.Players;
 
-    InGameManager _inGame;
-
     void Start()
     {
         _inGame = App.SceneManager.InGame;

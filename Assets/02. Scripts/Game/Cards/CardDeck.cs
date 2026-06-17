@@ -17,19 +17,41 @@ public class CardDeck
         for (int i = 0; i < all.Count; i++) _remaining.Add(all[i]);
     }
 
-    /// <summary>최대 count장을 무작위로 뽑고 풀에서 제거합니다. 남은 수가 적으면 그만큼만 반환.</summary>
-    public int[] Draw(int count, System.Random rng)
+    /// <summary>최대 count장을 무작위로 뽑고 풀에서 제거합니다. predicate가 있으면 조건을 만족하는 카드만 대상입니다.</summary>
+    public int[] Draw(int count, System.Random rng, System.Func<int, bool> predicate = null)
     {
-        int take = count < _remaining.Count ? count : _remaining.Count;
+        int eligibleCount = 0;
+        for (int i = 0; i < _remaining.Count; i++)
+        {
+            if (predicate == null || predicate(_remaining[i]))
+                eligibleCount++;
+        }
+
+        int take = count < eligibleCount ? count : eligibleCount;
         if (take <= 0) return System.Array.Empty<int>();
 
         var result = new int[take];
-        for (int i = 0; i < take; i++)
+        for (int r = 0; r < take; r++)
         {
-            int pick = rng.Next(_remaining.Count);
-            result[i] = _remaining[pick];
-            _remaining.RemoveAt(pick);
+            int pick = rng.Next(eligibleCount);
+            int seen = 0;
+            for (int i = 0; i < _remaining.Count; i++)
+            {
+                if (predicate != null && !predicate(_remaining[i]))
+                    continue;
+
+                if (seen == pick)
+                {
+                    result[r] = _remaining[i];
+                    _remaining.RemoveAt(i);
+                    eligibleCount--;
+                    break;
+                }
+
+                seen++;
+            }
         }
+
         return result;
     }
 }

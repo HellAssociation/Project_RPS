@@ -92,7 +92,6 @@ namespace SystemEnums
         // Game
         Timer,
         NextIcon,
-        OutCome,
         Stage,
         Versus,
         HUD,
@@ -103,6 +102,7 @@ namespace SystemEnums
         CardVote,
         Boss,
         CardIcon,
+        KeyControl,
     }
 
     /// <summary>
@@ -130,8 +130,16 @@ namespace SystemEnums
     public enum EAudioClip
     {
         None,
-        BGM_MAIN,
-        BGM_NEWS,
+        BGM_Battle,
+        SFX_Ready,
+        SFX_Fight,
+        SFX_KO_01,
+        SFX_KO_02,
+        SFX_KO_03,
+        SFX_KO_04,
+        SFX_Attack_01,
+        SFX_Attack_02,
+        SFX_Attack_03,
     }
 
     public enum EEffect
@@ -140,6 +148,8 @@ namespace SystemEnums
         CameraImpulse,
         AttackImpact,
         HitImpact,
+        HudPlayerHit,
+        HudEnemyHit,
     }
 
     public enum EInGameRpsMessage : byte
@@ -151,6 +161,8 @@ namespace SystemEnums
         CardOffer = 5,
         CardVoteResult = 6,
         BossIntro = 7,
+        RoundClear = 8,
+        RewardDone = 9,
     }
 
     public enum EBoon

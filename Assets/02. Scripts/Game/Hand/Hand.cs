@@ -15,7 +15,7 @@ public abstract class Hand : MonoBehaviour
     protected const int FINGER_COUNT = 5;
     protected Dictionary<EFingerType, Finger> fingerTable;
 
-    InGameManager _inGame;
+    protected InGameManager _inGame;
 
     protected virtual void Awake()
     {
@@ -107,6 +107,16 @@ public abstract class Hand : MonoBehaviour
             handSpriteRenderer.sprite = _sprite;
     }
 
+    protected void SetHandColor(Color _color)
+    {
+        if (handSpriteRenderer != null)
+            handSpriteRenderer.color = _color;
+
+        if (fingerTable == null) return;
+        foreach (var kvp in fingerTable)
+            kvp.Value.SetColor(_color);
+    }
+
     protected void ApplyHandPosition(EHandPosition handPosition)
     {
         if (handPosition == EHandPosition.Invalid || handPosition == EHandPosition.Random) return;
@@ -125,14 +135,7 @@ public abstract class Hand : MonoBehaviour
 
 public enum EEnemyHandType
 {
-    Enemy_01,
-    Enemy_02,
-    Enemy_03,
-    Enemy_04,
-    Enemy_05,
-    Enemy_06,
-    Enemy_07,
-    Enemy_08,
-    Enemy_09,
-    Enemy_10,
+    Male,
+    Female,
+    Fat,
 }
