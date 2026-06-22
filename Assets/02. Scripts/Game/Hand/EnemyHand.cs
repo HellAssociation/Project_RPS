@@ -14,19 +14,11 @@ public class EnemyHand : Hand
 
     const float RANDOM_CYCLE_INTERVAL = 0.1f;
     const float LOCK_BEFORE_END = 1f;
-    const int HAND_SPRITE_DATA_COUNT = 10;
 
-    [SerializeField] HandSpriteData[] handSpriteDataSet;
+    [SerializeField] RoundSpriteData roundSpriteData;
 
-    Dictionary<EEnemyHandType, HandSpriteData> handSpriteDataTable;
-
+    System.Random _rng = new();
     Coroutine _randomCoroutine;
-
-    protected override void Awake()
-    {
-        base.Awake();
-        CacheHandSpriteData();
-    }
 
     void Start()
     {
@@ -34,22 +26,76 @@ public class EnemyHand : Hand
 
         InGameManager inGame = App.SceneManager.InGame;
         if (inGame == null) return;
-        inGame.OnWaveStarted += HandleRoundStarted;
-        inGame.OnStageOpened += HandleStageOpened;
+        inGame.OnStageOpened   += HandleStageOpened;
+        inGame.OnWaveStarted   += HandleRoundStarted;
+        inGame.OnEnemyAppeared += HandleEnemyAppeared;
     }
 
     void OnDestroy()
     {
         InGameManager inGame = App.SceneManager.InGame;
         if (inGame == null) return;
-        inGame.OnWaveStarted -= HandleRoundStarted;
-        inGame.OnStageOpened -= HandleStageOpened;
+        inGame.OnStageOpened   -= HandleStageOpened;
+        inGame.OnWaveStarted   -= HandleRoundStarted;
+        inGame.OnEnemyAppeared -= HandleEnemyAppeared;
     }
 
-    void HandleStageOpened(int stageIndex)
+    void HandleStageOpened(int _)
     {
-        if (stageIndex < 0 || stageIndex >= HAND_SPRITE_DATA_COUNT) return;
-        ApplyHandSpriteData((EEnemyHandType)stageIndex);
+        InGameManager inGame = App.SceneManager.InGame;
+        _rng = new System.Random(inGame != null ? inGame.EnemySeed : 0);
+    }
+
+    void HandleEnemyAppeared(bool isBoss)
+    {
+        if (TryDrawAppearance(out EEnemyHandType type))
+            ApplyAppearance(type);
+
+        SetHandColor(isBoss ? Color.red : Color.white);
+    }
+
+    bool TryDrawAppearance(out EEnemyHandType type)
+    {
+        type = default;
+
+        if (roundSpriteData == null)
+        {
+            Debug.LogError("[Error] RoundSpriteData is not assigned!");
+            return false;
+        }
+
+        int round = App.SceneManager.InGame != null ? App.SceneManager.InGame.CurrentRound : 1;
+        IReadOnlyList<EEnemyHandType> pool = roundSpriteData.GetPool(round);
+
+        if (pool == null || pool.Count == 0)
+        {
+            Debug.LogWarning($"[Warning] Round {round} sprite pool is empty. Keeping previous appearance.");
+            return false;
+        }
+
+        type = pool[_rng.Next(pool.Count)];
+        return true;
+    }
+
+    void ApplyAppearance(EEnemyHandType _type)
+    {
+        if (!roundSpriteData.TryGetAppearance(_type, out HandAppearance appearance) || appearance == null)
+        {
+            Debug.LogError($"[Error] {_type} can't find hand appearance!");
+            return;
+        }
+
+        SetHandSprite(appearance.HandSprite);
+
+        foreach (EFingerType fingerType in RpsHandUtility.AllFingers)
+        {
+            Finger finger = GetFinger(fingerType);
+            if (finger == null) continue;
+
+            finger.SetSpriteData(new FingerSpriteData(
+                appearance.GetFingerSprite(fingerType, true),
+                appearance.GetFingerSprite(fingerType, false)));
+        }
     }
 
     void HandleRoundStarted(float duration)
@@ -112,41 +158,5 @@ public class EnemyHand : Hand
             return panel.CurrentResolvedHandPosition;
 
         return EHandPosition.Rock;
-    }
-
-    void CacheHandSpriteData()
-    {
-        handSpriteDataTable = new(HAND_SPRITE_DATA_COUNT);
-
-        if (handSpriteDataSet == null) return;
-
-        foreach (HandSpriteData data in handSpriteDataSet)
-        {
-            if (data == null) continue;
-
-            if (!handSpriteDataTable.TryAdd(data.HandId, data))
-                Debug.LogError($"[Error] {data.HandId} duplicate hand sprite data!");
-        }
-    }
-
-    public void ApplyHandSpriteData(EEnemyHandType _handType)
-    {
-        if (handSpriteDataTable == null || !handSpriteDataTable.TryGetValue(_handType, out HandSpriteData data) || data == null)
-        {
-            Debug.LogError($"[Error] {_handType} can't find hand sprite data!");
-            return;
-        }
-
-        SetHandSprite(data.HandSprite);
-
-        foreach (EFingerType fingerType in RpsHandUtility.AllFingers)
-        {
-            Finger finger = GetFinger(fingerType);
-            if (finger == null) continue;
-
-            finger.SetSpriteData(new FingerSpriteData(
-                data.GetFingerSprite(fingerType, true),
-                data.GetFingerSprite(fingerType, false)));
-        }
     }
 }

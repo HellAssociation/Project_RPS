@@ -5,8 +5,10 @@ public class BoonData : IGameData
 {
     public int index;
     public string code;
+    public string type;
     public string name;
     public string description;
+    public int appearRound;
     public string position;
     public int value1;
     public int value2;
@@ -30,8 +32,11 @@ public class DeviationData : IGameData
 {
     public int index;
     public string code;
+    public string grade;
+    public string type;
     public string name;
     public string description;
+    public int appearRound;
     public string position;
     public int value1;
     public int value2;
@@ -65,4 +70,13 @@ public class RoundData : IGameData
     public float roundTimer;
     public float roundHPMultiflier;
     string IGameData.Code => code;
+}
+
+[Serializable]
+public class StringData : IGameData
+{
+    string IGameData.Code => code;
+    public int index;
+    public string code;
+    public string korean;
 }

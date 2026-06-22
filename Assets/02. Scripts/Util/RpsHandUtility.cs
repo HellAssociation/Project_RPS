@@ -28,6 +28,18 @@ public static class RpsHandUtility
         };
     }
 
+    /// <summary>Returns the hand that beats the given position (random/invalid → Rock, since any valid hand wins).</summary>
+    public static EHandPosition GetWinningHand(EHandPosition target)
+    {
+        return target switch
+        {
+            EHandPosition.Rock => EHandPosition.Paper,
+            EHandPosition.Paper => EHandPosition.Scissors,
+            EHandPosition.Scissors => EHandPosition.Rock,
+            _ => EHandPosition.Rock,
+        };
+    }
+
     /// <summary>
     /// 플레이어 ID 목록에 5손가락을 무작위 1:1 배정합니다. (플레이어 수가 5 미만이면 남는 손가락은 미배정)
     /// </summary>

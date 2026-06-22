@@ -19,6 +19,7 @@ public class DataManager : DataManagerBase
     readonly Dictionary<EDeviation, DeviationData> _deviationData = new();
     readonly Dictionary<EEnemyType, EnemyData>    _enemyData      = new();
     readonly Dictionary<ERound, RoundData>        _roundData      = new();
+    readonly Dictionary<EStringType, StringData>  _stringData     = new();
 
     protected override void Awake()
     {
@@ -38,6 +39,7 @@ public class DataManager : DataManagerBase
         yield return LoadDataToDictionaryAsync("Deviation", _deviationData);
         yield return LoadDataToDictionaryAsync("Enemy",     _enemyData);
         yield return LoadDataToDictionaryAsync("Round",     _roundData);
+        yield return LoadDataToDictionaryAsync("String",    _stringData);
         NotifyLoadGroupFinished();
     }
 
@@ -46,6 +48,7 @@ public class DataManager : DataManagerBase
     public bool TryGetDeviation(EDeviation key, out DeviationData data) => _deviationData.TryGetValue(key, out data);
     public bool TryGetEnemy(EEnemyType key, out EnemyData data)       => _enemyData.TryGetValue(key, out data);
     public bool TryGetRound(ERound key, out RoundData data)           => _roundData.TryGetValue(key, out data);
+    public bool TryGetString(EStringType key, out StringData data)    => _stringData.TryGetValue(key, out data);
 
     /// <summary>로드된 모든 축복 카드의 인덱스(=CardRef.Index)를 채웁니다. 카드 드로우 풀 구성용.</summary>
     public void GetBoonIndices(List<int> buffer)

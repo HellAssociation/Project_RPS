@@ -1,26 +1,35 @@
+using System;
 using SystemEnums;
 using UnityEngine;
 
 /// <summary>
-/// Resolves a CardRef to its data + effect and applies it to a RunState.
-/// Card choices are host-authoritative and broadcast (NetworkManager.OnCardsApplied),
-/// so every client applies the same effects to its local RunState.
+/// Resolves a CardRef to its data + effect and applies it. Stat effects modify the RunState;
+/// behavioral effects register into the CardEffectRuntime. Card choices are host-authoritative
+/// and broadcast (NetworkManager.OnCardsApplied), so every client applies the same effects.
 /// </summary>
 public static class CardSystem
 {
     static DataManager Data => App.Data.BaseData;
 
-    public static void Apply(RunState run, CardRef card)
+    public static void Apply(RunState run, CardRef card, CardEffectRuntime runtime)
     {
         if (run == null || !TryResolve(card, out string code, out int[] values))
             return;
 
-        if (CardEffectRegistry.TryCreate(code, values, out ICardEffect effect))
-            effect.Apply(run);
+        if (!Enum.TryParse(code, ignoreCase: true, out ECardEffect id) ||
+            !CardEffectRegistry.TryCreate(id, values, out object effect))
+        {
 #if UNITY_EDITOR
-        else
             Debug.LogWarning($"[CardSystem] No effect registered for card code: {code}");
 #endif
+            return;
+        }
+
+        if (effect is ICardEffect stat)
+            stat.Apply(run);
+
+        if (runtime != null && effect is IRuntimeCardEffect)
+            runtime.Register(effect);
     }
 
     static bool TryResolve(CardRef card, out string code, out int[] values)

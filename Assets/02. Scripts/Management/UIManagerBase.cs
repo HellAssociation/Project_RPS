@@ -8,12 +8,14 @@ using UnityEngine.InputSystem;
 public abstract class UIManagerBase : CommonManagerBase
 {
     private Dictionary<Type, PanelBase> _panelDictionary = new();
+    private Dictionary<EUIType, ModalBase> _modalDictionary = new();
     private Stack<PanelBase> _panelStack = new();
 
     protected override void Awake()
     {
         base.Awake();
         _panelDictionary = new();
+        _modalDictionary = new();
         _panelStack = new();
     }
 
@@ -105,6 +107,47 @@ public abstract class UIManagerBase : CommonManagerBase
             return true;
         }
 
+        return false;
+    }
+
+    public void RegisterModal(ModalBase modal)
+    {
+        if (modal == null)
+        {
+            return;
+        }
+
+        EUIType uiType = modal.UIType;
+
+        if (uiType == EUIType.None)
+        {
+            Debug.LogError($"Modal {modal.GetType().Name} has UIType.None");
+            return;
+        }
+
+        if (_modalDictionary.ContainsKey(uiType))
+        {
+            Debug.LogError($"Modal {uiType} already registered");
+            return;
+        }
+
+        _modalDictionary.Add(uiType, modal);
+    }
+
+    public bool TryGetModal(EUIType uiType, out ModalBase modal)
+    {
+        return _modalDictionary.TryGetValue(uiType, out modal);
+    }
+
+    public bool TryGetModal<T>(EUIType uiType, out T modal) where T : ModalBase
+    {
+        if (TryGetModal(uiType, out ModalBase value) && value is T typedModal)
+        {
+            modal = typedModal;
+            return true;
+        }
+
+        modal = default;
         return false;
     }
 }

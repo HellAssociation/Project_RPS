@@ -100,6 +100,7 @@ public class RunState
         {
             BoonDeck.Reset(null);
             DeviationDeck.Reset(null);
+            UnityEngine.Debug.Log("[DBG ResetCardDecks] Data is NULL -> both decks empty");
             return;
         }
 
@@ -107,6 +108,7 @@ public class RunState
         BoonDeck.Reset(_drawBuffer);
         Data.GetDeviationIndices(_drawBuffer);
         DeviationDeck.Reset(_drawBuffer);
+        UnityEngine.Debug.Log($"[DBG ResetCardDecks] boonDeck={BoonDeck.RemainingCount} devDeck={DeviationDeck.RemainingCount}");
     }
 
     float GetStat(EStat stat, float baseValue)

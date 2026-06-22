@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using MoreMountains.Feedbacks;
 using SystemEnums;
 using UnityEngine;
 
@@ -7,9 +8,14 @@ public abstract class Hand : MonoBehaviour
 {
     [SerializeField] SpriteRenderer handSpriteRenderer;
     [SerializeField] Finger[] fingers;
+    [SerializeField] EHandImpactOwner side;
+    [SerializeField] MMF_Player attackEffect;
+    [SerializeField] MMF_Player hitEffect;
 
     protected const int FINGER_COUNT = 5;
     protected Dictionary<EFingerType, Finger> fingerTable;
+
+    protected InGameManager _inGame;
 
     protected virtual void Awake()
     {
@@ -17,6 +23,20 @@ public abstract class Hand : MonoBehaviour
             handSpriteRenderer = GetComponent<SpriteRenderer>();
 
         CacheFingers();
+        CacheOutcomeEffects();
+    }
+
+    protected virtual void OnEnable()
+    {
+        _inGame = App.SceneManager.InGame;
+        if (_inGame != null)
+            _inGame.OnOutcomeDetermined += HandleOutcome;
+    }
+
+    protected virtual void OnDisable()
+    {
+        if (_inGame != null)
+            _inGame.OnOutcomeDetermined -= HandleOutcome;
     }
 
     void CacheFingers()
@@ -44,6 +64,34 @@ public abstract class Hand : MonoBehaviour
         }
     }
 
+    void CacheOutcomeEffects()
+    {
+        if (attackEffect == null)
+        {
+            Transform attack = transform.Find("AttackEffect");
+            if (attack != null) attackEffect = attack.GetComponent<MMF_Player>();
+        }
+
+        if (hitEffect == null)
+        {
+            Transform hit = transform.Find("HitEffect");
+            if (hit != null) hitEffect = hit.GetComponent<MMF_Player>();
+        }
+    }
+
+    void HandleOutcome(EOutcome outcome)
+    {
+        if (outcome == EOutcome.Draw) return;
+
+        bool playerWon = outcome == EOutcome.Win;
+        bool playAttack = side == EHandImpactOwner.Player ? playerWon : !playerWon;
+
+        if (playAttack)
+            attackEffect?.PlayFeedbacks();
+        else
+            hitEffect?.PlayFeedbacks();
+    }
+
     protected Finger GetFinger(EFingerType _fingerType)
     {
         if (fingerTable.TryGetValue(_fingerType, out var finger))
@@ -59,7 +107,16 @@ public abstract class Hand : MonoBehaviour
             handSpriteRenderer.sprite = _sprite;
     }
 
-    // Opens/closes fingers matching the EHandPosition bitmask
+    protected void SetHandColor(Color _color)
+    {
+        if (handSpriteRenderer != null)
+            handSpriteRenderer.color = _color;
+
+        if (fingerTable == null) return;
+        foreach (var kvp in fingerTable)
+            kvp.Value.SetColor(_color);
+    }
+
     protected void ApplyHandPosition(EHandPosition handPosition)
     {
         if (handPosition == EHandPosition.Invalid || handPosition == EHandPosition.Random) return;
@@ -78,14 +135,7 @@ public abstract class Hand : MonoBehaviour
 
 public enum EEnemyHandType
 {
-    Enemy_01,
-    Enemy_02,
-    Enemy_03,
-    Enemy_04,
-    Enemy_05,
-    Enemy_06,
-    Enemy_07,
-    Enemy_08,
-    Enemy_09,
-    Enemy_10,
+    Male,
+    Female,
+    Fat,
 }

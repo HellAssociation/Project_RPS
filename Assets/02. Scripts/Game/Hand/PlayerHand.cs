@@ -8,11 +8,11 @@ public class PlayerHand : Hand
 
     void Start()
     {
-        InGameManager inGame = App.SceneManager.InGame;
+        _inGame = App.SceneManager.InGame;
 
         if (ModeData.IsSingleControl)
         {
-            if (inGame != null) inGame.OnLocalFingerMaskChanged += ApplyFingerMask;
+            if (_inGame != null) _inGame.OnLocalFingerMaskChanged += ApplyFingerMask;
             return;
         }
 
@@ -22,18 +22,13 @@ public class PlayerHand : Hand
 
     void OnDestroy()
     {
-        InGameManager inGame = App.SceneManager.InGame;
+        if (_inGame != null && ModeData.IsSingleControl)
+            _inGame.OnLocalFingerMaskChanged -= ApplyFingerMask;
 
-        if (ModeData.IsSingleControl)
-        {
-            if (inGame != null) inGame.OnLocalFingerMaskChanged -= ApplyFingerMask;
-            return;
-        }
-
-        if (Players != null) Players.OnPlayersChanged -= RefreshFromNetwork;
+        if (!ModeData.IsSingleControl && Players != null)
+            Players.OnPlayersChanged -= RefreshFromNetwork;
     }
 
-    // Multi-control (1v5): every client draws the shared hand from each player's networked finger state.
     void RefreshFromNetwork()
     {
         if (fingerTable == null) return;

@@ -624,6 +624,8 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
     public event Action<ECardKind, int[], float> OnCardOfferReceived;
     public event Action<ECardKind, int> OnCardVoteResult;
     public event Action<int> OnBossIntro;
+    public event Action OnRoundCleared;
+    public event Action OnRewardDone;
 
     /// <summary>호스트가 각 플레이어의 손가락 배정을 [Networked] 값으로 기록합니다.</summary>
     public void ServerInitializeFingerAssignments()
@@ -814,6 +816,32 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
         OnBossIntro?.Invoke(round);
     }
 
+    /// <summary>Host announces a round (10-wave) clear.</summary>
+    public void ServerRoundClear()
+    {
+        if (!IsServerHost) return;
+
+        byte[] payload = new PayloadWriter()
+            .WriteByte((byte)EInGameRpsMessage.RoundClear)
+            .ToArray();
+
+        BroadcastInGamePayload(payload);
+        OnRoundCleared?.Invoke();
+    }
+
+    /// <summary>Host signals the clear reward vote is finished.</summary>
+    public void ServerRewardDone()
+    {
+        if (!IsServerHost) return;
+
+        byte[] payload = new PayloadWriter()
+            .WriteByte((byte)EInGameRpsMessage.RewardDone)
+            .ToArray();
+
+        BroadcastInGamePayload(payload);
+        OnRewardDone?.Invoke();
+    }
+
     public void ServerStartRound(float durationSeconds)
     {
         if (!App.IsGameScene || !TryGetServerRunner(out _))
@@ -991,6 +1019,14 @@ public class NetworkManager : CommonManagerBase, INetworkRunnerCallbacks
             case EInGameRpsMessage.BossIntro:
                 if (!reader.CanRead(1)) return;
                 OnBossIntro?.Invoke(reader.ReadByte());
+                break;
+
+            case EInGameRpsMessage.RoundClear:
+                OnRoundCleared?.Invoke();
+                break;
+
+            case EInGameRpsMessage.RewardDone:
+                OnRewardDone?.Invoke();
                 break;
         }
     }

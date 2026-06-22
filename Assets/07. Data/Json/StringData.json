@@ -1,0 +1,622 @@
+[
+  {
+    "index": 1,
+    "code": "STR_NAME_BOON_TRAINING",
+    "korean": "수련"
+  },
+  {
+    "index": 2,
+    "code": "STR_NAME_BOON_GUNSLINGER",
+    "korean": "총잡이"
+  },
+  {
+    "index": 3,
+    "code": "STR_NAME_BOON_ZOMBIE_HAND",
+    "korean": "좀비손"
+  },
+  {
+    "index": 4,
+    "code": "STR_NAME_BOON_ROCKSTAR",
+    "korean": "락스타"
+  },
+  {
+    "index": 5,
+    "code": "STR_NAME_BOON_REFLEXES",
+    "korean": "순발력"
+  },
+  {
+    "index": 6,
+    "code": "STR_NAME_BOON_GAMBLER_HAND",
+    "korean": "도박꾼의 손"
+  },
+  {
+    "index": 7,
+    "code": "STR_NAME_BOON_ORA_ORA",
+    "korean": "오라오라"
+  },
+  {
+    "index": 8,
+    "code": "STR_NAME_BOON_MUDA_MUDA",
+    "korean": "무다무다"
+  },
+  {
+    "index": 9,
+    "code": "STR_NAME_BOON_SCISSORS_BREAK_ROCK",
+    "korean": "내 가위는 바위를 깨부숴"
+  },
+  {
+    "index": 10,
+    "code": "STR_NAME_BOON_HEAVY_PUNCH",
+    "korean": "강펀치"
+  },
+  {
+    "index": 11,
+    "code": "STR_NAME_BOON_PAPER_COUNTER",
+    "korean": "사박궤"
+  },
+  {
+    "index": 12,
+    "code": "STR_NAME_BOON_BLACK_FLASH_ROCK",
+    "korean": "흑섬 - 바위"
+  },
+  {
+    "index": 13,
+    "code": "STR_NAME_BOON_BLACK_FLASH_SCISSORS",
+    "korean": "흑섬 - 가위"
+  },
+  {
+    "index": 14,
+    "code": "STR_NAME_BOON_BLACK_FLASH_PAPER",
+    "korean": "흑섬 - 보자기"
+  },
+  {
+    "index": 15,
+    "code": "STR_NAME_BOON_FXXK_U",
+    "korean": "Fxxk U"
+  },
+  {
+    "index": 16,
+    "code": "STR_NAME_BOON_CHANCE",
+    "korean": "기회"
+  },
+  {
+    "index": 17,
+    "code": "STR_NAME_BOON_LUCK",
+    "korean": "행운?"
+  },
+  {
+    "index": 18,
+    "code": "STR_NAME_BOON_PREPARATION",
+    "korean": "준비"
+  },
+  {
+    "index": 19,
+    "code": "STR_NAME_BOON_PURIFICATION",
+    "korean": "정화"
+  },
+  {
+    "index": 20,
+    "code": "STR_NAME_BOON_AMATERASU",
+    "korean": "아마테라스"
+  },
+  {
+    "index": 21,
+    "code": "STR_NAME_BOON_WATERFALL",
+    "korean": "물이 없는 곳에서 이정도의.."
+  },
+  {
+    "index": 22,
+    "code": "STR_NAME_BOON_LIGHTNING",
+    "korean": "뇌절"
+  },
+  {
+    "index": 23,
+    "code": "STR_NAME_BOON_THAT_FACE",
+    "korean": "그면상"
+  },
+  {
+    "index": 24,
+    "code": "STR_NAME_BOON_INSIGHT",
+    "korean": "통찰력"
+  },
+  {
+    "index": 25,
+    "code": "STR_NAME_BOON_SEAT_TAKEN",
+    "korean": "자리요"
+  },
+  {
+    "index": 26,
+    "code": "STR_NAME_BOON_DIAMOND",
+    "korean": "다이아몬드"
+  },
+  {
+    "index": 27,
+    "code": "STR_NAME_BOON_ALPHA_MUK",
+    "korean": "알파묵"
+  },
+  {
+    "index": 28,
+    "code": "STR_NAME_BOON_RECKLESS_CHARGE",
+    "korean": "저돌맹진"
+  },
+  {
+    "index": 29,
+    "code": "STR_NAME_BOON_SUBSTITUTION_JUTSU",
+    "korean": "바꿔치기술"
+  },
+  {
+    "index": 30,
+    "code": "STR_NAME_DEVIATION_ARTHRITIS",
+    "korean": "관절염"
+  },
+  {
+    "index": 31,
+    "code": "STR_NAME_DEVIATION_KEY_CHAOS",
+    "korean": "두억시니"
+  },
+  {
+    "index": 32,
+    "code": "STR_NAME_DEVIATION_FRACTURE",
+    "korean": "골절"
+  },
+  {
+    "index": 33,
+    "code": "STR_NAME_DEVIATION_TREMOR_THUMB",
+    "korean": "수전증 - 엄지"
+  },
+  {
+    "index": 34,
+    "code": "STR_NAME_DEVIATION_TREMOR_INDEX",
+    "korean": "수전증 - 검지"
+  },
+  {
+    "index": 35,
+    "code": "STR_NAME_DEVIATION_TREMOR_MIDDLE",
+    "korean": "수전증 - 중지"
+  },
+  {
+    "index": 36,
+    "code": "STR_NAME_DEVIATION_TREMOR_RING",
+    "korean": "수전증 - 약지"
+  },
+  {
+    "index": 37,
+    "code": "STR_NAME_DEVIATION_TREMOR_PINKY",
+    "korean": "수전증 - 새끼"
+  },
+  {
+    "index": 38,
+    "code": "STR_NAME_DEVIATION_HASTE",
+    "korean": "빠른손"
+  },
+  {
+    "index": 39,
+    "code": "STR_NAME_DEVIATION_COLLAR",
+    "korean": "칼라"
+  },
+  {
+    "index": 40,
+    "code": "STR_NAME_DEVIATION_LIGHTS_OUT",
+    "korean": "불좀 꺼줄래?"
+  },
+  {
+    "index": 41,
+    "code": "STR_NAME_DEVIATION_CARPAL_TUNNEL",
+    "korean": "터널증후군"
+  },
+  {
+    "index": 42,
+    "code": "STR_NAME_DEVIATION_SANDBAG",
+    "korean": "모래주머니"
+  },
+  {
+    "index": 43,
+    "code": "STR_NAME_DEVIATION_LOG",
+    "korean": "통나무"
+  },
+  {
+    "index": 44,
+    "code": "STR_NAME_DEVIATION_NUMBERS_ADVANTAGE",
+    "korean": "물량공세"
+  },
+  {
+    "index": 45,
+    "code": "STR_NAME_DEVIATION_THUMBS_UP",
+    "korean": "엄지척"
+  },
+  {
+    "index": 46,
+    "code": "STR_NAME_DEVIATION_PACIFIST",
+    "korean": "평화주의자"
+  },
+  {
+    "index": 47,
+    "code": "STR_NAME_DEVIATION_CAVEMAN",
+    "korean": "원시인"
+  },
+  {
+    "index": 48,
+    "code": "STR_NAME_DEVIATION_LUMBERJACK",
+    "korean": "벌목꾼"
+  },
+  {
+    "index": 49,
+    "code": "STR_NAME_DEVIATION_GUPPY",
+    "korean": "구피"
+  },
+  {
+    "index": 50,
+    "code": "STR_NAME_DEVIATION_FXXK_U_TOO",
+    "korean": "Fxxk U Too"
+  },
+  {
+    "index": 51,
+    "code": "STR_NAME_DEVIATION_FINGER_DOCTOR",
+    "korean": "핑거닥터"
+  },
+  {
+    "index": 52,
+    "code": "STR_NAME_DEVIATION_INDUSTRIAL_SPY",
+    "korean": "산업스파이"
+  },
+  {
+    "index": 53,
+    "code": "STR_NAME_DEVIATION_OLD_MAN_PATTERN",
+    "korean": "아재패턴"
+  },
+  {
+    "index": 54,
+    "code": "STR_NAME_DEVIATION_ADHD",
+    "korean": "ADHD"
+  },
+  {
+    "index": 55,
+    "code": "STR_NAME_DEVIATION_DOUBLE_LIFE_LOSS",
+    "korean": "연타"
+  },
+  {
+    "index": 56,
+    "code": "STR_NAME_DEVIATION_DOPPELGANGER",
+    "korean": "도플갱어"
+  },
+  {
+    "index": 57,
+    "code": "STR_NAME_DEVIATION_MUTATION",
+    "korean": "돌연변이"
+  },
+  {
+    "index": 58,
+    "code": "STR_NAME_DEVIATION_WE_ARE_ONE",
+    "korean": "우리는 하나"
+  },
+  {
+    "index": 59,
+    "code": "STR_NAME_DEVIATION_SLOW_HAND",
+    "korean": "느린손"
+  },
+  {
+    "index": 60,
+    "code": "STR_NAME_DEVIATION_TAP_DANCER",
+    "korean": "탭댄서"
+  },
+  {
+    "index": 61,
+    "code": "STR_NAME_DEVIATION_CORRUPTION",
+    "korean": "타락"
+  },
+  {
+    "index": 62,
+    "code": "STR_NAME_DEVIATION_YOU_DO_NOT_LISTEN_TO_ROCK",
+    "korean": "너는 록을 듣지 않아"
+  },
+  {
+    "index": 63,
+    "code": "STR_DESC_BOON_TRAINING",
+    "korean": "기본 공격력이 10% 증가합니다."
+  },
+  {
+    "index": 64,
+    "code": "STR_DESC_BOON_GUNSLINGER",
+    "korean": "[총] 포지션이 해금됩니다. (총 : 장전 스타포스가 등장하며, 총알을 발사하여 반드시 승리합니다.)"
+  },
+  {
+    "index": 65,
+    "code": "STR_DESC_BOON_ZOMBIE_HAND",
+    "korean": "라운드당 1회 패배 시 절반의 체력으로 부활합니다."
+  },
+  {
+    "index": 66,
+    "code": "STR_DESC_BOON_ROCKSTAR",
+    "korean": "[락앤롤] 포지션이 해금됩니다. (락앤롤 : 음표 스타포스가 등장하며, 기타로 공격하여 반드시 승리합니다.)"
+  },
+  {
+    "index": 67,
+    "code": "STR_DESC_BOON_REFLEXES",
+    "korean": "지는 포지션일 때, 추가로 기회가 주어져 0.2초 더 조작할 수 있습니다."
+  },
+  {
+    "index": 68,
+    "code": "STR_DESC_BOON_GAMBLER_HAND",
+    "korean": "라운드 시작 시마다, 무작위 [포지션]이 해금되어 해당 라운드에서 사용할 수 있습니다."
+  },
+  {
+    "index": 69,
+    "code": "STR_DESC_BOON_ORA_ORA",
+    "korean": "해당 라운드에서 [바위] 포지션으로 3회 승리 시, 다음 3개 라운드 동안 발동됩니다. 자동으로 승리합니다."
+  },
+  {
+    "index": 70,
+    "code": "STR_DESC_BOON_MUDA_MUDA",
+    "korean": "[바위] 포지션으로 패배 시, 일정 확률로 회피합니다."
+  },
+  {
+    "index": 71,
+    "code": "STR_DESC_BOON_SCISSORS_BREAK_ROCK",
+    "korean": "[가위]를 내고 상대가 [바위] 포지션일 때, 스타포스가 등장하며, 모두 성공 시 승리합니다."
+  },
+  {
+    "index": 72,
+    "code": "STR_DESC_BOON_HEAVY_PUNCH",
+    "korean": "[바위]를 내고 상대가 [보자기] 포지션일 때, 스타포스가 등장하며, 모두 성공 시 승리합니다."
+  },
+  {
+    "index": 73,
+    "code": "STR_DESC_BOON_PAPER_COUNTER",
+    "korean": "[보자기]를 내고 상대가 [가위] 포지션일 때, 스타포스가 등장하며, 모두 성공 시 승리합니다."
+  },
+  {
+    "index": 74,
+    "code": "STR_DESC_BOON_BLACK_FLASH_ROCK",
+    "korean": "0.05초 이전에 [바위]로 확정되고 승리한 경우, (보스전 : 2.5제곱의 공격력이 적용됩니다. / 일반 : 2번 승리로 판정됩니다.)"
+  },
+  {
+    "index": 75,
+    "code": "STR_DESC_BOON_BLACK_FLASH_SCISSORS",
+    "korean": "0.05초 이전에 [가위]로 확정되고 승리한 경우, (보스전 : 2.5제곱의 공격력이 적용됩니다. / 일반 : 2번 승리로 판정됩니다.)"
+  },
+  {
+    "index": 76,
+    "code": "STR_DESC_BOON_BLACK_FLASH_PAPER",
+    "korean": "0.05초 이전에 [보자기]로 확정되고 승리한 경우, (보스전 : 2.5제곱의 공격력이 적용됩니다. / 일반 : 2번 승리로 판정됩니다.)"
+  },
+  {
+    "index": 77,
+    "code": "STR_DESC_BOON_FXXK_U",
+    "korean": "라운드당 1회, [FY] 포지션이 해금됩니다. (FY : 마주한 상대 포지션이 해당 라운드동안 잠금됩니다.)"
+  },
+  {
+    "index": 78,
+    "code": "STR_DESC_BOON_CHANCE",
+    "korean": "Life를 1개 복원합니다."
+  },
+  {
+    "index": 79,
+    "code": "STR_DESC_BOON_LUCK",
+    "korean": "모든 확률이 10% 상승합니다. 축복이든 저주든.."
+  },
+  {
+    "index": 80,
+    "code": "STR_DESC_BOON_PREPARATION",
+    "korean": "모든 포지션의 재사용 대기 시간이 1 감소합니다."
+  },
+  {
+    "index": 81,
+    "code": "STR_DESC_BOON_PURIFICATION",
+    "korean": "아래쪽의 손가락이 조작되면 바로 위의 손가락의 디버프가 모두 해제됩니다."
+  },
+  {
+    "index": 82,
+    "code": "STR_DESC_BOON_AMATERASU",
+    "korean": "[화염] 포지션이 해금됩니다. (화염 : 보자기 또는 가위를 이길 수 있습니다. 바위에게 집니다.)"
+  },
+  {
+    "index": 83,
+    "code": "STR_DESC_BOON_WATERFALL",
+    "korean": "[폭포] 포지션이 해금됩니다. (폭포 : 가위 또는 바위를 이길 수 있습니다. 보자기에게 집니다.)"
+  },
+  {
+    "index": 84,
+    "code": "STR_DESC_BOON_LIGHTNING",
+    "korean": "[번개] 포지션이 해금됩니다. (번개 : 바위 또는 보자기를 이길 수 있습니다. 가위에게 집니다.)"
+  },
+  {
+    "index": 85,
+    "code": "STR_DESC_BOON_THAT_FACE",
+    "korean": "[가위]로 이겼을 때, 1회 패배를 면역할 수 있는 보호막이 부여됩니다."
+  },
+  {
+    "index": 86,
+    "code": "STR_DESC_BOON_INSIGHT",
+    "korean": "시작 시 각자 무슨 손가락을 조작하고 있는지 확인할 수 있습니다."
+  },
+  {
+    "index": 87,
+    "code": "STR_DESC_BOON_SEAT_TAKEN",
+    "korean": "앞으로 플레이어가 조작하는 손가락이 변동되지 않습니다. (현재 조작 손가락으로 영구 고정)"
+  },
+  {
+    "index": 88,
+    "code": "STR_DESC_BOON_DIAMOND",
+    "korean": "[가위, 바위, 보자기] 포지션을 상대로 승리하는 [다이아몬드] 포지션을 해금합니다."
+  },
+  {
+    "index": 89,
+    "code": "STR_DESC_BOON_ALPHA_MUK",
+    "korean": "상대 포지션을 이길 가능성이 있는 모든 포지션을 표시해줍니다."
+  },
+  {
+    "index": 90,
+    "code": "STR_DESC_BOON_RECKLESS_CHARGE",
+    "korean": "[저돌맹진] 포지션이 해금됩니다. (승패에 관계 없이 무작위 특수 기믹(스타포스 등)이 등장합니다. 성공 시 승리합니다. 쿨타임 3)"
+  },
+  {
+    "index": 91,
+    "code": "STR_DESC_BOON_SUBSTITUTION_JUTSU",
+    "korean": "다음 1회의 패배 시 상대와 같은 포지션으로 자동 전환하여 무승부를 시도합니다."
+  },
+  {
+    "index": 92,
+    "code": "STR_DESC_DEVIATION_ARTHRITIS",
+    "korean": "라운드당 3회 이상 조작할 수 없습니다. (3회 조작 후 잠김)"
+  },
+  {
+    "index": 93,
+    "code": "STR_DESC_DEVIATION_KEY_CHAOS",
+    "korean": "스페이스 바가 아닌 키보드 상의 무작위 키가 조작키로 변합니다."
+  },
+  {
+    "index": 94,
+    "code": "STR_DESC_DEVIATION_FRACTURE",
+    "korean": "무작위 손가락 하나가 고정되며 이후 조작할 수 없습니다."
+  },
+  {
+    "index": 95,
+    "code": "STR_DESC_DEVIATION_TREMOR_THUMB",
+    "korean": "무작위 확률로 {엄지}손가락이 강제 조작됩니다."
+  },
+  {
+    "index": 96,
+    "code": "STR_DESC_DEVIATION_TREMOR_INDEX",
+    "korean": "무작위 확률로 {검지}손가락이 강제 조작됩니다."
+  },
+  {
+    "index": 97,
+    "code": "STR_DESC_DEVIATION_TREMOR_MIDDLE",
+    "korean": "무작위 확률로 {중지}손가락이 강제 조작됩니다."
+  },
+  {
+    "index": 98,
+    "code": "STR_DESC_DEVIATION_TREMOR_RING",
+    "korean": "무작위 확률로 {약지}손가락이 강제 조작됩니다."
+  },
+  {
+    "index": 99,
+    "code": "STR_DESC_DEVIATION_TREMOR_PINKY",
+    "korean": "무작위 확률로 {새끼}손가락이 강제 조작됩니다."
+  },
+  {
+    "index": 100,
+    "code": "STR_DESC_DEVIATION_HASTE",
+    "korean": "판정 속도가 -10% 빨라집니다. (현재 시간 : nn)"
+  },
+  {
+    "index": 101,
+    "code": "STR_DESC_DEVIATION_COLLAR",
+    "korean": "내 손을 조작하면, 바로 위의 손가락 1개도 같이 조작됩니다."
+  },
+  {
+    "index": 102,
+    "code": "STR_DESC_DEVIATION_LIGHTS_OUT",
+    "korean": "일정 확률로 암흑 시야가 되어 내 손가락들을 볼 수 없습니다.(첫 번째 대결에서는 등장하지 않습니다.)"
+  },
+  {
+    "index": 103,
+    "code": "STR_DESC_DEVIATION_CARPAL_TUNNEL",
+    "korean": "낮은 확률로 키 입력에 스턴이 적용됩니다."
+  },
+  {
+    "index": 104,
+    "code": "STR_DESC_DEVIATION_SANDBAG",
+    "korean": "키 입력 후 딜레이가 생깁니다. (현재 딜레이 : nn)"
+  },
+  {
+    "index": 105,
+    "code": "STR_DESC_DEVIATION_LOG",
+    "korean": "이제 대결마다 한명만 조작 할 수 있습니다. 스타포스는 모두 참여합니다."
+  },
+  {
+    "index": 106,
+    "code": "STR_DESC_DEVIATION_NUMBERS_ADVANTAGE",
+    "korean": "라운드마다 상대해야 하는 인원 +1이 적용됩니다."
+  },
+  {
+    "index": 107,
+    "code": "STR_DESC_DEVIATION_THUMBS_UP",
+    "korean": "[따봉] 포지션 해금됩니다. (따봉 : 이번 라운드는 무승부입니다. 해당 라운드에 상대를 1명 추가시킵니다.)"
+  },
+  {
+    "index": 108,
+    "code": "STR_DESC_DEVIATION_PACIFIST",
+    "korean": "[바위]포지션에 재사용 대기시간이 + 1 적용됩니다."
+  },
+  {
+    "index": 109,
+    "code": "STR_DESC_DEVIATION_CAVEMAN",
+    "korean": "[가위]포지션에 재사용 대기시간이 + 1 적용됩니다."
+  },
+  {
+    "index": 110,
+    "code": "STR_DESC_DEVIATION_LUMBERJACK",
+    "korean": "[보자기] 포지션에 재사용 대기시간이 + 1 적용됩니다."
+  },
+  {
+    "index": 111,
+    "code": "STR_DESC_DEVIATION_GUPPY",
+    "korean": "최대 Life가 1개로 감소합니다. 감소된 Life 만큼 보호막을 얻습니다."
+  },
+  {
+    "index": 112,
+    "code": "STR_DESC_DEVIATION_FXXK_U_TOO",
+    "korean": "상대가 FY 포지션을 사용할 수 있습니다."
+  },
+  {
+    "index": 113,
+    "code": "STR_DESC_DEVIATION_FINGER_DOCTOR",
+    "korean": "이제 1초마다 포지션이 자동으로 조작됩니다."
+  },
+  {
+    "index": 114,
+    "code": "STR_DESC_DEVIATION_INDUSTRIAL_SPY",
+    "korean": "상대가 내가 보유한 무작위 포지션 1개를 영구적으로 사용할 수 있습니다."
+  },
+  {
+    "index": 115,
+    "code": "STR_DESC_DEVIATION_OLD_MAN_PATTERN",
+    "korean": "이제 라운드 시작 시 [자물쇠]를 풀어야 조작할 수 있습니다."
+  },
+  {
+    "index": 116,
+    "code": "STR_DESC_DEVIATION_ADHD",
+    "korean": "이제 모든 대결이 시작될 때, 조작 손가락이 무작위로 초기화됩니다."
+  },
+  {
+    "index": 117,
+    "code": "STR_DESC_DEVIATION_DOUBLE_LIFE_LOSS",
+    "korean": "이제 패배 시 Life가 2개씩 감소합니다."
+  },
+  {
+    "index": 118,
+    "code": "STR_DESC_DEVIATION_DOPPELGANGER",
+    "korean": "이제 상대와 같은 포지션을 내서 비긴 경우, 패배합니다."
+  },
+  {
+    "index": 119,
+    "code": "STR_DESC_DEVIATION_MUTATION",
+    "korean": "무작위 포지션을 내는 상대의 비율이 1 상승합니다."
+  },
+  {
+    "index": 120,
+    "code": "STR_DESC_DEVIATION_WE_ARE_ONE",
+    "korean": "라운드당 조작 가능 횟수를 공유합니다. 총 100회 조작할 수 있습니다."
+  },
+  {
+    "index": 121,
+    "code": "STR_DESC_DEVIATION_SLOW_HAND",
+    "korean": "모든 포지션에 재사용 대기시간이 +1 적용됩니다."
+  },
+  {
+    "index": 122,
+    "code": "STR_DESC_DEVIATION_TAP_DANCER",
+    "korean": "조작키가 발동하려면 이제 조작키를 +1회 더 입력해야 합니다."
+  },
+  {
+    "index": 123,
+    "code": "STR_DESC_DEVIATION_CORRUPTION",
+    "korean": "무작위 축복을 제거합니다."
+  },
+  {
+    "index": 124,
+    "code": "STR_DESC_DEVIATION_YOU_DO_NOT_LISTEN_TO_ROCK",
+    "korean": "상대가 [락앤롤] 포지션을 사용할 수 있습니다. (락앤롤 : 스타포스가 등장하며, 실패 시 강력한 일격을 맞습니다.)"
+  }
+]

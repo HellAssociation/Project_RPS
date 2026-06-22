@@ -7,33 +7,36 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 [DefaultExecutionOrder((int)EExecutionOrder.SystemManagement)]
 public class AssetManager : CommonManagerBase
 {
-    readonly Dictionary<EAudioClip, AudioClip> _audioCache = new();
+    readonly Dictionary<string, Object> _assetCache = new();
 
-    public AudioClip GetAudioClip(EAudioClip clip)
+    public bool TryGetAsset<T>(string address, out T asset) where T : Object
     {
-        if (clip == EAudioClip.None)
+        asset = null;
+
+        if (string.IsNullOrWhiteSpace(address))
+            return false;
+
+        if (_assetCache.TryGetValue(address, out Object cached))
         {
-            return null;
+            asset = cached as T;
+            if (asset != null)
+                return true;
+
+            Debug.LogWarning($"[AssetManager] Cached asset type mismatch. address: {address}, requested: {typeof(T).Name}, cached: {cached.GetType().Name}");
+            return false;
         }
 
-        if (_audioCache.TryGetValue(clip, out AudioClip cached))
+        AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(address);
+        T loaded = handle.WaitForCompletion();
+
+        if (loaded == null)
         {
-            return cached;
+            Debug.LogWarning($"[AssetManager] Asset not found. address: {address}, type: {typeof(T).Name}");
+            return false;
         }
 
-        string address = clip.ToString();
-        AsyncOperationHandle<AudioClip> handle = Addressables.LoadAssetAsync<AudioClip>(address);
-        AudioClip loaded = handle.WaitForCompletion();
-
-        if (loaded != null)
-        {
-            _audioCache[clip] = loaded;
-        }
-        else
-        {
-            Debug.LogWarning($"[AssetManager] 오디오 클립을 찾지 못했습니다: {address}");
-        }
-
-        return loaded;
+        _assetCache[address] = loaded;
+        asset = loaded;
+        return true;
     }
 }

@@ -25,6 +25,8 @@ public class PlayerNetworkObject : NetworkBehaviour
     [Networked] public NetworkBool IsFingerExtended { get; set; }
     [Networked] public Vector2 CursorScreenPos { get; set; }
 
+    [Networked] public int StarforceTurnIndex { get; set; }
+    [Networked] public EStarforceResult StarforceSessionResult { get; set; }
     [Networked] public EStarColor StarforceColor { get; set; }
     [Networked] public EStarforceResult StarforceResult { get; set; }
     [Networked] public float StarforceStopRatio { get; set; }
@@ -87,6 +89,8 @@ public class PlayerNetworkObject : NetworkBehaviour
                     inGameChanged = true;
                     fingerExtendedChanged = true;
                     break;
+                case nameof(StarforceTurnIndex):
+                case nameof(StarforceSessionResult):
                 case nameof(StarforceColor):
                 case nameof(StarforceResult):
                 case nameof(StarforceStopRatio):
