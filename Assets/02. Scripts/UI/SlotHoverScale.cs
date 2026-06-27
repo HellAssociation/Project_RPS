@@ -6,7 +6,7 @@ public class SlotHoverScale : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 {
     [Header("Scale Settings")]
     [Tooltip("Mouse hover size (ex : 1.2 => increase 20% size)")]
-    protected float hoverScaleMultiplier = 1.1f;
+    protected float hoverScaleMultiplier = 1.2f;
 
     [Tooltip("size scale take time")]
     protected float scaleDuration = 0.12f;
