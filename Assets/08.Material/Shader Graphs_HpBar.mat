@@ -49,7 +49,7 @@ Material:
     - _ColorMask: 15
     - _DistortionAmount: 0.0219
     - _EmissionBoost: 1.2
-    - _Fill: 0.873
+    - _Fill: 0.967
     - _QueueControl: 0
     - _QueueOffset: 0
     - _RimIntensity: 2.5
