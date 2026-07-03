@@ -1073,6 +1073,7 @@ GameObject:
   - component: {fileID: 8076937403435431774}
   - component: {fileID: 6715262740050551882}
   - component: {fileID: 3630415069793936600}
+  - component: {fileID: 1663444849710277927}
   m_Layer: 8
   m_Name: PlayrerHand
   m_TagString: Untagged
@@ -1334,9 +1335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   impactEffectPrefab: {fileID: 7372782697088213988, guid: 7f29f2bb8e7e8da49aee275bbdbf3c45, type: 3}
   cooldown: 0.12
-  destroyAfterSeconds: 2
-  rotationOffsetDegrees: 0
-  zOffset: -0.5
+  offset: {x: 0, y: 0}
 --- !u!50 &3630415069793936600
 Rigidbody2D:
   serializedVersion: 5
@@ -1364,6 +1363,28 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!95 &1663444849710277927
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4404467582180267173}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 686bd849610990e4aafab86be1d8acaa, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4598021210868778101
 GameObject:
   m_ObjectHideFlags: 0
@@ -2150,7 +2171,7 @@ MonoBehaviour:
     - rid: 8598776152510169256
       type: {class: MMF_PositionSpring, ns: MoreMountains.Feedbacks, asm: MoreMountains.Tools}
       data:
-        Active: 0
+        Active: 1
         UniqueID: -869570859
         Label: Position Spring
         OriginalLabel: Position Spring
