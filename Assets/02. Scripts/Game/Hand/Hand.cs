@@ -11,11 +11,15 @@ public abstract class Hand : MonoBehaviour
     [SerializeField] EHandImpactOwner side;
     [SerializeField] MMF_Player attackEffect;
     [SerializeField] MMF_Player hitEffect;
+    [SerializeField] Transform particleParent;
 
     protected const int FINGER_COUNT = 5;
     protected Dictionary<EFingerType, Finger> fingerTable;
 
     protected InGameManager _inGame;
+
+    HashSet<GameObject> _particleCache = new();
+
 
     protected virtual void Awake()
     {
@@ -131,6 +135,29 @@ public abstract class Hand : MonoBehaviour
     }
 
     protected void CloseAll() => ApplyFingerMask(EFingerType.None);
+
+    public void CreateParticle(EParticleType particleType)
+    {
+        if (!App.SystemManager.Asset.TryGetAsset<GameObject>(particleType.ToString(), out GameObject particleGO)) 
+            return;
+
+        var particle = Instantiate(particleGO);
+        particle.transform.SetParent(particleParent);
+        particle.transform.localPosition = Vector3.zero;
+        particle.SetActive(true);
+
+        _particleCache.Add(particle);
+    }
+
+    public void ClearParticles()
+    {
+        foreach (var particle in _particleCache)
+        {
+            Destroy(particle);
+        }
+
+        _particleCache.Clear();
+    }
 }
 
 public enum EEnemyHandType
