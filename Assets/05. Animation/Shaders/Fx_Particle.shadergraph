@@ -1222,7 +1222,7 @@
     "m_Title": "Dissolve Sharpness",
     "m_Position": {
         "x": -1927.0,
-        "y": 278.99993896484377
+        "y": 279.0
     }
 }
 
@@ -1870,7 +1870,7 @@
     "m_Title": "Soft Particle Factor",
     "m_Position": {
         "x": -1263.0,
-        "y": 741.9998779296875
+        "y": 742.0
     }
 }
 
@@ -2023,7 +2023,7 @@
     "m_Title": "Main Color",
     "m_Position": {
         "x": -2226.0,
-        "y": -443.0
+        "y": -442.9999694824219
     }
 }
 
@@ -2503,7 +2503,7 @@
     "m_Title": "Dissolve",
     "m_Position": {
         "x": -2883.0,
-        "y": 745.9998779296875
+        "y": 745.9999389648438
     }
 }
 
@@ -2919,7 +2919,7 @@
     "m_Title": "Main Texture",
     "m_Position": {
         "x": -2602.0,
-        "y": 193.0
+        "y": 193.00001525878907
     }
 }
 
@@ -3676,8 +3676,8 @@
     "m_ObjectId": "81559765f22244c88d30a35afc3cc026",
     "m_Title": "Secondary Color",
     "m_Position": {
-        "x": -1913.0,
-        "y": -153.99998474121095
+        "x": -1913.0001220703125,
+        "y": -154.00001525878907
     }
 }
 
@@ -3901,7 +3901,7 @@
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
     "m_Value": {
-        "m_SerializedTexture": "",
+        "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"77ac58213abb746c6871b42e3e54f26a\",\"type\":3}}",
         "m_Guid": ""
     },
     "isMainTexture": false,
@@ -5113,7 +5113,7 @@
     "m_Title": "Alpha",
     "m_Position": {
         "x": -891.0,
-        "y": -36.0
+        "y": -35.99999237060547
     }
 }
 

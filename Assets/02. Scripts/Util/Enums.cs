@@ -463,4 +463,11 @@ namespace SystemEnums
         ROUND_1,  ROUND_2,  ROUND_3,  ROUND_4,  ROUND_5,
         ROUND_6,  ROUND_7,  ROUND_8,  ROUND_9,  ROUND_10,
     }
+
+
+    public enum EParticleType
+    {
+        Particle_GunFire,
+        Particle_GuitarHit,
+    }
 }
